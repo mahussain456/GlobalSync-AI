@@ -181,11 +181,13 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 - [2026-03-05] Deployment bug fix: graceful 422 error for unsupported currencies
 - [2026-03-05] SEO implementation: robots.txt, sitemap.xml, SEOHead component, HelmetProvider, 3 SEO landing pages
 - [2026-03-05] Admin dashboard at /admin: view leads, export CSV
-- [2026-03-05] API rate limiting via slowapi: 20/min (AI), 60/min (currency), 30/min (trend)
+- [2026-03-05] Share Result feature: Copy + Share buttons on currency result, Copy + Share on meeting overlap result, Share on time conversion result
 
 ---
 
 ## Prioritized Backlog
+
+- [2026-03-05] Share Result feature: Copy + Share buttons on currency result, Copy + Share on meeting overlap result, Share on time conversion result
 
 ### P1 (High Value, Next Sprint)
 - [ ] Currency search box in dropdown (160+ currencies is hard to browse)
