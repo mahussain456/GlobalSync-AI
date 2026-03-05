@@ -1,7 +1,10 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Query
+from fastapi import FastAPI, APIRouter, HTTPException, Query, Request
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 import os, logging, pytz, requests, uuid, json, re
 from datetime import datetime, timezone, timedelta, date
 from pathlib import Path
@@ -17,6 +20,9 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
 app = FastAPI()
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 api_router = APIRouter(prefix="/api")
 
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY', '')
@@ -190,7 +196,8 @@ def list_popular_cities():
     return {"cities": POPULAR_CITIES}
 
 @api_router.post("/ai/parse")
-async def parse_ai_intent(req: AIParseRequest):
+@limiter.limit("20/minute")
+async def parse_ai_intent(req: AIParseRequest, request: Request):
     if not EMERGENT_LLM_KEY:
         return fallback_parse(req.query)
     try:
@@ -331,7 +338,9 @@ def get_supported_currencies():
     return {"currencies": sorted(list(FRANKFURTER_SUPPORTED))}
 
 @api_router.get("/currency/convert")
+@limiter.limit("60/minute")
 def convert_currency(
+    request: Request,
     amount: float = Query(default=1.0),
     from_currency: str = Query(...),
     to_currency: str = Query(...)
@@ -372,7 +381,8 @@ def convert_currency(
         raise HTTPException(status_code=500, detail="Unexpected error fetching exchange rate")
 
 @api_router.get("/currency/trend")
-def get_currency_trend(from_currency: str = Query(...), to_currency: str = Query(...)):
+@limiter.limit("30/minute")
+def get_currency_trend(request: Request, from_currency: str = Query(...), to_currency: str = Query(...)):
     from_c = from_currency.strip().upper()
     to_c = to_currency.strip().upper()
     # Trend data only available for ECB-supported pairs via Frankfurter

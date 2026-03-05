@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Globe, ArrowRight, Clock, TrendingUp, Zap, Users, Star } from "lucide-react";
 
 const HERO_CITIES = [
@@ -251,18 +251,50 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#050816] py-8 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
-              <Globe className="w-3.5 h-3.5 text-white" />
-            </div>
-            <span className="font-heading text-white/70 font-medium">GlobalSync AI</span>
+      <footer className="bg-[#050816] py-10 px-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Tool links */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 pb-8 border-b border-white/10">
+            <Link to="/time-zone-converter" className="group flex items-center gap-3 bg-white/5 hover:bg-white/10 rounded-xl p-4 transition-colors">
+              <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                <Clock className="w-4 h-4 text-blue-400" />
+              </div>
+              <div>
+                <div className="text-white/80 text-sm font-medium group-hover:text-white transition-colors">Time Zone Converter</div>
+                <div className="text-white/30 text-xs">Live clocks · 25+ cities</div>
+              </div>
+            </Link>
+            <Link to="/currency-converter" className="group flex items-center gap-3 bg-white/5 hover:bg-white/10 rounded-xl p-4 transition-colors">
+              <div className="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+                <TrendingUp className="w-4 h-4 text-emerald-400" />
+              </div>
+              <div>
+                <div className="text-white/80 text-sm font-medium group-hover:text-white transition-colors">Currency Converter</div>
+                <div className="text-white/30 text-xs">Live rates · 160+ currencies</div>
+              </div>
+            </Link>
+            <Link to="/meeting-planner" className="group flex items-center gap-3 bg-white/5 hover:bg-white/10 rounded-xl p-4 transition-colors">
+              <div className="w-8 h-8 bg-orange-500/20 rounded-lg flex items-center justify-center">
+                <Users className="w-4 h-4 text-orange-400" />
+              </div>
+              <div>
+                <div className="text-white/80 text-sm font-medium group-hover:text-white transition-colors">Meeting Planner</div>
+                <div className="text-white/30 text-xs">Business hour overlaps</div>
+              </div>
+            </Link>
           </div>
-          <p className="text-white/20 text-xs">Free · Open · AI-Powered · Live Rates</p>
-          <button onClick={() => navigate("/dashboard")} className="text-white/30 hover:text-white/60 text-sm transition-colors flex items-center gap-1">
-            Get Started <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
+                <Globe className="w-3.5 h-3.5 text-white" />
+              </div>
+              <span className="font-heading text-white/70 font-medium">GlobalSync AI</span>
+            </div>
+            <p className="text-white/20 text-xs">Free · Open · AI-Powered · Live Rates</p>
+            <button onClick={() => navigate("/dashboard")} className="text-white/30 hover:text-white/60 text-sm transition-colors flex items-center gap-1">
+              Get Started <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
       </footer>
     </div>
