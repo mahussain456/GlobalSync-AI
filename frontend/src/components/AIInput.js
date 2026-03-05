@@ -34,7 +34,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
     try {
       const res = await axios.post(`${API}/ai/parse`, { query: text });
       setDetectedIntent(res.data.intent);
-      onResult?.(res.data);
+      onResult?.({ ...res.data, originalQuery: text });
       onAutoSubmitDone?.();
     } catch (err) {
       toast.error("Failed to parse query — check your connection");

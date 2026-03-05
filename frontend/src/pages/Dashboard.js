@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import axios from "axios";
 import { Globe, ArrowLeft, Clock, TrendingUp, History } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AIInput from "@/components/AIInput";
@@ -13,12 +14,16 @@ export default function Dashboard() {
   const [aiDispatch, setAiDispatch] = useState(null);
   const [pendingQuery, setPendingQuery] = useState(searchParams.get("q") || "");
 
-  const handleAIResult = (result) => {
+  const handleAIResult = async (result) => {
     setAiDispatch({ ...result, ts: Date.now() });
-    const { intent } = result;
+    const { intent, originalQuery } = result;
     if (intent === "currency_conversion") setActiveTab("currency");
     else if (intent === "time_conversion" || intent === "meeting_overlap") setActiveTab("time");
-    // save to history is handled inside each component
+    // Save to history
+    try {
+      const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+      await axios.post(`${API}/history`, { query: originalQuery || "", intent, result: result.entities || {} });
+    } catch { /* non-critical */ }
   };
 
   return (
