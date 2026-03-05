@@ -1,0 +1,47 @@
+{
+  "summary": "Full backend and frontend testing of GlobalSync AI app. All 11 backend tests passed. Frontend is fully functional with one notable bug: History tab always shows empty because no component saves to /api/history after AI queries.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "HistoryPanel / AIInput / TimeConverter / CurrencyConverter",
+        "issue": "History tab always shows 'No queries yet'. Dashboard.js comment says 'save to history is handled inside each component' but neither TimeConverter.js nor CurrencyConverter.js nor AIInput.js call POST /api/history. The /api/history endpoint works correctly but is never called from frontend.",
+        "selector": "[data-testid='history-panel']",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "AI Meeting Overlap routing",
+        "issue": "AI correctly detects meeting_overlap intent and routes to Time tab, but does not auto-populate the cities from the AI query into the World Clocks or trigger overlap automatically. User still needs to manually add cities and click Find Meeting Overlap.",
+        "affected_selectors": ["[data-testid='dashboard-tabs']"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_globalsync.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Fix history saving: After each AI query result in AIInput.js (handleSubmit), call POST /api/history with query, intent, and result. The result needs to be passed back from TimeConverter/CurrencyConverter or from the AI dispatch handler in Dashboard.js.",
+    "(Optional UX) When AI detects meeting_overlap with cities, auto-add those cities to TimeConverter and trigger overlap"
+  ],
+  "critical_code_review_comments": [
+    "HISTORY BUG: Dashboard.js line 21 comment says 'save to history is handled inside each component' but grep shows zero history API calls in TimeConverter.js and CurrencyConverter.js. The POST /api/history is never called from frontend.",
+    "AIInput.js only calls /api/ai/parse and returns intent to parent - it doesn't have the final computed result (conversion result / overlap result) to save, so history saving logic needs to be in the individual components after they process the aiDispatch."
+  ],
+  "updated_files": ["/app/backend/tests/test_globalsync.py"],
+  "success_rate": {
+    "backend": "100% (11/11 tests passed)",
+    "frontend": "85% (history saving broken, all other features working)"
+  },
+  "seed_data_creation": "None - history was cleared during testing",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Backend: all APIs working (health, timezone/convert, timezone/overlap, currency/convert, currency/trend, ai/parse, history CRUD). Frontend: Landing page, AI omnibar, Dashboard tabs, Time Zones (live clocks, add city, remove city, overlap button), Currency (convert + 7-day trend chart), AI routing - all working. Only History tab broken because components never call POST /api/history.",
+  "rca_of_issue": "History never saved: Dashboard.js handleAIResult() receives the intent/entities from ai/parse but each tab component (TimeConverter, CurrencyConverter) independently makes their own API calls. The result of those calls is never bubbled back up to Dashboard.js or sent to /api/history. Fix: in CurrencyConverter after successful conversion call `axios.post(API+'/history', {query, intent:'currency_conversion', result})`. Same for TimeConverter after conversion/overlap."
+}
