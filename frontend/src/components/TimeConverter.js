@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { Clock, Plus, X, Users, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Clock, Plus, X, Users, AlertCircle, CheckCircle2, Share2, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -217,6 +217,28 @@ export default function TimeConverter({ aiDispatch }) {
     run();
   }, [aiDispatch, fetchCityMeta]);
 
+  const shareOverlap = () => {
+    const cities = selectedCities.map(c => c.name).join(", ");
+    const q = `Best meeting time for ${cities}`;
+    const url = `${window.location.origin}/dashboard?q=${encodeURIComponent(q)}`;
+    navigator.clipboard.writeText(url).then(() => toast.success("Share link copied!"));
+  };
+
+  const shareTimeConversion = () => {
+    const cities = selectedCities.map(c => c.name).join(", ");
+    const q = `What time is it in ${cities}`;
+    const url = `${window.location.origin}/dashboard?q=${encodeURIComponent(q)}`;
+    navigator.clipboard.writeText(url).then(() => toast.success("Share link copied!"));
+  };
+
+  const copyOverlapResult = () => {
+    if (!overlapResult?.has_overlap) return;
+    const lines = overlapResult.city_details?.filter(c => c.best_time_local)
+      .map(c => `${c.name}: ${c.best_time_local}`) || [];
+    const text = `Best meeting time (${overlapResult.overlap_duration_hours}h window):\n${lines.join("\n")}`;
+    navigator.clipboard.writeText(text).then(() => toast.success("Result copied!"));
+  };
+
   const filtered = POPULAR_CITIES.filter(c =>
     c.toLowerCase().includes(citySearch.toLowerCase()) &&
     !selectedCities.find(sc => sc.name.toLowerCase() === c.toLowerCase())
@@ -287,7 +309,19 @@ export default function TimeConverter({ aiDispatch }) {
       {/* Conversion Result */}
       {conversionResult?.conversion_note && (
         <div className="bg-white rounded-2xl border border-blue-200 p-5 fade-in-up" data-testid="conversion-result">
-          <h3 className="font-heading font-semibold text-zinc-900 mb-3">{conversionResult.conversion_note}</h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-heading font-semibold text-zinc-900">{conversionResult.conversion_note}</h3>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={shareTimeConversion}
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-xs font-medium transition-all"
+                data-testid="share-time-btn"
+                title="Share this conversion"
+              >
+                <Share2 className="w-3 h-3" /> Share
+              </button>
+            </div>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {conversionResult.cities?.map(city => (
               <div key={city.name} className="bg-blue-50 rounded-xl p-4 border border-blue-100">
@@ -307,17 +341,39 @@ export default function TimeConverter({ aiDispatch }) {
             <h3 className="font-heading font-semibold text-zinc-900 flex items-center gap-2">
               <Users className="w-5 h-5 text-emerald-600" /> Meeting Overlap
             </h3>
-            {overlapResult.has_overlap ? (
-              <span className="flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1">
-                <CheckCircle2 className="w-3.5 h-3.5" />
-                {overlapResult.overlap_duration_hours}h window found
-              </span>
-            ) : (
-              <span className="flex items-center gap-1.5 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-3 py-1">
-                <AlertCircle className="w-3.5 h-3.5" />
-                No overlap
-              </span>
-            )}
+            <div className="flex items-center gap-2">
+              {overlapResult.has_overlap ? (
+                <span className="flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  {overlapResult.overlap_duration_hours}h window found
+                </span>
+              ) : (
+                <span className="flex items-center gap-1.5 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-3 py-1">
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  No overlap
+                </span>
+              )}
+              {overlapResult.has_overlap && (
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={copyOverlapResult}
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-zinc-50 border border-zinc-200 text-zinc-500 hover:text-zinc-800 text-xs font-medium transition-all"
+                    data-testid="copy-overlap-btn"
+                    title="Copy result"
+                  >
+                    <Copy className="w-3 h-3" /> Copy
+                  </button>
+                  <button
+                    onClick={shareOverlap}
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-xs font-medium transition-all"
+                    data-testid="share-overlap-btn"
+                    title="Share this overlap"
+                  >
+                    <Share2 className="w-3 h-3" /> Share
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           {overlapResult.has_overlap ? (

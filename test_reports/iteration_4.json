@@ -1,0 +1,32 @@
+{
+  "summary": "Tested Share/Copy buttons for CurrencyConverter and TimeConverter (Meeting Overlap). All 6 features verified working correctly.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "100%"},
+  "test_results": {
+    "currency_copy_share_buttons_appear": "PASS - Copy (data-testid=copy-result-btn) and Share (data-testid=share-link-btn) appear after conversion (100 USD to EUR = 85.9488 EUR)",
+    "currency_share_button_toast": "PASS - Toast 'Share link copied!' appears on click",
+    "currency_copy_button_toast": "PASS - Toast 'Result copied!' appears on click",
+    "currency_share_url_format": "PASS - URL: https://remote-sync-hub.preview.emergentagent.com/dashboard?q=Convert%20100%20USD%20to%20EUR (correct format)",
+    "overlap_copy_share_buttons_appear": "PASS - Share (data-testid=share-overlap-btn) and Copy (data-testid=copy-overlap-btn) appear when overlap exists (Paris + Singapore, 1h window)",
+    "overlap_share_toast": "PASS - Toast 'Share link copied!' appears on click",
+    "overlap_copy_toast": "PASS - Toast 'Result copied!' appears on click",
+    "overlap_share_url_format": "PASS - URL: https://remote-sync-hub.preview.emergentagent.com/dashboard?q=Best%20meeting%20time%20for%20Paris%2C%20Singapore",
+    "overlap_buttons_conditional": "NOTE - Overlap Share/Copy buttons are correctly hidden when there is no overlap (expected behavior)"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Share/Copy buttons for currency and time overlap are fully working. Currency converter is on /dashboard Currency tab (not /currency route). Overlap buttons only appear when has_overlap=true. Default cities (NY, London, Mumbai) may not have overlap during off-hours UTC morning - use Paris+Singapore or similar for overlap testing."
+}

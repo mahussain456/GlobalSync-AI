@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ArrowLeftRight, TrendingUp, TrendingDown, RefreshCw, Loader2 } from "lucide-react";
+import { ArrowLeftRight, TrendingUp, TrendingDown, RefreshCw, Loader2, Share2, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { toast } from "sonner";
@@ -135,6 +135,18 @@ export default function CurrencyConverter({ aiDispatch }) {
     setTrend(null);
   };
 
+  const shareLink = () => {
+    const q = `Convert ${amount} ${fromCurrency} to ${toCurrency}`;
+    const url = `${window.location.origin}/dashboard?q=${encodeURIComponent(q)}`;
+    navigator.clipboard.writeText(url).then(() => toast.success("Share link copied!"));
+  };
+
+  const copyResult = () => {
+    if (!result) return;
+    const text = `${result.amount.toLocaleString()} ${result.from} = ${result.converted >= 1 ? result.converted.toLocaleString("en-US", { maximumFractionDigits: 4 }) : result.converted.toFixed(6)} ${result.to} (Rate: 1 ${result.from} = ${result.rate} ${result.to})`;
+    navigator.clipboard.writeText(text).then(() => toast.success("Result copied!"));
+  };
+
   useEffect(() => {
     if (!aiDispatch?.entities) return;
     const { amount: amt, from_currency, to_currency } = aiDispatch.entities;
@@ -250,13 +262,33 @@ export default function CurrencyConverter({ aiDispatch }) {
                   1 {result.from} = {result.rate} {result.to} · Updated {result.date}
                 </div>
               </div>
-              {trend && (
-                <div className={`flex items-center gap-1 text-sm font-semibold ${isPositive ? "text-emerald-600" : "text-red-500"}`} data-testid="trend-change">
-                  {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                  {isPositive ? "+" : ""}{trend.change_percent}%
-                  <span className="text-xs font-normal text-zinc-400 ml-0.5">7d</span>
+              <div className="flex flex-col items-end gap-2">
+                {trend && (
+                  <div className={`flex items-center gap-1 text-sm font-semibold ${isPositive ? "text-emerald-600" : "text-red-500"}`} data-testid="trend-change">
+                    {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                    {isPositive ? "+" : ""}{trend.change_percent}%
+                    <span className="text-xs font-normal text-zinc-400 ml-0.5">7d</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-1.5 mt-1">
+                  <button
+                    onClick={copyResult}
+                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white border border-zinc-200 text-zinc-500 hover:text-zinc-800 hover:border-zinc-300 text-xs font-medium transition-all"
+                    data-testid="copy-result-btn"
+                    title="Copy result"
+                  >
+                    <Copy className="w-3 h-3" /> Copy
+                  </button>
+                  <button
+                    onClick={shareLink}
+                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-xs font-medium transition-all"
+                    data-testid="share-link-btn"
+                    title="Copy shareable link"
+                  >
+                    <Share2 className="w-3 h-3" /> Share
+                  </button>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         )}
