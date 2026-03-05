@@ -380,6 +380,23 @@ async def clear_history():
     await db.history.delete_many({})
     return {"message": "History cleared"}
 
+class UserLead(BaseModel):
+    name: str
+    email: str
+
+@api_router.post("/users/register")
+async def register_user(req: UserLead):
+    existing = await db.users.find_one({"email": req.email.lower()})
+    if not existing:
+        user = {
+            "id": str(uuid.uuid4()),
+            "name": req.name,
+            "email": req.email.lower(),
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        await db.users.insert_one({**user, "_id": user["id"]})
+    return {"success": True, "message": "Welcome to GlobalSync AI!"}
+
 app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,

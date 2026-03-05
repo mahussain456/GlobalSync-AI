@@ -47,16 +47,18 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
 
   return (
     <div data-testid="ai-input-section">
-      <div className="glass-card rounded-2xl p-3 shadow-lg shadow-zinc-900/5">
+      <div className="glass-light rounded-2xl p-3 shadow-lg shadow-zinc-900/5 border border-zinc-200/60">
         <div className="flex items-center gap-3">
           <div className="flex-1 relative">
-            <Sparkles className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-500" />
+            <div className="absolute left-3.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center">
+              <Sparkles className="w-3.5 h-3.5 text-white" />
+            </div>
             <input
               value={query}
               onChange={(e) => { setQuery(e.target.value); setDetectedIntent(null); }}
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               placeholder='Ask anything: "Best meeting time for NY, London, Tokyo" or "Convert 100 USD to EUR"'
-              className="w-full pl-10 pr-10 py-3 bg-transparent text-zinc-800 placeholder-zinc-400 outline-none text-sm sm:text-base"
+              className="w-full pl-14 pr-10 py-3.5 bg-transparent text-zinc-800 placeholder-zinc-400 outline-none text-sm sm:text-base font-medium"
               data-testid="ai-query-input"
               disabled={loading}
             />
@@ -73,7 +75,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
           <Button
             onClick={() => handleSubmit()}
             disabled={loading || !query.trim()}
-            className="rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 font-medium flex items-center gap-2 shrink-0 transition-transform active:scale-95"
+            className="rounded-xl btn-gradient px-5 py-3 font-semibold flex items-center gap-2 shrink-0 border-0"
             data-testid="ai-submit-btn"
           >
             {loading ? (
