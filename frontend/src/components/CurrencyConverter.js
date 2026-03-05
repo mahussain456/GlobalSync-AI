@@ -8,26 +8,37 @@ import { toast } from "sonner";
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const CURRENCIES = [
-  { code: "USD", name: "US Dollar", symbol: "$" },
-  { code: "EUR", name: "Euro", symbol: "€" },
-  { code: "GBP", name: "British Pound", symbol: "£" },
-  { code: "JPY", name: "Japanese Yen", symbol: "¥" },
-  { code: "INR", name: "Indian Rupee", symbol: "₹" },
-  { code: "CAD", name: "Canadian Dollar", symbol: "CA$" },
   { code: "AUD", name: "Australian Dollar", symbol: "A$" },
+  { code: "BGN", name: "Bulgarian Lev", symbol: "лв" },
+  { code: "BRL", name: "Brazilian Real", symbol: "R$" },
+  { code: "CAD", name: "Canadian Dollar", symbol: "CA$" },
   { code: "CHF", name: "Swiss Franc", symbol: "Fr" },
   { code: "CNY", name: "Chinese Yuan", symbol: "¥" },
-  { code: "SGD", name: "Singapore Dollar", symbol: "S$" },
+  { code: "CZK", name: "Czech Koruna", symbol: "Kč" },
+  { code: "DKK", name: "Danish Krone", symbol: "kr" },
+  { code: "EUR", name: "Euro", symbol: "€" },
+  { code: "GBP", name: "British Pound", symbol: "£" },
   { code: "HKD", name: "Hong Kong Dollar", symbol: "HK$" },
+  { code: "HUF", name: "Hungarian Forint", symbol: "Ft" },
+  { code: "IDR", name: "Indonesian Rupiah", symbol: "Rp" },
+  { code: "ILS", name: "Israeli Shekel", symbol: "₪" },
+  { code: "INR", name: "Indian Rupee", symbol: "₹" },
+  { code: "ISK", name: "Icelandic Króna", symbol: "kr" },
+  { code: "JPY", name: "Japanese Yen", symbol: "¥" },
   { code: "KRW", name: "South Korean Won", symbol: "₩" },
   { code: "MXN", name: "Mexican Peso", symbol: "MX$" },
-  { code: "BRL", name: "Brazilian Real", symbol: "R$" },
-  { code: "ZAR", name: "South African Rand", symbol: "R" },
-  { code: "SEK", name: "Swedish Krona", symbol: "kr" },
+  { code: "MYR", name: "Malaysian Ringgit", symbol: "RM" },
   { code: "NOK", name: "Norwegian Krone", symbol: "kr" },
   { code: "NZD", name: "New Zealand Dollar", symbol: "NZ$" },
+  { code: "PHP", name: "Philippine Peso", symbol: "₱" },
+  { code: "PLN", name: "Polish Zloty", symbol: "zł" },
+  { code: "RON", name: "Romanian Leu", symbol: "lei" },
+  { code: "SEK", name: "Swedish Krona", symbol: "kr" },
+  { code: "SGD", name: "Singapore Dollar", symbol: "S$" },
+  { code: "THB", name: "Thai Baht", symbol: "฿" },
   { code: "TRY", name: "Turkish Lira", symbol: "₺" },
-  { code: "DKK", name: "Danish Krone", symbol: "kr" },
+  { code: "USD", name: "US Dollar", symbol: "$" },
+  { code: "ZAR", name: "South African Rand", symbol: "R" },
 ];
 
 const CustomTooltip = ({ active, payload, label }) => {
@@ -48,6 +59,7 @@ export default function CurrencyConverter({ aiDispatch }) {
   const [trend, setTrend] = useState(null);
   const [loading, setLoading] = useState(false);
   const [loadingTrend, setLoadingTrend] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const handleConvert = async (amt = amount, from = fromCurrency, to = toCurrency) => {
     const numAmt = parseFloat(amt);
@@ -55,12 +67,15 @@ export default function CurrencyConverter({ aiDispatch }) {
     if (from === to) { toast.warning("Select different currencies"); return; }
     setLoading(true);
     setResult(null);
+    setErrorMsg(null);
     try {
       const res = await axios.get(`${API}/currency/convert`, { params: { amount: numAmt, from_currency: from, to_currency: to } });
       setResult(res.data);
       fetchTrend(from, to);
     } catch (err) {
-      toast.error(err.response?.data?.detail || "Conversion failed");
+      const msg = err.response?.data?.detail || "Conversion failed. Please try again.";
+      setErrorMsg(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -170,6 +185,18 @@ export default function CurrencyConverter({ aiDispatch }) {
             {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Converting...</> : "Convert"}
           </Button>
         </div>
+
+        {/* Error */}
+        {errorMsg && (
+          <div className="mt-4 p-4 bg-red-50 rounded-xl border border-red-200 text-sm text-red-700 fade-in-up" data-testid="currency-error">
+            <strong>Not supported:</strong> {errorMsg.split("Supported currencies:")[0]}
+            {errorMsg.includes("Supported currencies:") && (
+              <span className="block mt-1 text-xs text-red-500">
+                Supported: {errorMsg.split("Supported currencies:")[1]?.trim()}
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Result */}
         {result && (
