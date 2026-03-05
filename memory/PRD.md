@@ -130,6 +130,10 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 - [2026-03-05] Meeting overlap visualization
 - [2026-03-05] 7-day trend chart (Recharts)
 - [2026-03-05] MongoDB history with save/clear
+- [2026-03-05] V2 Redesign: Dark gradient hero with live world clock grid, animated orbs, stats ticker
+- [2026-03-05] Email/name onboarding modal (soft gate, skippable, saves to MongoDB)
+- [2026-03-05] Gradient feature cards (blue/green/purple), gradient tab active states
+- [2026-03-05] User name displayed in dashboard header after onboarding
 
 ---
 

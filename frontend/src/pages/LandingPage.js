@@ -208,7 +208,7 @@ export default function LandingPage() {
               </p>
               <div className="bg-emerald-100 rounded-xl p-3 border border-emerald-200">
                 <div className="text-emerald-800 font-semibold text-sm">1 USD ≈ 92.09 INR</div>
-                <div className="text-emerald-600/60 text-xs mt-0.5">ECB · Updated live</div>
+                <div className="text-emerald-600/60 text-xs mt-0.5">Example · Live via ECB</div>
               </div>
             </div>
 

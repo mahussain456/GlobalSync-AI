@@ -36,6 +36,8 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
       setDetectedIntent(res.data.intent);
       onResult?.({ ...res.data, originalQuery: text });
       onAutoSubmitDone?.();
+      // Auto-clear intent badge after 3s
+      setTimeout(() => setDetectedIntent(null), 3000);
     } catch (err) {
       toast.error("Failed to parse query — check your connection");
     } finally {
