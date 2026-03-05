@@ -141,11 +141,14 @@ For currency_conversion:
 Notes: amount defaults to 1 if not mentioned. Use standard 3-letter ISO codes.
 Map: dollar/USD, pound/GBP, euro/EUR, rupee/INR, yen/JPY, yuan/CNY, won/KRW
 
-IMPORTANT - Only use SUPPORTED currency codes. Supported currencies:
-AUD, BGN, BRL, CAD, CHF, CNY, CZK, DKK, EUR, GBP, HKD, HUF, IDR, ILS, INR, ISK,
-JPY, KRW, MXN, MYR, NOK, NZD, PHP, PLN, RON, SEK, SGD, THB, TRY, USD, ZAR
-Do NOT use PKR, AED, SAR, EGP, NGN, or any other currency not in the list above.
-If asked for an unsupported currency, use the closest supported one or default to USD.
+IMPORTANT - Supported currency codes (worldwide, 160+ currencies via ExchangeRate-API):
+Common: USD, EUR, GBP, JPY, CHF, CNY, CAD, AUD, NZD
+Asia: INR, PKR, BDT, LKR, NPR, SGD, HKD, KRW, MYR, THB, IDR, PHP, VND, TWD, MMK, KZT
+Middle East: AED, SAR, QAR, KWD, BHD, OMR, JOD, ILS
+Africa: ZAR, NGN, EGP, KES, GHS, MAD, ETB, TZS
+Americas: MXN, BRL, ARS, CLP, COP, PEN
+Europe: SEK, NOK, DKK, PLN, CZK, HUF, RON, BGN, TRY, RUB, UAH, ISK
+Use the exact 3-letter ISO code. For Pakistani Rupee use PKR, UAE Dirham use AED, Saudi Riyal use SAR.
 
 Examples:
 "What time is 3 PM in New York in India?" -> {"intent": "time_conversion", "entities": {"from_city": "New York", "to_cities": ["Mumbai"], "time": "3 PM"}}
@@ -312,7 +315,7 @@ def get_meeting_overlap(req: MeetingOverlapRequest):
         "message": f"{overlap_mins // 60}h {overlap_mins % 60}m overlap window found"
     }
 
-# Frankfurter API supported currency codes (ECB-based, updated 2026)
+# Frankfurter API supported currencies (ECB-based) — used only for 7-day trend
 FRANKFURTER_SUPPORTED = {
     "AUD", "BGN", "BRL", "CAD", "CHF", "CNY", "CZK", "DKK",
     "EUR", "GBP", "HKD", "HUF", "IDR", "ILS", "INR", "ISK",
@@ -320,18 +323,8 @@ FRANKFURTER_SUPPORTED = {
     "RON", "SEK", "SGD", "THB", "TRY", "USD", "ZAR"
 }
 
-def validate_currencies(from_c: str, to_c: str):
-    unsupported = []
-    if from_c.upper() not in FRANKFURTER_SUPPORTED:
-        unsupported.append(from_c.upper())
-    if to_c.upper() not in FRANKFURTER_SUPPORTED:
-        unsupported.append(to_c.upper())
-    if unsupported:
-        supported_list = ", ".join(sorted(FRANKFURTER_SUPPORTED))
-        raise HTTPException(
-            status_code=422,
-            detail=f"Currency not supported: {', '.join(unsupported)}. Supported currencies: {supported_list}"
-        )
+# ExchangeRate-API base URL — free, no key, 160+ currencies worldwide
+EXCHANGERATE_BASE = "https://open.exchangerate-api.com/v6/latest"
 
 @api_router.get("/currency/supported")
 def get_supported_currencies():
@@ -343,53 +336,66 @@ def convert_currency(
     from_currency: str = Query(...),
     to_currency: str = Query(...)
 ):
-    validate_currencies(from_currency, to_currency)
-    if from_currency.upper() == to_currency.upper():
+    from_c = from_currency.strip().upper()
+    to_c = to_currency.strip().upper()
+    if from_c == to_c:
         raise HTTPException(status_code=422, detail="From and to currencies must be different")
     try:
-        url = f"https://api.frankfurter.app/latest?from={from_currency.upper()}&to={to_currency.upper()}"
+        url = f"{EXCHANGERATE_BASE}/{from_c}"
         resp = requests.get(url, timeout=10)
-        if resp.status_code == 404 or resp.status_code == 400:
-            raise HTTPException(status_code=422, detail=f"Currency pair {from_currency.upper()}/{to_currency.upper()} not available from ECB data")
+        if resp.status_code == 404:
+            raise HTTPException(status_code=422, detail=f"Currency '{from_c}' not recognised")
         resp.raise_for_status()
         data = resp.json()
-        rate = data["rates"].get(to_currency.upper())
+        if data.get("result") != "success":
+            raise HTTPException(status_code=422, detail="Currency data unavailable from provider")
+        rates = data.get("rates", {})  # ExchangeRate-API free tier uses 'rates' key
+        rate = rates.get(to_c)
         if rate is None:
-            raise HTTPException(status_code=422, detail=f"Rate for {to_currency.upper()} not available")
+            raise HTTPException(status_code=422, detail=f"Currency '{to_c}' not recognised")
         converted = round(amount * rate, 6)
+        last_update = data.get("time_last_update_utc", "")[:16]
         return {
-            "from": from_currency.upper(), "to": to_currency.upper(),
+            "from": from_c, "to": to_c,
             "amount": amount, "rate": rate, "converted": converted,
-            "date": data.get("date", ""),
-            "formatted": f"{amount:,.2f} {from_currency.upper()} = {converted:,.4f} {to_currency.upper()}"
+            "date": last_update,
+            "formatted": f"{amount:,.2f} {from_c} = {converted:,.4f} {to_c}"
         }
     except HTTPException:
         raise
     except requests.exceptions.Timeout:
         raise HTTPException(status_code=504, detail="Currency API timed out. Please try again.")
     except requests.exceptions.ConnectionError:
-        raise HTTPException(status_code=503, detail="Currency API is temporarily unreachable. Please try again.")
+        raise HTTPException(status_code=503, detail="Currency API is temporarily unreachable.")
     except Exception as e:
         logger.error(f"Currency convert error: {e}")
         raise HTTPException(status_code=500, detail="Unexpected error fetching exchange rate")
 
 @api_router.get("/currency/trend")
 def get_currency_trend(from_currency: str = Query(...), to_currency: str = Query(...)):
-    validate_currencies(from_currency, to_currency)
+    from_c = from_currency.strip().upper()
+    to_c = to_currency.strip().upper()
+    # Trend data only available for ECB-supported pairs via Frankfurter
+    if from_c not in FRANKFURTER_SUPPORTED or to_c not in FRANKFURTER_SUPPORTED:
+        return {
+            "from": from_c, "to": to_c,
+            "trend": [], "available": False,
+            "message": f"7-day trend not available for {from_c}/{to_c} (ECB data covers 31 major currencies)"
+        }
     try:
         end_date = date.today()
         start_date = end_date - timedelta(days=14)
-        url = f"https://api.frankfurter.app/{start_date}..{end_date}?from={from_currency.upper()}&to={to_currency.upper()}"
+        url = f"https://api.frankfurter.app/{start_date}..{end_date}?from={from_c}&to={to_c}"
         resp = requests.get(url, timeout=10)
         if resp.status_code in (400, 404):
-            raise HTTPException(status_code=422, detail=f"Trend data not available for {from_currency.upper()}/{to_currency.upper()}")
+            return {"from": from_c, "to": to_c, "trend": [], "available": False, "message": "Trend data not available for this pair"}
         resp.raise_for_status()
         data = resp.json()
-        trend = [{"date": d, "rate": rates.get(to_currency.upper(), 0)}
+        trend = [{"date": d, "rate": rates.get(to_c, 0)}
                  for d, rates in sorted(data.get("rates", {}).items())]
         trend = trend[-7:]
         if not trend:
-            raise HTTPException(status_code=404, detail="No trend data available for this period")
+            return {"from": from_c, "to": to_c, "trend": [], "available": False, "message": "No recent trend data available"}
         change = ((trend[-1]["rate"] - trend[0]["rate"]) / trend[0]["rate"]) * 100 if len(trend) > 1 else 0
         return {
             "from": from_currency.upper(), "to": to_currency.upper(),
@@ -397,17 +403,18 @@ def get_currency_trend(from_currency: str = Query(...), to_currency: str = Query
             "min_rate": min(t["rate"] for t in trend),
             "max_rate": max(t["rate"] for t in trend),
             "change_percent": round(change, 2),
-            "current_rate": trend[-1]["rate"] if trend else 0
+            "current_rate": trend[-1]["rate"] if trend else 0,
+            "available": True
         }
     except HTTPException:
         raise
     except requests.exceptions.Timeout:
-        raise HTTPException(status_code=504, detail="Currency API timed out. Please try again.")
+        return {"from": from_c, "to": to_c, "trend": [], "available": False, "message": "Trend API timed out"}
     except requests.exceptions.ConnectionError:
-        raise HTTPException(status_code=503, detail="Currency API is temporarily unreachable. Please try again.")
+        return {"from": from_c, "to": to_c, "trend": [], "available": False, "message": "Trend API unreachable"}
     except Exception as e:
         logger.error(f"Currency trend error: {e}")
-        raise HTTPException(status_code=500, detail="Unexpected error fetching trend data")
+        return {"from": from_c, "to": to_c, "trend": [], "available": False, "message": "Trend data unavailable"}
 
 @api_router.post("/history")
 async def save_history_item(req: HistoryCreate):

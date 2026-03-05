@@ -8,37 +8,72 @@ import { toast } from "sonner";
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const CURRENCIES = [
-  { code: "AUD", name: "Australian Dollar", symbol: "A$" },
-  { code: "BGN", name: "Bulgarian Lev", symbol: "лв" },
-  { code: "BRL", name: "Brazilian Real", symbol: "R$" },
-  { code: "CAD", name: "Canadian Dollar", symbol: "CA$" },
-  { code: "CHF", name: "Swiss Franc", symbol: "Fr" },
-  { code: "CNY", name: "Chinese Yuan", symbol: "¥" },
-  { code: "CZK", name: "Czech Koruna", symbol: "Kč" },
-  { code: "DKK", name: "Danish Krone", symbol: "kr" },
-  { code: "EUR", name: "Euro", symbol: "€" },
-  { code: "GBP", name: "British Pound", symbol: "£" },
-  { code: "HKD", name: "Hong Kong Dollar", symbol: "HK$" },
-  { code: "HUF", name: "Hungarian Forint", symbol: "Ft" },
-  { code: "IDR", name: "Indonesian Rupiah", symbol: "Rp" },
-  { code: "ILS", name: "Israeli Shekel", symbol: "₪" },
-  { code: "INR", name: "Indian Rupee", symbol: "₹" },
-  { code: "ISK", name: "Icelandic Króna", symbol: "kr" },
-  { code: "JPY", name: "Japanese Yen", symbol: "¥" },
-  { code: "KRW", name: "South Korean Won", symbol: "₩" },
-  { code: "MXN", name: "Mexican Peso", symbol: "MX$" },
-  { code: "MYR", name: "Malaysian Ringgit", symbol: "RM" },
-  { code: "NOK", name: "Norwegian Krone", symbol: "kr" },
-  { code: "NZD", name: "New Zealand Dollar", symbol: "NZ$" },
-  { code: "PHP", name: "Philippine Peso", symbol: "₱" },
-  { code: "PLN", name: "Polish Zloty", symbol: "zł" },
-  { code: "RON", name: "Romanian Leu", symbol: "lei" },
-  { code: "SEK", name: "Swedish Krona", symbol: "kr" },
-  { code: "SGD", name: "Singapore Dollar", symbol: "S$" },
-  { code: "THB", name: "Thai Baht", symbol: "฿" },
-  { code: "TRY", name: "Turkish Lira", symbol: "₺" },
-  { code: "USD", name: "US Dollar", symbol: "$" },
-  { code: "ZAR", name: "South African Rand", symbol: "R" },
+  // Major / Most Used
+  { code: "USD", name: "US Dollar", symbol: "$", region: "Americas" },
+  { code: "EUR", name: "Euro", symbol: "€", region: "Europe" },
+  { code: "GBP", name: "British Pound", symbol: "£", region: "Europe" },
+  { code: "JPY", name: "Japanese Yen", symbol: "¥", region: "Asia" },
+  { code: "CHF", name: "Swiss Franc", symbol: "Fr", region: "Europe" },
+  { code: "CNY", name: "Chinese Yuan", symbol: "¥", region: "Asia" },
+  { code: "CAD", name: "Canadian Dollar", symbol: "CA$", region: "Americas" },
+  { code: "AUD", name: "Australian Dollar", symbol: "A$", region: "Oceania" },
+  // Asia
+  { code: "INR", name: "Indian Rupee", symbol: "₹", region: "Asia" },
+  { code: "PKR", name: "Pakistani Rupee", symbol: "₨", region: "Asia" },
+  { code: "BDT", name: "Bangladeshi Taka", symbol: "৳", region: "Asia" },
+  { code: "LKR", name: "Sri Lankan Rupee", symbol: "₨", region: "Asia" },
+  { code: "NPR", name: "Nepalese Rupee", symbol: "₨", region: "Asia" },
+  { code: "SGD", name: "Singapore Dollar", symbol: "S$", region: "Asia" },
+  { code: "HKD", name: "Hong Kong Dollar", symbol: "HK$", region: "Asia" },
+  { code: "KRW", name: "South Korean Won", symbol: "₩", region: "Asia" },
+  { code: "MYR", name: "Malaysian Ringgit", symbol: "RM", region: "Asia" },
+  { code: "THB", name: "Thai Baht", symbol: "฿", region: "Asia" },
+  { code: "IDR", name: "Indonesian Rupiah", symbol: "Rp", region: "Asia" },
+  { code: "PHP", name: "Philippine Peso", symbol: "₱", region: "Asia" },
+  { code: "VND", name: "Vietnamese Dong", symbol: "₫", region: "Asia" },
+  { code: "TWD", name: "Taiwan Dollar", symbol: "NT$", region: "Asia" },
+  { code: "KZT", name: "Kazakhstani Tenge", symbol: "₸", region: "Asia" },
+  { code: "UZS", name: "Uzbekistani Som", symbol: "so'm", region: "Asia" },
+  { code: "MMK", name: "Myanmar Kyat", symbol: "K", region: "Asia" },
+  // Middle East
+  { code: "AED", name: "UAE Dirham", symbol: "د.إ", region: "Middle East" },
+  { code: "SAR", name: "Saudi Riyal", symbol: "﷼", region: "Middle East" },
+  { code: "QAR", name: "Qatari Riyal", symbol: "﷼", region: "Middle East" },
+  { code: "KWD", name: "Kuwaiti Dinar", symbol: "د.ك", region: "Middle East" },
+  { code: "BHD", name: "Bahraini Dinar", symbol: ".د.ب", region: "Middle East" },
+  { code: "OMR", name: "Omani Rial", symbol: "﷼", region: "Middle East" },
+  { code: "JOD", name: "Jordanian Dinar", symbol: "JD", region: "Middle East" },
+  { code: "ILS", name: "Israeli Shekel", symbol: "₪", region: "Middle East" },
+  // Africa
+  { code: "ZAR", name: "South African Rand", symbol: "R", region: "Africa" },
+  { code: "NGN", name: "Nigerian Naira", symbol: "₦", region: "Africa" },
+  { code: "EGP", name: "Egyptian Pound", symbol: "£", region: "Africa" },
+  { code: "KES", name: "Kenyan Shilling", symbol: "KSh", region: "Africa" },
+  { code: "GHS", name: "Ghanaian Cedi", symbol: "₵", region: "Africa" },
+  { code: "MAD", name: "Moroccan Dirham", symbol: "MAD", region: "Africa" },
+  { code: "ETB", name: "Ethiopian Birr", symbol: "Br", region: "Africa" },
+  { code: "TZS", name: "Tanzanian Shilling", symbol: "TSh", region: "Africa" },
+  // Americas
+  { code: "MXN", name: "Mexican Peso", symbol: "MX$", region: "Americas" },
+  { code: "BRL", name: "Brazilian Real", symbol: "R$", region: "Americas" },
+  { code: "ARS", name: "Argentine Peso", symbol: "$", region: "Americas" },
+  { code: "CLP", name: "Chilean Peso", symbol: "$", region: "Americas" },
+  { code: "COP", name: "Colombian Peso", symbol: "$", region: "Americas" },
+  { code: "PEN", name: "Peruvian Sol", symbol: "S/", region: "Americas" },
+  { code: "NZD", name: "New Zealand Dollar", symbol: "NZ$", region: "Oceania" },
+  // Europe
+  { code: "SEK", name: "Swedish Krona", symbol: "kr", region: "Europe" },
+  { code: "NOK", name: "Norwegian Krone", symbol: "kr", region: "Europe" },
+  { code: "DKK", name: "Danish Krone", symbol: "kr", region: "Europe" },
+  { code: "PLN", name: "Polish Zloty", symbol: "zł", region: "Europe" },
+  { code: "CZK", name: "Czech Koruna", symbol: "Kč", region: "Europe" },
+  { code: "HUF", name: "Hungarian Forint", symbol: "Ft", region: "Europe" },
+  { code: "RON", name: "Romanian Leu", symbol: "lei", region: "Europe" },
+  { code: "BGN", name: "Bulgarian Lev", symbol: "лв", region: "Europe" },
+  { code: "TRY", name: "Turkish Lira", symbol: "₺", region: "Europe" },
+  { code: "RUB", name: "Russian Ruble", symbol: "₽", region: "Europe" },
+  { code: "UAH", name: "Ukrainian Hryvnia", symbol: "₴", region: "Europe" },
+  { code: "ISK", name: "Icelandic Króna", symbol: "kr", region: "Europe" },
 ];
 
 const CustomTooltip = ({ active, payload, label }) => {
@@ -232,7 +267,7 @@ export default function CurrencyConverter({ aiDispatch }) {
         <div className="bg-white rounded-2xl border border-zinc-200 p-5 fade-in-up" data-testid="trend-chart">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-heading font-semibold text-zinc-900">7-Day Rate Trend</h3>
-            {trend && (
+            {trend?.available && (
               <div className={`text-sm font-medium flex items-center gap-1 ${isPositive ? "text-emerald-600" : "text-red-500"}`}>
                 {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
                 {fromCurrency}/{toCurrency}
@@ -243,6 +278,13 @@ export default function CurrencyConverter({ aiDispatch }) {
             <div className="h-40 flex items-center justify-center">
               <Loader2 className="w-6 h-6 text-zinc-400 animate-spin" />
             </div>
+          ) : trend?.available === false ? (
+            <div className="h-24 flex items-center justify-center text-center" data-testid="trend-unavailable">
+              <div>
+                <p className="text-sm text-zinc-500">{trend.message}</p>
+                <p className="text-xs text-zinc-400 mt-1">Trend available for major ECB pairs (USD, EUR, GBP, INR…)</p>
+              </div>
+            </div>
           ) : trend?.trend?.length ? (
             <ResponsiveContainer width="100%" height={160}>
               <AreaChart data={trend.trend} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
@@ -252,19 +294,8 @@ export default function CurrencyConverter({ aiDispatch }) {
                     <stop offset="100%" stopColor="#2563EB" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <XAxis
-                  dataKey="date"
-                  tick={{ fontSize: 10, fill: "#a1a1aa" }}
-                  tickFormatter={(d) => d.slice(5)}
-                  axisLine={false} tickLine={false}
-                />
-                <YAxis
-                  domain={["auto", "auto"]}
-                  tick={{ fontSize: 10, fill: "#a1a1aa" }}
-                  axisLine={false} tickLine={false}
-                  width={55}
-                  tickFormatter={(v) => v.toFixed(3)}
-                />
+                <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#a1a1aa" }} tickFormatter={(d) => d.slice(5)} axisLine={false} tickLine={false} />
+                <YAxis domain={["auto", "auto"]} tick={{ fontSize: 10, fill: "#a1a1aa" }} axisLine={false} tickLine={false} width={55} tickFormatter={(v) => v.toFixed(3)} />
                 <Tooltip content={<CustomTooltip />} />
                 <Area type="monotone" dataKey="rate" stroke="#2563EB" strokeWidth={2} fill="url(#rateGrad)" dot={false} />
               </AreaChart>
