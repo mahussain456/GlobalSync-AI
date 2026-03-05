@@ -442,16 +442,23 @@ class UserLead(BaseModel):
 
 @api_router.post("/users/register")
 async def register_user(req: UserLead):
-    existing = await db.users.find_one({"email": req.email.lower()})
+    email_lower = req.email.strip().lower()
+    existing = await db.users.find_one({"email": email_lower})
     if not existing:
         user = {
             "id": str(uuid.uuid4()),
-            "name": req.name,
-            "email": req.email.lower(),
+            "name": req.name.strip(),
+            "email": email_lower,
             "timestamp": datetime.now(timezone.utc).isoformat()
         }
         await db.users.insert_one({**user, "_id": user["id"]})
-    return {"success": True, "message": "Welcome to GlobalSync AI!"}
+        return {"success": True, "message": "Welcome to GlobalSync AI!", "new": True}
+    return {"success": True, "message": "Welcome back!", "new": False}
+
+@api_router.get("/users")
+async def get_all_users():
+    users = await db.users.find({}, {"_id": 0}).sort("timestamp", -1).to_list(1000)
+    return {"total": len(users), "users": users}
 
 app.include_router(api_router)
 app.add_middleware(
