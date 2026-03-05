@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://remote-sync-hub.preview.emergentagent.com/sitemap.xml
