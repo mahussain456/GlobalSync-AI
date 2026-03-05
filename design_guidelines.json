@@ -1,0 +1,126 @@
+{
+  "identity": {
+    "name": "GlobalSync AI",
+    "description": "The Swiss-Army Knife for Remote Work. Time & Currency synchronized.",
+    "tone": "Precision, Clarity, Global, Effortless",
+    "archetype": "Swiss Utility",
+    "keywords": ["Synchronized", "Global", "Precise", "Fluid"]
+  },
+  "typography": {
+    "primary_font": "Outfit",
+    "secondary_font": "Inter",
+    "weights": {
+      "light": 300,
+      "regular": 400,
+      "medium": 500,
+      "bold": 700
+    },
+    "scale": {
+      "display": "text-5xl md:text-7xl tracking-tighter font-bold",
+      "h1": "text-4xl md:text-5xl tracking-tight font-semibold",
+      "h2": "text-3xl md:text-4xl tracking-tight font-medium",
+      "h3": "text-2xl font-medium tracking-tight",
+      "body_lg": "text-lg leading-relaxed text-zinc-600 dark:text-zinc-400",
+      "body": "text-base leading-relaxed text-zinc-600 dark:text-zinc-400",
+      "caption": "text-sm text-zinc-500 uppercase tracking-widest"
+    }
+  },
+  "colors": {
+    "mode": "light_preferred",
+    "palette": {
+      "primary": {
+        "name": "Cobalt Blue",
+        "hex": "#2563EB",
+        "tailwind": "bg-blue-600 text-white hover:bg-blue-700"
+      },
+      "secondary": {
+        "name": "Sunset Orange",
+        "hex": "#F97316",
+        "tailwind": "text-orange-500 bg-orange-50 border-orange-200"
+      },
+      "accent": {
+        "name": "Emerald Green",
+        "hex": "#10B981",
+        "tailwind": "text-emerald-500 bg-emerald-50 border-emerald-200"
+      },
+      "background": {
+        "light": "#FAFAFA",
+        "dark": "#09090B",
+        "surface_light": "#FFFFFF",
+        "surface_dark": "#18181B"
+      },
+      "text": {
+        "main_light": "#18181B",
+        "muted_light": "#71717A",
+        "main_dark": "#FAFAFA",
+        "muted_dark": "#A1A1AA"
+      }
+    },
+    "gradients": {
+      "hero_orb": "bg-gradient-to-r from-blue-500/30 to-purple-500/30 blur-3xl",
+      "glass": "bg-white/70 dark:bg-black/60 backdrop-blur-xl border border-white/20 shadow-lg"
+    }
+  },
+  "layout": {
+    "grid_system": {
+      "marketing": "grid grid-cols-1 md:grid-cols-12 gap-8 p-6 md:p-12 max-w-7xl mx-auto",
+      "dashboard": "grid grid-cols-1 md:grid-cols-4 gap-6 p-6 h-full"
+    },
+    "spacing": {
+      "section_gap": "py-24 md:py-32",
+      "component_gap": "gap-6",
+      "internal_padding": "p-6 md:p-8"
+    },
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+  },
+  "components": {
+    "buttons": {
+      "primary": "rounded-full px-8 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 transition-transform active:scale-95 shadow-lg shadow-blue-500/20",
+      "secondary": "rounded-full px-8 py-3 bg-white text-zinc-900 border border-zinc-200 hover:bg-zinc-50 transition-colors",
+      "ghost": "rounded-full px-6 py-2 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100/50"
+    },
+    "cards": {
+      "glass": "rounded-2xl bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md border border-white/40 dark:border-zinc-800 shadow-sm hover:shadow-md transition-shadow",
+      "solid": "rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm"
+    },
+    "inputs": {
+      "omnibar": "w-full max-w-2xl mx-auto h-14 pl-12 pr-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-lg",
+      "default": "h-10 rounded-lg border border-zinc-200 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950"
+    }
+  },
+  "visual_enhancers": {
+    "textures": {
+      "noise": "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E\")"
+    },
+    "motion": {
+      "hover_lift": "hover:-translate-y-1 transition-transform duration-300 ease-out",
+      "page_transition": "animate-in fade-in slide-in-from-bottom-4 duration-500",
+      "ticker": "react-fast-marquee"
+    }
+  },
+  "images": {
+    "hero_bg": "https://images.unsplash.com/photo-1722407348647-de76f66f3b94?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwzfHxyZW1vdGUlMjB3b3JrZXIlMjBjb2ZmZWUlMjBzaG9wJTIwbGFwdG9wJTIwbWluaW1hbGlzdHxlbnwwfHx8fDE3NzI2NjkwODB8MA&ixlib=rb-4.1.0&q=85",
+    "team_collaboration": "https://images.unsplash.com/photo-1727857934741-93f20b9ffe71?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA3MDB8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBvZmZpY2UlMjB0ZWFtJTIwbWVldGluZyUyMG1pbmltYWxpc3R8ZW58MHx8fHwxNzcyNjY5MDgxfDA&ixlib=rb-4.1.0&q=85",
+    "currency_abstract": "https://images.unsplash.com/photo-1642751226315-e6dc6b47fd54?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwxfHxhYnN0cmFjdCUyMGRpZ2l0YWwlMjBjdXJyZW5jeSUyMGZpbmFuY2UlMjBjaGFydCUyMG1pbmltYWxpc3R8ZW58MHx8fHwxNzcyNjY5MDgyfDA&ixlib=rb-4.1.0&q=85",
+    "laptop_detail": "https://images.unsplash.com/photo-1718279597963-90e70e1eba23?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHw0fHxyZW1vdGUlMjB3b3JrZXIlMjBjb2ZmZWUlMjBzaG9wJTIwbGFwdG9wJTIwbWluaW1hbGlzdHxlbnwwfHx8fDE3NzI2NjkwODB8MA&ixlib=rb-4.1.0&q=85"
+  },
+  "instructions_to_main_agent": [
+    "1. SETUP: Install 'lucide-react' (already standard), 'recharts' for charts, 'framer-motion' for transitions, 'date-fns' and 'date-fns-tz' for time logic.",
+    "2. THEME: Implement the 'Swiss Utility' theme. Use 'Outfit' font for headings (load from Google Fonts) and 'Inter' for body.",
+    "3. LANDING PAGE: Build a custom landing page. Hero section must have the 'Omnibar' (AI Input) visual as the main call to action. Use the 'Bento Grid' layout for features.",
+    "4. DASHBOARD: Create a clean, tabbed interface (Time / Currency / History). The 'AI Input' should be persistent at the top.",
+    "5. TIME ZONE: Use a horizontal scrolling list or grid of cards for selected cities. Highlight overlap hours visually (e.g., green segments on a timeline bar).",
+    "6. CURRENCY: Use a simple input pair (From/To) and a 'Sparkline' chart using Recharts (AreaChart with gradient).",
+    "7. AI LOGIC: Mock the LLM intent parsing if real API is not available, or use a simple regex/heuristic router for MVP (e.g., 'convert' -> currency, 'time' -> timezone).",
+    "8. ACCESSIBILITY: Ensure all text inputs have labels (even if visually hidden). Use high contrast text.",
+    "9. ANIMATION: Add subtle entrance animations (fade-in-up) for dashboard cards using framer-motion.",
+    "10. TESTING: Add 'data-testid' to all inputs, buttons, and result displays."
+  ],
+  "universal_guidelines": [
+    "Do not use generic centered layouts. Use asymmetry.",
+    "Use 2-3x more spacing than default.",
+    "All interactive elements must have hover states.",
+    "Use 'sonner' for notifications.",
+    "Never use 'transparent' background on dropdowns/modals; use blurred semi-transparent backgrounds."
+  ]
+}
