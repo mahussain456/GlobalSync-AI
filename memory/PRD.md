@@ -9,7 +9,7 @@
 ## Product Overview
 GlobalSync AI is a free, AI-powered time zone and currency conversion assistant for remote teams, freelancers, and global workers. Users can ask questions in plain English and the app intelligently routes to the right tool.
 
-**URL:** https://remote-sync-hub.preview.emergentagent.com
+**URL:** https://globalsync-ai.com
 
 ---
 

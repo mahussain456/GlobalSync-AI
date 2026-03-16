@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-const BASE_URL = "https://remote-sync-hub.preview.emergentagent.com";
+const BASE_URL = "https://globalsync-ai.com";
 
 export default function SEOHead({
   title,
