@@ -1,8 +1,32 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Mail, Globe, MessageSquare } from "lucide-react";
+import { Mail, Globe, MessageSquare, Loader2, CheckCircle2 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import axios from "axios";
+import { toast } from "sonner";
+
+const API = process.env.REACT_APP_BACKEND_URL;
 
 export default function ContactPage() {
+  const [form, setForm] = useState({ name: "", email: "", subject: "General Feedback", message: "" });
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await axios.post(`${API}/api/contact`, form);
+      setSent(true);
+      toast.success("Message sent! We'll get back to you within 48 hours.");
+    } catch (err) {
+      toast.error(err.response?.data?.detail || "Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
       <SEOHead
@@ -54,58 +78,83 @@ export default function ContactPage() {
 
         <div className="bg-white rounded-2xl border border-zinc-200 p-7 mb-10">
           <h2 className="font-heading text-xl font-bold text-zinc-900 mb-6">Send Us a Message</h2>
-          <form onSubmit={(e) => { e.preventDefault(); alert("Thanks! We'll get back to you within 48 hours."); e.target.reset(); }} className="space-y-4">
-            <div>
-              <label className="text-sm font-medium text-zinc-700 block mb-1">Your Name</label>
-              <input
-                type="text"
-                required
-                placeholder="Alex Johnson"
-                className="w-full h-11 px-4 rounded-xl border border-zinc-200 text-zinc-900 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
-                data-testid="contact-name-input"
-              />
+
+          {sent ? (
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+              <CheckCircle2 className="w-12 h-12 text-emerald-500 mb-4" />
+              <h3 className="font-heading text-lg font-bold text-zinc-900 mb-2">Message Sent!</h3>
+              <p className="text-zinc-500 text-sm mb-5">We'll get back to you at <strong>{form.email}</strong> within 48 hours.</p>
+              <button onClick={() => { setSent(false); setForm({ name: "", email: "", subject: "General Feedback", message: "" }); }} className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors">
+                Send another message
+              </button>
             </div>
-            <div>
-              <label className="text-sm font-medium text-zinc-700 block mb-1">Email Address</label>
-              <input
-                type="email"
-                required
-                placeholder="alex@company.com"
-                className="w-full h-11 px-4 rounded-xl border border-zinc-200 text-zinc-900 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
-                data-testid="contact-email-input"
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium text-zinc-700 block mb-1">Subject</label>
-              <select
-                className="w-full h-11 px-4 rounded-xl border border-zinc-200 text-zinc-900 text-sm outline-none focus:border-blue-400 cursor-pointer bg-white"
-                data-testid="contact-subject-select"
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-zinc-700 block mb-1">Your Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Alex Johnson"
+                  className="w-full h-11 px-4 rounded-xl border border-zinc-200 text-zinc-900 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                  data-testid="contact-name-input"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-zinc-700 block mb-1">Email Address</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="alex@company.com"
+                  className="w-full h-11 px-4 rounded-xl border border-zinc-200 text-zinc-900 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+                  data-testid="contact-email-input"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-zinc-700 block mb-1">Subject</label>
+                <select
+                  name="subject"
+                  value={form.subject}
+                  onChange={handleChange}
+                  className="w-full h-11 px-4 rounded-xl border border-zinc-200 text-zinc-900 text-sm outline-none focus:border-blue-400 cursor-pointer bg-white"
+                  data-testid="contact-subject-select"
+                >
+                  <option>General Feedback</option>
+                  <option>Bug Report</option>
+                  <option>Feature Request</option>
+                  <option>Advertising / Partnership</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-zinc-700 block mb-1">Message</label>
+                <textarea
+                  name="message"
+                  required
+                  rows={5}
+                  value={form.message}
+                  onChange={handleChange}
+                  placeholder="Tell us what's on your mind..."
+                  className="w-full px-4 py-3 rounded-xl border border-zinc-200 text-zinc-900 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none"
+                  data-testid="contact-message-input"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full h-11 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2"
+                data-testid="contact-submit-btn"
               >
-                <option>General Feedback</option>
-                <option>Bug Report</option>
-                <option>Feature Request</option>
-                <option>Advertising / Partnership</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-zinc-700 block mb-1">Message</label>
-              <textarea
-                required
-                rows={5}
-                placeholder="Tell us what's on your mind..."
-                className="w-full px-4 py-3 rounded-xl border border-zinc-200 text-zinc-900 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all resize-none"
-                data-testid="contact-message-input"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-sm transition-colors"
-              data-testid="contact-submit-btn"
-            >
-              Send Message
-            </button>
-          </form>
+                {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</> : "Send Message"}
+              </button>
+            </form>
+          )}
         </div>
 
         <div className="bg-zinc-50 rounded-2xl border border-zinc-200 p-6 text-center">

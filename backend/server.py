@@ -5,7 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-import os, logging, pytz, requests, uuid, json, re
+import os, logging, pytz, requests, uuid, json, re, asyncio, resend
 from datetime import datetime, timezone, timedelta, date
 from pathlib import Path
 from pydantic import BaseModel, Field
@@ -26,6 +26,8 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 api_router = APIRouter(prefix="/api")
 
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY', '')
+resend.api_key = os.environ.get('RESEND_API_KEY', '')
+CONTACT_RECIPIENT_EMAIL = os.environ.get('CONTACT_RECIPIENT_EMAIL', '')
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -469,6 +471,49 @@ async def register_user(req: UserLead):
 async def get_all_users():
     users = await db.users.find({}, {"_id": 0}).sort("timestamp", -1).to_list(1000)
     return {"total": len(users), "users": users}
+
+class ContactForm(BaseModel):
+    name: str
+    email: str
+    subject: str = "General Feedback"
+    message: str
+
+@api_router.post("/contact")
+@limiter.limit("5/minute")
+async def submit_contact(form: ContactForm, request: Request):
+    html = f"""
+    <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#f9fafb;border-radius:12px;">
+      <div style="background:#1d4ed8;padding:16px 24px;border-radius:8px 8px 0 0;">
+        <h2 style="color:#fff;margin:0;font-size:18px;">New Contact Form Submission — GlobalSync AI</h2>
+      </div>
+      <div style="background:#fff;padding:24px;border-radius:0 0 8px 8px;border:1px solid #e5e7eb;">
+        <table style="width:100%;border-collapse:collapse;">
+          <tr><td style="padding:8px 0;color:#6b7280;font-size:14px;width:100px;"><strong>Name</strong></td><td style="padding:8px 0;color:#111827;font-size:14px;">{form.name}</td></tr>
+          <tr><td style="padding:8px 0;color:#6b7280;font-size:14px;"><strong>Email</strong></td><td style="padding:8px 0;font-size:14px;"><a href="mailto:{form.email}" style="color:#1d4ed8;">{form.email}</a></td></tr>
+          <tr><td style="padding:8px 0;color:#6b7280;font-size:14px;"><strong>Subject</strong></td><td style="padding:8px 0;color:#111827;font-size:14px;">{form.subject}</td></tr>
+        </table>
+        <hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0;">
+        <p style="color:#6b7280;font-size:13px;margin:0 0 8px;">Message:</p>
+        <p style="color:#111827;font-size:15px;line-height:1.6;white-space:pre-wrap;background:#f9fafb;padding:12px;border-radius:6px;">{form.message}</p>
+        <hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0;">
+        <p style="color:#9ca3af;font-size:12px;margin:0;">Sent from globalsync-ai.com contact form</p>
+      </div>
+    </div>
+    """
+    try:
+        params = {
+            "from": "GlobalSync AI <onboarding@resend.dev>",
+            "to": [CONTACT_RECIPIENT_EMAIL],
+            "reply_to": form.email,
+            "subject": f"[GlobalSync AI] {form.subject} — from {form.name}",
+            "html": html,
+        }
+        result = await asyncio.to_thread(resend.Emails.send, params)
+        logger.info(f"Contact email sent: {result}")
+        return {"success": True, "message": "Message sent! We'll get back to you within 48 hours."}
+    except Exception as e:
+        logger.error(f"Contact email failed: {e}")
+        raise HTTPException(status_code=500, detail="Failed to send message. Please try again.")
 
 app.include_router(api_router)
 app.add_middleware(
