@@ -47,7 +47,7 @@ export default function MeetingPlannerPage() {
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
       <SEOHead
-        title="Meeting Overlap Planner — Find Best Meeting Time Across Time Zones | GlobalSync AI"
+        title="Meeting Overlap Planner — Find Best Meeting Time Across Time Zones"
         description="Find the best meeting time across multiple time zones. Check business hour overlaps between cities worldwide. Free meeting planner for distributed teams."
         canonical="/meeting-planner"
         keywords="meeting planner, best meeting time, time zone overlap, remote team meeting, US India meeting time, US UK meeting time, business hours overlap, remote work tools, global team scheduler"

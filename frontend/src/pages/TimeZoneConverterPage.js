@@ -47,7 +47,7 @@ export default function TimeZoneConverterPage() {
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
       <SEOHead
-        title="Time Zone Converter — World Clock for Remote Teams | GlobalSync AI"
+        title="Time Zone Converter — World Clock for Remote Teams"
         description="See live clocks for 25+ world cities. Compare New York, London, Tokyo, Dubai, Mumbai and more. Free time zone converter for remote teams and global workers."
         canonical="/time-zone-converter"
         keywords="time zone converter, world clock, EST to IST, PST to GMT, convert time zones, meeting time planner, business hour overlap, remote team tools"

@@ -51,7 +51,7 @@ export default function CurrencyConverterPage() {
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
       <SEOHead
-        title="Currency Converter — Live Exchange Rates for 160+ Currencies | GlobalSync AI"
+        title="Currency Converter — Live Exchange Rates for 160+ Currencies"
         description="Convert between 160+ currencies with live exchange rates. USD to INR, EUR, GBP, AED, PKR and more. Free, real-time, no registration required."
         canonical="/currency-converter"
         keywords="currency converter, USD to EUR, USD to INR, USD to PKR, live exchange rates, free currency converter, AED converter, SAR converter, GBP to INR, forex rates"
