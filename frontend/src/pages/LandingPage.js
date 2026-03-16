@@ -70,11 +70,8 @@ export default function LandingPage() {
 
         {/* Navbar */}
         <nav className="relative z-10 max-w-7xl mx-auto w-full px-6 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
-              <Globe className="w-4 h-4 text-white" />
-            </div>
-            <span className="font-heading font-semibold text-white text-lg">GlobalSync AI</span>
+          <div className="flex items-center">
+            <img src="/logo.png" alt="GlobalSync AI" className="h-12 w-auto" />
           </div>
           <button
             onClick={() => navigate("/dashboard")}
@@ -105,7 +102,7 @@ export default function LandingPage() {
             <div className="glass-dark rounded-2xl p-3 max-w-xl mb-5" data-testid="landing-omnibar">
               <div className="flex items-center gap-3">
                 <div className="flex-1 relative">
-                  <Zap className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" />
+                  <Zap className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cyan-400" />
                   <input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
@@ -285,11 +282,8 @@ export default function LandingPage() {
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
-                  <Globe className="w-3.5 h-3.5 text-white" />
-                </div>
-                <span className="font-heading text-white/70 font-medium">GlobalSync AI</span>
+              <div className="flex items-center">
+                <img src="/logo.png" alt="GlobalSync AI" className="h-7 w-auto opacity-70" />
               </div>
               <p className="text-white/20 text-xs">Free · Open · AI-Powered · Live Rates</p>
               <button onClick={() => navigate("/dashboard")} className="text-white/30 hover:text-white/60 text-sm transition-colors flex items-center gap-1">

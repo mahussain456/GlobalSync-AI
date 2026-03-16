@@ -52,10 +52,7 @@ export default function Dashboard() {
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center">
-                  <Globe className="w-3.5 h-3.5 text-white" />
-                </div>
-                <span className="font-heading font-semibold text-zinc-900">GlobalSync AI</span>
+                <img src="/logo.png" alt="GlobalSync AI" className="h-9 w-auto" />
               </div>
             </div>
 
@@ -90,7 +87,7 @@ export default function Dashboard() {
             <TabsList className="bg-white border border-zinc-200 p-1 rounded-2xl mb-6 w-full sm:w-auto shadow-sm">
               <TabsTrigger
                 value="time"
-                className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-violet-600 data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
+                className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-teal-600 data-[state=active]:text-white data-[state=active]:shadow-md transition-all"
                 data-testid="tab-time"
               >
                 <Clock className="w-4 h-4" /> Time Zones

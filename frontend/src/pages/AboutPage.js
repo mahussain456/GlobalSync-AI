@@ -26,7 +26,10 @@ export default function AboutPage() {
         structuredData={structuredData}
       />
 
-      <nav className="max-w-4xl mx-auto px-6 pt-6 pb-2">
+      <nav className="max-w-4xl mx-auto px-6 pt-6 pb-2 flex items-center justify-between">
+        <Link to="/" className="flex items-center">
+          <img src="/logo.png" alt="GlobalSync AI" className="h-8 w-auto" />
+        </Link>
         <ol className="flex items-center gap-2 text-sm text-zinc-400" itemScope itemType="https://schema.org/BreadcrumbList">
           <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
             <Link to="/" className="hover:text-blue-600 transition-colors" itemProp="item"><span itemProp="name">Home</span></Link>
@@ -126,10 +129,10 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-7">
+        <section className="bg-gradient-to-br from-cyan-50 to-teal-50 rounded-2xl border border-cyan-100 p-7">
           <h2 className="font-heading text-xl font-bold text-zinc-900 mb-2">Get in Touch</h2>
           <p className="text-zinc-600 text-sm mb-4">Questions, feedback, or partnership enquiries? We'd love to hear from you.</p>
-          <Link to="/contact" className="inline-flex items-center gap-2 bg-blue-600 text-white rounded-xl px-5 py-2.5 text-sm font-semibold hover:bg-blue-700 transition-colors">
+          <Link to="/contact" className="inline-flex items-center gap-2 bg-teal-600 text-white rounded-xl px-5 py-2.5 text-sm font-semibold hover:bg-teal-700 transition-colors">
             Contact Us <ArrowRight className="w-4 h-4" />
           </Link>
         </section>
