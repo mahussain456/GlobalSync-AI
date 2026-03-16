@@ -71,7 +71,7 @@ export default function LandingPage() {
         {/* Navbar */}
         <nav className="relative z-10 max-w-7xl mx-auto w-full px-6 py-5 flex items-center justify-between">
           <div className="flex items-center">
-            <img src="/logo.png" alt="GlobalSync AI" className="h-12 w-auto" />
+            <img src="/logo.png" alt="GlobalSync AI" className="h-16 w-auto" />
           </div>
           <button
             onClick={() => navigate("/dashboard")}
@@ -283,7 +283,7 @@ export default function LandingPage() {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center">
-                <img src="/logo.png" alt="GlobalSync AI" className="h-7 w-auto opacity-70" />
+                <img src="/logo.png" alt="GlobalSync AI" className="h-8 w-auto opacity-70" />
               </div>
               <p className="text-white/20 text-xs">Free · Open · AI-Powered · Live Rates</p>
               <button onClick={() => navigate("/dashboard")} className="text-white/30 hover:text-white/60 text-sm transition-colors flex items-center gap-1">
