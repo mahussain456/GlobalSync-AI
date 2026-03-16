@@ -21,12 +21,25 @@ const OVERLAPS = [
 
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": FAQ.map(f => ({
-    "@type": "Question",
-    "name": f.q,
-    "acceptedAnswer": { "@type": "Answer", "text": f.a }
-  }))
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "GlobalSync AI Meeting Planner",
+      "url": "https://globalsync-ai.com/meeting-planner",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "All",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Free meeting overlap planner for remote teams. Find the best meeting time across multiple time zones automatically."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": FAQ.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    }
+  ]
 };
 
 export default function MeetingPlannerPage() {
@@ -34,8 +47,8 @@ export default function MeetingPlannerPage() {
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
       <SEOHead
-        title="Free Meeting Time Planner for Remote Teams — Find Business Hour Overlaps"
-        description="Find the best meeting time across multiple time zones. Automatically calculate business hour overlaps for remote teams in NY, London, Dubai, India, and 25+ cities. Free, AI-powered."
+        title="Meeting Overlap Planner — Find Best Meeting Time Across Time Zones | GlobalSync AI"
+        description="Find the best meeting time across multiple time zones. Check business hour overlaps between cities worldwide. Free meeting planner for distributed teams."
         canonical="/meeting-planner"
         keywords="meeting planner, best meeting time, time zone overlap, remote team meeting, US India meeting time, US UK meeting time, business hours overlap, remote work tools, global team scheduler"
         structuredData={structuredData}

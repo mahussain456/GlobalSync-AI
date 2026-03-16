@@ -283,17 +283,25 @@ export default function LandingPage() {
               </div>
             </Link>
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
-                <Globe className="w-3.5 h-3.5 text-white" />
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
+                  <Globe className="w-3.5 h-3.5 text-white" />
+                </div>
+                <span className="font-heading text-white/70 font-medium">GlobalSync AI</span>
               </div>
-              <span className="font-heading text-white/70 font-medium">GlobalSync AI</span>
+              <p className="text-white/20 text-xs">Free · Open · AI-Powered · Live Rates</p>
+              <button onClick={() => navigate("/dashboard")} className="text-white/30 hover:text-white/60 text-sm transition-colors flex items-center gap-1">
+                Get Started <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
-            <p className="text-white/20 text-xs">Free · Open · AI-Powered · Live Rates</p>
-            <button onClick={() => navigate("/dashboard")} className="text-white/30 hover:text-white/60 text-sm transition-colors flex items-center gap-1">
-              Get Started <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 pt-2 border-t border-white/5">
+              <Link to="/about" className="text-white/25 hover:text-white/50 text-xs transition-colors">About</Link>
+              <Link to="/contact" className="text-white/25 hover:text-white/50 text-xs transition-colors">Contact</Link>
+              <Link to="/privacy-policy" className="text-white/25 hover:text-white/50 text-xs transition-colors">Privacy Policy</Link>
+              <Link to="/terms-of-service" className="text-white/25 hover:text-white/50 text-xs transition-colors">Terms of Service</Link>
+            </div>
           </div>
         </div>
       </footer>

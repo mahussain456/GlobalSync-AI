@@ -25,12 +25,25 @@ const PAIRS = [
 
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": FAQ.map(f => ({
-    "@type": "Question",
-    "name": f.q,
-    "acceptedAnswer": { "@type": "Answer", "text": f.a }
-  }))
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "GlobalSync AI Currency Converter",
+      "url": "https://globalsync-ai.com/currency-converter",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Free currency converter with live exchange rates for 160+ currencies worldwide. USD to EUR, INR, GBP, AED, PKR and more."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": FAQ.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    }
+  ]
 };
 
 export default function CurrencyConverterPage() {
@@ -38,8 +51,8 @@ export default function CurrencyConverterPage() {
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
       <SEOHead
-        title="Free Currency Converter — Live Exchange Rates for 160+ Currencies"
-        description="Convert currencies instantly with live exchange rates. USD to EUR, USD to INR, USD to PKR, AED, SAR, GBP and 160+ more. Real-time rates. Free, no signup required."
+        title="Currency Converter — Live Exchange Rates for 160+ Currencies | GlobalSync AI"
+        description="Convert between 160+ currencies with live exchange rates. USD to INR, EUR, GBP, AED, PKR and more. Free, real-time, no registration required."
         canonical="/currency-converter"
         keywords="currency converter, USD to EUR, USD to INR, USD to PKR, live exchange rates, free currency converter, AED converter, SAR converter, GBP to INR, forex rates"
         structuredData={structuredData}

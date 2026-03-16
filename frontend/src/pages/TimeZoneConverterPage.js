@@ -21,12 +21,25 @@ const CONVERSIONS = [
 
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": FAQ.map(f => ({
-    "@type": "Question",
-    "name": f.q,
-    "acceptedAnswer": { "@type": "Answer", "text": f.a }
-  }))
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "GlobalSync AI Time Zone Converter",
+      "url": "https://globalsync-ai.com/time-zone-converter",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Free world time zone converter. See live clocks for 25+ cities, find business hour overlaps, and get AI-powered meeting time suggestions."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": FAQ.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
+    }
+  ]
 };
 
 export default function TimeZoneConverterPage() {
@@ -34,8 +47,8 @@ export default function TimeZoneConverterPage() {
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
       <SEOHead
-        title="Free World Time Zone Converter — Compare Cities Instantly"
-        description="Convert time zones across 25+ cities in seconds. See live world clocks, find business hour overlaps for remote teams, and get AI-powered meeting time suggestions. Free, no signup."
+        title="Time Zone Converter — World Clock for Remote Teams | GlobalSync AI"
+        description="See live clocks for 25+ world cities. Compare New York, London, Tokyo, Dubai, Mumbai and more. Free time zone converter for remote teams and global workers."
         canonical="/time-zone-converter"
         keywords="time zone converter, world clock, EST to IST, PST to GMT, convert time zones, meeting time planner, business hour overlap, remote team tools"
         structuredData={structuredData}
