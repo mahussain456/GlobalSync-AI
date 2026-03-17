@@ -3,12 +3,12 @@ import { useNavigate, Link } from "react-router-dom";
 import { Globe, ArrowRight, Clock, TrendingUp, Zap, Users, Star } from "lucide-react";
 
 const HERO_CITIES = [
-  { name: "New York", tz: "America/New_York", flag: "🇺🇸" },
-  { name: "London", tz: "Europe/London", flag: "🇬🇧" },
-  { name: "Tokyo", tz: "Asia/Tokyo", flag: "🇯🇵" },
-  { name: "Dubai", tz: "Asia/Dubai", flag: "🇦🇪" },
-  { name: "Sydney", tz: "Australia/Sydney", flag: "🇦🇺" },
-  { name: "Mumbai", tz: "Asia/Kolkata", flag: "🇮🇳" },
+  { name: "New York",  tz: "America/New_York",  code: "us" },
+  { name: "London",    tz: "Europe/London",     code: "gb" },
+  { name: "Tokyo",     tz: "Asia/Tokyo",        code: "jp" },
+  { name: "Dubai",     tz: "Asia/Dubai",        code: "ae" },
+  { name: "Sydney",    tz: "Australia/Sydney",  code: "au" },
+  { name: "Mumbai",    tz: "Asia/Kolkata",      code: "in" },
 ];
 
 const EXAMPLE_QUERIES = [
@@ -25,7 +25,6 @@ function LiveClock({ city }) {
     const update = () => {
       const now = new Date();
       const full = now.toLocaleTimeString("en-US", { timeZone: city.tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
-      // "08:05:42 PM" → split into parts
       const match = full.match(/^(\d{2}:\d{2}):(\d{2})\s+(AM|PM)$/);
       const hhmm = match ? match[1] : "--:--";
       const ss   = match ? match[2] : "00";
@@ -38,30 +37,56 @@ function LiveClock({ city }) {
     const timer = setInterval(update, 1000);
     return () => clearInterval(timer);
   }, [city.tz]);
+
   const isBiz = td.h >= 9 && td.h < 17;
+
   return (
-    <div className="clock-card p-4 flex flex-col gap-2">
-      {/* Header row */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="text-2xl leading-none flex-shrink-0">{city.flag}</span>
+    <div className="clock-card p-4 flex flex-col gap-3">
+      {/* Header row: flag + city name | status dot */}
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <img
+            src={`https://flagcdn.com/w40/${city.code}.png`}
+            alt={city.name}
+            className="w-6 h-auto rounded-sm flex-shrink-0 shadow-sm"
+            loading="lazy"
+          />
           <span className="text-white/90 text-sm font-semibold truncate">{city.name}</span>
         </div>
-        <div className={`flex items-center gap-1.5 flex-shrink-0 ml-2 ${isBiz ? "text-emerald-400" : "text-white/35"}`}>
-          <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isBiz ? "bg-emerald-400 shadow-[0_0_6px_#34d399]" : "bg-white/20"}`} />
-          <span className="text-xs font-medium">{isBiz ? "Active" : "Offline"}</span>
+        <span
+          className={`w-2 h-2 rounded-full flex-shrink-0 ${isBiz ? "bg-emerald-400 shadow-[0_0_6px_#34d399]" : "bg-white/20"}`}
+          title={isBiz ? "In Office" : "Off Hours"}
+        />
+      </div>
+
+      {/* Divider */}
+      <div className="h-px bg-white/8" />
+
+      {/* Time */}
+      <div className="flex items-end justify-between">
+        <div>
+          <div className="flex items-baseline gap-1.5">
+            <span className="font-heading text-3xl font-bold text-white tabular-nums tracking-tight leading-none">{td.hhmm}</span>
+            <span className="text-white/55 text-sm font-semibold leading-none mb-0.5">{td.ampm}</span>
+          </div>
+          <div className="text-white/25 text-xs tabular-nums font-mono mt-1">:{td.ss}</div>
+        </div>
+        {isBiz && (
+          <div className="flex flex-col items-end gap-1 mb-1">
+            <div className="w-1 h-4 bg-emerald-500/40 rounded-full" />
+            <div className="w-1 h-6 bg-emerald-500/60 rounded-full" />
+            <div className="w-1 h-3 bg-emerald-500/30 rounded-full" />
+          </div>
+        )}
+      </div>
+
+      {/* Date + status label */}
+      <div className="flex items-center justify-between">
+        <div className="text-white/30 text-xs">{td.date}</div>
+        <div className={`text-xs font-medium ${isBiz ? "text-emerald-400/80" : "text-white/20"}`}>
+          {isBiz ? "In Office" : "Off Hours"}
         </div>
       </div>
-      {/* Time row */}
-      <div className="flex items-end gap-2">
-        <span className="font-heading text-3xl font-bold text-white tabular-nums tracking-tight leading-none">{td.hhmm}</span>
-        <div className="flex flex-col items-start mb-0.5 gap-0">
-          <span className="text-white/40 text-xs tabular-nums leading-tight font-mono">:{td.ss}</span>
-          <span className="text-white/55 text-xs font-semibold leading-tight">{td.ampm}</span>
-        </div>
-      </div>
-      {/* Date row */}
-      <div className="text-white/30 text-xs">{td.date}</div>
     </div>
   );
 }
@@ -156,10 +181,10 @@ export default function LandingPage() {
           </div>
 
           {/* Right: Live clocks grid */}
-          <div className="w-full lg:w-80 flex-shrink-0 fade-in-up stagger-2">
+          <div className="w-full lg:w-[400px] flex-shrink-0 fade-in-up stagger-2">
             <div className="glass-dark rounded-2xl p-5">
               <div className="flex items-center gap-2 mb-4">
-                <Clock className="w-4 h-4 text-blue-400" />
+                <Clock className="w-4 h-4 text-cyan-400" />
                 <span className="text-white/60 text-xs font-medium uppercase tracking-wider">Live World Clocks</span>
               </div>
               <div className="grid grid-cols-2 gap-3">
