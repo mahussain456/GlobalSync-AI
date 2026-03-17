@@ -4,6 +4,7 @@ import { ArrowLeftRight, TrendingUp, TrendingDown, RefreshCw, Loader2, Share2, C
 import { Button } from "@/components/ui/button";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { toast } from "sonner";
+import CurrencySelect from "@/components/CurrencySelect";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -186,16 +187,12 @@ export default function CurrencyConverter({ aiDispatch }) {
           {/* From */}
           <div className="flex-1">
             <label className="text-xs text-zinc-500 mb-1 block font-medium">From</label>
-            <select
+            <CurrencySelect
+              currencies={CURRENCIES}
               value={fromCurrency}
-              onChange={(e) => { setFromCurrency(e.target.value); setResult(null); }}
-              className="w-full h-12 px-4 rounded-xl border border-zinc-200 text-zinc-900 text-sm outline-none focus:border-blue-400 cursor-pointer bg-white"
-              data-testid="from-currency-select"
-            >
-              {CURRENCIES.map(c => (
-                <option key={c.code} value={c.code}>{c.code} — {c.name}</option>
-              ))}
-            </select>
+              onChange={(code) => { setFromCurrency(code); setResult(null); }}
+              testId="from-currency-select"
+            />
           </div>
 
           {/* Swap */}
@@ -210,16 +207,12 @@ export default function CurrencyConverter({ aiDispatch }) {
           {/* To */}
           <div className="flex-1">
             <label className="text-xs text-zinc-500 mb-1 block font-medium">To</label>
-            <select
+            <CurrencySelect
+              currencies={CURRENCIES}
               value={toCurrency}
-              onChange={(e) => { setToCurrency(e.target.value); setResult(null); }}
-              className="w-full h-12 px-4 rounded-xl border border-zinc-200 text-zinc-900 text-sm outline-none focus:border-blue-400 cursor-pointer bg-white"
-              data-testid="to-currency-select"
-            >
-              {CURRENCIES.map(c => (
-                <option key={c.code} value={c.code}>{c.code} — {c.name}</option>
-              ))}
-            </select>
+              onChange={(code) => { setToCurrency(code); setResult(null); }}
+              testId="to-currency-select"
+            />
           </div>
 
           {/* Convert Button */}

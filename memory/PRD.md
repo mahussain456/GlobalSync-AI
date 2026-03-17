@@ -182,6 +182,8 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 - [2026-03-05] SEO implementation: robots.txt, sitemap.xml, SEOHead component, HelmetProvider, 3 SEO landing pages
 - [2026-03-05] Admin dashboard at /admin: view leads, export CSV
 - [2026-03-05] Share Result feature: Copy + Share buttons on currency result, Copy + Share on meeting overlap result, Share on time conversion result
+- [2026-03-17] Searchable currency dropdown: replaced native <select> with custom CurrencySelect component (search by code/name, click-outside-to-close)
+- [2026-03-17] Google AdSense script (ca-pub-3241670070120503) added to index.html <head>
 
 ---
 
@@ -192,7 +194,7 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 - [2026-03-16] SEO audit implementation: About, Contact, Privacy Policy, Terms of Service pages; footer legal links; optimised title/meta tags; WebApplication schema; sitemap expanded to 9 URLs
 
 ### P1 (High Value, Next Sprint)
-- [ ] Currency search box in dropdown (160+ currencies is hard to browse)
+- [x] Currency search box in dropdown — searchable custom dropdown with real-time filter [2026-03-17]
 - [ ] Copy result to clipboard button on converter outputs
 - [ ] Share query as URL (e.g. /dashboard?q=Convert+100+USD+to+EUR)
 
