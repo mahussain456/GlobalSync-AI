@@ -48,10 +48,10 @@ export default function MeetingPlannerPage() {
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
       <SEOHead
-        title="Meeting Overlap Planner — Find Best Meeting Time Across Time Zones"
-        description="Find the best meeting time across multiple time zones. Check business hour overlaps between cities worldwide. Free meeting planner for distributed teams."
+        title="Meeting Overlap Planner — Best Meeting Time Across Time Zones"
+        description="Find the best meeting time across multiple time zones instantly. Check business hour overlaps between cities worldwide. Free meeting planner for remote and global teams."
         canonical="/meeting-planner"
-        keywords="meeting planner, best meeting time, time zone overlap, remote team meeting, US India meeting time, US UK meeting time, business hours overlap, remote work tools, global team scheduler"
+        keywords="meeting overlap planner free, best meeting time US and India, time zone overlap calculator, meeting scheduler multiple time zones, business hours overlap calculator, remote team meeting planner, how to schedule meeting across time zones, meeting planner, best meeting time, remote team tools"
         structuredData={structuredData}
       />
 
@@ -78,10 +78,10 @@ export default function MeetingPlannerPage() {
             <Users className="w-3.5 h-3.5" /> AI-Powered · Free · Up to 5 Cities
           </div>
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-zinc-900 leading-tight mb-4">
-            Best Meeting Time Planner for Remote Teams
+            Meeting Overlap Planner — Find the Best Time Across Time Zones
           </h1>
           <p className="text-lg text-zinc-500 max-w-2xl leading-relaxed">
-            Automatically find the business hour overlap between any cities. Eliminate the back-and-forth of scheduling across time zones — get the perfect meeting window in seconds.
+            Free remote team meeting planner and time zone overlap calculator. Find the best meeting time US and India, US and UK, or any global combination — in seconds. No signup required.
           </p>
           <button
             onClick={() => navigate("/dashboard?q=Best meeting time for New York, London, Dubai")}
@@ -95,10 +95,10 @@ export default function MeetingPlannerPage() {
         {/* Ad — below hero */}
         <AdBanner slot="leaderboard" className="mb-8" />
 
-        {/* Common overlaps */}
+        {/* Popular combinations */}
         <section className="mb-12">
-          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-2">Common Team Meeting Scenarios</h2>
-          <p className="text-zinc-500 mb-5 text-sm">Click any scenario to instantly calculate the overlap.</p>
+          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-2">Popular Meeting Time Combinations</h2>
+          <p className="text-zinc-500 mb-5 text-sm">Click any scenario to instantly calculate the business hours overlap.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {OVERLAPS.map(o => (
               <button
@@ -118,15 +118,15 @@ export default function MeetingPlannerPage() {
           </div>
         </section>
 
-        {/* How it works */}
+        {/* How to find best meeting time */}
         <section className="mb-12 bg-white rounded-2xl border border-zinc-200 p-7">
-          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-6">How the Meeting Overlap Tool Works</h2>
+          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-6">How to Find the Best Meeting Time</h2>
           <ol className="space-y-4">
             {[
-              ["Select Your Cities", "Add up to 5 cities where your team members are located — New York, London, Dubai, Mumbai, Singapore, or any of 25+ supported cities."],
-              ["Automatic Overlap Calculation", "GlobalSync AI converts each city's 9 AM–5 PM business hours to UTC and calculates the intersection — the shared window when everyone is at work."],
-              ["Visual Timeline", "See a color-coded timeline bar for each city. Blue = business hours. Green = the overlap window where all teams are available."],
-              ["Best Meeting Time Suggestion", "Get the optimal meeting slot displayed in each city's local time, accounting for daylight saving time automatically."],
+              ["Select Your Cities", "Add up to 5 cities where your remote team is located — use our meeting scheduler for multiple time zones including New York, London, Dubai, Mumbai, Singapore, or any of 25+ cities."],
+              ["Business Hours Overlap Calculator", "GlobalSync AI acts as a business hours overlap calculator — it converts each city's 9 AM–5 PM to UTC and finds the intersection, the exact window when everyone is at work simultaneously."],
+              ["Visual Timeline", "See a color-coded timeline for each city. Blue = business hours. Green = the overlap window. Instantly understand how to schedule meeting across time zones."],
+              ["Best Meeting Time Suggestion", "Get the optimal slot in each city's local time. Handles daylight saving automatically — perfect for remote team meeting planning between the US and India, US and UK, or any global pairing."],
             ].map(([title, desc], i) => (
               <li key={title} className="flex gap-4">
                 <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-600 font-bold text-sm flex items-center justify-center shrink-0">{i + 1}</div>
@@ -137,6 +137,14 @@ export default function MeetingPlannerPage() {
               </li>
             ))}
           </ol>
+        </section>
+
+        {/* SEO Static Text Block */}
+        <section className="mb-12 bg-zinc-50 rounded-2xl border border-zinc-200 p-7">
+          <h2 className="font-heading text-xl font-bold text-zinc-800 mb-3">Meeting Overlap Planner — How It Works</h2>
+          <p className="text-sm text-zinc-500 leading-relaxed">
+            The GlobalSync AI <strong className="text-zinc-700">meeting overlap planner</strong> helps remote teams find the best time to meet across multiple time zones. Check business hour overlaps between the US and India, US and UK, US and Australia, or any combination of global cities. Find the <strong className="text-zinc-700">best meeting time US and India</strong> or schedule meetings between New York, London, and Tokyo simultaneously. Our <strong className="text-zinc-700">time zone overlap calculator</strong> shows exactly when business hours align across 25+ cities. Use it as a <strong className="text-zinc-700">meeting scheduler for multiple time zones</strong>, a <strong className="text-zinc-700">business hours overlap calculator</strong>, or a <strong className="text-zinc-700">remote team meeting planner</strong> — completely free, no signup required. Whether you're learning <strong className="text-zinc-700">how to schedule a meeting across time zones</strong>, this <strong className="text-zinc-700">meeting overlap planner free</strong> tool gives you the answer in seconds.
+          </p>
         </section>
 
         {/* FAQ */}
