@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { TrendingUp, ArrowRight, Clock, Users, CheckCircle2 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import AdBanner from "@/components/AdBanner";
 
 const FAQ = [
   { q: "What is the current USD to EUR exchange rate?", a: "The USD to EUR exchange rate changes daily based on global markets. GlobalSync AI uses real-time ECB and ExchangeRate-API data to show the latest rate. Open the currency converter to see today's live rate." },
@@ -95,6 +96,9 @@ export default function CurrencyConverterPage() {
           </button>
         </header>
 
+        {/* Ad — below hero */}
+        <AdBanner slot="leaderboard" className="mb-8" />
+
         {/* Popular pairs */}
         <section className="mb-12">
           <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-2">Popular Currency Pairs</h2>
@@ -151,6 +155,9 @@ export default function CurrencyConverterPage() {
             ))}
           </div>
         </section>
+
+        {/* Ad — before internal links */}
+        <AdBanner slot="rectangle" className="mb-8" />
 
         {/* Internal links */}
         <section className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100 p-6">

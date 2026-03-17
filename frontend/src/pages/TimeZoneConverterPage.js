@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { Clock, ArrowRight, Globe, Users, CheckCircle2 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import AdBanner from "@/components/AdBanner";
 
 const FAQ = [
   { q: "What is a time zone converter?", a: "A time zone converter translates a time in one city or region to the corresponding time in another. For example, if it's 9 AM in New York (EST), a converter tells you it's 2 PM in London (GMT) and 7:30 PM in Mumbai (IST)." },
@@ -91,6 +92,9 @@ export default function TimeZoneConverterPage() {
           </button>
         </header>
 
+        {/* Ad — below hero */}
+        <AdBanner slot="leaderboard" className="mb-8" />
+
         {/* Popular conversions */}
         <section className="mb-12">
           <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-2">Popular Time Zone Conversions</h2>
@@ -147,6 +151,9 @@ export default function TimeZoneConverterPage() {
             ))}
           </div>
         </section>
+
+        {/* Ad — before internal links */}
+        <AdBanner slot="rectangle" className="mb-8" />
 
         {/* Internal links */}
         <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-6">

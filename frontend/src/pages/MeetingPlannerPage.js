@@ -1,6 +1,7 @@
 import { useNavigate, Link } from "react-router-dom";
 import { Users, ArrowRight, Clock, TrendingUp, CheckCircle2, Globe } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import AdBanner from "@/components/AdBanner";
 
 const FAQ = [
   { q: "What is the best time for a meeting between the US and India?", a: "The US East Coast (EST, UTC-5) and India (IST, UTC+5:30) have a 10.5-hour difference. The best overlap window is typically 8:00–9:30 AM EST, which is 6:30–8:00 PM IST — just before the end of the Indian workday. Use GlobalSync AI to find the exact overlap for your team's cities." },
@@ -91,6 +92,9 @@ export default function MeetingPlannerPage() {
           </button>
         </header>
 
+        {/* Ad — below hero */}
+        <AdBanner slot="leaderboard" className="mb-8" />
+
         {/* Common overlaps */}
         <section className="mb-12">
           <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-2">Common Team Meeting Scenarios</h2>
@@ -147,6 +151,9 @@ export default function MeetingPlannerPage() {
             ))}
           </div>
         </section>
+
+        {/* Ad — before internal links */}
+        <AdBanner slot="rectangle" className="mb-8" />
 
         {/* Internal links */}
         <section className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl border border-orange-100 p-6">
