@@ -1,6 +1,28 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Globe, ArrowRight, Clock, TrendingUp, Zap, Users, Star } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+
+const HOMEPAGE_SCHEMA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "GlobalSync AI",
+      "url": "https://globalsync-ai.com",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Free AI-powered time zone converter, currency converter, and meeting overlap planner for remote teams and global workers."
+    },
+    {
+      "@type": "Organization",
+      "name": "GlobalSync AI",
+      "url": "https://globalsync-ai.com",
+      "logo": "https://globalsync-ai.com/logo-primary.png"
+    }
+  ]
+};
 
 const HERO_CITIES = [
   { name: "New York",  tz: "America/New_York",  code: "us" },
@@ -102,6 +124,13 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="Free Time Zone & Currency Converter for Remote Teams"
+        description="GlobalSync AI offers free time zone conversion, meeting overlap planning, and live currency rates for 160+ currencies. Built for remote teams, freelancers, and global workers. No signup required."
+        keywords="time zone converter, currency converter, world clock, meeting planner time zones, remote team time zone tool, AI time zone converter, free world clock multiple cities, live exchange rates, meeting overlap finder"
+        canonical="/"
+        structuredData={HOMEPAGE_SCHEMA}
+      />
       {/* ===== DARK HERO ===== */}
       <div className="hero-bg min-h-screen flex flex-col">
         {/* Grid overlay */}
@@ -114,11 +143,19 @@ export default function LandingPage() {
         {/* Navbar */}
         <nav className="relative z-10 max-w-7xl mx-auto w-full px-6 py-5 flex items-center justify-between">
           <div className="flex items-center">
+            {/* Desktop logo */}
             <img
               src="/logo-primary.png"
-              alt="GlobalSync AI"
-              className="h-16 w-auto"
+              alt="GlobalSync AI — Free Time Zone & Currency Converter"
+              className="hidden lg:block h-16 w-auto"
               style={{ filter: "drop-shadow(0 0 12px rgba(51,181,229,0.25))" }}
+            />
+            {/* Mobile: stacked logo */}
+            <img
+              src="/logo-stacked.png"
+              alt="GlobalSync AI"
+              className="block lg:hidden h-14 w-auto"
+              style={{ filter: "drop-shadow(0 0 10px rgba(51,181,229,0.3))" }}
             />
           </div>
           <button
@@ -134,16 +171,18 @@ export default function LandingPage() {
         <div className="relative z-10 flex-1 max-w-7xl mx-auto w-full px-6 py-12 flex flex-col lg:flex-row items-center gap-12">
           {/* Left: Text */}
           <div className="flex-1 fade-in-up">
-            <div className="inline-flex items-center gap-2 glass-dark rounded-full px-4 py-1.5 text-xs text-white/70 font-medium mb-8">
+            <div className="inline-flex items-center gap-2 glass-dark rounded-full px-4 py-1.5 text-xs text-white/70 font-medium mb-6">
               <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
               Live exchange rates · AI-powered · Free
             </div>
-            <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-none mb-6">
-              Sync Beyond<br />
-              <span className="gradient-text">Borders.</span>
+            <p className="gradient-text text-xs font-bold uppercase tracking-[0.2em] mb-3">Sync Beyond Borders</p>
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight mb-3">
+              Free Time Zone<br />
+              <span className="gradient-text">&amp; Currency Converter</span><br />
+              <span className="text-white/65 text-2xl md:text-3xl lg:text-4xl font-semibold">for Remote Teams</span>
             </h1>
-            <p className="text-white/50 text-lg leading-relaxed mb-8 max-w-lg">
-              Ask in plain English. GlobalSync AI handles time zones, meeting overlaps, and live currency rates — all in one place.
+            <p className="text-white/50 text-base leading-relaxed mb-8 max-w-lg">
+              Ask in plain English. GlobalSync AI handles time zone conversion, meeting overlap planning, and live currency rates for 160+ currencies — all in one free tool.
             </p>
 
             {/* Omnibar */}
@@ -271,6 +310,24 @@ export default function LandingPage() {
                   <div key={ex} className="text-xs font-mono bg-violet-100 text-violet-700 rounded-lg px-3 py-2 border border-violet-200">{ex}</div>
                 ))}
               </div>
+            </div>
+          </div>
+
+          {/* SEO Content Block — visible to Google and users */}
+          <div className="mt-16 bg-zinc-50 rounded-3xl border border-zinc-200 p-8">
+            <h2 className="font-heading text-xl font-bold text-zinc-900 mb-4">
+              The Free World Clock &amp; AI Time Zone Converter for Remote Teams
+            </h2>
+            <p className="text-zinc-600 leading-relaxed text-sm mb-4">
+              GlobalSync AI is a free AI-powered tool for remote teams and global workers. Use our <strong>time zone converter</strong> to compare clocks across 25+ cities including New York, London, Tokyo, Dubai, and Mumbai with a live <strong>world clock</strong>. Convert currencies with live exchange rates for 160+ currencies including USD, EUR, GBP, INR, PKR, AED, SAR, and NGN using our <strong>currency converter</strong>.
+            </p>
+            <p className="text-zinc-600 leading-relaxed text-sm mb-5">
+              Use the <strong>meeting planner for time zones</strong> to find the best meeting time across multiple time zones instantly — our AI automatically finds business hour overlaps so your remote team stays in sync. Whether you need a <strong>remote team time zone tool</strong>, a <strong>free world clock for multiple cities</strong>, or an <strong>AI time zone converter</strong> that understands plain English, GlobalSync AI does it all. No signup. No subscription. Free forever.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {["Time Zone Converter", "World Clock", "Currency Converter", "Meeting Planner", "Remote Team Tool", "AI-Powered", "160+ Currencies", "25+ Cities", "Free Forever"].map(tag => (
+                <span key={tag} className="text-xs bg-white border border-zinc-200 text-zinc-500 rounded-full px-3 py-1">{tag}</span>
+              ))}
             </div>
           </div>
 
