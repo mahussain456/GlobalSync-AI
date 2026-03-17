@@ -51,7 +51,7 @@ export default function TimeZoneConverterPage() {
         title="Time Zone Converter — World Clock for Remote Teams"
         description="See live clocks for 25+ world cities. Compare New York, London, Tokyo, Dubai, Mumbai and more. Free time zone converter for remote teams and global workers."
         canonical="/time-zone-converter"
-        keywords="time zone converter, world clock, EST to IST, PST to GMT, convert time zones, meeting time planner, business hour overlap, remote team tools"
+        keywords="time zone converter free, EST to IST converter, PST to IST converter, world clock, New York to London time difference, what time is it in Dubai, what time is it in London, IST time now, AI time zone converter, convert time zones, meeting time planner, business hour overlap, remote team tools"
         structuredData={structuredData}
       />
 
@@ -78,10 +78,10 @@ export default function TimeZoneConverterPage() {
             <Clock className="w-3.5 h-3.5" /> Free Tool · No Signup Required
           </div>
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-zinc-900 leading-tight mb-4">
-            Free World Time Zone Converter
+            Time Zone Converter — Live World Clock
           </h1>
           <p className="text-lg text-zinc-500 max-w-2xl leading-relaxed">
-            Instantly compare local times across 25+ cities. See who's in the office, find meeting overlaps, and convert any time zone — powered by AI. No account needed.
+            Free AI time zone converter for remote teams and global workers. Check what time is it in London, what time is it in Dubai, or find IST time now — instantly across 25+ cities. No account needed.
           </p>
           <button
             onClick={() => navigate("/dashboard?q=show me time zones")}
@@ -118,15 +118,15 @@ export default function TimeZoneConverterPage() {
           </div>
         </section>
 
-        {/* Features */}
+        {/* How to Convert Time Zones */}
         <section className="mb-12 bg-white rounded-2xl border border-zinc-200 p-7">
-          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-6">What You Can Do</h2>
+          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-6">How to Convert Time Zones</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
-              ["Live World Clocks", "See the current local time for up to 5 cities simultaneously, updating every second."],
-              ["Business Hour Overlap", "Instantly find which hours of the day are within 9 AM–5 PM for all your selected cities."],
-              ["AI Meeting Planner", 'Type "Best meeting time for NY, London, Tokyo" and get an instant suggestion.'],
-              ["Specific Time Conversion", 'Ask "What time is 3 PM New York in Dubai?" and get an exact answer.'],
+              ["EST to IST Converter", "Use our EST to IST converter to find the best time to call India from the USA. EST (UTC−5) is 10 hrs 30 min behind IST (UTC+5:30). So 9 AM EST = 7:30 PM IST."],
+              ["PST to IST Converter", "Check PST to IST for US West Coast to India calls. PST (UTC−8) is 13 hrs 30 min behind IST. So 8 AM PST = 9:30 PM IST."],
+              ["New York to London Time", "Find the time difference between New York and London easily. EST is 5 hours behind GMT. During BST summer, the gap narrows to 4 hours."],
+              ["AI Natural Language", 'Ask "What time is 3 PM in New York in India?" or "What time is it in Dubai right now?" and get an instant, accurate answer.'],
             ].map(([title, desc]) => (
               <div key={title} className="flex gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
@@ -137,6 +137,14 @@ export default function TimeZoneConverterPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* SEO Static Text Block */}
+        <section className="mb-12 bg-zinc-50 rounded-2xl border border-zinc-200 p-7">
+          <h2 className="font-heading text-xl font-bold text-zinc-800 mb-3">Time Zone Converter — Supported Cities &amp; Common Conversions</h2>
+          <p className="text-sm text-zinc-500 leading-relaxed">
+            Convert time zones between New York (EST/EDT), London (GMT/BST), Tokyo (JST), Dubai (GST), Mumbai (IST), Sydney (AEST), Los Angeles (PST/PDT), Chicago (CST/CDT), Singapore (SGT), and 20+ more cities worldwide. Use our <strong className="text-zinc-700">EST to IST converter</strong> to find the best time to call India from the USA. Check <strong className="text-zinc-700">PST to IST</strong> for US West Coast to India calls. Find the <strong className="text-zinc-700">time difference between New York and London</strong>, or US and Australia. Our <strong className="text-zinc-700">AI time zone converter</strong> lets you ask natural questions like "What time is 3 PM in New York in India?" and get instant answers. Whether you need to know <strong className="text-zinc-700">what time is it in Dubai</strong>, <strong className="text-zinc-700">what time is it in London</strong> right now, or check <strong className="text-zinc-700">IST time now</strong> — GlobalSync AI is the fastest, free time zone converter free of charge, with no sign-up required.
+          </p>
         </section>
 
         {/* FAQ */}
