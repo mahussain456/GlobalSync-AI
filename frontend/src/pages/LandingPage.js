@@ -20,30 +20,48 @@ const EXAMPLE_QUERIES = [
 const STATS = ["25+ Global Cities", "30+ Currencies", "AI-Powered", "Free Forever", "Live ECB Rates", "Real-Time Clocks"];
 
 function LiveClock({ city }) {
-  const [time, setTime] = useState({ t: "", h: 0 });
+  const [td, setTd] = useState({ hhmm: "", ss: "", ampm: "", h: 0, date: "" });
   useEffect(() => {
     const update = () => {
-      const t = new Date().toLocaleTimeString("en-US", { timeZone: city.tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
-      const h = parseInt(new Intl.DateTimeFormat("en-US", { timeZone: city.tz, hour: "numeric", hour12: false }).format(new Date())) % 24;
-      setTime({ t, h });
+      const now = new Date();
+      const full = now.toLocaleTimeString("en-US", { timeZone: city.tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
+      // "08:05:42 PM" → split into parts
+      const match = full.match(/^(\d{2}:\d{2}):(\d{2})\s+(AM|PM)$/);
+      const hhmm = match ? match[1] : "--:--";
+      const ss   = match ? match[2] : "00";
+      const ampm = match ? match[3] : "";
+      const h = parseInt(new Intl.DateTimeFormat("en-US", { timeZone: city.tz, hour: "numeric", hour12: false }).format(now)) % 24;
+      const date = now.toLocaleDateString("en-US", { timeZone: city.tz, weekday: "short", month: "short", day: "numeric" });
+      setTd({ hhmm, ss, ampm, h, date });
     };
     update();
     const timer = setInterval(update, 1000);
     return () => clearInterval(timer);
   }, [city.tz]);
-  const isBiz = time.h >= 9 && time.h < 17;
+  const isBiz = td.h >= 9 && td.h < 17;
   return (
-    <div className="clock-card p-4">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <span className="text-lg">{city.flag}</span>
-          <span className="text-white/70 text-xs font-medium">{city.name}</span>
+    <div className="clock-card p-4 flex flex-col gap-2">
+      {/* Header row */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="text-2xl leading-none flex-shrink-0">{city.flag}</span>
+          <span className="text-white/90 text-sm font-semibold truncate">{city.name}</span>
         </div>
-        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${isBiz ? "bg-emerald-500/20 text-emerald-400" : "bg-white/10 text-white/30"}`}>
-          {isBiz ? "Active" : "Offline"}
-        </span>
+        <div className={`flex items-center gap-1.5 flex-shrink-0 ml-2 ${isBiz ? "text-emerald-400" : "text-white/35"}`}>
+          <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isBiz ? "bg-emerald-400 shadow-[0_0_6px_#34d399]" : "bg-white/20"}`} />
+          <span className="text-xs font-medium">{isBiz ? "Active" : "Offline"}</span>
+        </div>
       </div>
-      <div className="font-heading text-2xl font-bold text-white tabular-nums tracking-tight">{time.t}</div>
+      {/* Time row */}
+      <div className="flex items-end gap-2">
+        <span className="font-heading text-3xl font-bold text-white tabular-nums tracking-tight leading-none">{td.hhmm}</span>
+        <div className="flex flex-col items-start mb-0.5 gap-0">
+          <span className="text-white/40 text-xs tabular-nums leading-tight font-mono">:{td.ss}</span>
+          <span className="text-white/55 text-xs font-semibold leading-tight">{td.ampm}</span>
+        </div>
+      </div>
+      {/* Date row */}
+      <div className="text-white/30 text-xs">{td.date}</div>
     </div>
   );
 }
