@@ -52,7 +52,11 @@ export default function Dashboard() {
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div className="flex items-center gap-2">
-                <img src="/logo.png" alt="GlobalSync AI" className="h-11 w-auto" />
+                <img
+                  src="/logo.png"
+                  alt="GlobalSync AI"
+                  className="h-14 w-auto"
+                />
               </div>
             </div>
 

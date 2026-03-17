@@ -28,7 +28,7 @@ export default function AboutPage() {
 
       <nav className="max-w-4xl mx-auto px-6 pt-6 pb-2 flex items-center justify-between">
         <Link to="/" className="flex items-center">
-          <img src="/logo.png" alt="GlobalSync AI" className="h-10 w-auto" />
+          <img src="/logo.png" alt="GlobalSync AI" className="h-12 w-auto" />
         </Link>
         <ol className="flex items-center gap-2 text-sm text-zinc-400" itemScope itemType="https://schema.org/BreadcrumbList">
           <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
