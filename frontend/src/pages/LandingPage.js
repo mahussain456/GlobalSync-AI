@@ -115,10 +115,10 @@ export default function LandingPage() {
         <nav className="relative z-10 max-w-7xl mx-auto w-full px-6 py-5 flex items-center justify-between">
           <div className="flex items-center">
             <img
-              src="/logo.png"
+              src="/logo-primary.png"
               alt="GlobalSync AI"
-              className="h-24 w-auto"
-              style={{ filter: "drop-shadow(0 0 14px rgba(51,181,229,0.35)) brightness(1.05)" }}
+              className="h-16 w-auto"
+              style={{ filter: "drop-shadow(0 0 12px rgba(51,181,229,0.25))" }}
             />
           </div>
           <button
@@ -139,8 +139,8 @@ export default function LandingPage() {
               Live exchange rates · AI-powered · Free
             </div>
             <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-none mb-6">
-              Work Global.<br />
-              <span className="gradient-text">Sync Smart.</span>
+              Sync Beyond<br />
+              <span className="gradient-text">Borders.</span>
             </h1>
             <p className="text-white/50 text-lg leading-relaxed mb-8 max-w-lg">
               Ask in plain English. GlobalSync AI handles time zones, meeting overlaps, and live currency rates — all in one place.
@@ -332,10 +332,9 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center">
                 <img
-                src="/logo.png"
+                src="/logo-primary.png"
                 alt="GlobalSync AI"
-                className="h-10 w-auto opacity-60"
-                style={{ filter: "brightness(1.2)" }}
+                className="h-8 w-auto opacity-70"
               />
               </div>
               <p className="text-white/20 text-xs">Free · Open · AI-Powered · Live Rates</p>
