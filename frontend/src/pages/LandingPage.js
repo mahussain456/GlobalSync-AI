@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Globe, ArrowRight, Clock, TrendingUp, Zap, Users, Star } from "lucide-react";
+import { Globe, ArrowRight, Clock, TrendingUp, Zap, Users, Star, BookOpen } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import { BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
 
 const HOMEPAGE_SCHEMA = {
   "@context": "https://schema.org",
@@ -357,6 +358,85 @@ export default function LandingPage() {
                 <ArrowRight className="w-5 h-5" />
               </button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== FROM THE BLOG ===== */}
+      <section className="bg-white py-20 px-6 border-t border-zinc-100">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 rounded-full px-3 py-1 text-xs font-semibold mb-3 border border-blue-100">
+                <BookOpen className="w-3.5 h-3.5" /> Resources &amp; Guides
+              </div>
+              <h2 className="font-heading text-3xl font-bold text-zinc-900">From the Blog</h2>
+              <p className="text-zinc-500 text-sm mt-1">Practical tips for remote teams, freelancers &amp; digital nomads.</p>
+            </div>
+            <Link
+              to="/blog"
+              className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors shrink-0"
+              data-testid="view-all-posts-link"
+            >
+              View all {BLOG_POSTS.length} articles <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {/* 3-column card grid — shows first 3 posts */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {BLOG_POSTS.slice(0, 3).map((post) => {
+              const style = CATEGORY_STYLES[post.categoryColor];
+              return (
+                <article
+                  key={post.slug}
+                  className={`bg-[#FAFAFA] rounded-2xl border border-zinc-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all group ${style.hover}`}
+                  data-testid={`homepage-blog-card-${post.slug}`}
+                >
+                  <div className={`h-1 ${style.accent}`} />
+                  <div className="p-5 flex flex-col h-full">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${style.badge}`}>
+                        {post.category}
+                      </span>
+                      <span className="text-xs text-zinc-400 flex items-center gap-1">
+                        <Clock className="w-3 h-3" /> {post.readTime}
+                      </span>
+                    </div>
+                    <h3 className="font-heading font-bold text-zinc-900 leading-snug mb-2 group-hover:text-zinc-700 transition-colors line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-sm text-zinc-500 leading-relaxed mb-4 flex-1 line-clamp-3">
+                      {post.excerpt}
+                    </p>
+                    <Link
+                      to={`/blog/${post.slug}`}
+                      className={`inline-flex items-center gap-1.5 text-sm font-semibold transition-colors ${
+                        post.categoryColor === "blue"    ? "text-blue-600 hover:text-blue-700" :
+                        post.categoryColor === "emerald" ? "text-emerald-600 hover:text-emerald-700" :
+                        post.categoryColor === "orange"  ? "text-orange-500 hover:text-orange-600" :
+                        "text-violet-600 hover:text-violet-700"
+                      }`}
+                      data-testid={`homepage-read-more-${post.slug}`}
+                    >
+                      Read More <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          {/* See all CTA */}
+          <div className="mt-8 text-center">
+            <Link
+              to="/blog"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:border-zinc-300 text-sm font-medium transition-all"
+              data-testid="blog-see-all-btn"
+            >
+              <BookOpen className="w-4 h-4" />
+              See all {BLOG_POSTS.length} articles in the blog
+            </Link>
           </div>
         </div>
       </section>
