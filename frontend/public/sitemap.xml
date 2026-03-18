@@ -58,4 +58,40 @@
     <priority>0.3</priority>
   </url>
 
+  <url>
+    <loc>https://globalsync-ai.com/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://globalsync-ai.com/blog/best-free-time-zone-converter-remote-teams-2026</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://globalsync-ai.com/blog/schedule-meetings-across-time-zones-2026</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://globalsync-ai.com/blog/usd-to-inr-freelancers-live-currency-converter-2026</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://globalsync-ai.com/blog/digital-nomad-toolkit-2026</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://globalsync-ai.com/blog/best-time-to-work-with-us-clients-india-pakistan-asia</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

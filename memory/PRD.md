@@ -182,7 +182,9 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 - [2026-03-05] SEO implementation: robots.txt, sitemap.xml, SEOHead component, HelmetProvider, 3 SEO landing pages
 - [2026-03-05] Admin dashboard at /admin: view leads, export CSV
 - [2026-03-05] Share Result feature: Copy + Share buttons on currency result, Copy + Share on meeting overlap result, Share on time conversion result
-- [2026-03-17] Searchable currency dropdown: replaced native <select> with custom CurrencySelect component (search by code/name, click-outside-to-close)
+- [2026-03-18] Blog section: /blog listing page (5 posts, color-coded by category) + /blog/:slug individual post template with full content, SEO, CTA, related posts, and 2 AdBanner placements per post
+- [2026-03-18] Blog link added to: LandingPage nav + footer, all 3 SEO pages' nav headers
+- [2026-03-18] sitemap.xml updated with /blog and all 5 post URLs (7 new entries)
 - [2026-03-17] Google AdSense publisher script (ca-pub-3241670070120503) added to index.html <head>
 - [2026-03-17] AdBanner component created; 2 ad slots placed on all 3 SEO landing pages (after H1, before footer links)
 

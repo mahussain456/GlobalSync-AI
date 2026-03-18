@@ -158,13 +158,22 @@ export default function LandingPage() {
               style={{ filter: "drop-shadow(0 0 10px rgba(51,181,229,0.3))" }}
             />
           </div>
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="flex items-center gap-2 px-4 py-2 rounded-full glass-dark text-white/80 hover:text-white text-sm font-medium transition-all hover:bg-white/10"
-            data-testid="open-dashboard-btn"
-          >
-            Open Dashboard <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          <div className="flex items-center gap-3">
+            <Link
+              to="/blog"
+              className="text-white/60 hover:text-white text-sm font-medium transition-colors hidden md:block"
+              data-testid="nav-blog-link"
+            >
+              Blog
+            </Link>
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="flex items-center gap-2 px-4 py-2 rounded-full glass-dark text-white/80 hover:text-white text-sm font-medium transition-all hover:bg-white/10"
+              data-testid="open-dashboard-btn"
+            >
+              Open Dashboard <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </nav>
 
         {/* Hero content */}
@@ -401,6 +410,7 @@ export default function LandingPage() {
             </div>
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 pt-2 border-t border-white/5">
               <Link to="/about" className="text-white/25 hover:text-white/50 text-xs transition-colors">About</Link>
+              <Link to="/blog" className="text-white/25 hover:text-white/50 text-xs transition-colors">Blog</Link>
               <Link to="/contact" className="text-white/25 hover:text-white/50 text-xs transition-colors">Contact</Link>
               <Link to="/privacy-policy" className="text-white/25 hover:text-white/50 text-xs transition-colors">Privacy Policy</Link>
               <Link to="/terms-of-service" className="text-white/25 hover:text-white/50 text-xs transition-colors">Terms of Service</Link>

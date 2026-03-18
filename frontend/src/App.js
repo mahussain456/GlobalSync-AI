@@ -11,6 +11,8 @@ import AboutPage from "@/pages/AboutPage";
 import ContactPage from "@/pages/ContactPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import TermsOfServicePage from "@/pages/TermsOfServicePage";
+import BlogPage from "@/pages/BlogPage";
+import BlogPostPage from "@/pages/BlogPostPage";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/time-zone-converter" element={<TimeZoneConverterPage />} />
           <Route path="/currency-converter" element={<CurrencyConverterPage />} />
           <Route path="/meeting-planner" element={<MeetingPlannerPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />

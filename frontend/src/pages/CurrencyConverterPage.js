@@ -61,7 +61,10 @@ export default function CurrencyConverterPage() {
 
       {/* Breadcrumb */}
       <nav className="max-w-4xl mx-auto px-6 pt-6 pb-2 flex items-center justify-between">
-        <Link to="/"><img src="/logo-dark.png" alt="GlobalSync AI" className="h-10 w-auto rounded-lg" /></Link>
+        <div className="flex items-center gap-5">
+          <Link to="/"><img src="/logo-dark.png" alt="GlobalSync AI" className="h-10 w-auto rounded-lg" /></Link>
+          <Link to="/blog" className="text-sm text-zinc-400 hover:text-teal-600 transition-colors hidden sm:block" data-testid="nav-blog-link">Blog</Link>
+        </div>
         <ol className="flex items-center gap-2 text-sm text-zinc-400" itemScope itemType="https://schema.org/BreadcrumbList">
           <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
             <Link to="/" className="hover:text-teal-600 transition-colors" itemProp="item"><span itemProp="name">Home</span></Link>
