@@ -6,6 +6,9 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 import os, logging, pytz, requests, uuid, json, re, asyncio, resend
+import httpx
+import xml.etree.ElementTree as ET
+from difflib import SequenceMatcher
 from datetime import datetime, timezone, timedelta, date
 from pathlib import Path
 from pydantic import BaseModel, Field
@@ -514,6 +517,245 @@ async def submit_contact(form: ContactForm, request: Request):
     except Exception as e:
         logger.error(f"Contact email failed: {e}")
         raise HTTPException(status_code=500, detail="Failed to send message. Please try again.")
+
+# ============= News Feed System =============
+
+RSS_FEEDS = {
+    "ai-news": [
+        {"url": "https://techcrunch.com/category/artificial-intelligence/feed/", "source": "TechCrunch"},
+        {"url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml", "source": "The Verge"},
+    ],
+    "tips": [
+        {"url": "https://bensbites.beehiiv.com/feed", "source": "Ben's Bites"},
+        {"url": "https://zapier.com/blog/feeds/latest/", "source": "Zapier"},
+    ],
+}
+
+# In-memory cache (per feed type)
+news_cache: Dict[str, Any] = {
+    "ai-news": {"articles": [], "last_updated": None, "updating": False},
+    "tips":    {"articles": [], "last_updated": None, "updating": False},
+}
+
+def _title_similarity(a: str, b: str) -> float:
+    return SequenceMatcher(None, a.lower().strip(), b.lower().strip()).ratio()
+
+def _parse_rss_date(date_str: str) -> Optional[datetime]:
+    if not date_str:
+        return None
+    formats = [
+        "%a, %d %b %Y %H:%M:%S %z",
+        "%a, %d %b %Y %H:%M:%S %Z",
+        "%a, %d %b %Y %H:%M:%S GMT",
+        "%Y-%m-%dT%H:%M:%S%z",
+        "%Y-%m-%dT%H:%M:%SZ",
+        "%Y-%m-%dT%H:%M:%S.%f%z",
+    ]
+    for fmt in formats:
+        try:
+            dt = datetime.strptime(date_str.strip(), fmt)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt
+        except Exception:
+            continue
+    return None
+
+async def _fetch_rss(url: str, source_name: str) -> List[Dict]:
+    """Fetch and parse a single RSS/Atom feed. Returns articles from last 48h."""
+    try:
+        async with httpx.AsyncClient(timeout=15, follow_redirects=True) as client:
+            resp = await client.get(url, headers={"User-Agent": "GlobalSyncAI/1.0 (+https://globalsync-ai.com)"})
+            resp.raise_for_status()
+            content = resp.text
+
+        root = ET.fromstring(content)
+        ATOM = "http://www.w3.org/2005/Atom"
+        # Detect Atom vs RSS
+        items = root.findall(f".//{{{ATOM}}}entry") or root.findall(".//item")
+        cutoff = datetime.now(timezone.utc) - timedelta(hours=48)
+        articles = []
+
+        for item in items:
+            def g(tags):
+                for t in tags:
+                    el = item.find(t)
+                    if el is not None and el.text:
+                        return el.text.strip()
+                return ""
+
+            title = g([f"{{{ATOM}}}title", "title"])
+            link  = g([f"{{{ATOM}}}id", "link", "guid"])
+            # Atom <link href="...">
+            if not link:
+                le = item.find(f"{{{ATOM}}}link")
+                if le is not None:
+                    link = le.get("href", "")
+            desc  = g([f"{{{ATOM}}}summary", f"{{{ATOM}}}content", "description", "summary"])
+            pub   = g([f"{{{ATOM}}}published", f"{{{ATOM}}}updated", "pubDate", "published"])
+
+            if not title or not link:
+                continue
+
+            parsed_dt = _parse_rss_date(pub)
+            if parsed_dt and parsed_dt < cutoff:
+                continue  # skip older than 48h
+
+            clean_desc = re.sub(r"<[^>]+>", " ", desc).strip()[:600]
+            clean_desc = re.sub(r"\s+", " ", clean_desc)
+
+            articles.append({
+                "title": title,
+                "link": link,
+                "description": clean_desc,
+                "source": source_name,
+                "pubDate": pub,
+                "pubDateParsed": parsed_dt.isoformat() if parsed_dt else datetime.now(timezone.utc).isoformat(),
+            })
+
+        return articles[:12]
+    except Exception as e:
+        logger.error(f"RSS fetch error [{source_name}] {url}: {e}")
+        return []
+
+async def _summarize(title: str, description: str) -> str:
+    """Call Claude Haiku to produce a 2-sentence remote-worker-focused summary."""
+    if not EMERGENT_LLM_KEY:
+        return (description[:220] + "…") if len(description) > 220 else description
+
+    desc_text = description.strip() if description and len(description.strip()) > 30 else ""
+    context_block = f"Description: {desc_text[:400]}" if desc_text else "No description available — summarize from the title only."
+
+    system = (
+        "You are an editor for GlobalSync AI — a tool used by remote workers, "
+        "freelancers, and global teams. Produce only the final output; no meta-commentary, "
+        "no preamble, no markdown formatting."
+    )
+    user = (
+        "Write a 2-sentence summary of this article. "
+        "Focus on what it means for remote workers, freelancers, or people working across time zones. "
+        "Be specific and practical. Return ONLY the 2 sentences — no intro, no markdown, no headers.\n"
+        f"Title: {title}\n"
+        f"{context_block}"
+    )
+    try:
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=str(uuid.uuid4()),
+            system_message=system,
+        ).with_model("anthropic", "claude-haiku-4-5-20251001")
+        response = await chat.send_message(UserMessage(text=user))
+        # Strip any markdown formatting that slips through
+        clean = re.sub(r'\*\*([^*]+)\*\*', r'\1', response)
+        clean = re.sub(r'\*([^*]+)\*', r'\1', clean)
+        clean = re.sub(r'^#+\s*', '', clean, flags=re.MULTILINE)
+        clean = re.sub(r'\s+', ' ', clean).strip()
+        return clean
+    except Exception as e:
+        logger.error(f"Summarize error: {e}")
+        return (description[:220] + "…") if len(description) > 220 else description
+
+async def _refresh_feed_type(feed_type: str) -> List[Dict]:
+    """Fetch all feeds for a type, deduplicate, sort, summarize. Returns up to 6 articles."""
+    feeds = RSS_FEEDS.get(feed_type, [])
+
+    # Fetch all feeds concurrently
+    tasks = [_fetch_rss(f["url"], f["source"]) for f in feeds]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    all_articles: List[Dict] = []
+    for r in results:
+        if isinstance(r, list):
+            all_articles.extend(r)
+
+    # Sort newest first
+    def _sort_key(a):
+        try:
+            return datetime.fromisoformat(a["pubDateParsed"])
+        except Exception:
+            return datetime.min.replace(tzinfo=timezone.utc)
+    all_articles.sort(key=_sort_key, reverse=True)
+
+    # Dedup: max 3 per source, skip titles ≥80% similar to already-kept ones
+    kept_titles: List[str] = []
+    source_counts: Dict[str, int] = {}
+    deduped: List[Dict] = []
+
+    for art in all_articles:
+        if any(_title_similarity(art["title"], t) >= 0.8 for t in kept_titles):
+            continue
+        src = art["source"]
+        if source_counts.get(src, 0) >= 3:
+            continue
+        kept_titles.append(art["title"])
+        source_counts[src] = source_counts.get(src, 0) + 1
+        deduped.append(art)
+        if len(deduped) >= 6:
+            break
+
+    # Summarize concurrently with a semaphore (max 3 parallel Claude calls)
+    sem = asyncio.Semaphore(3)
+    async def _summarize_guarded(art: Dict) -> Dict:
+        async with sem:
+            summary = await _summarize(art["title"], art.get("description", ""))
+            return {**art, "aiSummary": summary, "feedType": feed_type}
+
+    summarized_raw = await asyncio.gather(
+        *[_summarize_guarded(a) for a in deduped],
+        return_exceptions=True,
+    )
+    final: List[Dict] = []
+    for i, item in enumerate(summarized_raw):
+        if isinstance(item, Exception):
+            final.append({**deduped[i], "aiSummary": deduped[i].get("description", "")[:220], "feedType": feed_type})
+        else:
+            final.append(item)
+    return final
+
+async def _refresh_all_news():
+    """Refresh both feed types. Called on startup and every 2 hours."""
+    logger.info("News feed refresh started…")
+    for feed_type in ["ai-news", "tips"]:
+        if news_cache[feed_type]["updating"]:
+            continue
+        news_cache[feed_type]["updating"] = True
+        try:
+            articles = await _refresh_feed_type(feed_type)
+            if articles:
+                news_cache[feed_type]["articles"] = articles
+            news_cache[feed_type]["last_updated"] = datetime.now(timezone.utc).isoformat()
+        except Exception as e:
+            logger.error(f"News refresh error [{feed_type}]: {e}")
+        finally:
+            news_cache[feed_type]["updating"] = False
+    logger.info("News feed refresh complete.")
+
+async def _news_background_loop():
+    """Run refresh on startup, then every 2 hours."""
+    await _refresh_all_news()
+    while True:
+        await asyncio.sleep(2 * 60 * 60)
+        await _refresh_all_news()
+
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(_news_background_loop())
+
+@api_router.get("/news/feed")
+async def get_news_feed():
+    """Return in-memory cached AI news and tips articles."""
+    return {
+        "ai_news": {
+            "articles": news_cache["ai-news"]["articles"],
+            "last_updated": news_cache["ai-news"]["last_updated"],
+            "updating": news_cache["ai-news"]["updating"],
+        },
+        "tips": {
+            "articles": news_cache["tips"]["articles"],
+            "last_updated": news_cache["tips"]["last_updated"],
+            "updating": news_cache["tips"]["updating"],
+        },
+        "server_time": datetime.now(timezone.utc).isoformat(),
+    }
 
 app.include_router(api_router)
 app.add_middleware(

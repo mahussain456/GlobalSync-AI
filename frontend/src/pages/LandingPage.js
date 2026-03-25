@@ -1,8 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Globe, ArrowRight, Clock, TrendingUp, Zap, Users, Star, BookOpen } from "lucide-react";
+import { Globe, ArrowRight, Clock, TrendingUp, Zap, Users, Star, BookOpen, ExternalLink, Newspaper, Lightbulb } from "lucide-react";
+import axios from "axios";
 import SEOHead from "@/components/SEOHead";
 import { BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
+
+const API = process.env.REACT_APP_BACKEND_URL;
+
+function timeAgo(iso) {
+  if (!iso) return "";
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1)  return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24)  return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
+}
 
 const HOMEPAGE_SCHEMA = {
   "@context": "https://schema.org",
@@ -114,6 +128,85 @@ function LiveClock({ city }) {
   );
 }
 
+// ─── Today's Feed Widget ─────────────────────────────────────────────────────
+function FeedMiniCard({ article, feedType }) {
+  const isAI = feedType === "ai-news";
+  const tagStyle = isAI
+    ? { background: "#7F77DD", color: "#fff" }
+    : { background: "#EF9F27", color: "#1a1200" };
+  return (
+    <div className="bg-white rounded-xl border border-zinc-100 p-4 hover:shadow-sm hover:border-zinc-200 transition-all">
+      <div className="flex items-center gap-2 mb-2">
+        <span className="text-xs font-semibold px-2 py-0.5 rounded-full" style={tagStyle}>
+          {isAI ? "AI News" : "Tips"}
+        </span>
+        <span className="text-xs text-zinc-400">{article.source}</span>
+        <span className="text-xs text-zinc-300">· {timeAgo(article.pubDateParsed)}</span>
+      </div>
+      <h3 className="font-semibold text-zinc-900 text-sm leading-snug mb-2 line-clamp-2">
+        <a href={article.link} target="_blank" rel="noopener noreferrer"
+           className="hover:underline underline-offset-2 inline-flex items-start gap-1">
+          {article.title}
+          <ExternalLink className="w-3 h-3 text-zinc-300 shrink-0 mt-0.5" />
+        </a>
+      </h3>
+      {article.aiSummary && (
+        <p className="text-xs text-zinc-500 leading-relaxed line-clamp-2">{article.aiSummary}</p>
+      )}
+    </div>
+  );
+}
+
+function TodaysFeedWidget() {
+  const [feed, setFeed] = useState(null);
+
+  useEffect(() => {
+    axios.get(`${API}/api/news/feed`)
+      .then(r => setFeed(r.data))
+      .catch(() => {});
+  }, []);
+
+  const aiCards   = feed?.ai_news?.articles?.slice(0, 2)  || [];
+  const tipsCards = feed?.tips?.articles?.slice(0, 2)     || [];
+  const cards     = [...aiCards.map(a => ({ ...a, feedType: "ai-news" })),
+                     ...tipsCards.map(a => ({ ...a, feedType: "tips"  }))];
+
+  if (!feed && cards.length === 0) return null;  // hide widget while first load
+
+  return (
+    <section className="bg-[#FAFAFA] py-16 px-6 border-t border-zinc-100">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-7">
+          <div>
+            <div className="inline-flex items-center gap-2 bg-zinc-900 text-white rounded-full px-3 py-1 text-xs font-semibold mb-3">
+              <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+              Live
+            </div>
+            <h2 className="font-heading text-3xl font-bold text-zinc-900">Today's Feed</h2>
+            <p className="text-zinc-500 text-sm mt-1">AI news &amp; remote work tips — summarized for global teams.</p>
+          </div>
+          <Link to="/news" className="flex items-center gap-1.5 text-sm font-semibold text-zinc-600 hover:text-zinc-900 transition-colors shrink-0">
+            See full feed <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {cards.length > 0
+            ? cards.map((art, i) => <FeedMiniCard key={i} article={art} feedType={art.feedType} />)
+            : Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="bg-white rounded-xl border border-zinc-100 p-4 animate-pulse">
+                  <div className="h-4 bg-zinc-100 rounded w-1/2 mb-3" />
+                  <div className="h-3 bg-zinc-100 rounded w-full mb-1" />
+                  <div className="h-3 bg-zinc-100 rounded w-4/5" />
+                </div>
+              ))
+          }
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function LandingPage() {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
@@ -160,6 +253,13 @@ export default function LandingPage() {
             />
           </div>
           <div className="flex items-center gap-3">
+            <Link
+              to="/news"
+              className="text-white/60 hover:text-white text-sm font-medium transition-colors hidden md:block"
+              data-testid="nav-daily-feed-link"
+            >
+              Daily Feed
+            </Link>
             <Link
               to="/blog"
               className="text-white/60 hover:text-white text-sm font-medium transition-colors hidden md:block"
@@ -362,6 +462,9 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ===== TODAY'S FEED ===== */}
+      <TodaysFeedWidget />
+
       {/* ===== FROM THE BLOG ===== */}
       <section className="bg-white py-20 px-6 border-t border-zinc-100">
         <div className="max-w-6xl mx-auto">
@@ -490,7 +593,8 @@ export default function LandingPage() {
             </div>
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 pt-2 border-t border-white/5">
               <Link to="/about" className="text-white/25 hover:text-white/50 text-xs transition-colors">About</Link>
-              <Link to="/blog" className="text-white/25 hover:text-white/50 text-xs transition-colors">Blog</Link>
+              <Link to="/blog"  className="text-white/25 hover:text-white/50 text-xs transition-colors">Blog</Link>
+              <Link to="/news"  className="text-white/25 hover:text-white/50 text-xs transition-colors">Daily Feed</Link>
               <Link to="/contact" className="text-white/25 hover:text-white/50 text-xs transition-colors">Contact</Link>
               <Link to="/privacy-policy" className="text-white/25 hover:text-white/50 text-xs transition-colors">Privacy Policy</Link>
               <Link to="/terms-of-service" className="text-white/25 hover:text-white/50 text-xs transition-colors">Terms of Service</Link>

@@ -59,6 +59,12 @@
   </url>
 
   <url>
+    <loc>https://globalsync-ai.com/news</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://globalsync-ai.com/blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
