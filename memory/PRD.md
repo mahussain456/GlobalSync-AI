@@ -190,6 +190,11 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 - [2026-03-18] sitemap.xml updated with /blog and all 5 post URLs (7 new entries)
 - [2026-03-17] Google AdSense publisher script (ca-pub-3241670070120503) added to index.html <head>
 - [2026-03-17] AdBanner component created; 2 ad slots placed on all 3 SEO landing pages (after H1, before footer links)
+- [2026-03-28] **pSEO Phase 2 COMPLETE**: 10 city-pair pages (/time/:pair) + 10 currency-pair pages (/currency/:pair) routed and live; data file fully populated (20 pages total); index sections added to /time-zone-converter and /currency-converter
+- [2026-03-28] **pSEO Phase 1 COMPLETE**: Homepage SEOHead updated with transactional keywords; FAQPage structured data added to HOMEPAGE_SCHEMA
+- [2026-03-28] **pSEO Phase 3 COMPLETE**: 3 new pillar blog posts added (remote work time zones, freelancer invoice currency, work-from-anywhere guide) — blog now has 8 total posts
+- [2026-03-28] **pSEO Phase 4 COMPLETE**: 6-item FAQ accordion section added to homepage before footer (expand/collapse, targets question-based searches)
+- [2026-03-28] sitemap.xml expanded to 38 total URLs (added 20 pSEO pages + 3 new blog posts)
 
 ---
 
@@ -199,16 +204,26 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 
 - [2026-03-16] SEO audit implementation: About, Contact, Privacy Policy, Terms of Service pages; footer legal links; optimised title/meta tags; WebApplication schema; sitemap expanded to 9 URLs
 
+### P0 (Completed)
+- [x] Full pSEO implementation: 20 dynamic pages (10 city pairs + 10 currency pairs) [2026-03-28]
+- [x] Homepage meta/schema transactional keyword upgrade [2026-03-28]
+- [x] 3 pillar blog posts added (8 total) [2026-03-28]
+- [x] Homepage FAQ accordion section [2026-03-28]
+
 ### P1 (High Value, Next Sprint)
-- [x] Currency search box in dropdown — searchable custom dropdown with real-time filter [2026-03-17]
 - [ ] Copy result to clipboard button on converter outputs
 - [ ] Share query as URL (e.g. /dashboard?q=Convert+100+USD+to+EUR)
 
 ### P2 (Nice to Have)
+- [ ] Expand pSEO to 50+ pages (add more city/currency pairs to programmaticData.js)
 - [ ] Dark mode toggle on SEO landing pages
 - [ ] Export history as CSV
-- [ ] Google AdSense integration (user needs to sign up and provide Publisher ID)
+- [ ] Google AdSense slot ID activation (pending site approval — update AdBanner.js)
 - [ ] Custom logo (user expressed interest, pending logo file)
 - [ ] PWA support (offline first load)
 - [ ] More city names in fuzzy matching
 - [ ] Admin page authentication (currently public — not critical for low-traffic MVP)
+
+### P3 (Future)
+- [ ] Directory submissions (Product Hunt, AlternativeTo, Toolify.ai)
+- [ ] Google Search Console submission with new sitemap (38 URLs)
