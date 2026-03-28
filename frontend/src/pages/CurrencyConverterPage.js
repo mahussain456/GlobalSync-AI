@@ -4,6 +4,7 @@ import SEOHead from "@/components/SEOHead";
 import AdBanner from "@/components/AdBanner";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import { CURRENCIES_META, CURRENCY_PAIRS, ALL_CURRENCY_PAIR_SLUGS } from "@/data/programmaticData";
 
 const FAQ = [
   { q: "What is the current USD to EUR exchange rate?", a: "The USD to EUR exchange rate changes daily based on global markets. GlobalSync AI uses real-time ECB and ExchangeRate-API data to show the latest rate. Open the currency converter to see today's live rate." },
@@ -107,6 +108,35 @@ export default function CurrencyConverterPage() {
                 </div>
               </button>
             ))}
+          </div>
+        </section>
+
+        {/* pSEO index — Currency pair deep-dive pages */}
+        <section className="mb-12">
+          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-2">Currency Pair Converter Pages</h2>
+          <p className="text-zinc-500 mb-5 text-sm">Dedicated live-rate pages for the most-searched currency pairs — with real-time rates, quick conversion tables, and remote worker tips.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {ALL_CURRENCY_PAIR_SLUGS.map(slug => {
+              const pair = CURRENCY_PAIRS[slug];
+              const from = CURRENCIES_META[pair.from];
+              const to   = CURRENCIES_META[pair.to];
+              return (
+                <Link
+                  key={slug}
+                  to={`/currency/${slug}`}
+                  className="bg-white rounded-xl border border-zinc-200 p-4 hover:border-emerald-300 hover:shadow-sm transition-all group flex items-center justify-between"
+                  data-testid={`currency-pair-link-${slug}`}
+                >
+                  <div>
+                    <div className="font-semibold text-zinc-800 text-sm group-hover:text-emerald-600 transition-colors">
+                      {from.code} to {to.code} — Live Rate
+                    </div>
+                    <div className="text-xs text-zinc-400 mt-0.5">{from.name} to {to.name}</div>
+                  </div>
+                  <ArrowRight className="w-3.5 h-3.5 text-zinc-300 group-hover:text-emerald-500 transition-colors flex-shrink-0" />
+                </Link>
+              );
+            })}
           </div>
         </section>
 

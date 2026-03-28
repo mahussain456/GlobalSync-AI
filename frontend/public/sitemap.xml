@@ -100,4 +100,126 @@
     <priority>0.7</priority>
   </url>
 
+
+  <!-- City-to-City Time Zone Converter Pages -->
+  <url>
+    <loc>https://globalsync-ai.com/time/new-york-to-london</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/time/london-to-tokyo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/time/dubai-to-mumbai</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/time/san-francisco-to-new-york</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/time/lisbon-to-new-york</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/time/bali-to-london</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/time/austin-to-berlin</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/time/new-york-to-dubai</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/time/london-to-dubai</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/time/new-york-to-tokyo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Live Currency Pair Converter Pages -->
+  <url>
+    <loc>https://globalsync-ai.com/currency/usd-to-eur</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/currency/usd-to-gbp</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/currency/eur-to-gbp</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/currency/usd-to-inr</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/currency/usd-to-pkr</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/currency/usd-to-ngn</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/currency/usd-to-brl</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/currency/usd-to-sar</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/currency/gbp-to-inr</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/currency/usd-to-aed</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Blog Posts (additional) -->
+  <url>
+    <loc>https://globalsync-ai.com/blog/remote-work-time-zones-productivity-guide</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/blog/best-currency-to-invoice-freelancers-usd-eur-gbp</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://globalsync-ai.com/blog/work-from-anywhere-setup-guide-2026</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

@@ -4,6 +4,7 @@ import SEOHead from "@/components/SEOHead";
 import AdBanner from "@/components/AdBanner";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import { CITIES, CITY_PAIRS, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
 
 const FAQ = [
   { q: "What is a time zone converter?", a: "A time zone converter translates a time in one city or region to the corresponding time in another. For example, if it's 9 AM in New York (EST), a converter tells you it's 2 PM in London (GMT) and 7:30 PM in Mumbai (IST)." },
@@ -103,6 +104,35 @@ export default function TimeZoneConverterPage() {
                 </div>
               </button>
             ))}
+          </div>
+        </section>
+
+        {/* pSEO index — City-to-city deep-dive converters */}
+        <section className="mb-12">
+          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-2">City-to-City Time Zone Converters</h2>
+          <p className="text-zinc-500 mb-5 text-sm">Dedicated guides for the most popular international city pairs — with live clocks, meeting overlap tips, and FAQs.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {ALL_CITY_PAIR_SLUGS.map(slug => {
+              const pair = CITY_PAIRS[slug];
+              const from = CITIES[pair.from];
+              const to   = CITIES[pair.to];
+              return (
+                <Link
+                  key={slug}
+                  to={`/time/${slug}`}
+                  className="bg-white rounded-xl border border-zinc-200 p-4 hover:border-blue-300 hover:shadow-sm transition-all group flex items-center justify-between"
+                  data-testid={`city-pair-link-${slug}`}
+                >
+                  <div>
+                    <div className="font-medium text-zinc-800 text-sm group-hover:text-blue-600 transition-colors">
+                      {from.name} to {to.name} Time
+                    </div>
+                    <div className="text-xs text-zinc-400 mt-0.5">{from.abbr} → {to.abbr} · Live converter + FAQs</div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-zinc-300 group-hover:text-blue-500 transition-colors flex-shrink-0" />
+                </Link>
+              );
+            })}
           </div>
         </section>
 

@@ -14,6 +14,8 @@ import TermsOfServicePage from "@/pages/TermsOfServicePage";
 import BlogPage from "@/pages/BlogPage";
 import BlogPostPage from "@/pages/BlogPostPage";
 import NewsPage from "@/pages/NewsPage";
+import CityPairPage from "@/pages/CityPairPage";
+import CurrencyPairPage from "@/pages/CurrencyPairPage";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/news" element={<NewsPage />} />
+          <Route path="/time/:pair" element={<CityPairPage />} />
+          <Route path="/currency/:pair" element={<CurrencyPairPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />

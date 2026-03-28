@@ -20,8 +20,8 @@ function LiveRateWidget({ from, to, fromMeta, toMeta }) {
   const fetchRate = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${API}/api/currency/convert`, { params: { from: from.toUpperCase(), to: to.toUpperCase(), amount: 1 } });
-      setRate(res.data.rate || res.data.converted_amount);
+      const res = await axios.get(`${API}/api/currency/convert`, { params: { from_currency: from.toUpperCase(), to_currency: to.toUpperCase(), amount: 1 } });
+      setRate(res.data.rate);
       setRefreshed(new Date());
     } catch (e) {
       console.error("Rate fetch error:", e);

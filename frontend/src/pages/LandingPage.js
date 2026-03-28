@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Globe, ArrowRight, Clock, TrendingUp, Zap, Users, Star, BookOpen, ExternalLink, Newspaper, Lightbulb } from "lucide-react";
+import { Globe, ArrowRight, Clock, TrendingUp, Zap, Users, Star, BookOpen, ExternalLink, Newspaper, Lightbulb, ChevronDown } from "lucide-react";
 import axios from "axios";
 import SEOHead from "@/components/SEOHead";
 import { BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
@@ -18,6 +18,33 @@ function timeAgo(iso) {
   return `${Math.floor(hrs / 24)}d ago`;
 }
 
+const HOMEPAGE_FAQS = [
+  {
+    q: "What is GlobalSync AI?",
+    a: "GlobalSync AI is a free, AI-powered tool for remote teams, freelancers, and digital nomads. It combines a real-time world clock, time zone converter, meeting overlap planner, and live currency converter (160+ currencies) in one place — no account or signup required.",
+  },
+  {
+    q: "Is GlobalSync AI free to use?",
+    a: "Yes, completely free. There are no subscription fees, no signup requirement, and no usage limits. All features — time zone conversion, meeting planning, AI natural language input, and live currency conversion — are available to everyone at zero cost.",
+  },
+  {
+    q: "What is the best free time zone converter for remote teams?",
+    a: "The best time zone converter for remote teams shows live clocks for multiple cities simultaneously, calculates business-hour overlaps automatically, and supports natural language queries. GlobalSync AI does all three: compare up to 5 cities, find the best meeting window, and ask questions like 'What time is it in Tokyo when it's 9 AM in New York?'",
+  },
+  {
+    q: "How do I find the best meeting time across multiple time zones?",
+    a: "Use GlobalSync AI's Meeting Planner: select your cities (up to 5) and the tool instantly shows the window where all cities' business hours overlap. You can also type a natural language query like 'Best meeting time for New York, London, and Mumbai' for an immediate AI-generated recommendation.",
+  },
+  {
+    q: "Does GlobalSync AI support live currency exchange rates?",
+    a: "Yes. GlobalSync AI's currency converter fetches real-time exchange rates for 160+ currencies via ExchangeRate-API, plus 7-day trend charts via the European Central Bank. Convert USD to INR, EUR, GBP, AED, PKR, NGN, and many more currencies with a single query — no account needed.",
+  },
+  {
+    q: "Can I use GlobalSync AI on mobile?",
+    a: "Yes. GlobalSync AI is fully responsive and works on all devices — smartphones, tablets, and desktops. No app download is required; simply open globalsync-ai.com in any mobile browser and all features work instantly.",
+  },
+];
+
 const HOMEPAGE_SCHEMA = {
   "@context": "https://schema.org",
   "@graph": [
@@ -28,13 +55,21 @@ const HOMEPAGE_SCHEMA = {
       "applicationCategory": "UtilitiesApplication",
       "operatingSystem": "All",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "Free AI-powered time zone converter, currency converter, and meeting overlap planner for remote teams and global workers."
+      "description": "Free AI-powered world clock, time zone converter, meeting overlap planner, and live currency converter for remote teams and global workers. No signup required."
     },
     {
       "@type": "Organization",
       "name": "GlobalSync AI",
       "url": "https://globalsync-ai.com",
       "logo": "https://globalsync-ai.com/logo-primary.png"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": HOMEPAGE_FAQS.map(f => ({
+        "@type": "Question",
+        "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }))
     }
   ]
 };
@@ -207,6 +242,47 @@ function TodaysFeedWidget() {
   );
 }
 
+// ─── Homepage FAQ Section ─────────────────────────────────────────────────────
+function HomepageFAQSection() {
+  const [openIdx, setOpenIdx] = useState(null);
+  return (
+    <section className="bg-zinc-50 py-20 px-6 border-t border-zinc-100">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-10">
+          <span className="text-xs text-blue-600 font-semibold uppercase tracking-widest">FAQ</span>
+          <h2 className="font-heading text-3xl font-bold text-zinc-900 mt-2">Frequently Asked Questions</h2>
+          <p className="text-zinc-500 text-sm mt-2">Everything you need to know about GlobalSync AI.</p>
+        </div>
+        <div className="space-y-3">
+          {HOMEPAGE_FAQS.map((faq, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-xl border border-zinc-200 overflow-hidden"
+              data-testid={`faq-item-${i}`}
+            >
+              <button
+                onClick={() => setOpenIdx(openIdx === i ? null : i)}
+                className="w-full flex items-center justify-between p-5 text-left gap-4 hover:bg-zinc-50 transition-colors"
+                aria-expanded={openIdx === i}
+              >
+                <span className="font-semibold text-zinc-800 text-sm leading-snug">{faq.q}</span>
+                <ChevronDown
+                  className={`w-4 h-4 text-zinc-400 flex-shrink-0 transition-transform duration-200 ${openIdx === i ? "rotate-180" : ""}`}
+                />
+              </button>
+              {openIdx === i && (
+                <div className="px-5 pb-5">
+                  <p className="text-sm text-zinc-600 leading-relaxed border-t border-zinc-100 pt-4">{faq.a}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function LandingPage() {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
@@ -219,9 +295,9 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen">
       <SEOHead
-        title="Free Time Zone & Currency Converter for Remote Teams"
-        description="GlobalSync AI offers free time zone conversion, meeting overlap planning, and live currency rates for 160+ currencies. Built for remote teams, freelancers, and global workers. No signup required."
-        keywords="time zone converter, currency converter, world clock, meeting planner time zones, remote team time zone tool, AI time zone converter, free world clock multiple cities, live exchange rates, meeting overlap finder"
+        title="GlobalSync AI — Free AI-Powered World Clock & Currency Converter for Remote Teams"
+        description="The free AI-powered world clock, time zone converter, and currency converter built for remote teams. Find business-hour overlaps, check live exchange rates for 160+ currencies, and ask questions in plain English. No signup needed."
+        keywords="AI time zone converter, free world clock for remote teams, meeting overlap planner, business hour overlap calculator, free currency converter 160 currencies, live exchange rates, time zone tool for distributed teams, USD to INR live rate, EST to IST converter, best meeting time multiple time zones, remote work scheduling tool, free AI world clock"
         canonical="/"
         structuredData={HOMEPAGE_SCHEMA}
       />
@@ -543,6 +619,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* ===== FAQ SECTION ===== */}
+      <HomepageFAQSection />
 
       {/* Footer */}
       <footer className="bg-[#050816] py-10 px-6">
