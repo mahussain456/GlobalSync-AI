@@ -1,0 +1,38 @@
+{
+  "summary": "Frontend-only testing of the 'Convert a Specific Time' widget on city-pair pSEO pages. All tests passed.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": { "backend": "N/A", "frontend": "100%" },
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Custom time converter widget is fully functional on all tested city pair pages. All data-testid attributes are present and selectable.",
+  "test_results": {
+    "new-york-to-london": {
+      "widget_renders": "PASS",
+      "heading": "PASS - 'Convert a Specific Time' found",
+      "default_state": "PASS - 9:00 AM New York = 1:00 PM London (4h EDT/GMT diff correct)",
+      "hour_change": "PASS - 11 AM NY = 3:00 PM London",
+      "ampm_change": "PASS - 11 PM NY = 3:00 AM London",
+      "day_shift_indicator": "PASS - 'Next day' shown for 11 PM NY to London",
+      "swap_button": "PASS - City label changed to London after swap, 11 PM London = 7:00 PM NY (correct)"
+    },
+    "dubai-to-mumbai": {
+      "widget_renders": "PASS",
+      "dubai_label": "PASS",
+      "conversion_math": "PASS - 9 AM Dubai = 10:30 AM Mumbai (UTC+4 to UTC+5:30, correct)"
+    },
+    "london-to-tokyo": {
+      "widget_renders": "PASS",
+      "conversion_math": "PASS - 9 AM London = 6:00 PM Tokyo (UTC+0 to UTC+9, correct)"
+    }
+  }
+}

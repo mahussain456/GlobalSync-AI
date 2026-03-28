@@ -34,6 +34,104 @@ function LiveClock({ timezone, city, country, abbr }) {
   );
 }
 
+// ─── Timezone offset helper ──────────────────────────────────────────────────
+function getTimezoneOffsetMinutes(tz) {
+  const now = new Date();
+  const fmt = (timeZone) =>
+    now.toLocaleString("en-US", { timeZone, hour: "2-digit", minute: "2-digit", hour12: false });
+  const parseHM = (s) => {
+    const [h, m] = s.split(":").map(n => parseInt(n));
+    return (h === 24 ? 0 : h) * 60 + m;
+  };
+  let diff = parseHM(fmt(tz)) - parseHM(fmt("UTC"));
+  if (diff > 12 * 60)  diff -= 24 * 60;
+  if (diff < -12 * 60) diff += 24 * 60;
+  return diff;
+}
+
+// ─── Custom Time Converter Widget ─────────────────────────────────────────────
+function CustomTimeConverter({ cityA, cityB }) {
+  const [hour,     setHour]     = useState(9);
+  const [minute,   setMinute]   = useState(0);
+  const [ampm,     setAmpm]     = useState("AM");
+  const [reversed, setReversed] = useState(false);
+
+  const fromCity = reversed ? cityB : cityA;
+  const toCity   = reversed ? cityA : cityB;
+
+  const fromOffset = getTimezoneOffsetMinutes(fromCity.timezone);
+  const toOffset   = getTimezoneOffsetMinutes(toCity.timezone);
+  let h24 = hour % 12;
+  if (ampm === "PM") h24 += 12;
+  const utcMinutes = h24 * 60 + minute - fromOffset;
+  const rawOut     = utcMinutes + toOffset;
+  const outMinutes = ((rawOut % (24 * 60)) + 24 * 60) % (24 * 60);
+  const outH24     = Math.floor(outMinutes / 60);
+  const outMin     = outMinutes % 60;
+  const outH12     = outH24 % 12 || 12;
+  const outAmPm    = outH24 < 12 ? "AM" : "PM";
+  const dayShift   = Math.sign(Math.round((rawOut - outMinutes) / (24 * 60)));
+
+  const sel = "border border-zinc-200 rounded-lg px-3 py-2 text-sm font-semibold text-zinc-800 bg-white focus:outline-none focus:ring-2 focus:ring-blue-200 cursor-pointer";
+
+  return (
+    <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6" data-testid="custom-time-converter">
+      <h2 className="font-heading text-xl font-bold text-zinc-900 mb-4 flex items-center gap-2">
+        <Clock className="w-5 h-5 text-blue-600" />
+        Convert a Specific Time
+      </h2>
+
+      <div className="flex flex-wrap items-center gap-2 mb-5">
+        <select value={hour} onChange={e => setHour(parseInt(e.target.value))} className={sel} data-testid="hour-select" aria-label="Hour">
+          {Array.from({ length: 12 }, (_, i) => i + 1).map(h => (
+            <option key={h} value={h}>{String(h).padStart(2, "0")}</option>
+          ))}
+        </select>
+        <span className="text-zinc-400 font-bold">:</span>
+        <select value={minute} onChange={e => setMinute(parseInt(e.target.value))} className={sel} data-testid="minute-select" aria-label="Minute">
+          {[0, 15, 30, 45].map(m => (
+            <option key={m} value={m}>{String(m).padStart(2, "0")}</option>
+          ))}
+        </select>
+        <select value={ampm} onChange={e => setAmpm(e.target.value)} className={sel} data-testid="ampm-select" aria-label="AM or PM">
+          <option value="AM">AM</option>
+          <option value="PM">PM</option>
+        </select>
+        <span className="text-zinc-400 text-sm">in</span>
+        <span className="font-semibold text-zinc-800 text-sm bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2">
+          {fromCity.name}
+        </span>
+        <button
+          onClick={() => setReversed(r => !r)}
+          className="flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg px-3 py-2 transition-colors"
+          data-testid="swap-direction-btn"
+        >
+          <ArrowRight className="w-3 h-3 rotate-90" /> Swap
+        </button>
+      </div>
+
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-5">
+        <div className="text-xs text-zinc-500 mb-2">
+          {hour}:{String(minute).padStart(2, "0")} {ampm} in {fromCity.name} ({fromCity.abbr}) =
+        </div>
+        <div className="flex flex-wrap items-end gap-3">
+          <span className="font-heading text-3xl font-bold text-zinc-900 tabular-nums" data-testid="converted-time-result">
+            {outH12}:{String(outMin).padStart(2, "0")} {outAmPm}
+          </span>
+          <span className="text-zinc-600 font-semibold text-base pb-0.5">
+            in {toCity.name} ({toCity.abbr})
+          </span>
+        </div>
+        {dayShift !== 0 && (
+          <div className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2.5 py-0.5">
+            {dayShift > 0 ? "Next day" : "Previous day"} in {toCity.name}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 // ─── Main page ────────────────────────────────────────────────────────────────
 export default function CityPairPage() {
   const { pair } = useParams();
@@ -105,6 +203,8 @@ export default function CityPairPage() {
           </div>
           <p className="text-xs text-zinc-400 text-center">Clocks update every second in real time.</p>
         </section>
+
+        <CustomTimeConverter cityA={cityA} cityB={cityB} />
 
         <AdBanner slot="leaderboard" className="mb-8" />
 
