@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
-import { TrendingUp, ArrowRight, RefreshCw } from "lucide-react";
+import { TrendingUp, ArrowRight, RefreshCw, TrendingDown } from "lucide-react";
 import axios from "axios";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
@@ -56,6 +57,108 @@ function LiveRateWidget({ from, to, fromMeta, toMeta, rate, loading, refreshed, 
         </div>
       )}
     </div>
+  );
+}
+
+// ─── 7-Day Trend Chart ────────────────────────────────────────────────────────
+function TrendChart({ from, to, fromMeta, toMeta }) {
+  const [data,    setData]    = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get(`${API}/api/currency/trend`, {
+        params: { from_currency: from.toUpperCase(), to_currency: to.toUpperCase() },
+      })
+      .then(res => { setData(res.data); })
+      .catch(e => console.error("Trend fetch error:", e))
+      .finally(() => setLoading(false));
+  }, [from, to]);
+
+  if (loading)
+    return <div className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6 h-52 animate-pulse" />;
+  if (!data || !data.available || !data.trend?.length) return null;
+
+  const isPositive = data.change_percent >= 0;
+  const lineColor  = isPositive ? "#059669" : "#dc2626";
+  const minY = data.min_rate * 0.998;
+  const maxY = data.max_rate * 1.002;
+
+  const chartData = data.trend.map(d => ({
+    date: new Date(d.date + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+    rate: d.rate,
+  }));
+
+  const gradientId = `trendGrad-${from}-${to}`;
+
+  return (
+    <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6" data-testid="trend-chart">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5">
+        <h2 className="font-heading text-xl font-bold text-zinc-900">7-Day Rate Trend</h2>
+        <div
+          className={`inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-1 rounded-full border ${
+            isPositive
+              ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+              : "bg-red-50 text-red-700 border-red-200"
+          }`}
+          data-testid="trend-change-badge"
+        >
+          {isPositive ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
+          {isPositive ? "+" : ""}{data.change_percent.toFixed(2)}% this week
+        </div>
+      </div>
+
+      {/* Chart */}
+      <div className="h-52" data-testid="trend-chart-area">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={chartData} margin={{ top: 5, right: 8, bottom: 0, left: 0 }}>
+            <defs>
+              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%"  stopColor={lineColor} stopOpacity={0.18} />
+                <stop offset="95%" stopColor={lineColor} stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f4f4f5" />
+            <XAxis
+              dataKey="date"
+              tick={{ fontSize: 11, fill: "#a1a1aa" }}
+              axisLine={false}
+              tickLine={false}
+            />
+            <YAxis
+              domain={[minY, maxY]}
+              tick={{ fontSize: 11, fill: "#a1a1aa" }}
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={v => Number(v).toFixed(2)}
+              width={56}
+            />
+            <Tooltip
+              contentStyle={{ borderRadius: "10px", border: "1px solid #e4e4e7", fontSize: "12px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)" }}
+              formatter={val => [`${toMeta.symbol}${Number(val).toFixed(4)}`, `1 ${fromMeta.code}`]}
+              labelStyle={{ color: "#71717a", marginBottom: "2px" }}
+            />
+            <Area
+              type="monotone"
+              dataKey="rate"
+              stroke={lineColor}
+              strokeWidth={2}
+              fill={`url(#${gradientId})`}
+              dot={{ r: 3, fill: lineColor, strokeWidth: 0 }}
+              activeDot={{ r: 5, fill: lineColor, stroke: "white", strokeWidth: 2 }}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Min / Source / Max footer */}
+      <div className="flex items-center justify-between mt-3 text-xs text-zinc-400">
+        <span>Low: {toMeta.symbol}{data.min_rate.toFixed(4)}</span>
+        <span>Source: European Central Bank</span>
+        <span>High: {toMeta.symbol}{data.max_rate.toFixed(4)}</span>
+      </div>
+    </section>
   );
 }
 
@@ -246,6 +349,9 @@ export default function CurrencyPairPage() {
             onRefresh={fetchRate}
           />
         </section>
+
+        {/* 7-day trend chart */}
+        <TrendChart from={pairData.from} to={pairData.to} fromMeta={fromMeta} toMeta={toMeta} />
 
         {/* Quick Amount Converter */}
         <QuickConvertWidget rate={rate} fromMeta={fromMeta} toMeta={toMeta} />
