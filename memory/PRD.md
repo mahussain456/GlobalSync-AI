@@ -194,7 +194,7 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 - [2026-03-28] **pSEO Phase 1 COMPLETE**: Homepage SEOHead updated with transactional keywords; FAQPage structured data added to HOMEPAGE_SCHEMA
 - [2026-03-28] **pSEO Phase 3 COMPLETE**: 3 new pillar blog posts added (remote work time zones, freelancer invoice currency, work-from-anywhere guide) — blog now has 8 total posts
 - [2026-03-28] **pSEO Phase 4 COMPLETE**: 6-item FAQ accordion section added to homepage before footer (expand/collapse, targets question-based searches)
-- [2026-03-28] **Compare widget COMPLETE**: "Convert a Specific Time" interactive widget added to all 10 city-pair pSEO pages. Users pick hour/minute/AM-PM, city label shows which direction, result updates instantly. Swap button reverses direction. Day-shift indicator shows "Next day"/"Previous day" when applicable. Half-hour timezone offsets (e.g. Dubai UTC+4 → Mumbai UTC+5:30) handled correctly.
+- [2026-03-28] **Quick Amount Converter widget COMPLETE**: Added `QuickConvertWidget` to all 10 currency-pair pSEO pages. Type any amount → live conversion result. Swap button reverses direction. 10 clickable quick-reference tiles (1, 5, 10, 25…5000). Single API fetch shared between LiveRateWidget and QuickConvertWidget. Verified: 100 USD = ₹9,483.47 INR, swap shows inverse rate correctly. Users pick hour/minute/AM-PM, city label shows which direction, result updates instantly. Swap button reverses direction. Day-shift indicator shows "Next day"/"Previous day" when applicable. Half-hour timezone offsets (e.g. Dubai UTC+4 → Mumbai UTC+5:30) handled correctly.
 
 ---
 
