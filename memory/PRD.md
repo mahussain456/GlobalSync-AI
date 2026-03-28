@@ -182,7 +182,8 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 - [2026-03-05] SEO implementation: robots.txt, sitemap.xml, SEOHead component, HelmetProvider, 3 SEO landing pages
 - [2026-03-05] Admin dashboard at /admin: view leads, export CSV
 - [2026-03-05] Share Result feature: Copy + Share buttons on currency result, Copy + Share on meeting overlap result, Share on time conversion result
-- [2026-03-25] Daily Feed: /news page with two-column live feed (AI News + Tips & Tricks), RSS fetching from 4 sources, Claude Haiku summaries, 2h cache, background refresh loop
+- [2026-03-28] Consistent design: shared SiteNav (sticky, logo + 5 nav links + Open App + mobile drawer) and SiteFooter (4-column: Brand/Tools/Resources/Legal) applied to all 10 inner pages
+- [2026-03-28] AdSense fix: consistent branding/nav across all pages removes "Low value content" UX signals
 - [2026-03-25] "Today's Feed" homepage widget (2x2 grid) with link to /news
 - [2026-03-25] Daily Feed link added to all nav bars; /news added to sitemap.xml
 - [2026-03-18] Blog link added to: LandingPage nav + footer, all 3 SEO pages' nav headers
