@@ -2,6 +2,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { Clock, ArrowRight, Globe, Users, CheckCircle2 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import AdBanner from "@/components/AdBanner";
+import SiteNav from "@/components/SiteNav";
+import SiteFooter from "@/components/SiteFooter";
 
 const FAQ = [
   { q: "What is a time zone converter?", a: "A time zone converter translates a time in one city or region to the corresponding time in another. For example, if it's 9 AM in New York (EST), a converter tells you it's 2 PM in London (GMT) and 7:30 PM in Mumbai (IST)." },
@@ -55,25 +57,7 @@ export default function TimeZoneConverterPage() {
         structuredData={structuredData}
       />
 
-      {/* Breadcrumb */}
-      <nav className="max-w-4xl mx-auto px-6 pt-6 pb-2 flex items-center justify-between">
-        <div className="flex items-center gap-5">
-          <Link to="/"><img src="/logo-dark.png" alt="GlobalSync AI" className="h-10 w-auto rounded-lg" /></Link>
-          <Link to="/blog" className="text-sm text-zinc-400 hover:text-teal-600 transition-colors hidden sm:block" data-testid="nav-blog-link">Blog</Link>
-          <Link to="/news" className="text-sm text-zinc-400 hover:text-teal-600 transition-colors hidden sm:block" data-testid="nav-daily-feed-link">Daily Feed</Link>
-        </div>
-        <ol className="flex items-center gap-2 text-sm text-zinc-400" itemScope itemType="https://schema.org/BreadcrumbList">
-          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <Link to="/" className="hover:text-teal-600 transition-colors" itemProp="item"><span itemProp="name">Home</span></Link>
-            <meta itemProp="position" content="1" />
-          </li>
-          <span>/</span>
-          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <span className="text-zinc-600 font-medium" itemProp="name">Time Zone Converter</span>
-            <meta itemProp="position" content="2" />
-          </li>
-        </ol>
-      </nav>
+      <SiteNav />
 
       <article className="max-w-4xl mx-auto px-6 py-8">
         {/* H1 */}
@@ -188,6 +172,7 @@ export default function TimeZoneConverterPage() {
           </div>
         </section>
       </article>
+      <SiteFooter />
     </div>
   );
 }

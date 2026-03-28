@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Mail, Globe, MessageSquare, Loader2, CheckCircle2 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import SiteNav from "@/components/SiteNav";
+import SiteFooter from "@/components/SiteFooter";
 import axios from "axios";
 import { toast } from "sonner";
 
@@ -35,14 +37,7 @@ export default function ContactPage() {
         canonical="/contact"
         keywords="contact GlobalSync AI, support, feedback, partnership"
       />
-
-      <nav className="max-w-3xl mx-auto px-6 pt-6 pb-2">
-        <ol className="flex items-center gap-2 text-sm text-zinc-400">
-          <li><Link to="/" className="hover:text-blue-600 transition-colors">Home</Link></li>
-          <span>/</span>
-          <li><span className="text-zinc-600 font-medium">Contact</span></li>
-        </ol>
-      </nav>
+      <SiteNav />
 
       <article className="max-w-3xl mx-auto px-6 py-8">
         <header className="mb-10">
@@ -164,14 +159,7 @@ export default function ContactPage() {
         </div>
       </article>
 
-      <footer className="border-t border-zinc-200 py-6 px-6 mt-6">
-        <div className="max-w-3xl mx-auto flex flex-wrap items-center justify-center gap-4 text-xs text-zinc-400">
-          <Link to="/" className="hover:text-zinc-600">Home</Link>
-          <Link to="/about" className="hover:text-zinc-600">About</Link>
-          <Link to="/privacy-policy" className="hover:text-zinc-600">Privacy Policy</Link>
-          <Link to="/terms-of-service" className="hover:text-zinc-600">Terms of Service</Link>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

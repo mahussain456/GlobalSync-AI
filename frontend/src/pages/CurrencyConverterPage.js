@@ -2,6 +2,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { TrendingUp, ArrowRight, Clock, Users, CheckCircle2 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import AdBanner from "@/components/AdBanner";
+import SiteNav from "@/components/SiteNav";
+import SiteFooter from "@/components/SiteFooter";
 
 const FAQ = [
   { q: "What is the current USD to EUR exchange rate?", a: "The USD to EUR exchange rate changes daily based on global markets. GlobalSync AI uses real-time ECB and ExchangeRate-API data to show the latest rate. Open the currency converter to see today's live rate." },
@@ -59,25 +61,7 @@ export default function CurrencyConverterPage() {
         structuredData={structuredData}
       />
 
-      {/* Breadcrumb */}
-      <nav className="max-w-4xl mx-auto px-6 pt-6 pb-2 flex items-center justify-between">
-        <div className="flex items-center gap-5">
-          <Link to="/"><img src="/logo-dark.png" alt="GlobalSync AI" className="h-10 w-auto rounded-lg" /></Link>
-          <Link to="/blog" className="text-sm text-zinc-400 hover:text-teal-600 transition-colors hidden sm:block" data-testid="nav-blog-link">Blog</Link>
-          <Link to="/news" className="text-sm text-zinc-400 hover:text-teal-600 transition-colors hidden sm:block" data-testid="nav-daily-feed-link">Daily Feed</Link>
-        </div>
-        <ol className="flex items-center gap-2 text-sm text-zinc-400" itemScope itemType="https://schema.org/BreadcrumbList">
-          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <Link to="/" className="hover:text-teal-600 transition-colors" itemProp="item"><span itemProp="name">Home</span></Link>
-            <meta itemProp="position" content="1" />
-          </li>
-          <span>/</span>
-          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <span className="text-zinc-600 font-medium" itemProp="name">Currency Converter</span>
-            <meta itemProp="position" content="2" />
-          </li>
-        </ol>
-      </nav>
+      <SiteNav />
 
       <article className="max-w-4xl mx-auto px-6 py-8">
         {/* H1 */}
@@ -184,6 +168,7 @@ export default function CurrencyConverterPage() {
           </div>
         </section>
       </article>
+      <SiteFooter />
     </div>
   );
 }

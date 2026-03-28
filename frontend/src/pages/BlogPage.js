@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Clock, BookOpen } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import SiteNav from "@/components/SiteNav";
+import SiteFooter from "@/components/SiteFooter";
 import { BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
 
 const structuredData = {
@@ -22,19 +24,7 @@ export default function BlogPage() {
         keywords="remote work blog, time zone tips, currency converter guide, digital nomad resources, freelancer tools 2026, meeting planner tips, tools for digital nomads 2026, AI tools for remote workers 2026"
         structuredData={structuredData}
       />
-
-      {/* Nav */}
-      <nav className="max-w-5xl mx-auto px-6 pt-6 pb-2 flex items-center justify-between">
-        <Link to="/"><img src="/logo-dark.png" alt="GlobalSync AI" className="h-10 w-auto rounded-lg" /></Link>
-        <div className="flex items-center gap-4">
-          <Link to="/time-zone-converter" className="text-sm text-zinc-500 hover:text-teal-600 transition-colors hidden sm:block">Time Zones</Link>
-          <Link to="/currency-converter" className="text-sm text-zinc-500 hover:text-teal-600 transition-colors hidden sm:block">Currency</Link>
-          <Link to="/meeting-planner" className="text-sm text-zinc-500 hover:text-teal-600 transition-colors hidden sm:block">Meeting Planner</Link>
-          <Link to="/dashboard" className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-700 transition-colors">
-            Open App <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-      </nav>
+      <SiteNav />
 
       <div className="max-w-5xl mx-auto px-6 py-12">
         {/* Header */}
@@ -112,17 +102,7 @@ export default function BlogPage() {
         </section>
       </div>
 
-      {/* Footer */}
-      <footer className="max-w-5xl mx-auto px-6 py-10 border-t border-zinc-100 flex flex-col sm:flex-row items-center justify-between gap-4 mt-8">
-        <Link to="/"><img src="/logo-dark.png" alt="GlobalSync AI" className="h-8 w-auto" /></Link>
-        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-zinc-400">
-          <Link to="/" className="hover:text-zinc-600 transition-colors">Home</Link>
-          <Link to="/time-zone-converter" className="hover:text-zinc-600 transition-colors">Time Zone Converter</Link>
-          <Link to="/currency-converter" className="hover:text-zinc-600 transition-colors">Currency Converter</Link>
-          <Link to="/meeting-planner" className="hover:text-zinc-600 transition-colors">Meeting Planner</Link>
-          <Link to="/about" className="hover:text-zinc-600 transition-colors">About</Link>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

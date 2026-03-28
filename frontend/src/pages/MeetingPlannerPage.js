@@ -2,6 +2,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { Users, ArrowRight, Clock, TrendingUp, CheckCircle2, Globe } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import AdBanner from "@/components/AdBanner";
+import SiteNav from "@/components/SiteNav";
+import SiteFooter from "@/components/SiteFooter";
 
 const FAQ = [
   { q: "What is the best time for a meeting between the US and India?", a: "The US East Coast (EST, UTC-5) and India (IST, UTC+5:30) have a 10.5-hour difference. The best overlap window is typically 8:00–9:30 AM EST, which is 6:30–8:00 PM IST — just before the end of the Indian workday. Use GlobalSync AI to find the exact overlap for your team's cities." },
@@ -55,25 +57,7 @@ export default function MeetingPlannerPage() {
         structuredData={structuredData}
       />
 
-      {/* Breadcrumb */}
-      <nav className="max-w-4xl mx-auto px-6 pt-6 pb-2 flex items-center justify-between">
-        <div className="flex items-center gap-5">
-          <Link to="/"><img src="/logo-dark.png" alt="GlobalSync AI" className="h-10 w-auto rounded-lg" /></Link>
-          <Link to="/blog" className="text-sm text-zinc-400 hover:text-teal-600 transition-colors hidden sm:block" data-testid="nav-blog-link">Blog</Link>
-          <Link to="/news" className="text-sm text-zinc-400 hover:text-teal-600 transition-colors hidden sm:block" data-testid="nav-daily-feed-link">Daily Feed</Link>
-        </div>
-        <ol className="flex items-center gap-2 text-sm text-zinc-400" itemScope itemType="https://schema.org/BreadcrumbList">
-          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <Link to="/" className="hover:text-teal-600 transition-colors" itemProp="item"><span itemProp="name">Home</span></Link>
-            <meta itemProp="position" content="1" />
-          </li>
-          <span>/</span>
-          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <span className="text-zinc-600 font-medium" itemProp="name">Meeting Planner</span>
-            <meta itemProp="position" content="2" />
-          </li>
-        </ol>
-      </nav>
+      <SiteNav />
 
       <article className="max-w-4xl mx-auto px-6 py-8">
         {/* H1 */}
@@ -188,6 +172,7 @@ export default function MeetingPlannerPage() {
           </div>
         </section>
       </article>
+      <SiteFooter />
     </div>
   );
 }

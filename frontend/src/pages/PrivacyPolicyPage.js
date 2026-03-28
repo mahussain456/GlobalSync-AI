@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
+import SiteNav from "@/components/SiteNav";
+import SiteFooter from "@/components/SiteFooter";
 
 const LAST_UPDATED = "March 2026";
 
@@ -12,14 +14,7 @@ export default function PrivacyPolicyPage() {
         canonical="/privacy-policy"
         keywords="GlobalSync AI privacy policy, data protection, cookies, analytics"
       />
-
-      <nav className="max-w-3xl mx-auto px-6 pt-6 pb-2">
-        <ol className="flex items-center gap-2 text-sm text-zinc-400">
-          <li><Link to="/" className="hover:text-blue-600 transition-colors">Home</Link></li>
-          <span>/</span>
-          <li><span className="text-zinc-600 font-medium">Privacy Policy</span></li>
-        </ol>
-      </nav>
+      <SiteNav />
 
       <article className="max-w-3xl mx-auto px-6 py-8">
         <header className="mb-8">
@@ -132,14 +127,7 @@ export default function PrivacyPolicyPage() {
         </div>
       </article>
 
-      <footer className="border-t border-zinc-200 py-6 px-6 mt-10">
-        <div className="max-w-3xl mx-auto flex flex-wrap items-center justify-center gap-4 text-xs text-zinc-400">
-          <Link to="/" className="hover:text-zinc-600">Home</Link>
-          <Link to="/about" className="hover:text-zinc-600">About</Link>
-          <Link to="/terms-of-service" className="hover:text-zinc-600">Terms of Service</Link>
-          <Link to="/contact" className="hover:text-zinc-600">Contact</Link>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

@@ -3,6 +3,8 @@ import { ArrowLeft, ArrowRight, Clock, Calendar, Tag } from "lucide-react";
 import { CheckCircle2 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import AdBanner from "@/components/AdBanner";
+import SiteNav from "@/components/SiteNav";
+import SiteFooter from "@/components/SiteFooter";
 import { getBlogPost, BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
 
 // ─── Content block renderer ───────────────────────────────────────────────────
@@ -122,18 +124,7 @@ export default function BlogPostPage() {
         ogType="article"
         structuredData={structuredData}
       />
-
-      {/* Nav */}
-      <nav className="max-w-3xl mx-auto px-6 pt-6 pb-2 flex items-center justify-between">
-        <Link to="/"><img src="/logo-dark.png" alt="GlobalSync AI" className="h-10 w-auto rounded-lg" /></Link>
-        <Link
-          to="/blog"
-          className="flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-800 transition-colors"
-          data-testid="back-to-blog-btn"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to Blog
-        </Link>
-      </nav>
+      <SiteNav />
 
       <article className="max-w-3xl mx-auto px-6 py-10" data-testid="blog-post-article">
         {/* Category + meta */}
@@ -199,6 +190,7 @@ export default function BlogPostPage() {
           </Link>
         </div>
       </article>
+      <SiteFooter />
     </div>
   );
 }

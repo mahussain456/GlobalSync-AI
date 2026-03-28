@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
-import { Globe, Clock, TrendingUp, Users, Zap, ArrowRight } from "lucide-react";
+import { Globe, Clock, TrendingUp, Users, Zap, ArrowRight, CheckCircle2 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import SiteNav from "@/components/SiteNav";
+import SiteFooter from "@/components/SiteFooter";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -25,20 +27,7 @@ export default function AboutPage() {
         keywords="about GlobalSync AI, remote team tools, time zone converter, currency converter, meeting planner, free tools, AI powered"
         structuredData={structuredData}
       />
-
-      <nav className="max-w-4xl mx-auto px-6 pt-6 pb-2 flex items-center justify-between">
-        <Link to="/" className="flex items-center">
-          <img src="/logo-dark.png" alt="GlobalSync AI" className="h-10 w-auto rounded-lg" />
-        </Link>
-        <ol className="flex items-center gap-2 text-sm text-zinc-400" itemScope itemType="https://schema.org/BreadcrumbList">
-          <li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-            <Link to="/" className="hover:text-blue-600 transition-colors" itemProp="item"><span itemProp="name">Home</span></Link>
-            <meta itemProp="position" content="1" />
-          </li>
-          <span>/</span>
-          <li><span className="text-zinc-600 font-medium">About</span></li>
-        </ol>
-      </nav>
+      <SiteNav />
 
       <article className="max-w-4xl mx-auto px-6 py-8">
         <header className="mb-10">
@@ -138,14 +127,7 @@ export default function AboutPage() {
         </section>
       </article>
 
-      <footer className="border-t border-zinc-200 py-6 px-6 mt-10">
-        <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-center gap-4 text-xs text-zinc-400">
-          <Link to="/" className="hover:text-zinc-600">Home</Link>
-          <Link to="/privacy-policy" className="hover:text-zinc-600">Privacy Policy</Link>
-          <Link to="/terms-of-service" className="hover:text-zinc-600">Terms of Service</Link>
-          <Link to="/contact" className="hover:text-zinc-600">Contact</Link>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
