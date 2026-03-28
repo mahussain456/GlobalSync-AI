@@ -1,0 +1,37 @@
+{
+  "summary": "Tested QuickConvertWidget on currency pair pages. All 11 test cases passed.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "100%"},
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "QuickConvertWidget fully functional on all tested pages. Swap, quick-ref tile clicks, amount input reactivity all working. Invalid pair redirects to /currency-converter.",
+  "test_results": {
+    "/currency/usd-to-inr": {
+      "live_rate_widget_visible": true,
+      "quick_convert_widget_visible": true,
+      "live_rate": "1 USD = 94.8347 INR",
+      "default_amount": "100",
+      "default_result": "₹9,483.47",
+      "amount_500_result": "₹47,417.37",
+      "quick_ref_50_click": "input=50, result=₹4,741.74",
+      "after_swap_rate": "1 USD = 94.8347 INR (live-rate-widget unchanged; QuickConvert shows 1 INR = 0.0105 USD)",
+      "after_swap_result": "$0.53"
+    },
+    "/currency/usd-to-eur": {"widgets_visible": true, "rate": "1 USD = 0.8681 EUR"},
+    "/currency/gbp-to-inr": {"widgets_visible": true, "rate": "1 GBP = 125.9142 INR"},
+    "/currency/xyz-to-abc": {"redirected_to": "/currency-converter"}
+  }
+}

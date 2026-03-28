@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
-import { TrendingUp, ArrowRight, RefreshCw, CheckCircle2 } from "lucide-react";
+import { TrendingUp, ArrowRight, RefreshCw } from "lucide-react";
 import axios from "axios";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
@@ -10,39 +10,21 @@ import { CURRENCIES_META, CURRENCY_PAIRS, getCurrencyPair, ALL_CURRENCY_PAIR_SLU
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
-// ─── Live rate widget ─────────────────────────────────────────────────────────
-function LiveRateWidget({ from, to, fromMeta, toMeta }) {
-  const [rate, setRate] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [amounts] = useState([1, 10, 100, 500, 1000]);
-  const [refreshed, setRefreshed] = useState(new Date());
+const fmt = (n, dec = 4) =>
+  Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: dec });
 
-  const fetchRate = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(`${API}/api/currency/convert`, { params: { from_currency: from.toUpperCase(), to_currency: to.toUpperCase(), amount: 1 } });
-      setRate(res.data.rate);
-      setRefreshed(new Date());
-    } catch (e) {
-      console.error("Rate fetch error:", e);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => { fetchRate(); }, []);
-
-  const fmt = (n, decimals = 4) => Number(n).toLocaleString("en-US", { minimumFractionDigits: decimals > 2 ? 2 : 2, maximumFractionDigits: decimals });
-
+// ─── Live rate display (props-driven) ─────────────────────────────────────────
+function LiveRateWidget({ from, to, fromMeta, toMeta, rate, loading, refreshed, onRefresh }) {
+  const AMOUNTS = [1, 10, 100, 500, 1000];
   return (
-    <div className="bg-white rounded-2xl border border-zinc-200 p-6">
-      {/* Rate display */}
+    <div className="bg-white rounded-2xl border border-zinc-200 p-6" data-testid="live-rate-widget">
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="text-xs text-zinc-400 mb-1">Live Exchange Rate</div>
           {loading ? (
             <div className="h-10 w-48 bg-zinc-100 rounded-lg animate-pulse" />
           ) : rate ? (
-            <div className="font-heading text-3xl font-bold text-zinc-900">
+            <div className="font-heading text-3xl font-bold text-zinc-900" data-testid="live-rate-value">
               1 {from.toUpperCase()} = {fmt(rate)} {to.toUpperCase()}
             </div>
           ) : (
@@ -50,17 +32,21 @@ function LiveRateWidget({ from, to, fromMeta, toMeta }) {
           )}
           <div className="text-xs text-zinc-400 mt-1">Updated: {refreshed.toLocaleTimeString()}</div>
         </div>
-        <button onClick={fetchRate} className="p-2 rounded-full border border-zinc-200 text-zinc-400 hover:text-zinc-600 hover:border-zinc-300 transition-colors" title="Refresh rate">
+        <button
+          onClick={onRefresh}
+          className="p-2 rounded-full border border-zinc-200 text-zinc-400 hover:text-zinc-600 hover:border-zinc-300 transition-colors"
+          title="Refresh rate"
+          data-testid="refresh-rate-btn"
+        >
           <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
         </button>
       </div>
 
-      {/* Quick conversion table */}
       {rate && (
         <div className="border-t border-zinc-100 pt-4">
           <div className="text-xs text-zinc-400 uppercase tracking-wide mb-3 font-medium">Quick Conversions</div>
           <div className="grid grid-cols-2 gap-2">
-            {amounts.map(amt => (
+            {AMOUNTS.map(amt => (
               <div key={amt} className="flex items-center justify-between text-sm bg-zinc-50 rounded-lg px-3 py-2">
                 <span className="text-zinc-500">{fromMeta.symbol}{amt.toLocaleString()}</span>
                 <span className="font-semibold text-zinc-800">{toMeta.symbol}{fmt(amt * rate, 2)}</span>
@@ -73,10 +59,125 @@ function LiveRateWidget({ from, to, fromMeta, toMeta }) {
   );
 }
 
+// ─── Quick Amount Converter Widget ────────────────────────────────────────────
+const QUICK_AMOUNTS = [1, 5, 10, 25, 50, 100, 250, 500, 1000, 5000];
+
+function QuickConvertWidget({ rate, fromMeta, toMeta }) {
+  const [amount,   setAmount]   = useState("100");
+  const [reversed, setReversed] = useState(false);
+
+  const fromM        = reversed ? toMeta   : fromMeta;
+  const toM          = reversed ? fromMeta : toMeta;
+  const effectiveRate = rate ? (reversed ? 1 / rate : rate) : null;
+  const numAmount    = parseFloat(amount) || 0;
+
+  return (
+    <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6" data-testid="quick-convert-widget">
+      <h2 className="font-heading text-xl font-bold text-zinc-900 mb-4 flex items-center gap-2">
+        <TrendingUp className="w-5 h-5 text-emerald-600" />
+        Quick Amount Converter
+      </h2>
+
+      {/* Input row */}
+      <div className="flex flex-wrap items-center gap-3 mb-5">
+        <div className="flex items-center gap-2 bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2.5 focus-within:ring-2 focus-within:ring-emerald-200 focus-within:border-emerald-300 transition-all">
+          <span className="text-zinc-500 font-semibold text-sm">{fromM.symbol}</span>
+          <input
+            type="number"
+            value={amount}
+            onChange={e => setAmount(e.target.value)}
+            className="bg-transparent w-28 text-zinc-900 font-bold text-lg focus:outline-none tabular-nums"
+            min="0"
+            placeholder="100"
+            data-testid="amount-input"
+            aria-label={`Amount in ${fromM.code}`}
+          />
+          <span className="text-zinc-400 text-sm font-medium">{fromM.code}</span>
+        </div>
+        <button
+          onClick={() => setReversed(r => !r)}
+          className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl px-3 py-2.5 transition-colors"
+          data-testid="currency-swap-btn"
+        >
+          <ArrowRight className="w-3.5 h-3.5 rotate-90" /> Swap
+        </button>
+      </div>
+
+      {/* Result */}
+      {effectiveRate ? (
+        <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-100 rounded-xl p-5 mb-6">
+          <div className="text-xs text-zinc-500 mb-2">
+            {fromM.symbol}{numAmount.toLocaleString()} {fromM.code} =
+          </div>
+          <div className="flex flex-wrap items-end gap-3">
+            <span
+              className="font-heading text-3xl font-bold text-zinc-900 tabular-nums"
+              data-testid="converted-amount-result"
+            >
+              {toM.symbol}{fmt(numAmount * effectiveRate, 2)}
+            </span>
+            <span className="text-zinc-600 font-semibold text-base pb-0.5">{toM.code}</span>
+          </div>
+          <div className="text-xs text-zinc-400 mt-2">
+            Rate: 1 {fromM.code} = {fmt(effectiveRate)} {toM.code}
+          </div>
+        </div>
+      ) : (
+        <div className="bg-zinc-50 border border-zinc-200 rounded-xl p-4 text-sm text-zinc-400 mb-6 animate-pulse">
+          Loading live rate…
+        </div>
+      )}
+
+      {/* Quick reference table — clickable amounts */}
+      {effectiveRate && (
+        <div>
+          <div className="text-xs text-zinc-400 uppercase tracking-wide mb-3 font-medium">Quick Reference — click to convert</div>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            {QUICK_AMOUNTS.map(a => (
+              <button
+                key={a}
+                onClick={() => setAmount(String(a))}
+                className="text-left bg-zinc-50 hover:bg-emerald-50 border border-zinc-100 hover:border-emerald-200 rounded-lg px-3 py-2 transition-all group"
+                data-testid={`quick-ref-${a}`}
+              >
+                <div className="text-xs text-zinc-400 group-hover:text-emerald-600 truncate">{fromM.symbol}{a.toLocaleString()}</div>
+                <div className="text-sm font-semibold text-zinc-800 truncate">{toM.symbol}{fmt(a * effectiveRate, 2)}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
 // ─── Main page ────────────────────────────────────────────────────────────────
 export default function CurrencyPairPage() {
   const { pair } = useParams();
+
+  // Rate state — hoisted so both widgets share one fetch
+  const [rate,        setRate]        = useState(null);
+  const [rateLoading, setRateLoading] = useState(true);
+  const [refreshed,   setRefreshed]   = useState(new Date());
+
   const pairData = getCurrencyPair(pair);
+
+  const fetchRate = useCallback(async () => {
+    if (!pairData) return;
+    setRateLoading(true);
+    try {
+      const res = await axios.get(`${API}/api/currency/convert`, {
+        params: { from_currency: pairData.from.toUpperCase(), to_currency: pairData.to.toUpperCase(), amount: 1 },
+      });
+      setRate(res.data.rate);
+      setRefreshed(new Date());
+    } catch (e) {
+      console.error("Rate fetch error:", e);
+    }
+    setRateLoading(false);
+  }, [pairData]);
+
+  useEffect(() => { fetchRate(); }, [fetchRate]);
 
   if (!pairData) return <Navigate to="/currency-converter" replace />;
 
@@ -134,8 +235,20 @@ export default function CurrencyPairPage() {
 
         {/* Live rate widget */}
         <section className="mb-8" aria-label="Live exchange rate">
-          <LiveRateWidget from={pairData.from} to={pairData.to} fromMeta={fromMeta} toMeta={toMeta} />
+          <LiveRateWidget
+            from={pairData.from}
+            to={pairData.to}
+            fromMeta={fromMeta}
+            toMeta={toMeta}
+            rate={rate}
+            loading={rateLoading}
+            refreshed={refreshed}
+            onRefresh={fetchRate}
+          />
         </section>
+
+        {/* Quick Amount Converter */}
+        <QuickConvertWidget rate={rate} fromMeta={fromMeta} toMeta={toMeta} />
 
         <AdBanner slot="leaderboard" className="mb-8" />
 
