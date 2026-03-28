@@ -194,7 +194,7 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 - [2026-03-28] **pSEO Phase 1 COMPLETE**: Homepage SEOHead updated with transactional keywords; FAQPage structured data added to HOMEPAGE_SCHEMA
 - [2026-03-28] **pSEO Phase 3 COMPLETE**: 3 new pillar blog posts added (remote work time zones, freelancer invoice currency, work-from-anywhere guide) — blog now has 8 total posts
 - [2026-03-28] **pSEO Phase 4 COMPLETE**: 6-item FAQ accordion section added to homepage before footer (expand/collapse, targets question-based searches)
-- [2026-03-28] sitemap.xml expanded to 38 total URLs (added 20 pSEO pages + 3 new blog posts)
+- [2026-03-28] **Compare widget COMPLETE**: "Convert a Specific Time" interactive widget added to all 10 city-pair pSEO pages. Users pick hour/minute/AM-PM, city label shows which direction, result updates instantly. Swap button reverses direction. Day-shift indicator shows "Next day"/"Previous day" when applicable. Half-hour timezone offsets (e.g. Dubai UTC+4 → Mumbai UTC+5:30) handled correctly.
 
 ---
 
