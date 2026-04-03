@@ -296,7 +296,7 @@ export default function LandingPage() {
     <div className="min-h-screen">
       <SEOHead
         title="GlobalSync AI — Free AI-Powered World Clock & Currency Converter for Remote Teams"
-        description="The free AI-powered world clock, time zone converter, and currency converter built for remote teams. Find business-hour overlaps, check live exchange rates for 160+ currencies, and ask questions in plain English. No signup needed."
+        description="Free time zone converter &amp; live currency rates for 160+ currencies. Built for remote teams, freelancers &amp; global workers. No signup needed."
         keywords="AI time zone converter, free world clock for remote teams, meeting overlap planner, business hour overlap calculator, free currency converter 160 currencies, live exchange rates, time zone tool for distributed teams, USD to INR live rate, EST to IST converter, best meeting time multiple time zones, remote work scheduling tool, free AI world clock"
         canonical="/"
         structuredData={HOMEPAGE_SCHEMA}

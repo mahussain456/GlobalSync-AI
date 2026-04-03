@@ -59,7 +59,51 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
+    "postbuild": "react-snap || true",
     "test": "craco test"
+  },
+  "reactSnap": {
+    "puppeteerArgs": ["--no-sandbox", "--disable-setuid-sandbox"],
+    "crawl": true,
+    "skipThirdPartyRequests": true,
+    "timeout": 12000,
+    "viewport": { "width": 1200, "height": 800 },
+    "include": [
+      "/",
+      "/dashboard",
+      "/time-zone-converter",
+      "/currency-converter",
+      "/meeting-planner",
+      "/news",
+      "/blog",
+      "/about",
+      "/contact",
+      "/privacy-policy",
+      "/terms-of-service",
+      "/time/new-york-to-london",
+      "/time/london-to-tokyo",
+      "/time/dubai-to-mumbai",
+      "/time/san-francisco-to-new-york",
+      "/time/lisbon-to-new-york",
+      "/time/bali-to-london",
+      "/time/austin-to-berlin",
+      "/time/new-york-to-dubai",
+      "/time/london-to-dubai",
+      "/time/new-york-to-tokyo",
+      "/currency/usd-to-eur",
+      "/currency/usd-to-gbp",
+      "/currency/eur-to-gbp",
+      "/currency/usd-to-inr",
+      "/currency/usd-to-pkr",
+      "/currency/usd-to-ngn",
+      "/currency/usd-to-brl",
+      "/currency/usd-to-sar",
+      "/currency/gbp-to-inr",
+      "/currency/usd-to-aed",
+      "/blog/remote-work-time-zones-productivity-guide",
+      "/blog/best-currency-to-invoice-freelancers-usd-eur-gbp",
+      "/blog/work-from-anywhere-setup-guide-2026"
+    ]
   },
   "browserslist": {
     "production": [
@@ -86,6 +130,7 @@
     "eslint-plugin-react-hooks": "5.2.0",
     "globals": "15.15.0",
     "postcss": "^8.4.49",
+    "react-snap": "^1.23.0",
     "tailwindcss": "^3.4.17"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
