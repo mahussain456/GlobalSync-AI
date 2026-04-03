@@ -57,7 +57,7 @@
     "zod": "^3.24.4"
   },
   "scripts": {
-    "start": "craco build && serve -s build -l 3000 --single",
+    "start": "craco build && (node_modules/.bin/react-snap || true) && node_modules/.bin/serve -s build -l 3000 --single",
     "start:dev": "craco start",
     "build": "craco build",
     "postbuild": "react-snap || true",

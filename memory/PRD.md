@@ -1,8 +1,8 @@
 # GlobalSync AI — Product Requirements Document
 
-**Last Updated:** 2026-03-05  
-**Version:** 1.1 MVP  
-**Status:** Live
+**Last Updated:** 2026-04-03  
+**Version:** 1.2 MVP  
+**Status:** Live — SEO Static Rendering ACTIVE
 
 ---
 
@@ -195,6 +195,7 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 - [2026-03-28] **pSEO Phase 3 COMPLETE**: 3 new pillar blog posts added (remote work time zones, freelancer invoice currency, work-from-anywhere guide) — blog now has 8 total posts
 - [2026-03-28] **pSEO Phase 4 COMPLETE**: 6-item FAQ accordion section added to homepage before footer (expand/collapse, targets question-based searches)
 - [2026-03-28] **7-day rate trend chart COMPLETE**: Recharts `AreaChart` added to all 10 currency-pair pSEO pages. Green/red badge with % change, Low/High footer, ECB source attribution. Verified on 3 pairs (USD/INR +1.67%, USD/EUR -0.24% red TrendingDown icon confirmed, GBP/INR +1.53%).
+- [2026-04-03] **SSG Deployment COMPLETE**: `start` script updated to run `craco build && react-snap && serve -s build`. React-snap now pre-renders all 40 routes on every startup. Verified: homepage, city-pair, currency-pair, and blog pages all return populated HTML (not blank `<div id="root">`). Google can now index all pages.
 - [2026-03-28] **SEO/AEO Audit Remediation COMPLETE**:
   - Issue 3: `<html lang="en">` confirmed correct
   - Issue 5: Meta description trimmed to 139 chars (was 196) in both index.html and LandingPage.js; duplicate keywords meta removed
