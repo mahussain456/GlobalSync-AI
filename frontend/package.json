@@ -57,17 +57,25 @@
     "zod": "^3.24.4"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "craco build && serve -s build -l 3000 --single",
+    "start:dev": "craco start",
     "build": "craco build",
     "postbuild": "react-snap || true",
     "test": "craco test"
   },
   "reactSnap": {
-    "puppeteerArgs": ["--no-sandbox", "--disable-setuid-sandbox"],
+    "puppeteerArgs": [
+      "--no-sandbox",
+      "--disable-setuid-sandbox"
+    ],
+    "puppeteerExecutablePath": "/root/.cache/ms-playwright/chromium-1208/chrome-linux/chrome",
     "crawl": true,
     "skipThirdPartyRequests": true,
     "timeout": 12000,
-    "viewport": { "width": 1200, "height": 800 },
+    "viewport": {
+      "width": 1200,
+      "height": 800
+    },
     "include": [
       "/",
       "/dashboard",
@@ -131,6 +139,7 @@
     "globals": "15.15.0",
     "postcss": "^8.4.49",
     "react-snap": "^1.23.0",
+    "serve": "^14.2.6",
     "tailwindcss": "^3.4.17"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
