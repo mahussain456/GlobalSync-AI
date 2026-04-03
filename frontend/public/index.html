@@ -1,6 +1,21 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <!-- Canonical domain redirect: push emergent.host visitors to globalsync-ai.com -->
+        <script>
+          (function() {
+            var h = window.location.hostname;
+            if (h.endsWith('emergent.host') &&
+                !/HeadlessChrome/.test(navigator.userAgent)) {
+              window.location.replace(
+                'https://globalsync-ai.com' +
+                window.location.pathname +
+                window.location.search +
+                window.location.hash
+              );
+            }
+          })();
+        </script>
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-4DG7YWVLEM"></script>
         <script>
