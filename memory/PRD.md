@@ -195,7 +195,13 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 - [2026-03-28] **pSEO Phase 3 COMPLETE**: 3 new pillar blog posts added (remote work time zones, freelancer invoice currency, work-from-anywhere guide) — blog now has 8 total posts
 - [2026-03-28] **pSEO Phase 4 COMPLETE**: 6-item FAQ accordion section added to homepage before footer (expand/collapse, targets question-based searches)
 - [2026-03-28] **7-day rate trend chart COMPLETE**: Recharts `AreaChart` added to all 10 currency-pair pSEO pages. Green/red badge with % change, Low/High footer, ECB source attribution. Verified on 3 pairs (USD/INR +1.67%, USD/EUR -0.24% red TrendingDown icon confirmed, GBP/INR +1.53%).
-- [2026-03-28] **Deployment validated**: All env vars externalized, CORS correct, supervisor config valid. Ready for production deploy at `https://remote-sync-hub.emergent.host`. Type any amount → live conversion result. Swap button reverses direction. 10 clickable quick-reference tiles (1, 5, 10, 25…5000). Single API fetch shared between LiveRateWidget and QuickConvertWidget. Verified: 100 USD = ₹9,483.47 INR, swap shows inverse rate correctly. Users pick hour/minute/AM-PM, city label shows which direction, result updates instantly. Swap button reverses direction. Day-shift indicator shows "Next day"/"Previous day" when applicable. Half-hour timezone offsets (e.g. Dubai UTC+4 → Mumbai UTC+5:30) handled correctly.
+- [2026-03-28] **SEO/AEO Audit Remediation COMPLETE**:
+  - Issue 3: `<html lang="en">` confirmed correct
+  - Issue 5: Meta description trimmed to 139 chars (was 196) in both index.html and LandingPage.js; duplicate keywords meta removed
+  - Issue 4: Static JSON-LD in index.html updated to `globalsync-ai.com` URLs + FAQPage schema added (WebApplication + Organization + WebSite + FAQPage with 6 Q&As — visible to crawlers WITHOUT JavaScript)
+  - Issue 1: react-snap installed as `postbuild` script — pre-renders all 39 pages to static HTML at build time; `|| true` ensures build never fails if Chromium unavailable
+  - index.js updated for React 19: `hydrateRoot` for pre-rendered pages, `createRoot` for normal CSR
+  - reactSnap config in package.json: `--no-sandbox` for Kubernetes, explicit 39-URL include list, `crawl: true` Type any amount → live conversion result. Swap button reverses direction. 10 clickable quick-reference tiles (1, 5, 10, 25…5000). Single API fetch shared between LiveRateWidget and QuickConvertWidget. Verified: 100 USD = ₹9,483.47 INR, swap shows inverse rate correctly. Users pick hour/minute/AM-PM, city label shows which direction, result updates instantly. Swap button reverses direction. Day-shift indicator shows "Next day"/"Previous day" when applicable. Half-hour timezone offsets (e.g. Dubai UTC+4 → Mumbai UTC+5:30) handled correctly.
 
 ---
 
