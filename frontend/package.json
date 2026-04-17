@@ -57,16 +57,20 @@
     "zod": "^3.24.4"
   },
   "scripts": {
-    "start": "craco build && (node_modules/.bin/react-snap || true) && node static-server.js",
+    "start": "craco build && (node_modules/.bin/react-snap || true) && node scripts/generate-serve-config.js && node static-server.js",
     "start:dev": "craco start",
     "build": "craco build",
-    "postbuild": "react-snap || true",
+    "postbuild": "react-snap || true && node scripts/generate-serve-config.js",
     "test": "craco test"
   },
   "reactSnap": {
     "puppeteerArgs": [
       "--no-sandbox",
-      "--disable-setuid-sandbox"
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-gpu",
+      "--no-first-run",
+      "--no-zygote"
     ],
     "puppeteerExecutablePath": "/usr/bin/google-chrome",
     "crawl": true,
