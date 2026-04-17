@@ -68,7 +68,7 @@
       "--no-sandbox",
       "--disable-setuid-sandbox"
     ],
-    "puppeteerExecutablePath": "/root/.cache/ms-playwright/chromium-1208/chrome-linux/chrome",
+    "puppeteerExecutablePath": "/usr/bin/google-chrome",
     "crawl": true,
     "skipThirdPartyRequests": true,
     "timeout": 12000,
