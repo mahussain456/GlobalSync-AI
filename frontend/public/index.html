@@ -36,138 +36,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#050816" />
 
-        <!-- ===== PRIMARY SEO ===== -->
-        <title>Free AI-Powered World Clock &amp; Currency Converter for Remote Teams | GlobalSync AI</title>
-        <meta name="description" content="Free time zone converter &amp; live currency rates for 160+ currencies. Built for remote teams, freelancers &amp; global workers. No signup needed." />
-        <meta name="keywords" content="AI time zone converter, free world clock remote teams, meeting overlap planner, business hour overlap calculator, free currency converter 160 currencies, live exchange rates, time zone tool distributed teams, USD to INR live rate, EST to IST converter, best meeting time multiple time zones" />
-        <meta name="author" content="GlobalSync AI" />
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://globalsync-ai.com" />
-
-        <!-- ===== OPEN GRAPH (Facebook, LinkedIn) ===== -->
+        <!-- SEO tags (title, description, canonical, og:*, twitter:*) are injected
+             per-page by react-helmet-async in each page component. -->
+        <!-- og:image is global (same logo for all pages) -->
         <meta property="og:image" content="https://globalsync-ai.com/logo.png" />
-        <meta property="og:title" content="Free Time Zone &amp; Currency Converter for Remote Teams | GlobalSync AI" />
-        <meta property="og:description" content="AI-powered tool for remote teams. Convert time zones, plan meetings across cities, and get live currency rates for 160+ currencies. Free, no signup." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://globalsync-ai.com" />
-        <meta property="og:site_name" content="GlobalSync AI" />
         <meta property="og:locale" content="en_US" />
-
-        <!-- ===== TWITTER CARD ===== -->
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="GlobalSync AI — Free Time Zone &amp; Currency Converter" />
-        <meta name="twitter:description" content="Convert time zones, plan remote meetings, and check live currency rates. AI-powered. Free. 160+ currencies." />
 
         <!-- ===== PRECONNECT / FONTS ===== -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
-        <!-- ===== JSON-LD STRUCTURED DATA (static — visible to crawlers without JS) ===== -->
-        <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@graph": [
-            {
-              "@type": "WebApplication",
-              "@id": "https://globalsync-ai.com/#app",
-              "name": "GlobalSync AI",
-              "url": "https://globalsync-ai.com",
-              "description": "Free AI-powered world clock, time zone converter, meeting overlap planner, and live currency converter for remote teams, freelancers, and global workers. No signup required.",
-              "applicationCategory": "UtilitiesApplication",
-              "operatingSystem": "All",
-              "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD",
-                "description": "Free forever, no subscription required"
-              },
-              "featureList": [
-                "Time zone converter for 25+ cities",
-                "Live world clocks",
-                "Business hour overlap finder",
-                "AI meeting time planner",
-                "Live currency converter for 160+ currencies",
-                "7-day exchange rate trend chart",
-                "AI natural language query input"
-              ]
-            },
-            {
-              "@type": "Organization",
-              "@id": "https://globalsync-ai.com/#org",
-              "name": "GlobalSync AI",
-              "url": "https://globalsync-ai.com",
-              "logo": "https://globalsync-ai.com/logo-primary.png",
-              "description": "Free AI-powered tools for remote teams and global workers"
-            },
-            {
-              "@type": "WebSite",
-              "@id": "https://globalsync-ai.com/#website",
-              "url": "https://globalsync-ai.com",
-              "name": "GlobalSync AI",
-              "description": "Free time zone and currency converter for remote teams",
-              "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://globalsync-ai.com/dashboard?q={search_term_string}",
-                "query-input": "required name=search_term_string"
-              }
-            },
-            {
-              "@type": "FAQPage",
-              "mainEntity": [
-                {
-                  "@type": "Question",
-                  "name": "What is GlobalSync AI?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "GlobalSync AI is a free, AI-powered tool for remote teams, freelancers, and digital nomads. It combines a real-time world clock, time zone converter, meeting overlap planner, and live currency converter (160+ currencies) in one place — no account or signup required."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Is GlobalSync AI free to use?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, completely free. There are no subscription fees, no signup requirement, and no usage limits. All features — time zone conversion, meeting planning, AI natural language input, and live currency conversion — are available to everyone at zero cost."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "What is the best free time zone converter for remote teams?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "The best time zone converter for remote teams shows live clocks for multiple cities simultaneously, calculates business-hour overlaps automatically, and supports natural language queries. GlobalSync AI does all three: compare up to 5 cities, find the best meeting window, and ask questions like 'What time is it in Tokyo when it is 9 AM in New York?'"
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "How do I find the best meeting time across multiple time zones?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Use GlobalSync AI's Meeting Planner: select your cities (up to 5) and the tool instantly shows the window where all cities' business hours overlap. You can also type a natural language query like 'Best meeting time for New York, London, and Mumbai' for an immediate AI-generated recommendation."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Does GlobalSync AI support live currency exchange rates?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes. GlobalSync AI's currency converter fetches real-time exchange rates for 160+ currencies via ExchangeRate-API. Convert USD to INR, EUR, GBP, AED, PKR, NGN, and many more currencies — no account needed."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Can I use GlobalSync AI on mobile?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes. GlobalSync AI is fully responsive and works on all devices — smartphones, tablets, and desktops. No app download is required; simply open globalsync-ai.com in any mobile browser."
-                  }
-                }
-              ]
-            }
-          ]
-        }
-        </script>
 
         <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>
         <script src="https://assets.emergent.sh/scripts/emergent-main.js"></script>

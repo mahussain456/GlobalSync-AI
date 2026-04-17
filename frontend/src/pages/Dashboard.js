@@ -8,6 +8,7 @@ import TimeConverter from "@/components/TimeConverter";
 import CurrencyConverter from "@/components/CurrencyConverter";
 import HistoryPanel from "@/components/HistoryPanel";
 import OnboardingModal from "@/components/OnboardingModal";
+import SEOHead from "@/components/SEOHead";
 
 export default function Dashboard() {
   const [searchParams] = useSearchParams();
@@ -41,6 +42,21 @@ export default function Dashboard() {
 
   return (
     <>
+      <SEOHead
+        title="GlobalSync AI — Time Zone & Currency Converter Dashboard"
+        description="Convert time zones, plan meetings across cities, and check live currency rates for 160+ currencies. Free AI-powered dashboard — no signup required."
+        canonical="/dashboard"
+        keywords="time zone converter, currency converter, meeting planner, world clock, live exchange rates"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "GlobalSync AI Dashboard",
+          "url": "https://globalsync-ai.com/dashboard",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "All",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+        }}
+      />
       {showOnboarding && <OnboardingModal onComplete={handleOnboardingComplete} />}
 
       <div className="min-h-screen bg-[#F8FAFC]" data-testid="dashboard">

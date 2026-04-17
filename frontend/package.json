@@ -57,7 +57,7 @@
     "zod": "^3.24.4"
   },
   "scripts": {
-    "start": "craco build && (node_modules/.bin/react-snap || true) && node_modules/.bin/serve -s build -l 3000 --single",
+    "start": "craco build && (node_modules/.bin/react-snap || true) && node static-server.js",
     "start:dev": "craco start",
     "build": "craco build",
     "postbuild": "react-snap || true",
@@ -108,6 +108,11 @@
       "/currency/usd-to-sar",
       "/currency/gbp-to-inr",
       "/currency/usd-to-aed",
+      "/blog/best-free-time-zone-converter-remote-teams-2026",
+      "/blog/schedule-meetings-across-time-zones-2026",
+      "/blog/usd-to-inr-freelancers-live-currency-converter-2026",
+      "/blog/digital-nomad-toolkit-2026",
+      "/blog/best-time-to-work-with-us-clients-india-pakistan-asia",
       "/blog/remote-work-time-zones-productivity-guide",
       "/blog/best-currency-to-invoice-freelancers-usd-eur-gbp",
       "/blog/work-from-anywhere-setup-guide-2026"

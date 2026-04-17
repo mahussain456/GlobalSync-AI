@@ -29,6 +29,8 @@ export default function SEOHead({
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={fullCanonical} />
       <meta property="og:site_name" content="GlobalSync AI" />
+      <meta property="og:image" content="https://globalsync-ai.com/logo.png" />
+      <meta property="og:locale" content="en_US" />
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />

@@ -195,7 +195,13 @@ GlobalSync AI is a free, AI-powered time zone and currency conversion assistant 
 - [2026-03-28] **pSEO Phase 3 COMPLETE**: 3 new pillar blog posts added (remote work time zones, freelancer invoice currency, work-from-anywhere guide) — blog now has 8 total posts
 - [2026-03-28] **pSEO Phase 4 COMPLETE**: 6-item FAQ accordion section added to homepage before footer (expand/collapse, targets question-based searches)
 - [2026-03-28] **7-day rate trend chart COMPLETE**: Recharts `AreaChart` added to all 10 currency-pair pSEO pages. Green/red badge with % change, Low/High footer, ECB source attribution. Verified on 3 pairs (USD/INR +1.67%, USD/EUR -0.24% red TrendingDown icon confirmed, GBP/INR +1.53%).
-- [2026-04-03] **SSG Deployment COMPLETE**: `start` script updated to run `craco build && react-snap && serve -s build`. React-snap now pre-renders all 40 routes on every startup. Verified: homepage, city-pair, currency-pair, and blog pages all return populated HTML (not blank `<div id="root">`). Google can now index all pages.
+- [2026-04-17] **SEO Overhaul COMPLETE** — Every route now serves unique, fully-rendered HTML:
+  - Replaced `serve --single` with custom Express server (`static-server.js`) that correctly routes each URL to its pre-rendered HTML file
+  - Removed all static SEO tags from `public/index.html` (title, canonical, description, og:*, twitter:*, JSON-LD) that were polluting every page with homepage data
+  - Each route now has exactly 1 unique title, 1 canonical, 1 description, 1 JSON-LD block
+  - Added 5 missing blog slugs to react-snap include (now all 8 blog posts pre-rendered)
+  - Added SEOHead to Dashboard with structured data
+  - Added og:image + og:locale to SEOHead component `start` script updated to run `craco build && react-snap && serve -s build`. React-snap now pre-renders all 40 routes on every startup. Verified: homepage, city-pair, currency-pair, and blog pages all return populated HTML (not blank `<div id="root">`). Google can now index all pages.
 - [2026-03-28] **SEO/AEO Audit Remediation COMPLETE**:
   - Issue 3: `<html lang="en">` confirmed correct
   - Issue 5: Meta description trimmed to 139 chars (was 196) in both index.html and LandingPage.js; duplicate keywords meta removed
