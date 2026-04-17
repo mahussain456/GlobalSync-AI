@@ -374,6 +374,27 @@ export default function CurrencyPairPage() {
           </div>
         </section>
 
+        {/* How this rate affects you — editorial */}
+        <section className="mb-8 bg-zinc-50 border border-zinc-200 rounded-2xl p-6">
+          <h2 className="font-heading text-xl font-bold text-zinc-900 mb-4">
+            How the {fromMeta.code}/{toMeta.code} Rate Affects Your Income
+          </h2>
+          <div className="space-y-3 text-zinc-600 text-sm leading-relaxed">
+            <p>
+              The {fromMeta.name} to {toMeta.name} exchange rate is more than a financial statistic — for anyone who earns, spends, or invoices across these two currencies, it directly determines their real-world purchasing power. A 5% shift in {fromMeta.code}/{toMeta.code} over a quarter changes the value of every invoice, salary payment, or remittance sent between these currencies.
+            </p>
+            <p>
+              <strong className="text-zinc-800">The mid-market rate vs. what you actually receive.</strong> The rate shown above is the mid-market rate — the true benchmark used between major banks. When you convert through a bank or payment app, the provider adds a margin: traditional banks typically charge 2–4% above mid-market; specialist services like Wise, Revolut, or Remitly charge 0.5–1.5%. On a {fromMeta.symbol}10,000 transaction, that difference is {toMeta.symbol}500–{toMeta.symbol}2,500 in {toMeta.code}. Always compare the total amount you receive, not just the headline rate.
+            </p>
+            <p>
+              <strong className="text-zinc-800">Timing your conversions.</strong> The 7-day trend chart above shows recent momentum in the {fromMeta.code}/{toMeta.code} pair. A rising chart means {fromMeta.code} is buying more {toMeta.code} than last week. A falling chart means the opposite. For large or predictable conversions, monitoring this trend can meaningfully improve your outcome — though short-term trends do not predict future movements. Convert when rates are favorable rather than on a rigid fixed schedule.
+            </p>
+            <p>
+              <strong className="text-zinc-800">Managing currency risk in contracts.</strong> If you invoice in {fromMeta.code} but your expenses are in {toMeta.code}, you carry exchange rate risk on every outstanding invoice. Strategies to reduce this risk include: adding a currency-adjustment clause to contracts (price revises if the rate moves more than 3–5% from the invoice date), invoicing in {toMeta.code} to shift risk to the client, or using a multi-currency account to hold {fromMeta.code} until a favorable rate appears.
+            </p>
+          </div>
+        </section>
+
         {/* Remote worker tip */}
         <section className="mb-8 bg-emerald-50 border border-emerald-100 rounded-2xl p-6">
           <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3">
@@ -384,7 +405,7 @@ export default function CurrencyPairPage() {
             to="/currency-converter"
             className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-emerald-700 hover:text-emerald-800 transition-colors"
           >
-            Open full currency converter <ArrowRight className="w-4 h-4" />
+            Convert any of 160+ currencies with live exchange rates <ArrowRight className="w-4 h-4" />
           </Link>
         </section>
 
@@ -407,13 +428,13 @@ export default function CurrencyPairPage() {
         <section className="mb-8 bg-zinc-900 text-white rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h2 className="font-heading text-xl font-bold mb-1">Convert any amount or currency</h2>
-            <p className="text-zinc-400 text-sm">160+ currencies, 7-day trend chart, and AI natural language input.</p>
+            <p className="text-zinc-400 text-sm">160+ currencies, 7-day trend charts, and AI natural language input — free, no account needed.</p>
           </div>
           <Link
             to="/currency-converter"
             className="shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-zinc-900 font-semibold text-sm hover:bg-zinc-100 transition-colors"
           >
-            Open converter <ArrowRight className="w-4 h-4" />
+            Open live currency converter <ArrowRight className="w-4 h-4" />
           </Link>
         </section>
 

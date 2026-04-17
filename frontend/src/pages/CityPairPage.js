@@ -216,6 +216,27 @@ export default function CityPairPage() {
           <p className="text-zinc-600 leading-relaxed">{pairData.context}</p>
         </section>
 
+        {/* Working across these cities editorial */}
+        <section className="mb-8 bg-zinc-50 border border-zinc-200 rounded-2xl p-6">
+          <h2 className="font-heading text-xl font-bold text-zinc-900 mb-4">
+            Working Remotely Across {cityA.name} and {cityB.name}
+          </h2>
+          <div className="space-y-3 text-zinc-600 text-sm leading-relaxed">
+            <p>
+              The {cityA.abbr} to {cityB.abbr} corridor is one of the most navigated in global remote work. With {cityA.name} serving as {cityA.role} and {cityB.name} as {cityB.role}, this pairing spans real geographic, cultural, and scheduling challenges that benefit from deliberate team habits.
+            </p>
+            <p>
+              <strong className="text-zinc-800">For synchronous collaboration:</strong> Use the time converter above to identify the exact window where both cities fall within their standard 9 AM–5 PM workday. Schedule recurring standups at a fixed local time each week — and always double-check ahead of Daylight Saving Time switches, which can silently shift the gap by an hour on one side without the other team noticing.
+            </p>
+            <p>
+              <strong className="text-zinc-800">For asynchronous workflows:</strong> Leave detailed written updates at the close of your workday so the other city can action them at the start of theirs. Tools like Loom (async video), Notion or Confluence (shared documentation), and Linear or Jira (project tracking) are the backbone of effective async work across the {cityA.name}–{cityB.name} corridor. The more context you provide in each async message, the fewer back-and-forth roundtrips you create.
+            </p>
+            <p>
+              <strong className="text-zinc-800">On meeting fairness:</strong> When the overlap window is small or inconvenient for one side, rotate who takes the off-hours call. A schedule that permanently assigns early mornings to one team or late evenings to another creates invisible resentment. Document the rotation explicitly and review it quarterly. Teams that share the inconvenience equitably maintain stronger collaboration and lower turnover.
+            </p>
+          </div>
+        </section>
+
         {/* Meeting tip */}
         <section className="mb-8 bg-blue-50 border border-blue-100 rounded-2xl p-6">
           <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3 flex items-center gap-2">
@@ -227,7 +248,7 @@ export default function CityPairPage() {
             to="/meeting-planner"
             className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
           >
-            Open full meeting overlap planner <ArrowRight className="w-4 h-4" />
+            Find the best meeting time for any city combination <ArrowRight className="w-4 h-4" />
           </Link>
         </section>
 
@@ -250,13 +271,13 @@ export default function CityPairPage() {
         <section className="mb-8 bg-zinc-900 text-white rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h2 className="font-heading text-xl font-bold mb-1">Need more cities?</h2>
-            <p className="text-zinc-400 text-sm">Compare up to 5 cities simultaneously with our full AI-powered time zone converter.</p>
+            <p className="text-zinc-400 text-sm">Compare up to 5 cities simultaneously and find business-hour overlaps instantly.</p>
           </div>
           <Link
             to="/time-zone-converter"
             className="shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-zinc-900 font-semibold text-sm hover:bg-zinc-100 transition-colors"
           >
-            Open converter <ArrowRight className="w-4 h-4" />
+            Open free time zone converter <ArrowRight className="w-4 h-4" />
           </Link>
         </section>
 
