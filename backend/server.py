@@ -757,6 +757,87 @@ async def get_news_feed():
         "server_time": datetime.now(timezone.utc).isoformat(),
     }
 
+import sys as _sys
+
+@api_router.get("/build-info")
+async def api_build_info():
+    """
+    Deployment diagnostic endpoint.
+    Returns build metadata, react-snap status, and per-route pre-rendered titles.
+    Cache-Control: no-store so Cloudflare never serves a stale response.
+    """
+    BUILD_DIR = Path("/app/frontend/build")
+    SKIP_DIRS = {"static", "media", "fonts", "icons"}
+
+    def extract_title(html_path: Path):
+        if not html_path.exists():
+            return None
+        try:
+            content = html_path.read_text(encoding="utf-8", errors="ignore")
+            m = re.search(r"<title>([^<]*)</title>", content, re.IGNORECASE)
+            return m.group(1) if m else None
+        except Exception:
+            return None
+
+    def count_pages(directory: Path, is_root: bool = True) -> int:
+        count = 1 if is_root and (directory / "index.html").exists() else 0
+        try:
+            for entry in directory.iterdir():
+                if entry.is_dir() and entry.name not in SKIP_DIRS:
+                    if (entry / "index.html").exists():
+                        count += 1
+                    count += count_pages(entry, is_root=False)
+        except Exception:
+            pass
+        return count
+
+    ROUTES = [
+        "/",
+        "/time-zone-converter",
+        "/currency-converter",
+        "/meeting-planner",
+        "/time/new-york-to-london",
+        "/currency/usd-to-inr",
+        "/blog/best-free-time-zone-converter-remote-teams-2026",
+        "/blog/remote-work-time-zones-productivity-guide",
+        "/blog/best-currency-to-invoice-freelancers-usd-eur-gbp",
+    ]
+
+    build_info_data = None
+    try:
+        build_info_data = json.loads((BUILD_DIR / "BUILD_INFO.json").read_text())
+    except Exception:
+        pass
+
+    per_route_titles = {}
+    for route in ROUTES:
+        html_path = (
+            BUILD_DIR / "index.html"
+            if route == "/"
+            else BUILD_DIR / route.lstrip("/") / "index.html"
+        )
+        per_route_titles[route] = extract_title(html_path)
+
+    payload = {
+        "now": datetime.now(timezone.utc).isoformat(),
+        "build_timestamp": build_info_data.get("build_timestamp") if build_info_data else None,
+        "git_commit_sha": build_info_data.get("git_commit_sha") if build_info_data else None,
+        "react_snap_ran": build_info_data.get("react_snap_ran") if build_info_data else None,
+        "react_snap_exit_code": build_info_data.get("react_snap_exit_code") if build_info_data else None,
+        "react_snap_page_count": count_pages(BUILD_DIR),
+        "per_route_titles": per_route_titles,
+        "server_process_argv": " ".join(_sys.argv),
+        "server_script_path": str(Path(__file__).resolve()),
+        "node_version": "N/A — Python FastAPI",
+        "python_version": _sys.version,
+    }
+
+    from fastapi.responses import JSONResponse as _JSONResponse
+    return _JSONResponse(
+        content=payload,
+        headers={"Cache-Control": "no-store, max-age=0"},
+    )
+
 app.include_router(api_router)
 app.add_middleware(
     CORSMiddleware,

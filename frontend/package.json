@@ -57,10 +57,10 @@
     "zod": "^3.24.4"
   },
   "scripts": {
-    "start": "craco build && (node_modules/.bin/react-snap || true) && node scripts/generate-serve-config.js && node static-server.js",
+    "start": "craco build && node static-server.js",
     "start:dev": "craco start",
     "build": "craco build",
-    "postbuild": "react-snap || true && node scripts/generate-serve-config.js",
+    "postbuild": "node scripts/run-snap-with-info.js && node scripts/generate-serve-config.js",
     "test": "craco test"
   },
   "reactSnap": {
