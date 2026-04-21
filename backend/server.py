@@ -8,12 +8,12 @@ from slowapi.errors import RateLimitExceeded
 import os, logging, pytz, requests, uuid, json, re, asyncio, resend
 import httpx
 import xml.etree.ElementTree as ET
+import anthropic
 from difflib import SequenceMatcher
 from datetime import datetime, timezone, timedelta, date
 from pathlib import Path
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
-from emergentintegrations.llm.chat import LlmChat, UserMessage
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -28,11 +28,19 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 api_router = APIRouter(prefix="/api")
 
-EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY', '')
+EMERGENT_LLM_KEY = os.environ.get('ANTHROPIC_API_KEY', '') or os.environ.get('EMERGENT_LLM_KEY', '')
 resend.api_key = os.environ.get('RESEND_API_KEY', '')
 CONTACT_RECIPIENT_EMAIL = os.environ.get('CONTACT_RECIPIENT_EMAIL', '')
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# Anthropic client (lazy — only used if key available)
+_anthropic_client = None
+def _get_anthropic():
+    global _anthropic_client
+    if _anthropic_client is None and EMERGENT_LLM_KEY:
+        _anthropic_client = anthropic.Anthropic(api_key=EMERGENT_LLM_KEY)
+    return _anthropic_client
 
 # ============= City Timezone Mapping =============
 CITY_TIMEZONES = {
@@ -203,16 +211,17 @@ def list_popular_cities():
 @api_router.post("/ai/parse")
 @limiter.limit("20/minute")
 async def parse_ai_intent(req: AIParseRequest, request: Request):
-    if not EMERGENT_LLM_KEY:
+    client_ai = _get_anthropic()
+    if not client_ai:
         return fallback_parse(req.query)
     try:
-        chat = LlmChat(
-            api_key=EMERGENT_LLM_KEY,
-            session_id=str(uuid.uuid4()),
-            system_message=AI_SYSTEM_PROMPT
-        ).with_model("anthropic", "claude-sonnet-4-5-20250929")
-        response = await chat.send_message(UserMessage(text=req.query))
-        clean = response.strip()
+        msg = client_ai.messages.create(
+            model="claude-haiku-4-5",
+            max_tokens=256,
+            system=AI_SYSTEM_PROMPT,
+            messages=[{"role": "user", "content": req.query}],
+        )
+        clean = msg.content[0].text.strip()
         if clean.startswith("```"):
             clean = re.sub(r"```(?:json)?\n?", "", clean).strip().rstrip("`").strip()
         result = json.loads(clean)
@@ -524,10 +533,12 @@ RSS_FEEDS = {
     "ai-news": [
         {"url": "https://techcrunch.com/category/artificial-intelligence/feed/", "source": "TechCrunch"},
         {"url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml", "source": "The Verge"},
+        {"url": "https://feeds.feedburner.com/venturebeat/SZYF", "source": "VentureBeat AI"},
     ],
     "tips": [
-        {"url": "https://bensbites.beehiiv.com/feed", "source": "Ben's Bites"},
+        {"url": "https://bensbites.com/feed", "source": "Ben's Bites"},
         {"url": "https://zapier.com/blog/feeds/latest/", "source": "Zapier"},
+        {"url": "https://www.makeuseof.com/feed/", "source": "MakeUseOf"},
     ],
 }
 
@@ -620,33 +631,35 @@ async def _fetch_rss(url: str, source_name: str) -> List[Dict]:
 
 async def _summarize(title: str, description: str) -> str:
     """Call Claude Haiku to produce a 2-sentence remote-worker-focused summary."""
-    if not EMERGENT_LLM_KEY:
+    client_ai = _get_anthropic()
+    if not client_ai:
         return (description[:220] + "…") if len(description) > 220 else description
 
     desc_text = description.strip() if description and len(description.strip()) > 30 else ""
     context_block = f"Description: {desc_text[:400]}" if desc_text else "No description available — summarize from the title only."
 
-    system = (
-        "You are an editor for GlobalSync AI — a tool used by remote workers, "
-        "freelancers, and global teams. Produce only the final output; no meta-commentary, "
-        "no preamble, no markdown formatting."
-    )
-    user = (
+    user_msg = (
         "Write a 2-sentence summary of this article. "
         "Focus on what it means for remote workers, freelancers, or people working across time zones. "
         "Be specific and practical. Return ONLY the 2 sentences — no intro, no markdown, no headers.\n"
         f"Title: {title}\n"
         f"{context_block}"
     )
+    system_msg = (
+        "You are an editor for GlobalSync AI — a tool used by remote workers, "
+        "freelancers, and global teams. Produce only the final output; no meta-commentary, "
+        "no preamble, no markdown formatting."
+    )
     try:
-        chat = LlmChat(
-            api_key=EMERGENT_LLM_KEY,
-            session_id=str(uuid.uuid4()),
-            system_message=system,
-        ).with_model("anthropic", "claude-haiku-4-5-20251001")
-        response = await chat.send_message(UserMessage(text=user))
-        # Strip any markdown formatting that slips through
-        clean = re.sub(r'\*\*([^*]+)\*\*', r'\1', response)
+        msg = await asyncio.to_thread(
+            client_ai.messages.create,
+            model="claude-haiku-4-5",
+            max_tokens=200,
+            system=system_msg,
+            messages=[{"role": "user", "content": user_msg}],
+        )
+        clean = msg.content[0].text.strip()
+        clean = re.sub(r'\*\*([^*]+)\*\*', r'\1', clean)
         clean = re.sub(r'\*([^*]+)\*', r'\1', clean)
         clean = re.sub(r'^#+\s*', '', clean, flags=re.MULTILINE)
         clean = re.sub(r'\s+', ' ', clean).strip()
