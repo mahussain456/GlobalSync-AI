@@ -89,13 +89,32 @@ export default function Dashboard() {
 
         <div className="max-w-6xl mx-auto px-6 py-8">
           {/* AI Input */}
-          <div className="mb-8 fade-in-up">
+          <div className="mb-6 fade-in-up">
             <AIInput
               onResult={handleAIResult}
               initialQuery={pendingQuery}
               autoSubmit={!!pendingQuery}
               onAutoSubmitDone={() => setPendingQuery("")}
             />
+          </div>
+
+          {/* Stats Row */}
+          <div className="grid grid-cols-3 gap-3 mb-6">
+            {[
+              { icon: Globe,      label: "25+ Cities",       sub: "Time Zones",       color: "text-blue-500",   bg: "bg-blue-50"   },
+              { icon: TrendingUp, label: "160+ Currencies",  sub: "Live Rates",        color: "text-emerald-500",bg: "bg-emerald-50"},
+              { icon: Sparkles,   label: "AI-Powered",       sub: "Natural Language",  color: "text-violet-500", bg: "bg-violet-50" },
+            ].map(({ icon: Icon, label, sub, color, bg }) => (
+              <div key={label} className="dash-stat-card">
+                <div className={`w-9 h-9 ${bg} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                  <Icon className={`w-4 h-4 ${color}`} />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-sm font-bold text-zinc-900 font-heading truncate">{label}</div>
+                  <div className="text-xs text-zinc-400 truncate">{sub}</div>
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Tabs */}

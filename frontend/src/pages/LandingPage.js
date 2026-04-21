@@ -270,11 +270,12 @@ function HomepageFAQSection() {
                   className={`w-4 h-4 text-zinc-400 flex-shrink-0 transition-transform duration-200 ${openIdx === i ? "rotate-180" : ""}`}
                 />
               </button>
-              {openIdx === i && (
-                <div className="px-5 pb-5">
-                  <p className="text-sm text-zinc-600 leading-relaxed border-t border-zinc-100 pt-4">{faq.a}</p>
+              <div className={`faq-answer${openIdx === i ? " open" : ""}`}>
+                <div className="flex gap-3 px-5 pb-5 border-t border-zinc-100 pt-4">
+                  <div className={`faq-left-bar ${openIdx === i ? "opacity-100" : "opacity-0"}`} />
+                  <p className="text-sm text-zinc-600 leading-relaxed">{faq.a}</p>
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>
@@ -283,9 +284,50 @@ function HomepageFAQSection() {
   );
 }
 
+function useTypewriter(items, typingSpeed = 70, deletingSpeed = 40, pauseMs = 2000) {
+  const [text, setText] = useState("");
+  useEffect(() => {
+    let idx = 0, charIdx = 0, deleting = false, timer;
+    const tick = () => {
+      const current = items[idx];
+      if (!deleting) {
+        charIdx++;
+        setText(current.slice(0, charIdx));
+        if (charIdx === current.length) { deleting = true; timer = setTimeout(tick, pauseMs); return; }
+      } else {
+        charIdx--;
+        setText(current.slice(0, charIdx));
+        if (charIdx === 0) { deleting = false; idx = (idx + 1) % items.length; timer = setTimeout(tick, 500); return; }
+      }
+      timer = setTimeout(tick, deleting ? deletingSpeed : typingSpeed);
+    };
+    timer = setTimeout(tick, 900);
+    return () => clearTimeout(timer);
+  }, [items, typingSpeed, deletingSpeed, pauseMs]);
+  return text;
+}
+
 export default function LandingPage() {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
+  const typedPlaceholder = useTypewriter(EXAMPLE_QUERIES);
+
+  const handleTilt = (e) => {
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const rx = ((e.clientY - rect.top)  / rect.height - 0.5) * -14;
+    const ry = ((e.clientX - rect.left) / rect.width  - 0.5) *  14;
+    card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
+    card.style.transition = "transform 0.1s ease";
+    card.style.boxShadow = "0 20px 40px rgba(0,0,0,0.12)";
+  };
+  const handleTiltReset = (e) => {
+    const card = e.currentTarget;
+    card.style.transform = "";
+    card.style.transition = "transform 0.4s ease, box-shadow 0.4s ease";
+    card.style.boxShadow = "";
+  };
 
   const handleGo = (q) => {
     const text = (q || query).trim();
@@ -309,6 +351,7 @@ export default function LandingPage() {
         <div className="orb orb-blue" />
         <div className="orb orb-purple" />
         <div className="orb orb-pink" />
+        <div className="orb orb-teal" />
 
         {/* Navbar */}
         <nav className="relative z-10 max-w-7xl mx-auto w-full px-6 py-5 flex items-center justify-between">
@@ -380,8 +423,8 @@ export default function LandingPage() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleGo()}
-                    placeholder='e.g. "Best time for NY, London, Tokyo"'
-                    className="w-full pl-9 pr-3 py-3 bg-transparent text-white placeholder-white/30 outline-none text-sm"
+                    placeholder={typedPlaceholder || 'e.g. "Best meeting time for NY, London, Tokyo"'}
+                    className="w-full pl-9 pr-3 py-3 bg-transparent text-white placeholder-white/40 outline-none text-sm"
                     data-testid="landing-query-input"
                   />
                 </div>
@@ -452,7 +495,11 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* Card 1 */}
-            <div className="feature-card-blue rounded-3xl p-7 hover:-translate-y-1 transition-transform duration-300 fade-in-up stagger-1">
+            <div
+              className="feature-card-blue rounded-3xl p-7 fade-in-up stagger-1"
+              onMouseMove={handleTilt}
+              onMouseLeave={handleTiltReset}
+            >
               <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-blue-500/30">
                 <Clock className="w-6 h-6 text-white" />
               </div>
@@ -468,7 +515,11 @@ export default function LandingPage() {
             </div>
 
             {/* Card 2 */}
-            <div className="feature-card-green rounded-3xl p-7 hover:-translate-y-1 transition-transform duration-300 fade-in-up stagger-2">
+            <div
+              className="feature-card-green rounded-3xl p-7 fade-in-up stagger-2"
+              onMouseMove={handleTilt}
+              onMouseLeave={handleTiltReset}
+            >
               <div className="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-emerald-500/30">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
@@ -483,7 +534,11 @@ export default function LandingPage() {
             </div>
 
             {/* Card 3 */}
-            <div className="feature-card-purple rounded-3xl p-7 hover:-translate-y-1 transition-transform duration-300 fade-in-up stagger-3">
+            <div
+              className="feature-card-purple rounded-3xl p-7 fade-in-up stagger-3"
+              onMouseMove={handleTilt}
+              onMouseLeave={handleTiltReset}
+            >
               <div className="w-12 h-12 bg-violet-600 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-violet-500/30">
                 <Zap className="w-6 h-6 text-white" />
               </div>

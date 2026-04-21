@@ -16,6 +16,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
   const [query, setQuery] = useState(initialQuery);
   const [loading, setLoading] = useState(false);
   const [detectedIntent, setDetectedIntent] = useState(null);
+  const [isFocused, setIsFocused] = useState(false);
   const autoSubmittedRef = useRef(false);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
   const intentMeta = detectedIntent ? INTENT_LABELS[detectedIntent] : null;
 
   return (
-    <div data-testid="ai-input-section">
+    <div data-testid="ai-input-section" className={`ai-glow-wrap${isFocused ? " focused" : ""}`}>
       <div className="glass-light rounded-2xl p-3 shadow-lg shadow-zinc-900/5 border border-zinc-200/60">
         <div className="flex items-center gap-3">
           <div className="flex-1 relative">
@@ -59,6 +60,8 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
               value={query}
               onChange={(e) => { setQuery(e.target.value); setDetectedIntent(null); }}
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               placeholder='Ask anything: "Best meeting time for NY, London, Tokyo" or "Convert 100 USD to EUR"'
               className="w-full pl-14 pr-10 py-3.5 bg-transparent text-zinc-800 placeholder-zinc-400 outline-none text-sm sm:text-base font-medium"
               data-testid="ai-query-input"

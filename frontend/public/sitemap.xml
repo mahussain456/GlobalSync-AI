@@ -1,102 +1,104 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
+  <!-- Core Pages -->
   <url>
     <loc>https://globalsync-ai.com/</loc>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-04-21</lastmod>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/dashboard</loc>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/time-zone-converter</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/currency-converter</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/meeting-planner</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/about</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/contact</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/privacy-policy</loc>
-    <changefreq>yearly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/terms-of-service</loc>
-    <changefreq>yearly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/news</loc>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/blog</loc>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/blog/best-free-time-zone-converter-remote-teams-2026</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/blog/schedule-meetings-across-time-zones-2026</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/blog/usd-to-inr-freelancers-live-currency-converter-2026</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/blog/digital-nomad-toolkit-2026</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://globalsync-ai.com/blog/best-time-to-work-with-us-clients-india-pakistan-asia</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
@@ -104,121 +106,121 @@
   <!-- City-to-City Time Zone Converter Pages -->
   <url>
     <loc>https://globalsync-ai.com/time/new-york-to-london</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/time/london-to-tokyo</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/time/dubai-to-mumbai</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/time/san-francisco-to-new-york</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/time/lisbon-to-new-york</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/time/bali-to-london</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/time/austin-to-berlin</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/time/new-york-to-dubai</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/time/london-to-dubai</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/time/new-york-to-tokyo</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Live Currency Pair Converter Pages -->
   <url>
     <loc>https://globalsync-ai.com/currency/usd-to-eur</loc>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/currency/usd-to-gbp</loc>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/currency/eur-to-gbp</loc>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/currency/usd-to-inr</loc>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/currency/usd-to-pkr</loc>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/currency/usd-to-ngn</loc>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/currency/usd-to-brl</loc>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/currency/usd-to-sar</loc>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/currency/gbp-to-inr</loc>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/currency/usd-to-aed</loc>
-    <changefreq>daily</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Blog Posts (additional) -->
   <url>
     <loc>https://globalsync-ai.com/blog/remote-work-time-zones-productivity-guide</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/blog/best-currency-to-invoice-freelancers-usd-eur-gbp</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://globalsync-ai.com/blog/work-from-anywhere-setup-guide-2026</loc>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-04-21</lastmod>`n    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 

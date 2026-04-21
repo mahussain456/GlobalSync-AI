@@ -16,6 +16,8 @@ import BlogPostPage from "@/pages/BlogPostPage";
 import NewsPage from "@/pages/NewsPage";
 import CityPairPage from "@/pages/CityPairPage";
 import CurrencyPairPage from "@/pages/CurrencyPairPage";
+import NotFoundPage from "@/pages/NotFoundPage";
+import CookieConsent from "@/components/CookieConsent";
 
 function App() {
   return (
@@ -37,9 +39,11 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="/terms-of-service" element={<TermsOfServicePage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        <Toaster position="top-right" richColors />
+        <CookieConsent />
       </BrowserRouter>
-      <Toaster position="top-right" richColors />
     </div>
   );
 }

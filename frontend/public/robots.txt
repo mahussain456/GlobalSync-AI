@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /admin
 
+# Sitemap
 Sitemap: https://globalsync-ai.com/sitemap.xml

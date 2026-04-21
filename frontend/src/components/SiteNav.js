@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const NAV_LINKS = [
   { label: "Time Zones",      to: "/time-zone-converter" },
@@ -13,9 +13,16 @@ const NAV_LINKS = [
 export default function SiteNav() {
   const { pathname } = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="bg-white border-b border-zinc-100 sticky top-0 z-50 shadow-sm">
+    <header className={`bg-white border-b border-zinc-100 sticky top-0 z-50 transition-all duration-300 ${scrolled ? "nav-glass" : "shadow-sm"}`}>
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
         {/* Logo */}
         <Link to="/" className="shrink-0">
@@ -28,10 +35,10 @@ export default function SiteNav() {
             <Link
               key={to}
               to={to}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
                 pathname === to
-                  ? "bg-zinc-100 text-zinc-900"
-                  : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50"
+                  ? "nav-link-active"
+                  : "font-medium text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50"
               }`}
               data-testid={`sitenav-${label.toLowerCase().replace(/\s/g, "-")}`}
             >
