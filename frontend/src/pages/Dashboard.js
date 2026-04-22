@@ -68,7 +68,12 @@ export default function Dashboard() {
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div className="flex items-center gap-2">
-                <img src="/logo-dark.png.png" alt="GlobalSync AI" className="h-10 w-auto" />
+                <img
+                  src="/logo-dark.png.png"
+                  alt="GlobalSync AI"
+                  className="h-14 w-auto transition-transform duration-300 hover:scale-105"
+                  style={{ filter: "drop-shadow(0 0 16px rgba(27,122,154,0.45))" }}
+                />
               </div>
             </div>
 

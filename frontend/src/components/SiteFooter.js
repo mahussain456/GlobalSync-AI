@@ -50,7 +50,8 @@ export default function SiteFooter() {
               <img
                 src="/logo-dark.png.png"
                 alt="GlobalSync AI"
-                className="h-12 w-auto mb-4"
+                className="h-16 w-auto mb-4 transition-transform duration-300 hover:scale-105"
+                style={{ filter: "drop-shadow(0 0 20px rgba(27,122,154,0.55)) drop-shadow(0 0 8px rgba(255,255,255,0.15))" }}
               />
             </Link>
             <p className="text-sm leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.38)" }}>

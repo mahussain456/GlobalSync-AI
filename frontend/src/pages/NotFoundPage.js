@@ -18,7 +18,12 @@ export default function NotFoundPage() {
       <div className="flex-1 flex flex-col items-center justify-center px-6 text-center relative z-10">
         {/* Logo */}
         <Link to="/" className="mb-10 inline-block">
-          <img src="/logo-dark.png.png" alt="GlobalSync AI" className="h-10 w-auto" style={{ filter: "drop-shadow(0 0 16px rgba(255,255,255,0.15))" }} />
+          <img
+            src="/logo-dark.png.png"
+            alt="GlobalSync AI"
+            className="h-20 w-auto transition-transform duration-300 hover:scale-105"
+            style={{ filter: "drop-shadow(0 0 32px rgba(27,122,154,0.7)) drop-shadow(0 0 12px rgba(255,255,255,0.2))" }}
+          />
         </Link>
 
         {/* 404 number */}

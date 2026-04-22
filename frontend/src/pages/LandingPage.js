@@ -360,15 +360,15 @@ export default function LandingPage() {
             <img
               src="/globalsync-ai-logo-1024x256.png"
               alt="GlobalSync AI — Free Time Zone & Currency Converter"
-              className="hidden lg:block h-12 w-auto"
-              style={{ filter: "drop-shadow(0 0 16px rgba(51,181,229,0.3))" }}
+              className="hidden lg:block h-16 w-auto transition-transform duration-300 hover:scale-105"
+              style={{ filter: "drop-shadow(0 0 24px rgba(27,122,154,0.5)) drop-shadow(0 0 8px rgba(51,181,229,0.25))" }}
             />
             {/* Mobile logo */}
             <img
               src="/globalsync-ai-logo-512x128.png"
               alt="GlobalSync AI"
-              className="block lg:hidden h-9 w-auto"
-              style={{ filter: "drop-shadow(0 0 10px rgba(51,181,229,0.3))" }}
+              className="block lg:hidden h-12 w-auto transition-transform duration-300 hover:scale-105"
+              style={{ filter: "drop-shadow(0 0 14px rgba(27,122,154,0.45))" }}
             />
           </div>
           <div className="flex items-center gap-3">
@@ -717,7 +717,8 @@ export default function LandingPage() {
                 <img
                   src="/logo-dark.png.png"
                   alt="GlobalSync AI"
-                  className="h-9 w-auto opacity-80"
+                  className="h-12 w-auto transition-transform duration-300 hover:scale-105"
+                  style={{ filter: "drop-shadow(0 0 18px rgba(27,122,154,0.6)) drop-shadow(0 0 6px rgba(255,255,255,0.12))" }}
                 />
               </div>
               <p className="text-white/20 text-xs">Free · Open · AI-Powered · Live Rates</p>
