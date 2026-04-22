@@ -48,10 +48,9 @@ export default function SiteFooter() {
           <div className="col-span-2 md:col-span-1">
             <Link to="/">
               <img
-                src="/logo-primary.png"
+                src="/logo-dark.png.png"
                 alt="GlobalSync AI"
-                className="h-10 w-auto rounded-lg mb-4"
-                style={{ filter: "drop-shadow(0 0 12px rgba(51,181,229,0.35))", opacity: 0.9 }}
+                className="h-12 w-auto mb-4"
               />
             </Link>
             <p className="text-sm leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.38)" }}>

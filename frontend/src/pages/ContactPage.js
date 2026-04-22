@@ -153,7 +153,7 @@ export default function ContactPage() {
         </div>
 
         <div className="bg-zinc-50 rounded-2xl border border-zinc-200 p-6 text-center">
-          <img src="/logo.png" alt="GlobalSync AI" className="h-10 w-auto mx-auto mb-3" />
+          <img src="/globalsync-ai-logo-1024x256.png" alt="GlobalSync AI" className="h-10 w-auto mx-auto mb-3" />
           <p className="text-sm text-zinc-500">Free tools for remote teams worldwide.</p>
           <p className="text-xs text-zinc-400 mt-2">globalsync-ai.com</p>
         </div>

@@ -358,16 +358,16 @@ export default function LandingPage() {
           <div className="flex items-center">
             {/* Desktop logo */}
             <img
-              src="/logo-primary.png"
+              src="/globalsync-ai-logo-1024x256.png"
               alt="GlobalSync AI — Free Time Zone & Currency Converter"
-              className="hidden lg:block h-16 w-auto"
-              style={{ filter: "drop-shadow(0 0 12px rgba(51,181,229,0.25))" }}
+              className="hidden lg:block h-12 w-auto"
+              style={{ filter: "drop-shadow(0 0 16px rgba(51,181,229,0.3))" }}
             />
-            {/* Mobile: stacked logo */}
+            {/* Mobile logo */}
             <img
-              src="/logo-stacked.png"
+              src="/globalsync-ai-logo-512x128.png"
               alt="GlobalSync AI"
-              className="block lg:hidden h-14 w-auto"
+              className="block lg:hidden h-9 w-auto"
               style={{ filter: "drop-shadow(0 0 10px rgba(51,181,229,0.3))" }}
             />
           </div>
@@ -715,10 +715,10 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center">
                 <img
-                src="/logo-primary.png"
-                alt="GlobalSync AI"
-                className="h-8 w-auto opacity-70"
-              />
+                  src="/logo-dark.png.png"
+                  alt="GlobalSync AI"
+                  className="h-9 w-auto opacity-80"
+                />
               </div>
               <p className="text-white/20 text-xs">Free · Open · AI-Powered · Live Rates</p>
               <button onClick={() => navigate("/dashboard")} className="text-white/30 hover:text-white/60 text-sm transition-colors flex items-center gap-1">

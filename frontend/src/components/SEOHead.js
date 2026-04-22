@@ -29,9 +29,9 @@ export default function SEOHead({
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={fullCanonical} />
       <meta property="og:site_name" content="GlobalSync AI" />
-      <meta property="og:image" content="https://globalsync-ai.com/logo.png" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
+      <meta property="og:image" content="https://globalsync-ai.com/globalsync-ai-logo-1600x400.png" />
+      <meta property="og:image:width" content="1600" />
+      <meta property="og:image:height" content="400" />
       <meta property="og:image:alt" content="GlobalSync AI — Free Time Zone & Currency Converter for Remote Teams" />
       <meta property="og:locale" content="en_US" />
 
@@ -40,7 +40,7 @@ export default function SEOHead({
       <meta name="twitter:site" content="@GlobalSyncAI" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content="https://globalsync-ai.com/logo.png" />
+      <meta name="twitter:image" content="https://globalsync-ai.com/globalsync-ai-logo-1600x400.png" />
       <meta name="twitter:image:alt" content="GlobalSync AI — Free AI-Powered World Clock & Currency Converter" />
 
       {/* Robots */}

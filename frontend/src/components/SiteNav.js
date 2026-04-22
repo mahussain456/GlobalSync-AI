@@ -26,7 +26,7 @@ export default function SiteNav() {
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
         {/* Logo */}
         <Link to="/" className="shrink-0">
-          <img src="/logo-dark.png" alt="GlobalSync AI" className="h-10 w-auto rounded-lg" />
+          <img src="/globalsync-ai-logo-512x128.png" alt="GlobalSync AI" className="h-8 w-auto" />
         </Link>
 
         {/* Desktop nav links */}
