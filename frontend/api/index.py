@@ -562,26 +562,25 @@ def _parse_rss_date(date_str: str) -> Optional[datetime]:
 
 async def _fetch_rss(url: str, source_name: str) -> List[Dict]:
     try:
+        # Route through rss2json to prevent Vercel IPs from being blocked by publisher Cloudflare
+        from urllib.parse import quote
+        api_url = f"https://api.rss2json.com/v1/api.json?rss_url={quote(url)}"
+        
         async with httpx.AsyncClient(timeout=8, follow_redirects=True) as client:
-            resp = await client.get(url, headers={"User-Agent": "GlobalSyncAI/1.0 (+https://globalsync-ai.com)"})
+            resp = await client.get(api_url)
             resp.raise_for_status()
-        root = ET.fromstring(resp.text)
-        ATOM = "http://www.w3.org/2005/Atom"
-        items = root.findall(f".//{{{ATOM}}}entry") or root.findall(".//item")
+            
+        data = resp.json()
+        if data.get("status") != "ok":
+            return []
+            
         articles = []
-        for item in items[:8]:
-            def g(tags):
-                for t in tags:
-                    el = item.find(t)
-                    if el is not None and el.text: return el.text.strip()
-                return ""
-            title = g([f"{{{ATOM}}}title", "title"])
-            link  = g([f"{{{ATOM}}}id", "link", "guid"])
-            if not link:
-                le = item.find(f"{{{ATOM}}}link")
-                if le is not None: link = le.get("href", "")
-            desc  = g([f"{{{ATOM}}}summary", f"{{{ATOM}}}content", "description", "summary"])
-            pub   = g([f"{{{ATOM}}}published", f"{{{ATOM}}}updated", "pubDate", "published"])
+        for item in data.get("items", [])[:8]:
+            title = item.get("title", "")
+            link = item.get("link", "")
+            desc = item.get("description", "") or item.get("content", "")
+            pub = item.get("pubDate", "")
+            
             if not title or not link: continue
             
             # Clean HTML
