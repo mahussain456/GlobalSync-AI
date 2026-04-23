@@ -18,9 +18,14 @@ from typing import List, Optional, Dict, Any
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+mongo_url = os.environ.get('MONGO_URL', '')
+db_name = os.environ.get('DB_NAME', '')
+
+client = None
+db = None
+if mongo_url and db_name:
+    client = AsyncIOMotorClient(mongo_url)
+    db = client[db_name]
 
 app = FastAPI()
 limiter = Limiter(key_func=get_remote_address)
@@ -442,6 +447,7 @@ def get_currency_trend(request: Request, from_currency: str = Query(...), to_cur
 
 @api_router.post("/history")
 async def save_history_item(req: HistoryCreate):
+    if db is None: return {"error": "DB not configured"}
     item = {
         "id": str(uuid.uuid4()),
         "query": req.query, "intent": req.intent, "result": req.result,
@@ -452,11 +458,13 @@ async def save_history_item(req: HistoryCreate):
 
 @api_router.get("/history")
 async def get_history_items():
+    if db is None: return {"items": []}
     items = await db.history.find({}, {"_id": 0}).sort("timestamp", -1).to_list(30)
     return {"items": items}
 
 @api_router.delete("/history")
 async def clear_history():
+    if db is None: return {"message": "History cleared"}
     await db.history.delete_many({})
     return {"message": "History cleared"}
 
@@ -466,6 +474,7 @@ class UserLead(BaseModel):
 
 @api_router.post("/users/register")
 async def register_user(req: UserLead):
+    if db is None: return {"success": True, "message": "Welcome!", "new": True}
     email_lower = req.email.strip().lower()
     existing = await db.users.find_one({"email": email_lower})
     if not existing:
@@ -481,6 +490,7 @@ async def register_user(req: UserLead):
 
 @api_router.get("/users")
 async def get_all_users():
+    if db is None: return {"total": 0, "users": []}
     users = await db.users.find({}, {"_id": 0}).sort("timestamp", -1).to_list(1000)
     return {"total": len(users), "users": users}
 
@@ -707,4 +717,5 @@ app.add_middleware(
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    client.close()
+    if client:
+        client.close()
