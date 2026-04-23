@@ -584,7 +584,6 @@ async def _fetch_rss(url: str, source_name: str) -> List[Dict]:
         ATOM = "http://www.w3.org/2005/Atom"
         # Detect Atom vs RSS
         items = root.findall(f".//{{{ATOM}}}entry") or root.findall(".//item")
-        cutoff = datetime.now(timezone.utc) - timedelta(hours=48)
         articles = []
 
         for item in items:
@@ -609,8 +608,6 @@ async def _fetch_rss(url: str, source_name: str) -> List[Dict]:
                 continue
 
             parsed_dt = _parse_rss_date(pub)
-            if parsed_dt and parsed_dt < cutoff:
-                continue  # skip older than 48h
 
             clean_desc = re.sub(r"<[^>]+>", " ", desc).strip()[:600]
             clean_desc = re.sub(r"\s+", " ", clean_desc)
@@ -756,6 +753,10 @@ async def startup_event():
 @api_router.get("/news/feed")
 async def get_news_feed():
     """Return in-memory cached AI news and tips articles."""
+    # Lazy load for serverless environments where startup events aren't reliable
+    if not news_cache["ai-news"]["articles"] and not news_cache["ai-news"]["updating"]:
+        await _refresh_all_news()
+
     return {
         "ai_news": {
             "articles": news_cache["ai-news"]["articles"],
