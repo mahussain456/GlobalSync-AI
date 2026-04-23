@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Globe, Sparkles, Loader2, ArrowRight } from "lucide-react";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const API = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
 export default function OnboardingModal({ onComplete }) {
   const [name, setName] = useState("");

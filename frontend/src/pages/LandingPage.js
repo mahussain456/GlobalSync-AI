@@ -6,7 +6,7 @@ import SEOHead from "@/components/SEOHead";
 import { BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
 import { getHomepageSEO } from "@/lib/seo";
 
-const API = process.env.REACT_APP_BACKEND_URL;
+const API = process.env.REACT_APP_BACKEND_URL || "";
 
 function timeAgo(iso) {
   if (!iso) return "";

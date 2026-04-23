@@ -10,7 +10,7 @@ import AdBanner from "@/components/AdBanner";
 import { CURRENCIES_META, CURRENCY_PAIRS, getCurrencyPair, ALL_CURRENCY_PAIR_SLUGS } from "@/data/programmaticData";
 import { getCurrencyPairSEO } from "@/lib/seo";
 
-const API = process.env.REACT_APP_BACKEND_URL;
+const API = process.env.REACT_APP_BACKEND_URL || "";
 
 const fmt = (n, dec = 4) =>
   Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: dec });

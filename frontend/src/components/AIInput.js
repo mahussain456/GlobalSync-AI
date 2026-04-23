@@ -4,7 +4,7 @@ import { Sparkles, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const API = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
 const INTENT_LABELS = {
   time_conversion: { label: "Time Zone", color: "bg-blue-50 text-blue-700 border-blue-200" },

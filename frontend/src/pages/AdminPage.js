@@ -4,7 +4,7 @@ import { Users, Download, RefreshCw, ArrowLeft, Mail, Calendar } from "lucide-re
 import axios from "axios";
 import SEOHead from "@/components/SEOHead";
 
-const API = process.env.REACT_APP_BACKEND_URL;
+const API = process.env.REACT_APP_BACKEND_URL || "";
 
 function fmt(ts) {
   if (!ts) return "—";

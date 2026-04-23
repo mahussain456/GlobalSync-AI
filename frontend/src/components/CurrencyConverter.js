@@ -6,7 +6,7 @@ import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "rec
 import { toast } from "sonner";
 import CurrencySelect from "@/components/CurrencySelect";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const API = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
 const CURRENCIES = [
   // Major / Most Used

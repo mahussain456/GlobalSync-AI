@@ -4,7 +4,7 @@ import { Clock, Plus, X, Users, AlertCircle, CheckCircle2, Share2, Copy } from "
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const API = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
 const POPULAR_CITIES = [
   "New York", "San Francisco", "Chicago", "Toronto", "London", "Paris", "Berlin",
