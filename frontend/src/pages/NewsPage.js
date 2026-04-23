@@ -6,8 +6,8 @@ import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 
+// Fetch from unified Vercel backend
 const API = process.env.REACT_APP_BACKEND_URL || "";
-
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function timeAgo(iso) {
   if (!iso) return "";
