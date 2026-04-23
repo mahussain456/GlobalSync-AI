@@ -4,6 +4,7 @@ import SEOHead from "@/components/SEOHead";
 import AdBanner from "@/components/AdBanner";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import { getMeetingPlannerSEO } from "@/lib/seo";
 
 const FAQ = [
   { q: "What is the best time for a meeting between the US and India?", a: "The US East Coast (EST, UTC-5) and India (IST, UTC+5:30) have a 10.5-hour difference. The best overlap window is typically 8:00–9:30 AM EST, which is 6:30–8:00 PM IST — just before the end of the Indian workday. Use GlobalSync AI to find the exact overlap for your team's cities." },
@@ -25,40 +26,13 @@ const OVERLAPS = [
   { cities: ["Sydney", "London"], desc: "1-hour overlap window" },
 ];
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebApplication",
-      "name": "GlobalSync AI Meeting Planner",
-      "url": "https://globalsync-ai.com/meeting-planner",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "All",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "Free meeting overlap planner for remote teams. Find the best meeting time across multiple time zones automatically."
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": FAQ.map(f => ({
-        "@type": "Question",
-        "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a }
-      }))
-    }
-  ]
-};
-
 export default function MeetingPlannerPage() {
   const navigate = useNavigate();
+  const seo = getMeetingPlannerSEO();
+
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <SEOHead
-        title="Meeting Overlap Planner — Best Meeting Time Across Time Zones"
-        description="Find the best meeting time across multiple time zones instantly. Check business hour overlaps between cities worldwide. Free meeting planner for remote and global teams."
-        canonical="/meeting-planner"
-        keywords="meeting overlap planner free, best meeting time US and India, time zone overlap calculator, meeting scheduler multiple time zones, business hours overlap calculator, remote team meeting planner, how to schedule meeting across time zones, meeting planner, best meeting time, remote team tools"
-        structuredData={structuredData}
-      />
+      <SEOHead {...seo} />
 
       <SiteNav />
 

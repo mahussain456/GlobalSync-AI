@@ -16,8 +16,24 @@ const RESOURCE_LINKS = [
 ];
 
 const LEGAL_LINKS = [
-  { label: "Privacy Policy",   to: "/privacy-policy"   },
-  { label: "Terms of Service", to: "/terms-of-service" },
+  { label: "Privacy Policy",    to: "/privacy-policy"    },
+  { label: "Terms of Service",  to: "/terms-of-service"  },
+  { label: "Editorial Policy",  to: "/editorial-policy"  },
+  { label: "Methodology",       to: "/methodology"       },
+];
+
+const POPULAR_TIME_PAIRS = [
+  { label: "Convert Time: New York to London",    to: "/time/new-york-to-london"      },
+  { label: "Convert Time: London to Dubai",       to: "/time/london-to-dubai"         },
+  { label: "Convert Time: New York to Tokyo",     to: "/time/new-york-to-tokyo"       },
+  { label: "Convert Time: Dubai to Mumbai",       to: "/time/dubai-to-mumbai"         },
+];
+
+const POPULAR_CURRENCY_PAIRS = [
+  { label: "Check USD to INR Exchange Rate",  to: "/currency/usd-to-inr" },
+  { label: "Check USD to EUR Exchange Rate",  to: "/currency/usd-to-eur" },
+  { label: "Check GBP to INR Exchange Rate",  to: "/currency/gbp-to-inr" },
+  { label: "Check USD to NGN Exchange Rate",  to: "/currency/usd-to-ngn" },
 ];
 
 function FooterCol({ title, links }) {
@@ -91,9 +107,33 @@ export default function SiteFooter() {
             </div>
           </div>
 
-          <FooterCol title="Tools"     links={TOOL_LINKS}     />
-          <FooterCol title="Resources" links={RESOURCE_LINKS} />
-          <FooterCol title="Legal"     links={LEGAL_LINKS}    />
+          <FooterCol title="Tools"          links={TOOL_LINKS}               />
+          <FooterCol title="Resources"       links={RESOURCE_LINKS}           />
+          <FooterCol title="Legal"           links={LEGAL_LINKS}              />
+        </div>
+
+        {/* Popular pairs — internal linking for SEO */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10 pt-6" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <div>
+            <h3 className="footer-dark-col-title mb-3">Popular Time Zone Converters</h3>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-1">
+              {POPULAR_TIME_PAIRS.map(({ label, to }) => (
+                <li key={to}>
+                  <Link to={to} className="footer-dark-link text-xs">{label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="footer-dark-col-title mb-3">Popular Currency Pairs</h3>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-1">
+              {POPULAR_CURRENCY_PAIRS.map(({ label, to }) => (
+                <li key={to}>
+                  <Link to={to} className="footer-dark-link text-xs">{label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Bottom bar */}

@@ -9,6 +9,7 @@ export default function NotFoundPage() {
         title="Page Not Found — 404 | GlobalSync AI"
         description="The page you were looking for could not be found. Return to GlobalSync AI — free time zone converter, currency converter, and meeting planner."
         canonical="/404"
+        noIndex={true}
       />
 
       {/* Soft orbs */}

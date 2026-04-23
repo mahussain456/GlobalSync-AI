@@ -8,6 +8,7 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import AdBanner from "@/components/AdBanner";
 import { CURRENCIES_META, CURRENCY_PAIRS, getCurrencyPair, ALL_CURRENCY_PAIR_SLUGS } from "@/data/programmaticData";
+import { getCurrencyPairSEO } from "@/lib/seo";
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -258,6 +259,10 @@ function QuickConvertWidget({ rate, fromMeta, toMeta }) {
 export default function CurrencyPairPage() {
   const { pair } = useParams();
 
+  const [fromSlug, toSlug] = (pair || "").split("-to-");
+  const fromMeta = CURRENCIES_META[fromSlug];
+  const toMeta = CURRENCIES_META[toSlug];
+
   // Rate state — hoisted so both widgets share one fetch
   const [rate,        setRate]        = useState(null);
   const [rateLoading, setRateLoading] = useState(true);
@@ -266,11 +271,11 @@ export default function CurrencyPairPage() {
   const pairData = getCurrencyPair(pair);
 
   const fetchRate = useCallback(async () => {
-    if (!pairData) return;
+    if (!fromMeta || !toMeta) return;
     setRateLoading(true);
     try {
       const res = await axios.get(`${API}/api/currency/convert`, {
-        params: { from_currency: pairData.from.toUpperCase(), to_currency: pairData.to.toUpperCase(), amount: 1 },
+        params: { from_currency: fromMeta.code, to_currency: toMeta.code, amount: 1 },
       });
       setRate(res.data.rate);
       setRefreshed(new Date());
@@ -282,35 +287,18 @@ export default function CurrencyPairPage() {
 
   useEffect(() => { fetchRate(); }, [fetchRate]);
 
-  if (!pairData) return <Navigate to="/currency-converter" replace />;
+  if (!fromMeta || !toMeta) return <Navigate to="/currency-converter" replace />;
 
-  const fromMeta = CURRENCIES_META[pairData.from];
-  const toMeta   = CURRENCIES_META[pairData.to];
-
-  const relatedPairs = pairData.related
+  const relatedPairs = (pairData?.related || [])
     .map(slug => ({ slug, pair: CURRENCY_PAIRS[slug] }))
     .filter(r => r.pair && CURRENCIES_META[r.pair.from] && CURRENCIES_META[r.pair.to])
     .map(r => ({ slug: r.slug, from: CURRENCIES_META[r.pair.from], to: CURRENCIES_META[r.pair.to] }));
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": `${pairData.from.toUpperCase()} to ${pairData.to.toUpperCase()} Live Exchange Rate`,
-    "url": `https://globalsync-ai.com/currency/${pair}`,
-    "description": `Live ${pairData.from.toUpperCase()} to ${pairData.to.toUpperCase()} exchange rate converter. Real-time rates, quick conversion table, and remote worker tips.`,
-    "applicationCategory": "FinanceApplication",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  };
+  const seo = getCurrencyPairSEO({ fromMeta, toMeta, pair, pairData });
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <SEOHead
-        title={`${fromMeta.code} to ${toMeta.code} Live Exchange Rate — ${fromMeta.name} to ${toMeta.name}`}
-        description={`Live ${fromMeta.code} to ${toMeta.code} exchange rate converter. Get real-time ${fromMeta.name} to ${toMeta.name} rates, quick conversion table, and tips for remote workers. Free, no signup.`}
-        canonical={`/currency/${pair}`}
-        keywords={`${fromMeta.code} to ${toMeta.code}, ${fromMeta.name} to ${toMeta.name}, live exchange rate, ${pairData.from} ${pairData.to} converter, real-time currency converter, ${fromMeta.code} ${toMeta.code} rate today, free currency converter`}
-        structuredData={structuredData}
-      />
+      <SEOHead {...seo} />
       <SiteNav />
 
       <article className="max-w-4xl mx-auto px-6 py-8">
@@ -389,40 +377,78 @@ export default function CurrencyPairPage() {
             <p>
               <strong className="text-zinc-800">Timing your conversions.</strong> The 7-day trend chart above shows recent momentum in the {fromMeta.code}/{toMeta.code} pair. A rising chart means {fromMeta.code} is buying more {toMeta.code} than last week. A falling chart means the opposite. For large or predictable conversions, monitoring this trend can meaningfully improve your outcome — though short-term trends do not predict future movements. Convert when rates are favorable rather than on a rigid fixed schedule.
             </p>
-            <p>
-              <strong className="text-zinc-800">Managing currency risk in contracts.</strong> If you invoice in {fromMeta.code} but your expenses are in {toMeta.code}, you carry exchange rate risk on every outstanding invoice. Strategies to reduce this risk include: adding a currency-adjustment clause to contracts (price revises if the rate moves more than 3–5% from the invoice date), invoicing in {toMeta.code} to shift risk to the client, or using a multi-currency account to hold {fromMeta.code} until a favorable rate appears.
-            </p>
           </div>
         </section>
 
+        {/* Context */}
+        {pairData && (
+          <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6">
+            <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3">
+              {fromMeta.code} to {toMeta.code} Exchange Rate Explained
+            </h2>
+            <p className="text-zinc-600 leading-relaxed mb-6">{pairData.context}</p>
+
+            <h3 className="font-semibold text-zinc-900 mb-2 mt-4 text-base">Key Drivers for {fromMeta.code}/{toMeta.code}</h3>
+            <p className="text-zinc-600 text-sm leading-relaxed mb-4">
+              <strong className="text-zinc-800">Interest rate differentials.</strong> If the central bank for {fromMeta.code} raises interest rates faster than the bank for {toMeta.code}, {fromMeta.code} often strengthens as it attracts more capital seeking higher yields. Conversely, when rates fall, the currency tends to weaken.
+            </p>
+            <p className="text-zinc-600 text-sm leading-relaxed mb-4">
+              <strong className="text-zinc-800">Economic performance.</strong> Strong GDP growth, low unemployment, and high consumer spending in the country using {fromMeta.code} generally lead to a stronger currency relative to {toMeta.code}.
+            </p>
+            <p className="text-zinc-600 text-sm leading-relaxed">
+              <strong className="text-zinc-800">Managing currency risk in contracts.</strong> If you invoice in {fromMeta.code} but your expenses are in {toMeta.code}, you carry exchange rate risk on every outstanding invoice. Strategies to reduce this risk include: adding a currency-adjustment clause to contracts (price revises if the rate moves more than 3–5% from the invoice date), invoicing in {toMeta.code} to shift risk to the client, or using a multi-currency account to hold {fromMeta.code} until a favorable rate appears.
+            </p>
+          </section>
+        )}
+
         {/* Remote worker tip */}
-        <section className="mb-8 bg-emerald-50 border border-emerald-100 rounded-2xl p-6">
-          <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3">
-            {fromMeta.code} to {toMeta.code} for Remote Workers &amp; Freelancers
-          </h2>
-          <p className="text-zinc-700 leading-relaxed">{pairData.remoteTip}</p>
-          <Link
-            to="/currency-converter"
-            className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-emerald-700 hover:text-emerald-800 transition-colors"
-          >
-            Convert any of 160+ currencies with live exchange rates <ArrowRight className="w-4 h-4" />
+        {pairData && (
+          <section className="mb-8 bg-emerald-50 border border-emerald-100 rounded-2xl p-6">
+            <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3">
+              {fromMeta.code} to {toMeta.code} for Remote Workers &amp; Freelancers
+            </h2>
+            <p className="text-zinc-700 leading-relaxed">{pairData.remoteTip}</p>
+            <Link
+              to="/currency-converter"
+              className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-emerald-700 hover:text-emerald-800 transition-colors"
+            >
+              Convert any of 160+ currencies with live exchange rates <ArrowRight className="w-4 h-4" />
+            </Link>
+          </section>
+        )}
+
+        {/* Blog cross-link */}
+        <section className="mb-8 bg-zinc-50 border border-zinc-200 rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold text-zinc-800 mb-0.5">Which currency should you invoice in?</p>
+            <p className="text-xs text-zinc-500">USD, EUR, or GBP — a practical guide for freelancers working internationally.</p>
+          </div>
+          <Link to="/blog/best-currency-to-invoice-freelancers-usd-eur-gbp"
+            className="shrink-0 text-sm font-semibold text-emerald-700 hover:text-emerald-800 transition-colors whitespace-nowrap flex items-center gap-1">
+            Read guide: Invoicing in USD, EUR, or GBP <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </section>
 
         {/* FAQ */}
-        <section className="mb-8">
-          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-5">
-            Frequently Asked Questions — {fromMeta.code} to {toMeta.code}
-          </h2>
-          <div className="space-y-4">
-            {pairData.faqs.map((faq, i) => (
-              <div key={i} className="bg-white rounded-xl border border-zinc-200 p-5">
-                <h3 className="font-semibold text-zinc-900 mb-2">{faq.q}</h3>
-                <p className="text-zinc-600 text-sm leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        {pairData?.faqs && (
+          <section className="mb-8">
+            <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-5">
+              Frequently Asked Questions
+            </h2>
+            <div className="space-y-4">
+              {pairData.faqs.map((faq, i) => (
+                <div key={i} className="bg-white border border-zinc-200 rounded-xl p-5">
+                  <h3 className="font-semibold text-zinc-900 mb-2 flex gap-2">
+                    <span className="text-emerald-500 font-black">Q.</span> {faq.q}
+                  </h3>
+                  <p className="text-zinc-600 text-sm leading-relaxed flex gap-2">
+                    <span className="text-blue-500 font-black">A.</span> {faq.a}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Full tool CTA */}
         <section className="mb-8 bg-zinc-900 text-white rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -452,7 +478,7 @@ export default function CurrencyPairPage() {
                   className="bg-white rounded-xl border border-zinc-200 p-4 hover:shadow-sm hover:border-emerald-200 transition-all group"
                 >
                   <div className="font-semibold text-zinc-800 text-sm group-hover:text-emerald-600 transition-colors">
-                    {from.code} → {to.code}
+                    Check {from.code} to {to.code} Exchange Rate
                   </div>
                   <div className="text-xs text-zinc-400 mt-0.5">{from.name} to {to.name}</div>
                 </Link>

@@ -5,6 +5,7 @@ import AdBanner from "@/components/AdBanner";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { CURRENCIES_META, CURRENCY_PAIRS, ALL_CURRENCY_PAIR_SLUGS } from "@/data/programmaticData";
+import { getCurrencyHubSEO } from "@/lib/seo";
 
 const FAQ = [
   { q: "What is the current USD to EUR exchange rate?", a: "The USD to EUR exchange rate changes daily based on global markets. GlobalSync AI uses real-time ECB and ExchangeRate-API data to show the latest rate. Open the currency converter to see today's live rate." },
@@ -30,40 +31,13 @@ const PAIRS = [
   { from: "USD", to: "SAR", name: "US Dollar to Saudi Riyal" },
 ];
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebApplication",
-      "name": "GlobalSync AI Currency Converter",
-      "url": "https://globalsync-ai.com/currency-converter",
-      "applicationCategory": "FinanceApplication",
-      "operatingSystem": "All",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "Free currency converter with live exchange rates for 160+ currencies worldwide. USD to EUR, INR, GBP, AED, PKR and more."
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": FAQ.map(f => ({
-        "@type": "Question",
-        "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a }
-      }))
-    }
-  ]
-};
-
 export default function CurrencyConverterPage() {
   const navigate = useNavigate();
+  const seo = getCurrencyHubSEO();
+
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <SEOHead
-        title="Currency Converter — Live Exchange Rates for 160+ Currencies"
-        description="Convert between 160+ currencies with live exchange rates. USD to INR, EUR, GBP, AED, PKR and more. Free, real-time, no registration required."
-        canonical="/currency-converter"
-        keywords="currency converter, USD to EUR, USD to INR, USD to PKR, live exchange rates, free currency converter, AED converter, SAR converter, GBP to INR, forex rates"
-        structuredData={structuredData}
-      />
+      <SEOHead {...seo} />
 
       <SiteNav />
 
@@ -201,6 +175,24 @@ export default function CurrencyConverterPage() {
 
         {/* Ad — before internal links */}
         <AdBanner slot="rectangle" className="mb-8" />
+
+        {/* Popular Pairs Links */}
+        <section className="mb-12">
+          <h2 className="font-heading text-xl font-bold text-zinc-900 mb-4">Popular Currency Conversions</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { to: "/currency/usd-to-inr", label: "Convert USD to INR with Live Rates", desc: "US Dollar to Indian Rupee" },
+              { to: "/currency/usd-to-eur", label: "Convert USD to EUR with Live Rates", desc: "US Dollar to Euro" },
+              { to: "/currency/gbp-to-inr", label: "Convert GBP to INR with Live Rates", desc: "British Pound to Indian Rupee" },
+              { to: "/currency/usd-to-ngn", label: "Convert USD to NGN with Live Rates", desc: "US Dollar to Nigerian Naira" },
+            ].map(link => (
+              <Link key={link.to} to={link.to} className="bg-white rounded-xl border border-zinc-200 p-4 hover:border-emerald-300 hover:shadow-sm transition-all group">
+                <div className="font-semibold text-zinc-800 text-sm mb-1 group-hover:text-emerald-600 transition-colors leading-tight">{link.label}</div>
+                <div className="text-xs text-zinc-400">{link.desc}</div>
+              </Link>
+            ))}
+          </div>
+        </section>
 
         {/* Internal links */}
         <section className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100 p-6">

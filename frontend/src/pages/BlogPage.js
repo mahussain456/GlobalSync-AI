@@ -4,26 +4,14 @@ import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
-
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  "name": "GlobalSync AI Blog",
-  "url": "https://globalsync-ai.com/blog",
-  "description": "Tips, guides, and resources for remote teams, freelancers, and digital nomads on time zones, currency conversion, and global work.",
-  "publisher": { "@type": "Organization", "name": "GlobalSync AI", "url": "https://globalsync-ai.com" },
-};
+import { getBlogIndexSEO } from "@/lib/seo";
 
 export default function BlogPage() {
+  const seo = getBlogIndexSEO();
+
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <SEOHead
-        title="Blog — Remote Work, Time Zones & Currency Tips"
-        description="Tips, guides, and resources for remote teams, freelancers, and digital nomads. Learn how to manage time zones, track live currency rates, and schedule meetings across borders."
-        canonical="/blog"
-        keywords="remote work blog, time zone tips, currency converter guide, digital nomad resources, freelancer tools 2026, meeting planner tips, tools for digital nomads 2026, AI tools for remote workers 2026"
-        structuredData={structuredData}
-      />
+      <SEOHead {...seo} />
       <SiteNav />
 
       <div className="max-w-5xl mx-auto px-6 py-12">
@@ -97,7 +85,7 @@ export default function BlogPage() {
         <section className="mt-16 bg-white rounded-2xl border border-zinc-200 p-8">
           <h2 className="font-heading text-xl font-bold text-zinc-800 mb-3">Resources for Remote Teams, Freelancers &amp; Digital Nomads</h2>
           <p className="text-sm text-zinc-500 leading-relaxed">
-            The GlobalSync AI blog covers practical tips on <strong className="text-zinc-700">remote work productivity tools</strong>, <strong className="text-zinc-700">tools for digital nomads 2026</strong>, <strong className="text-zinc-700">freelancer currency tracking</strong>, and <strong className="text-zinc-700">distributed team scheduling software</strong>. Find guides on how to use a <strong className="text-zinc-700">free time zone converter no signup</strong>, get <strong className="text-zinc-700">live currency converter 160 currencies</strong>, plan meetings with a <strong className="text-zinc-700">meeting overlap planner online</strong>, and answer questions like <strong className="text-zinc-700">what is the best time to call India from the US</strong>. Whether you're a <strong className="text-zinc-700">work from anywhere</strong> professional or a team lead managing globally distributed colleagues, these guides are built for you.
+            The GlobalSync AI blog covers practical tips on <strong className="text-zinc-700">remote work productivity tools</strong>, <strong className="text-zinc-700">tools for digital nomads 2026</strong>, <strong className="text-zinc-700">freelancer currency tracking</strong>, and <strong className="text-zinc-700">distributed team scheduling software</strong>. Find guides on how to use a <Link to="/time-zone-converter" className="text-blue-600 hover:underline font-semibold">free time zone converter no signup</Link>, get a <Link to="/currency-converter" className="text-blue-600 hover:underline font-semibold">live currency converter for 160 currencies</Link>, plan meetings with a <Link to="/meeting-planner" className="text-blue-600 hover:underline font-semibold">meeting overlap planner online</Link>, and answer questions like <Link to="/time/new-york-to-mumbai" className="text-blue-600 hover:underline font-semibold">what is the best time to call India from the US</Link>. Whether you're a <strong className="text-zinc-700">work from anywhere</strong> professional or a team lead managing globally distributed colleagues, these guides are built for you.
           </p>
         </section>
       </div>

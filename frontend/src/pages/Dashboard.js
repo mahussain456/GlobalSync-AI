@@ -47,6 +47,7 @@ export default function Dashboard() {
         description="Convert time zones, plan meetings across cities, and check live currency rates for 160+ currencies. Free AI-powered dashboard — no signup required."
         canonical="/dashboard"
         keywords="time zone converter, currency converter, meeting planner, world clock, live exchange rates"
+        noIndex={true}
         structuredData={{
           "@context": "https://schema.org",
           "@type": "WebApplication",

@@ -6,6 +6,7 @@ import AdBanner from "@/components/AdBanner";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { getBlogPost, BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
+import { getBlogPostSEO } from "@/lib/seo";
 
 // ─── Content block renderer ───────────────────────────────────────────────────
 function renderBlock(block, i) {
@@ -100,30 +101,11 @@ export default function BlogPostPage() {
   if (!post) return <Navigate to="/blog" replace />;
 
   const style = CATEGORY_STYLES[post.categoryColor];
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": post.title,
-    "description": post.metaDescription,
-    "keywords": post.keywords,
-    "datePublished": "2026-03-01",
-    "dateModified": "2026-03-01",
-    "author": { "@type": "Organization", "name": "GlobalSync AI" },
-    "publisher": { "@type": "Organization", "name": "GlobalSync AI", "url": "https://globalsync-ai.com" },
-    "mainEntityOfPage": { "@type": "WebPage", "@id": `https://globalsync-ai.com/blog/${post.slug}` },
-  };
+  const seo = getBlogPostSEO({ post });
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <SEOHead
-        title={post.metaTitle}
-        description={post.metaDescription}
-        canonical={`/blog/${post.slug}`}
-        keywords={post.keywords}
-        ogType="article"
-        structuredData={structuredData}
-      />
+      <SEOHead {...seo} />
       <SiteNav />
 
       <article className="max-w-3xl mx-auto px-6 py-10" data-testid="blog-post-article">

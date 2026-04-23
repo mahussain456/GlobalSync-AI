@@ -2,18 +2,15 @@ import { Link } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import { getStaticPageSEO } from "@/lib/seo";
 
 const LAST_UPDATED = "March 2026";
 
 export default function TermsOfServicePage() {
+  const seo = getStaticPageSEO("terms-of-service");
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <SEOHead
-        title="Terms of Service | GlobalSync AI"
-        description="Read the GlobalSync AI Terms of Service. Understand the terms for using our free time zone converter, currency converter, and meeting planner tools."
-        canonical="/terms-of-service"
-        keywords="GlobalSync AI terms of service, terms and conditions, usage policy"
-      />
+      <SEOHead {...seo} />
       <SiteNav />
 
       <article className="max-w-3xl mx-auto px-6 py-8">

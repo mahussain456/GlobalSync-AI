@@ -164,6 +164,7 @@ export default function NewsPage() {
         description="Daily AI news from TechCrunch and The Verge plus practical tips from Ben's Bites and Zapier — summarized for remote workers."
         canonical="/news"
         keywords="AI news for remote workers, tips for remote teams, AI tools 2026, digital nomad news, remote work productivity, AI news today, tech news remote workers"
+        noIndex={true}
       />
       <SiteNav />
 

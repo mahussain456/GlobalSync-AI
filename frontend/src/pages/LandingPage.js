@@ -4,6 +4,7 @@ import { Globe, ArrowRight, Clock, TrendingUp, Zap, Users, Star, BookOpen, Exter
 import axios from "axios";
 import SEOHead from "@/components/SEOHead";
 import { BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
+import { getHomepageSEO } from "@/lib/seo";
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -44,35 +45,6 @@ const HOMEPAGE_FAQS = [
     a: "Yes. GlobalSync AI is fully responsive and works on all devices — smartphones, tablets, and desktops. No app download is required; simply open globalsync-ai.com in any mobile browser and all features work instantly.",
   },
 ];
-
-const HOMEPAGE_SCHEMA = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebApplication",
-      "name": "GlobalSync AI",
-      "url": "https://globalsync-ai.com",
-      "applicationCategory": "UtilitiesApplication",
-      "operatingSystem": "All",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "Free AI-powered world clock, time zone converter, meeting overlap planner, and live currency converter for remote teams and global workers. No signup required."
-    },
-    {
-      "@type": "Organization",
-      "name": "GlobalSync AI",
-      "url": "https://globalsync-ai.com",
-      "logo": "https://globalsync-ai.com/logo-primary.png"
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": HOMEPAGE_FAQS.map(f => ({
-        "@type": "Question",
-        "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a }
-      }))
-    }
-  ]
-};
 
 const HERO_CITIES = [
   { name: "New York",  tz: "America/New_York",  code: "us" },
@@ -334,15 +306,11 @@ export default function LandingPage() {
     navigate(text ? `/dashboard?q=${encodeURIComponent(text)}` : "/dashboard");
   };
 
+  const seo = getHomepageSEO({ faqs: HOMEPAGE_FAQS });
+
   return (
     <div className="min-h-screen">
-      <SEOHead
-        title="GlobalSync AI — Free AI-Powered World Clock & Currency Converter for Remote Teams"
-        description="Free time zone converter &amp; live currency rates for 160+ currencies. Built for remote teams, freelancers &amp; global workers. No signup needed."
-        keywords="AI time zone converter, free world clock for remote teams, meeting overlap planner, business hour overlap calculator, free currency converter 160 currencies, live exchange rates, time zone tool for distributed teams, USD to INR live rate, EST to IST converter, best meeting time multiple time zones, remote work scheduling tool, free AI world clock"
-        canonical="/"
-        structuredData={HOMEPAGE_SCHEMA}
-      />
+      <SEOHead {...seo} />
       {/* ===== DARK HERO ===== */}
       <div className="hero-bg min-h-screen flex flex-col">
         {/* Grid overlay */}
@@ -679,6 +647,45 @@ export default function LandingPage() {
       <HomepageFAQSection />
 
       {/* Footer */}
+      {/* Popular Global Conversions */}
+      <section className="bg-white py-16 px-6 border-t border-zinc-100">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-8 text-center">Popular Global Conversions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="font-semibold text-zinc-800 mb-4 flex items-center gap-2"><Clock className="w-4 h-4 text-blue-500" /> Time Zone Converters</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  { to: "/time/new-york-to-london", label: "Convert Time: New York to London" },
+                  { to: "/time/london-to-tokyo", label: "Convert Time: London to Tokyo" },
+                  { to: "/time/san-francisco-to-new-york", label: "Convert Time: San Francisco to New York" },
+                  { to: "/time/dubai-to-mumbai", label: "Convert Time: Dubai to Mumbai" },
+                ].map(link => (
+                  <Link key={link.to} to={link.to} className="bg-zinc-50 rounded-xl border border-zinc-200 p-3 hover:border-blue-300 hover:bg-white transition-colors text-sm font-medium text-zinc-700 hover:text-blue-600">
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3 className="font-semibold text-zinc-800 mb-4 flex items-center gap-2"><TrendingUp className="w-4 h-4 text-emerald-500" /> Currency Exchange Rates</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  { to: "/currency/usd-to-inr", label: "Check USD to INR Exchange Rate" },
+                  { to: "/currency/usd-to-eur", label: "Check USD to EUR Exchange Rate" },
+                  { to: "/currency/gbp-to-inr", label: "Check GBP to INR Exchange Rate" },
+                  { to: "/currency/usd-to-ngn", label: "Check USD to NGN Exchange Rate" },
+                ].map(link => (
+                  <Link key={link.to} to={link.to} className="bg-zinc-50 rounded-xl border border-zinc-200 p-3 hover:border-emerald-300 hover:bg-white transition-colors text-sm font-medium text-zinc-700 hover:text-emerald-600">
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <footer className="bg-[#050816] py-10 px-6">
         <div className="max-w-6xl mx-auto">
           {/* Tool links */}

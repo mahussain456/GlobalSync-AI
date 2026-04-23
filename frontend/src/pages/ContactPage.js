@@ -6,6 +6,7 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import axios from "axios";
 import { toast } from "sonner";
+import { getStaticPageSEO } from "@/lib/seo";
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -29,14 +30,10 @@ export default function ContactPage() {
       setLoading(false);
     }
   };
+  const seo = getStaticPageSEO("contact");
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <SEOHead
-        title="Contact GlobalSync AI — Get in Touch"
-        description="Contact the GlobalSync AI team for support, feedback, partnership enquiries, or advertising. We aim to respond within 48 hours."
-        canonical="/contact"
-        keywords="contact GlobalSync AI, support, feedback, partnership"
-      />
+      <SEOHead {...seo} />
       <SiteNav />
 
       <article className="max-w-3xl mx-auto px-6 py-8">

@@ -5,6 +5,7 @@ import AdBanner from "@/components/AdBanner";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { CITIES, CITY_PAIRS, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
+import { getTimeZoneHubSEO } from "@/lib/seo";
 
 const FAQ = [
   { q: "What is a time zone converter?", a: "A time zone converter translates a time in one city or region to the corresponding time in another. For example, if it's 9 AM in New York (EST), a converter tells you it's 2 PM in London (GMT) and 7:30 PM in Mumbai (IST)." },
@@ -26,40 +27,13 @@ const CONVERSIONS = [
   { from: "Singapore", to: "New York", fromTz: "SGT", toTz: "EST" },
 ];
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebApplication",
-      "name": "GlobalSync AI Time Zone Converter",
-      "url": "https://globalsync-ai.com/time-zone-converter",
-      "applicationCategory": "UtilitiesApplication",
-      "operatingSystem": "All",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "description": "Free world time zone converter. See live clocks for 25+ cities, find business hour overlaps, and get AI-powered meeting time suggestions."
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": FAQ.map(f => ({
-        "@type": "Question",
-        "name": f.q,
-        "acceptedAnswer": { "@type": "Answer", "text": f.a }
-      }))
-    }
-  ]
-};
-
 export default function TimeZoneConverterPage() {
   const navigate = useNavigate();
+  const seo = getTimeZoneHubSEO();
+
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <SEOHead
-        title="Time Zone Converter — World Clock for Remote Teams"
-        description="See live clocks for 25+ world cities. Compare New York, London, Tokyo, Dubai, Mumbai and more. Free time zone converter for remote teams and global workers."
-        canonical="/time-zone-converter"
-        keywords="time zone converter free, EST to IST converter, PST to IST converter, world clock, New York to London time difference, what time is it in Dubai, what time is it in London, IST time now, AI time zone converter, convert time zones, meeting time planner, business hour overlap, remote team tools"
-        structuredData={structuredData}
-      />
+      <SEOHead {...seo} />
 
       <SiteNav />
 
@@ -197,6 +171,24 @@ export default function TimeZoneConverterPage() {
 
         {/* Ad — before internal links */}
         <AdBanner slot="rectangle" className="mb-8" />
+
+        {/* Popular Pairs Links */}
+        <section className="mb-12">
+          <h2 className="font-heading text-xl font-bold text-zinc-900 mb-4">Popular Time Zone Conversions</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { to: "/time/new-york-to-london", label: "Convert Time from New York to London", desc: "EST to GMT" },
+              { to: "/time/london-to-tokyo", label: "Convert Time from London to Tokyo", desc: "GMT to JST" },
+              { to: "/time/san-francisco-to-new-york", label: "Convert Time from San Francisco to New York", desc: "PST to EST" },
+              { to: "/time/dubai-to-mumbai", label: "Convert Time from Dubai to Mumbai", desc: "GST to IST" },
+            ].map(link => (
+              <Link key={link.to} to={link.to} className="bg-white rounded-xl border border-zinc-200 p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
+                <div className="font-semibold text-zinc-800 text-sm mb-1 group-hover:text-blue-600 transition-colors leading-tight">{link.label}</div>
+                <div className="text-xs text-zinc-400">{link.desc}</div>
+              </Link>
+            ))}
+          </div>
+        </section>
 
         {/* Internal links */}
         <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 p-6">

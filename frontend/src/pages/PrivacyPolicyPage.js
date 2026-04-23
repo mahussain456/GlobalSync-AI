@@ -2,18 +2,16 @@ import { Link } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import { getStaticPageSEO } from "@/lib/seo";
 
 const LAST_UPDATED = "March 2026";
 
 export default function PrivacyPolicyPage() {
+  const seo = getStaticPageSEO("privacy-policy");
+
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <SEOHead
-        title="Privacy Policy | GlobalSync AI"
-        description="Read the GlobalSync AI Privacy Policy. Learn how we collect, use, and protect your data when you use our free time zone, currency, and meeting planning tools."
-        canonical="/privacy-policy"
-        keywords="GlobalSync AI privacy policy, data protection, cookies, analytics"
-      />
+      <SEOHead {...seo} />
       <SiteNav />
 
       <article className="max-w-3xl mx-auto px-6 py-8">

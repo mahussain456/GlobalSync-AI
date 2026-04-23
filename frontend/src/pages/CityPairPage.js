@@ -6,6 +6,7 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import AdBanner from "@/components/AdBanner";
 import { CITIES, CITY_PAIRS, getCityPair, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
+import { getCityPairSEO } from "@/lib/seo";
 
 // ─── Live clock ───────────────────────────────────────────────────────────────
 function LiveClock({ timezone, city, country, abbr }) {
@@ -135,39 +136,31 @@ function CustomTimeConverter({ cityA, cityB }) {
 // ─── Main page ────────────────────────────────────────────────────────────────
 export default function CityPairPage() {
   const { pair } = useParams();
+  
+  const [fromSlug, toSlug] = (pair || "").split("-to-");
+  const cityA = CITIES[fromSlug];
+  const cityB = CITIES[toSlug];
+
+  if (!cityA || !cityB) return <Navigate to="/time-zone-converter" replace />;
+
   const pairData = getCityPair(pair);
-
-  if (!pairData) return <Navigate to="/time-zone-converter" replace />;
-
-  const cityA = CITIES[pairData.from];
-  const cityB = CITIES[pairData.to];
   const title = `${cityA.name} to ${cityB.name} Time Converter`;
   const h1 = `${cityA.name} to ${cityB.name} Time Converter — Live World Clock`;
 
-  const relatedPairs = pairData.related
+  const relatedPairs = (pairData?.related || [])
     .map(slug => ({ slug, pair: CITY_PAIRS[slug] }))
     .filter(r => r.pair)
     .map(r => ({ slug: r.slug, from: CITIES[r.pair.from], to: CITIES[r.pair.to] }));
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": title,
-    "url": `https://globalsync-ai.com/time/${pair}`,
-    "description": `Live ${cityA.name} to ${cityB.name} time converter. See current local time in both cities and find the best meeting window.`,
-    "applicationCategory": "UtilityApplication",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  };
+  const hasDST = (city) => city.abbr.includes("/");
+  const showDSTNote = hasDST(cityA) || hasDST(cityB);
+  const DSTcities = [cityA, cityB].filter(hasDST).map(c => c.name).join(" and ");
+
+  const seo = getCityPairSEO({ cityA, cityB, pair, pairData });
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <SEOHead
-        title={`${cityA.name} to ${cityB.name} Time Converter — ${cityA.abbr} to ${cityB.abbr} Live`}
-        description={`Convert ${cityA.name} time to ${cityB.name} time instantly. See live clocks for both cities, find the best meeting time, and understand the ${cityA.abbr} to ${cityB.abbr} time difference. Free, no signup.`}
-        canonical={`/time/${pair}`}
-        keywords={`${cityA.name} to ${cityB.name} time, ${cityA.abbr} to ${cityB.abbr} converter, ${cityA.name} time now, ${cityB.name} time now, time difference ${cityA.name} ${cityB.name}, world clock, free time zone converter`}
-        structuredData={structuredData}
-      />
+      <SEOHead {...seo} />
       <SiteNav />
 
       <article className="max-w-4xl mx-auto px-6 py-8">
@@ -209,12 +202,14 @@ export default function CityPairPage() {
         <AdBanner slot="leaderboard" className="mb-8" />
 
         {/* Context */}
-        <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6">
-          <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3">
-            {cityA.name} and {cityB.name} Time Difference Explained
-          </h2>
-          <p className="text-zinc-600 leading-relaxed">{pairData.context}</p>
-        </section>
+        {pairData && (
+          <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6">
+            <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3">
+              {cityA.name} and {cityB.name} Time Difference Explained
+            </h2>
+            <p className="text-zinc-600 leading-relaxed">{pairData.context}</p>
+          </section>
+        )}
 
         {/* Working across these cities editorial */}
         <section className="mb-8 bg-zinc-50 border border-zinc-200 rounded-2xl p-6">
@@ -237,34 +232,66 @@ export default function CityPairPage() {
           </div>
         </section>
 
+        {/* DST callout */}
+        {showDSTNote && (
+          <section className="mb-8 bg-amber-50 border border-amber-200 rounded-2xl p-5">
+            <h2 className="font-heading text-base font-bold text-amber-900 mb-2 flex items-center gap-2">
+              ⚠️ Daylight Saving Time Note
+            </h2>
+            <p className="text-amber-800 text-sm leading-relaxed">
+              <strong>{DSTcities}</strong> observe{DSTcities.includes(" and ") ? "" : "s"} Daylight Saving Time, which means the time gap between {cityA.name} and {cityB.name} shifts by 1 hour seasonally. Always verify with the live clocks above — especially around the spring and fall DST switch dates.
+            </p>
+          </section>
+        )}
+
         {/* Meeting tip */}
-        <section className="mb-8 bg-blue-50 border border-blue-100 rounded-2xl p-6">
-          <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3 flex items-center gap-2">
-            <Users className="w-5 h-5 text-blue-600" />
-            Best Meeting Time for {cityA.name} &amp; {cityB.name}
-          </h2>
-          <p className="text-zinc-700 leading-relaxed">{pairData.meetingTip}</p>
-          <Link
-            to="/meeting-planner"
-            className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
-          >
-            Find the best meeting time for any city combination <ArrowRight className="w-4 h-4" />
-          </Link>
-        </section>
+        {pairData && (
+          <section className="mb-8 bg-blue-50 border border-blue-100 rounded-2xl p-6">
+            <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3 flex items-center gap-2">
+              <Users className="w-5 h-5 text-blue-600" />
+              Best Meeting Time for {cityA.name} &amp; {cityB.name}
+            </h2>
+            <p className="text-zinc-700 leading-relaxed">{pairData.meetingTip}</p>
+            <Link
+              to="/meeting-planner"
+              className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+            >
+              Find the best meeting time for any city combination <ArrowRight className="w-4 h-4" />
+            </Link>
+          </section>
+        )}
 
         {/* FAQ */}
-        <section className="mb-8">
-          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-5">
-            Frequently Asked Questions — {cityA.name} to {cityB.name}
-          </h2>
-          <div className="space-y-4">
-            {pairData.faqs.map((faq, i) => (
-              <div key={i} className="bg-white rounded-xl border border-zinc-200 p-5">
-                <h3 className="font-semibold text-zinc-900 mb-2">{faq.q}</h3>
-                <p className="text-zinc-600 text-sm leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
+        {pairData?.faqs && (
+          <section className="mb-8">
+            <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-5">
+              Frequently Asked Questions
+            </h2>
+            <div className="space-y-4">
+              {pairData.faqs.map((faq, i) => (
+                <div key={i} className="bg-white border border-zinc-200 rounded-xl p-5">
+                  <h3 className="font-semibold text-zinc-900 mb-2 flex gap-2">
+                    <span className="text-blue-500 font-black">Q.</span> {faq.q}
+                  </h3>
+                  <p className="text-zinc-600 text-sm leading-relaxed flex gap-2">
+                    <span className="text-emerald-500 font-black">A.</span> {faq.a}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Blog cross-link */}
+        <section className="mb-8 bg-zinc-50 border border-zinc-200 rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold text-zinc-800 mb-0.5">Want a deeper guide on working across time zones?</p>
+            <p className="text-xs text-zinc-500">How to schedule meetings fairly, handle DST, and build async habits.</p>
           </div>
+          <Link to="/blog/schedule-meetings-across-time-zones-2026"
+            className="shrink-0 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors whitespace-nowrap flex items-center gap-1">
+            Read guide: How to schedule meetings across time zones <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </section>
 
         {/* Use full tool CTA */}
@@ -295,7 +322,7 @@ export default function CityPairPage() {
                   className="bg-white rounded-xl border border-zinc-200 p-4 hover:shadow-sm hover:border-blue-200 transition-all group"
                 >
                   <div className="font-semibold text-zinc-800 text-sm group-hover:text-blue-600 transition-colors">
-                    {from.name} → {to.name}
+                    Convert Time: {from.name} to {to.name}
                   </div>
                   <div className="text-xs text-zinc-400 mt-0.5">{from.abbr} to {to.abbr}</div>
                 </Link>

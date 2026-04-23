@@ -3,6 +3,7 @@ import { Globe, Clock, TrendingUp, Users, Zap, ArrowRight, CheckCircle2 } from "
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import { getStaticPageSEO } from "@/lib/seo";
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -18,15 +19,10 @@ const structuredData = {
 };
 
 export default function AboutPage() {
+  const seo = getStaticPageSEO("about");
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <SEOHead
-        title="About GlobalSync AI — Free Time Zone & Currency Tools for Remote Teams"
-        description="GlobalSync AI is a free, AI-powered toolkit for remote teams and global workers. Convert time zones, find meeting overlaps, and check live exchange rates for 160+ currencies. No signup required."
-        canonical="/about"
-        keywords="about GlobalSync AI, remote team tools, time zone converter, currency converter, meeting planner, free tools, AI powered"
-        structuredData={structuredData}
-      />
+      <SEOHead {...seo} />
       <SiteNav />
 
       <article className="max-w-4xl mx-auto px-6 py-8">
