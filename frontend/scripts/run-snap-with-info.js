@@ -40,18 +40,49 @@ try {
 }
 
 // Run react-snap synchronously, capturing exit code
-const snapBin = path.join(__dirname, '..', 'node_modules', '.bin', 'react-snap');
+const snapBin = path.join(
+  __dirname,
+  '..',
+  'node_modules',
+  '.bin',
+  process.platform === 'win32' ? 'react-snap.cmd' : 'react-snap'
+);
 console.log('[build-info] Starting react-snap...');
+
+const chromeCandidates = process.platform === 'win32'
+  ? [
+      'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+      'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+      'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+      'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+    ]
+  : [
+      '/usr/bin/google-chrome',
+      '/usr/bin/google-chrome-stable',
+      '/usr/bin/chromium',
+      '/usr/bin/chromium-browser',
+    ];
+
+const chromePath = chromeCandidates.find((candidate) => fs.existsSync(candidate));
+if (chromePath) {
+  console.log(`[build-info] Using browser for react-snap: ${chromePath}`);
+}
 
 const result = spawnSync(snapBin, [], {
   stdio: 'inherit',
   cwd: path.join(__dirname, '..'),
+  shell: process.platform === 'win32',
+  env: {
+    ...process.env,
+    ...(chromePath ? { PUPPETEER_EXECUTABLE_PATH: chromePath } : {}),
+  },
 });
 
 // Update BUILD_INFO.json based on actual result
 info.react_snap_ran = result.status === 0;
 info.react_snap_exit_code = result.status;
 info.react_snap_signal = result.signal || null;
+info.react_snap_error = result.error ? result.error.message : null;
 
 try {
   fs.writeFileSync(INFO_PATH, JSON.stringify(info, null, 2));

@@ -73,7 +73,6 @@
       "--no-first-run",
       "--no-zygote"
     ],
-    "puppeteerExecutablePath": "/usr/bin/google-chrome",
     "crawl": true,
     "skipThirdPartyRequests": true,
     "timeout": 12000,

@@ -78,7 +78,7 @@ export default function SiteFooter() {
             {/* Social icons */}
             <div className="flex items-center gap-2">
               {[
-                { icon: Globe, label: "Website",  href: "https://globalsync-ai.com" },
+                { icon: Globe, label: "Website",  href: "https://www.globalsync-ai.com" },
                 { icon: Github, label: "GitHub",  href: "https://github.com"        },
                 { icon: Mail,   label: "Contact", href: "/contact"                  },
               ].map(({ icon: Icon, label, href }) => (

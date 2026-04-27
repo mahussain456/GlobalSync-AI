@@ -15,7 +15,7 @@
  */
 import { Helmet } from "react-helmet-async";
 
-const BASE_URL     = "https://globalsync-ai.com";
+const BASE_URL     = "https://www.globalsync-ai.com";
 const BRAND        = "GlobalSync AI";
 const DEFAULT_TITLE = `${BRAND} — Free Time Zone & Currency Converter for Remote Teams`;
 const OG_IMAGE     = `${BASE_URL}/globalsync-ai-logo-1600x400.png`;

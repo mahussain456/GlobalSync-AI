@@ -6,4 +6,4 @@ Disallow: /dashboard
 Disallow: /news
 
 # Sitemap
-Sitemap: https://globalsync-ai.com/sitemap.xml
+Sitemap: https://www.globalsync-ai.com/sitemap.xml

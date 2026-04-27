@@ -52,7 +52,7 @@ export default function Dashboard() {
           "@context": "https://schema.org",
           "@type": "WebApplication",
           "name": "GlobalSync AI Dashboard",
-          "url": "https://globalsync-ai.com/dashboard",
+          "url": "https://www.globalsync-ai.com/dashboard",
           "applicationCategory": "UtilitiesApplication",
           "operatingSystem": "All",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }

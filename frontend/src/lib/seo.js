@@ -1,6 +1,6 @@
 /**
  * seo.js — Centralized SEO Metadata Factory
- * GlobalSync AI | https://globalsync-ai.com
+ * GlobalSync AI | https://www.globalsync-ai.com
  *
  * Usage:
  *   import { getCityPairSEO } from "@/lib/seo";
@@ -11,7 +11,7 @@
  * Use `rawTitle` (not `title`) so SEOHead does NOT auto-append the brand suffix.
  */
 
-const BASE_URL  = "https://globalsync-ai.com";
+const BASE_URL  = "https://www.globalsync-ai.com";
 const BRAND     = "GlobalSync AI";
 const OG_IMAGE  = `${BASE_URL}/globalsync-ai-logo-1600x400.png`;
 const LOGO_URL  = `${BASE_URL}/favicon-512.png`;

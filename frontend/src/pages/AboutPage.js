@@ -9,11 +9,11 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "GlobalSync AI",
-  "url": "https://globalsync-ai.com",
+  "url": "https://www.globalsync-ai.com",
   "description": "Free AI-powered time zone converter, currency converter, and meeting planner for remote teams and global workers.",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "https://globalsync-ai.com/dashboard?q={search_term_string}",
+    "target": "https://www.globalsync-ai.com/dashboard?q={search_term_string}",
     "query-input": "required name=search_term_string"
   }
 };

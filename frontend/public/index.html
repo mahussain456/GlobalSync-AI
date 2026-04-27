@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <!-- Canonical domain redirect: push emergent.host visitors to globalsync-ai.com -->
+        <!-- Canonical domain redirect: push emergent.host visitors to www.globalsync-ai.com -->
         <script>
           (function() {
             var h = window.location.hostname;
             if (h.endsWith('emergent.host') &&
                 !/HeadlessChrome/.test(navigator.userAgent)) {
               window.location.replace(
-                'https://globalsync-ai.com' +
+                'https://www.globalsync-ai.com' +
                 window.location.pathname +
                 window.location.search +
                 window.location.hash
@@ -38,13 +38,7 @@
         <meta name="theme-color" content="#050816" />
 
         <!-- SEO tags (title, description, canonical, og:*, twitter:*) are injected
-             per-page by react-helmet-async in each page component.
-             These fallbacks are used by crawlers on non-pre-rendered routes. -->
-        <title>GlobalSync AI â€” Free Time Zone, Currency &amp; Meeting Planner for Remote Teams</title>
-        <meta name="description" content="Free AI-powered tools for remote teams: live time zone converter for 25+ cities, currency converter for 160+ currencies, and a smart meeting overlap planner. No signup." />
-        <!-- og:image is global (same logo for all pages) -->
-        <meta property="og:image" content="https://globalsync-ai.com/globalsync-ai-logo-1600x400.png" />
-        <meta property="og:locale" content="en_US" />
+             per-page by react-helmet-async and captured by react-snap. -->
 
         <!-- ===== PRECONNECT / FONTS ===== -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />

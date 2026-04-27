@@ -119,7 +119,7 @@ export default function PrivacyPolicyPage() {
             <div className="bg-zinc-50 rounded-xl p-4 mt-3 text-sm">
               <p className="font-medium text-zinc-800">GlobalSync AI</p>
               <p className="text-zinc-500">Email: <a href="mailto:hello@globalsync-ai.com" className="text-blue-600 hover:underline">hello@globalsync-ai.com</a></p>
-              <p className="text-zinc-500">Website: <a href="https://globalsync-ai.com" className="text-blue-600 hover:underline">globalsync-ai.com</a></p>
+              <p className="text-zinc-500">Website: <a href="https://www.globalsync-ai.com" className="text-blue-600 hover:underline">globalsync-ai.com</a></p>
             </div>
           </section>
         </div>
