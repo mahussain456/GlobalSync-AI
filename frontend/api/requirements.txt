@@ -12,5 +12,4 @@ limits==5.8.0
 wrapt==2.1.1
 resend==2.24.0
 httpx==0.28.1
-anthropix>=0.40.0
 anthropic>=0.40.0
