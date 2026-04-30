@@ -205,7 +205,7 @@ export default function CityPairPage() {
         {pairData && (
           <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6">
             <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3">
-              {cityA.name} and {cityB.name} Time Difference Explained
+              Working Hours Overlap Explained
             </h2>
             <p className="text-zinc-600 leading-relaxed">{pairData.context}</p>
           </section>
@@ -249,7 +249,7 @@ export default function CityPairPage() {
           <section className="mb-8 bg-blue-50 border border-blue-100 rounded-2xl p-6">
             <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3 flex items-center gap-2">
               <Users className="w-5 h-5 text-blue-600" />
-              Best Meeting Time for {cityA.name} &amp; {cityB.name}
+              Best Meeting Times Between {cityA.name} and {cityB.name}
             </h2>
             <p className="text-zinc-700 leading-relaxed">{pairData.meetingTip}</p>
             <Link

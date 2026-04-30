@@ -3,7 +3,5 @@ Allow: /
 Disallow: /api/
 Disallow: /admin
 Disallow: /dashboard
-Disallow: /news
-
 # Sitemap
 Sitemap: https://www.globalsync-ai.com/sitemap.xml

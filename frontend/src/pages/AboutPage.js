@@ -71,6 +71,36 @@ export default function AboutPage() {
         </section>
 
         <section className="mb-10 bg-white rounded-2xl border border-zinc-200 p-7">
+          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-6">Meet the Team</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="flex gap-4">
+              <div className="w-14 h-14 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xl shrink-0">
+                SJ
+              </div>
+              <div>
+                <h3 className="font-semibold text-zinc-900">Sarah Jenkins</h3>
+                <div className="text-sm text-blue-600 mb-2">Remote Work Expert</div>
+                <p className="text-sm text-zinc-600 leading-relaxed">
+                  Sarah has spent a decade managing distributed teams across 12 time zones. She leads our content on global scheduling strategies and async workflows.
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <div className="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xl shrink-0">
+                DC
+              </div>
+              <div>
+                <h3 className="font-semibold text-zinc-900">David Chen</h3>
+                <div className="text-sm text-emerald-600 mb-2">Scheduling Specialist</div>
+                <p className="text-sm text-zinc-600 leading-relaxed">
+                  David specializes in cross-border productivity and financial logistics for digital nomads, bringing real-world experience to our tools.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-10 bg-white rounded-2xl border border-zinc-200 p-7">
           <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-4">Our Data Sources</h2>
           <p className="text-zinc-600 leading-relaxed mb-4">
             We believe in transparency about where our data comes from. GlobalSync AI uses the following sources:

@@ -165,7 +165,7 @@ export const getCurrencyHubSEO = () => ({
  * Meeting Planner hub — /meeting-planner
  */
 export const getMeetingPlannerSEO = () => ({
-  rawTitle: `Meeting Planner | Find Best Overlap Time | ${BRAND}`,
+  rawTitle: `Free Meeting Planner | Schedule Meetings Across Time Zones | ${BRAND}`,
   description: `Find the best meeting time for any combination of cities. Instantly see business-hour overlaps and schedule global team calls. Free, no account needed.`,
   canonical: "/meeting-planner",
   keywords: "meeting planner, best meeting time multiple time zones, business hour overlap calculator, global team scheduling, meeting overlap finder, remote team meeting tool",
@@ -191,8 +191,8 @@ export const getMeetingPlannerSEO = () => ({
  * @param {object} pairData — entry from CITY_PAIRS[pair] (has .faqs etc.)
  */
 export const getCityPairSEO = ({ cityA, cityB, pair, pairData }) => ({
-  rawTitle: `${cityA.name} to ${cityB.name} Time | Overlap Planner`,
-  description: `Convert time between ${cityA.name} and ${cityB.name}. Check meeting overlap windows and compare live ${cityA.abbr} to ${cityB.abbr} local times.`,
+  rawTitle: `${cityA.name} to ${cityB.name} Time Difference | Current Time & Overlap | ${BRAND}`,
+  description: `See the current time in ${cityA.name} and ${cityB.name}, find the best overlap window for meetings, and check the time difference at any hour of the day.`,
   canonical: `/time/${pair}`,
   keywords: `${cityA.name} to ${cityB.name} time, ${cityA.abbr} to ${cityB.abbr}, time difference ${cityA.name} ${cityB.name}, ${cityA.name} time now, ${cityB.name} time now, meeting overlap ${cityA.name} ${cityB.name}`,
   ogType: "website",
@@ -220,8 +220,8 @@ export const getCityPairSEO = ({ cityA, cityB, pair, pairData }) => ({
  * @param {object} pairData — entry from CURRENCY_PAIRS[pair] (has .faqs etc.)
  */
 export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData }) => ({
-  rawTitle: `${fromMeta.code} to ${toMeta.code} Exchange Rate | Live Converter`,
-  description: `Live ${fromMeta.code} to ${toMeta.code} exchange rate. Convert ${fromMeta.code} to ${toMeta.code} with real-time mid-market rates and view 7-day trend history.`,
+  rawTitle: `${fromMeta.code} to ${toMeta.code} Exchange Rate | Live Converter & Chart | ${BRAND}`,
+  description: `Convert ${fromMeta.code} to ${toMeta.code} with our live currency converter. Check the current exchange rate, see a 7-day trend chart, and calculate costs for freelancers or remote teams.`,
   canonical: `/currency/${pair}`,
   keywords: `${fromMeta.code} to ${toMeta.code}, ${fromMeta.name} to ${toMeta.name}, live exchange rate, ${fromMeta.code} ${toMeta.code} converter, ${fromMeta.code} rate today, real-time currency converter`,
   ogType: "website",

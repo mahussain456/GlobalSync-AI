@@ -123,6 +123,19 @@ export default function BlogPostPage() {
             {post.title}
           </h1>
 
+          {/* Author Byline */}
+          {post.authorName && (
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-zinc-100 rounded-full flex items-center justify-center font-bold text-zinc-500 shrink-0">
+                {post.authorName.charAt(0)}
+              </div>
+              <div>
+                <div className="text-sm font-bold text-zinc-900">{post.authorName}</div>
+                <div className="text-xs text-zinc-500">{post.authorRole}</div>
+              </div>
+            </div>
+          )}
+
           {/* Intro excerpt */}
           <p className="text-lg text-zinc-500 leading-relaxed border-l-4 border-zinc-200 pl-4">
             {post.excerpt}
@@ -136,6 +149,21 @@ export default function BlogPostPage() {
         <div className="prose-custom">
           {post.content.map((block, i) => renderBlock(block, i))}
         </div>
+
+        {/* Author Bio */}
+        {post.authorName && (
+          <div className="mt-12 bg-zinc-50 border border-zinc-200 rounded-2xl p-6 flex flex-col sm:flex-row items-start gap-5">
+            <div className="w-14 h-14 bg-white border border-zinc-200 rounded-full flex items-center justify-center font-bold text-zinc-600 text-xl shrink-0">
+              {post.authorName.charAt(0)}
+            </div>
+            <div>
+              <h3 className="font-semibold text-zinc-900 mb-1">About the Author: {post.authorName}</h3>
+              <p className="text-sm text-zinc-600 leading-relaxed">
+                {post.authorName} is a {post.authorRole} at GlobalSync. They write extensively about global scheduling, remote team productivity, and managing cross-border financial logistics.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* CTA */}
         <div className={`mt-10 p-6 rounded-2xl border ${
