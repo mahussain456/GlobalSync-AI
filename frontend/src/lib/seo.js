@@ -70,6 +70,15 @@ export const buildBreadcrumbSchema = (crumbs) => ({
   })),
 });
 
+export const buildExchangeRateSchema = (fromCode, toCode) => ({
+  "@type": "ExchangeRateSpecification",
+  "currency": toCode,
+  "currentExchangeRate": {
+    "@type": "UnitPriceSpecification",
+    "priceCurrency": fromCode
+  }
+});
+
 export const buildArticleSchema = (post) => ({
   "@type": "BlogPosting",
   "headline": post.title,
@@ -77,7 +86,11 @@ export const buildArticleSchema = (post) => ({
   "keywords": post.keywords,
   "datePublished": post.datePublished || "2026-03-01",
   "dateModified": post.dateModified || post.datePublished || "2026-03-01",
-  "author": { "@type": "Organization", "name": BRAND, "url": BASE_URL },
+  "author": { 
+    "@type": "Person", 
+    "name": post.authorName || "GlobalSync AI Team", 
+    "url": `${BASE_URL}/about` 
+  },
   "publisher": {
     "@type": "Organization",
     "name": BRAND,
@@ -233,6 +246,7 @@ export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData }) => ({
       description: `Live ${fromMeta.code} to ${toMeta.code} exchange rate converter with real-time mid-market rates and 7-day trend chart.`,
       category: "FinanceApplication",
     }),
+    buildExchangeRateSchema(fromMeta.code, toMeta.code),
     ...(pairData?.faqs?.length ? [buildFAQSchema(pairData.faqs)] : []),
     buildBreadcrumbSchema([
       { name: "Home", path: "/" },
@@ -339,6 +353,7 @@ export const getStaticPageSEO = (pageKey) => {
         { name: "Home", path: "/" },
         { name: meta.rawTitle.split(" | ")[0], path: meta.canonical },
       ]),
+      ...(pageKey === "about" ? [buildOrganizationSchema()] : [])
     ],
   };
 };

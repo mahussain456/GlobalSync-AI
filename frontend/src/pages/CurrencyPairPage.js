@@ -349,7 +349,7 @@ export default function CurrencyPairPage() {
         {/* Context */}
         <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6">
           <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3">
-            About {fromMeta.code}/{toMeta.code} — {fromMeta.name} and {toMeta.name}
+            About the {fromMeta.code} to {toMeta.code} Exchange Rate
           </h2>
           <p className="text-zinc-600 leading-relaxed mb-4">{pairData.context}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
@@ -405,7 +405,7 @@ export default function CurrencyPairPage() {
         {pairData && (
           <section className="mb-8 bg-emerald-50 border border-emerald-100 rounded-2xl p-6">
             <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3">
-              {fromMeta.code} to {toMeta.code} for Remote Workers &amp; Freelancers
+              Who Needs This Conversion?
             </h2>
             <p className="text-zinc-700 leading-relaxed">{pairData.remoteTip}</p>
             <Link
