@@ -94,6 +94,7 @@ export default function Dashboard() {
         </header>
 
         <div className="max-w-6xl mx-auto px-6 py-8">
+          <h1 className="sr-only">GlobalSync AI Dashboard</h1>
           {/* AI Input */}
           <div className="mb-6 fade-in-up">
             <AIInput
