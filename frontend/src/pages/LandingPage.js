@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Globe, ArrowRight, Clock, TrendingUp, Zap, Users, Star, BookOpen, ExternalLink, Newspaper, Lightbulb, ChevronDown } from "lucide-react";
+import { Globe, ArrowRight, Clock, TrendingUp, Zap, Users, Star, BookOpen, CheckCircle2, ChevronDown, Mail } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import SiteNav from "@/components/SiteNav";
+import SiteFooter from "@/components/SiteFooter";
 import { BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
 import { getHomepageSEO } from "@/lib/seo";
 
@@ -127,34 +129,34 @@ function LiveClock({ city }) {
 function HomepageFAQSection() {
   const [openIdx, setOpenIdx] = useState(null);
   return (
-    <section className="bg-zinc-50 py-20 px-6 border-t border-zinc-100">
+    <section className="bg-[#050816] py-20 px-6 border-t border-white/10">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
-          <span className="text-xs text-blue-600 font-semibold uppercase tracking-widest">FAQ</span>
-          <h2 className="font-heading text-3xl font-bold text-zinc-900 mt-2">Frequently Asked Questions</h2>
-          <p className="text-zinc-500 text-sm mt-2">Everything you need to know about GlobalSync AI.</p>
+          <span className="text-xs text-blue-400 font-semibold uppercase tracking-widest">FAQ</span>
+          <h2 className="font-heading text-3xl font-bold text-white mt-2">Frequently Asked Questions</h2>
+          <p className="text-white/60 text-sm mt-2">Everything you need to know about GlobalSync AI.</p>
         </div>
         <div className="space-y-3">
           {HOMEPAGE_FAQS.map((faq, i) => (
             <div
               key={i}
-              className="bg-white rounded-xl border border-zinc-200 overflow-hidden"
+              className="bg-[#0A0F1E] rounded-xl border border-white/10 overflow-hidden"
               data-testid={`faq-item-${i}`}
             >
               <button
                 onClick={() => setOpenIdx(openIdx === i ? null : i)}
-                className="w-full flex items-center justify-between p-5 text-left gap-4 hover:bg-zinc-50 transition-colors"
+                className="w-full flex items-center justify-between p-5 text-left gap-4 hover:bg-white/5 transition-colors"
                 aria-expanded={openIdx === i}
               >
-                <span className="font-semibold text-zinc-800 text-sm leading-snug">{faq.q}</span>
+                <span className="font-semibold text-white text-sm leading-snug">{faq.q}</span>
                 <ChevronDown
-                  className={`w-4 h-4 text-zinc-400 flex-shrink-0 transition-transform duration-200 ${openIdx === i ? "rotate-180" : ""}`}
+                  className={`w-4 h-4 text-white/40 flex-shrink-0 transition-transform duration-200 ${openIdx === i ? "rotate-180" : ""}`}
                 />
               </button>
               <div className={`faq-answer${openIdx === i ? " open" : ""}`}>
-                <div className="flex gap-3 px-5 pb-5 border-t border-zinc-100 pt-4">
+                <div className="flex gap-3 px-5 pb-5 border-t border-white/10 pt-4">
                   <div className={`faq-left-bar ${openIdx === i ? "opacity-100" : "opacity-0"}`} />
-                  <p className="text-sm text-zinc-600 leading-relaxed">{faq.a}</p>
+                  <p className="text-sm text-white/60 leading-relaxed">{faq.a}</p>
                 </div>
               </div>
             </div>
@@ -218,10 +220,11 @@ export default function LandingPage() {
   const seo = getHomepageSEO({ faqs: HOMEPAGE_FAQS });
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#050816] text-white">
       <SEOHead {...seo} />
+      <SiteNav />
       {/* ===== DARK HERO ===== */}
-      <div className="hero-bg min-h-screen flex flex-col">
+      <div className="hero-bg flex flex-col pt-10">
         {/* Grid overlay */}
         <div className="hero-grid" />
         {/* Orbs */}
@@ -230,42 +233,7 @@ export default function LandingPage() {
         <div className="orb orb-pink" />
         <div className="orb orb-teal" />
 
-        {/* Navbar */}
-        <nav className="relative z-10 max-w-7xl mx-auto w-full px-6 py-5 flex items-center justify-between">
-          <div className="flex items-center">
-            {/* Desktop logo */}
-            <img
-              src="/globalsync-ai-logo-1024x256.png"
-              alt="GlobalSync AI — Free Time Zone & Currency Converter"
-              className="hidden lg:block h-16 w-auto transition-transform duration-300 hover:scale-105"
-              style={{ filter: "drop-shadow(0 0 24px rgba(27,122,154,0.5)) drop-shadow(0 0 8px rgba(51,181,229,0.25))" }}
-            />
-            {/* Mobile logo */}
-            <img
-              src="/globalsync-ai-logo-512x128.png"
-              alt="GlobalSync AI"
-              className="block lg:hidden h-12 w-auto transition-transform duration-300 hover:scale-105"
-              style={{ filter: "drop-shadow(0 0 14px rgba(27,122,154,0.45))" }}
-            />
-          </div>
-          <div className="flex items-center gap-3">
-
-            <Link
-              to="/blog"
-              className="text-white/60 hover:text-white text-sm font-medium transition-colors hidden md:block"
-              data-testid="nav-blog-link"
-            >
-              Blog
-            </Link>
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="flex items-center gap-2 px-4 py-2 rounded-full glass-dark text-white/80 hover:text-white text-sm font-medium transition-all hover:bg-white/10"
-              data-testid="open-dashboard-btn"
-            >
-              Open Dashboard <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </nav>
+        {/* SiteNav is now global, removing hero-specific nav */}
 
         {/* Hero content */}
         <div className="relative z-10 flex-1 max-w-7xl mx-auto w-full px-6 py-12 flex flex-col lg:flex-row items-center gap-12">
@@ -273,54 +241,38 @@ export default function LandingPage() {
           <div className="flex-1 fade-in-up">
             <div className="inline-flex items-center gap-2 glass-dark rounded-full px-4 py-1.5 text-xs text-white/70 font-medium mb-6">
               <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-              Live exchange rates · AI-powered · Free
+              Built for remote teams and freelancers
             </div>
-            <p className="gradient-text text-xs font-bold uppercase tracking-[0.2em] mb-3">Sync Beyond Borders</p>
-            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight mb-3">
-              Free Time Zone<br />
-              <span className="gradient-text">&amp; Currency Converter</span><br />
-              <span className="text-white/65 text-2xl md:text-3xl lg:text-4xl font-semibold">for Remote Teams</span>
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight mb-4">
+              Plan global meetings<br />
+              <span className="gradient-text">and payments without</span><br />
+              <span className="text-white/90">time zone confusion.</span>
             </h1>
-            <p className="text-white/50 text-base leading-relaxed mb-8 max-w-lg">
-              Ask in plain English. GlobalSync AI handles time zone conversion, meeting overlap planning, and live currency rates for 160+ currencies — all in one free tool.
+            <p className="text-white/60 text-lg leading-relaxed mb-8 max-w-lg">
+              GlobalSync AI helps remote teams, freelancers, and international clients find fair meeting times, compare time zones, and convert currencies in one clean workspace.
             </p>
 
-            {/* Omnibar */}
-            <div className="glass-dark rounded-2xl p-3 max-w-xl mb-5" data-testid="landing-omnibar">
-              <div className="flex items-center gap-3">
-                <div className="flex-1 relative">
-                  <Zap className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cyan-400" />
-                  <input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleGo()}
-                    placeholder={typedPlaceholder || 'e.g. "Best meeting time for NY, London, Tokyo"'}
-                    className="w-full pl-9 pr-3 py-3 bg-transparent text-white placeholder-white/40 outline-none text-sm"
-                    data-testid="landing-query-input"
-                  />
-                </div>
-                <button
-                  onClick={() => handleGo()}
-                  className="btn-gradient rounded-xl px-5 py-2.5 text-sm font-semibold flex items-center gap-2 shrink-0"
-                  data-testid="landing-try-btn"
-                >
-                  Try Free <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
+              <button
+                onClick={() => navigate("/dashboard")}
+                className="w-full sm:w-auto btn-gradient rounded-xl px-6 py-3.5 text-sm font-semibold flex items-center justify-center gap-2 shadow-xl shadow-blue-500/20"
+              >
+                Try GlobalSync AI Free <ArrowRight className="w-4 h-4" />
+              </button>
+              <Link
+                to="/meeting-planner"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-xl border border-white/10 text-white/80 hover:bg-white/5 hover:text-white transition-all text-sm font-semibold flex items-center justify-center gap-2"
+              >
+                <Users className="w-4 h-4" /> Plan a Global Meeting
+              </Link>
             </div>
 
-            {/* Example chips */}
-            <div className="flex flex-wrap gap-2">
-              {EXAMPLE_QUERIES.map((q) => (
-                <button
-                  key={q}
-                  onClick={() => handleGo(q)}
-                  className="text-xs glass-dark text-white/50 hover:text-white rounded-full px-3 py-1.5 transition-all hover:bg-white/10"
-                  data-testid={`example-${q.slice(0, 8)}`}
-                >
-                  {q}
-                </button>
-              ))}
+            {/* Trust points */}
+            <div className="flex flex-wrap gap-x-6 gap-y-2 mt-4 text-xs font-medium text-white/40">
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400/70" /> Free to use</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400/70" /> No signup required</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400/70" /> All-in-one workspace</span>
             </div>
           </div>
 
@@ -355,90 +307,85 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* ===== FEATURES SECTION (light) ===== */}
-      <section className="bg-[#FAFAFA] py-24 px-6">
+      {/* ===== FEATURES SECTION (dark) ===== */}
+      <section className="bg-[#050816] py-24 px-6 border-t border-white/5">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-xs text-blue-600 font-semibold uppercase tracking-widest">Everything you need</span>
-            <h2 className="font-heading text-4xl font-bold text-zinc-900 mt-3">Built for the global workforce</h2>
-            <p className="text-zinc-500 mt-3 max-w-lg mx-auto">Three powerful tools unified under AI-driven natural language understanding.</p>
+            <span className="text-xs text-blue-400 font-semibold uppercase tracking-widest">Everything you need</span>
+            <h2 className="font-heading text-4xl font-bold text-white mt-3">Built for the global workforce</h2>
+            <p className="text-white/60 mt-3 max-w-lg mx-auto">Three powerful tools unified under AI-driven natural language understanding.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* Card 1 */}
             <div
-              className="feature-card-blue rounded-3xl p-7 fade-in-up stagger-1"
+              className="bg-[#0A0F1E] border border-white/10 rounded-3xl p-7 fade-in-up stagger-1"
               onMouseMove={handleTilt}
               onMouseLeave={handleTiltReset}
             >
               <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-blue-500/30">
                 <Clock className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-heading font-bold text-xl text-blue-900 mb-2">Smart Time Zones</h3>
-              <p className="text-blue-700/70 text-sm leading-relaxed mb-5">
-                Live clocks for up to 5 cities. Instantly see who's in office, find business hour overlaps, and get perfect meeting time suggestions.
+              <h3 className="font-heading font-bold text-xl text-white mb-2">Smart Meeting Planner</h3>
+              <p className="text-white/60 text-sm leading-relaxed mb-5">
+                Calculate the perfect meeting time with our AI Meeting Overlap Score. Automatically avoid weekends, late nights, and early mornings for your remote team.
               </p>
               <div className="flex gap-2 flex-wrap">
-                {["NYC", "London", "Tokyo", "Sydney"].map((c) => (
-                  <span key={c} className="text-xs bg-blue-100 text-blue-700 rounded-full px-3 py-1 font-medium border border-blue-200">{c}</span>
-                ))}
+                <span className="text-xs bg-blue-500/20 text-blue-300 rounded-full px-3 py-1 font-medium border border-blue-500/30">Overlap Score: 87/100</span>
               </div>
             </div>
 
             {/* Card 2 */}
             <div
-              className="feature-card-green rounded-3xl p-7 fade-in-up stagger-2"
+              className="bg-[#0A0F1E] border border-white/10 rounded-3xl p-7 fade-in-up stagger-2"
               onMouseMove={handleTilt}
               onMouseLeave={handleTiltReset}
             >
               <div className="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-emerald-500/30">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-heading font-bold text-xl text-emerald-900 mb-2">Live Currency Rates</h3>
-              <p className="text-emerald-700/70 text-sm leading-relaxed mb-5">
-                Real-time exchange rates from ECB. Convert any pair, view 7-day trend charts, and track USD, EUR, GBP, INR, JPY + 15 more.
+              <h3 className="font-heading font-bold text-xl text-white mb-2">Live Currency Rates</h3>
+              <p className="text-white/60 text-sm leading-relaxed mb-5">
+                Real-time exchange rates. Convert any pair, calculate freelancer rates across countries, and track USD, EUR, GBP, INR + 150 more.
               </p>
-              <div className="bg-emerald-100 rounded-xl p-3 border border-emerald-200">
-                <div className="text-emerald-800 font-semibold text-sm">1 USD ≈ 92.09 INR</div>
-                <div className="text-emerald-600/60 text-xs mt-0.5">Example · Live via ECB</div>
+              <div className="bg-emerald-500/10 rounded-xl p-3 border border-emerald-500/20">
+                <div className="text-emerald-400 font-semibold text-sm">1 USD ≈ 83.20 INR</div>
+                <div className="text-emerald-500/60 text-xs mt-0.5">Example · Live via API</div>
               </div>
             </div>
 
             {/* Card 3 */}
             <div
-              className="feature-card-purple rounded-3xl p-7 fade-in-up stagger-3"
+              className="bg-[#0A0F1E] border border-white/10 rounded-3xl p-7 fade-in-up stagger-3"
               onMouseMove={handleTilt}
               onMouseLeave={handleTiltReset}
             >
               <div className="w-12 h-12 bg-violet-600 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-violet-500/30">
                 <Zap className="w-6 h-6 text-white" />
               </div>
-              <h3 className="font-heading font-bold text-xl text-violet-900 mb-2">AI Natural Language</h3>
-              <p className="text-violet-700/70 text-sm leading-relaxed mb-5">
-                Claude AI understands your query, detects intent, extracts cities and currencies, then routes automatically.
+              <h3 className="font-heading font-bold text-xl text-white mb-2">AI Natural Language</h3>
+              <p className="text-white/60 text-sm leading-relaxed mb-5">
+                Our AI understands your query, detects intent, extracts cities and currencies, and routes you to the best tool.
               </p>
               <div className="space-y-2">
                 {['"3 PM NY → What time in Tokyo?"', '"Convert 200 EUR to GBP"'].map((ex) => (
-                  <div key={ex} className="text-xs font-mono bg-violet-100 text-violet-700 rounded-lg px-3 py-2 border border-violet-200">{ex}</div>
+                  <div key={ex} className="text-xs font-mono bg-violet-500/10 text-violet-300 rounded-lg px-3 py-2 border border-violet-500/20">{ex}</div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* SEO Content Block — visible to Google and users */}
-          <div className="mt-16 bg-zinc-50 rounded-3xl border border-zinc-200 p-8">
-            <h2 className="font-heading text-xl font-bold text-zinc-900 mb-4">
-              The Free World Clock &amp; AI Time Zone Converter for Remote Teams
+          {/* SEO Content Block */}
+          <div className="mt-16 bg-[#0A0F1E] rounded-3xl border border-white/10 p-8">
+            <h2 className="font-heading text-xl font-bold text-white mb-4">
+              The AI Meeting and Payment Planner for Remote Teams
             </h2>
-            <p className="text-zinc-600 leading-relaxed text-sm mb-4">
-              GlobalSync AI is a free AI-powered tool for remote teams and global workers. Use our <strong>time zone converter</strong> to compare clocks across 25+ cities including New York, London, Tokyo, Dubai, and Mumbai with a live <strong>world clock</strong>. Convert currencies with live exchange rates for 160+ currencies including USD, EUR, GBP, INR, PKR, AED, SAR, and NGN using our <strong>currency converter</strong>.
+            <p className="text-white/60 leading-relaxed text-sm mb-4">
+              GlobalSync AI is a free AI-powered global work assistant. Use our <strong>meeting planner</strong> with the AI Meeting Overlap Score to schedule fair meetings. Compare clocks across 25+ cities including New York, London, Tokyo, Dubai, and Mumbai. Convert currencies with live exchange rates for 160+ currencies using our <strong>freelancer rate converter</strong>.
             </p>
-            <p className="text-zinc-600 leading-relaxed text-sm mb-5">
-              Use the <strong>meeting planner for time zones</strong> to find the best meeting time across multiple time zones instantly — our AI automatically finds business hour overlaps so your remote team stays in sync. Whether you need a <strong>remote team time zone tool</strong>, a <strong>free world clock for multiple cities</strong>, or an <strong>AI time zone converter</strong> that understands plain English, GlobalSync AI does it all. No signup. No subscription. Free forever.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {["Time Zone Converter", "World Clock", "Currency Converter", "Meeting Planner", "Remote Team Tool", "AI-Powered", "160+ Currencies", "25+ Cities", "Free Forever"].map(tag => (
-                <span key={tag} className="text-xs bg-white border border-zinc-200 text-zinc-500 rounded-full px-3 py-1">{tag}</span>
+            <div className="flex flex-wrap gap-2 mt-5">
+              {["Time Zone Converter", "AI Meeting Planner", "Currency Converter", "Freelancer Rates", "160+ Currencies", "Free Forever"].map(tag => (
+                <span key={tag} className="text-xs bg-white/5 border border-white/10 text-white/60 rounded-full px-3 py-1">{tag}</span>
               ))}
             </div>
           </div>
@@ -467,20 +414,20 @@ export default function LandingPage() {
 
 
       {/* ===== FROM THE BLOG ===== */}
-      <section className="bg-white py-20 px-6 border-t border-zinc-100">
+      <section className="bg-[#050816] py-20 px-6 border-t border-white/10">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
             <div>
-              <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 rounded-full px-3 py-1 text-xs font-semibold mb-3 border border-blue-100">
+              <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-400 rounded-full px-3 py-1 text-xs font-semibold mb-3 border border-blue-500/30">
                 <BookOpen className="w-3.5 h-3.5" /> Resources &amp; Guides
               </div>
-              <h2 className="font-heading text-3xl font-bold text-zinc-900">From the Blog</h2>
-              <p className="text-zinc-500 text-sm mt-1">Practical tips for remote teams, freelancers &amp; digital nomads.</p>
+              <h2 className="font-heading text-3xl font-bold text-white">From the Blog</h2>
+              <p className="text-white/60 text-sm mt-1">Practical tips for remote teams, freelancers &amp; digital nomads.</p>
             </div>
             <Link
               to="/blog"
-              className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors shrink-0"
+              className="flex items-center gap-1.5 text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors shrink-0"
               data-testid="view-all-posts-link"
             >
               View all {BLOG_POSTS.length} articles <ArrowRight className="w-4 h-4" />
@@ -494,7 +441,7 @@ export default function LandingPage() {
               return (
                 <article
                   key={post.slug}
-                  className={`bg-[#FAFAFA] rounded-2xl border border-zinc-200 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all group ${style.hover}`}
+                  className={`bg-[#0A0F1E] rounded-2xl border border-white/10 overflow-hidden hover:border-white/20 hover:-translate-y-0.5 transition-all group`}
                   data-testid={`homepage-blog-card-${post.slug}`}
                 >
                   <div className={`h-1 ${style.accent}`} />
@@ -503,23 +450,23 @@ export default function LandingPage() {
                       <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${style.badge}`}>
                         {post.category}
                       </span>
-                      <span className="text-xs text-zinc-400 flex items-center gap-1">
+                      <span className="text-xs text-white/40 flex items-center gap-1">
                         <Clock className="w-3 h-3" /> {post.readTime}
                       </span>
                     </div>
-                    <h3 className="font-heading font-bold text-zinc-900 leading-snug mb-2 group-hover:text-zinc-700 transition-colors line-clamp-2">
+                    <h3 className="font-heading font-bold text-white leading-snug mb-2 group-hover:text-white/80 transition-colors line-clamp-2">
                       {post.title}
                     </h3>
-                    <p className="text-sm text-zinc-500 leading-relaxed mb-4 flex-1 line-clamp-3">
+                    <p className="text-sm text-white/60 leading-relaxed mb-4 flex-1 line-clamp-3">
                       {post.excerpt}
                     </p>
                     <Link
                       to={`/blog/${post.slug}`}
                       className={`inline-flex items-center gap-1.5 text-sm font-semibold transition-colors ${
-                        post.categoryColor === "blue"    ? "text-blue-600 hover:text-blue-700" :
-                        post.categoryColor === "emerald" ? "text-emerald-600 hover:text-emerald-700" :
-                        post.categoryColor === "orange"  ? "text-orange-500 hover:text-orange-600" :
-                        "text-violet-600 hover:text-violet-700"
+                        post.categoryColor === "blue"    ? "text-blue-400 hover:text-blue-300" :
+                        post.categoryColor === "emerald" ? "text-emerald-400 hover:text-emerald-300" :
+                        post.categoryColor === "orange"  ? "text-orange-400 hover:text-orange-300" :
+                        "text-violet-400 hover:text-violet-300"
                       }`}
                       data-testid={`homepage-read-more-${post.slug}`}
                     >
@@ -535,7 +482,7 @@ export default function LandingPage() {
           <div className="mt-8 text-center">
             <Link
               to="/blog"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-600 hover:bg-zinc-100 hover:border-zinc-300 text-sm font-medium transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 bg-[#0A0F1E] text-white hover:bg-white/5 text-sm font-medium transition-all"
               data-testid="blog-see-all-btn"
             >
               <BookOpen className="w-4 h-4" />
@@ -548,104 +495,7 @@ export default function LandingPage() {
       {/* ===== FAQ SECTION ===== */}
       <HomepageFAQSection />
 
-      {/* Footer */}
-      {/* Popular Global Conversions */}
-      <section className="bg-white py-16 px-6 border-t border-zinc-100">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-8 text-center">Popular Global Conversions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-semibold text-zinc-800 mb-4 flex items-center gap-2"><Clock className="w-4 h-4 text-blue-500" /> Time Zone Converters</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  { to: "/time/new-york-to-london", label: "Convert Time: New York to London" },
-                  { to: "/time/london-to-tokyo", label: "Convert Time: London to Tokyo" },
-                  { to: "/time/san-francisco-to-new-york", label: "Convert Time: San Francisco to New York" },
-                  { to: "/time/dubai-to-mumbai", label: "Convert Time: Dubai to Mumbai" },
-                ].map(link => (
-                  <Link key={link.to} to={link.to} className="bg-zinc-50 rounded-xl border border-zinc-200 p-3 hover:border-blue-300 hover:bg-white transition-colors text-sm font-medium text-zinc-700 hover:text-blue-600">
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 className="font-semibold text-zinc-800 mb-4 flex items-center gap-2"><TrendingUp className="w-4 h-4 text-emerald-500" /> Currency Exchange Rates</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  { to: "/currency/usd-to-inr", label: "Check USD to INR Exchange Rate" },
-                  { to: "/currency/usd-to-eur", label: "Check USD to EUR Exchange Rate" },
-                  { to: "/currency/gbp-to-inr", label: "Check GBP to INR Exchange Rate" },
-                  { to: "/currency/usd-to-ngn", label: "Check USD to NGN Exchange Rate" },
-                ].map(link => (
-                  <Link key={link.to} to={link.to} className="bg-zinc-50 rounded-xl border border-zinc-200 p-3 hover:border-emerald-300 hover:bg-white transition-colors text-sm font-medium text-zinc-700 hover:text-emerald-600">
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <footer className="bg-[#050816] py-10 px-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Tool links */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 pb-8 border-b border-white/10">
-            <Link to="/time-zone-converter" className="group flex items-center gap-3 bg-white/5 hover:bg-white/10 rounded-xl p-4 transition-colors">
-              <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                <Clock className="w-4 h-4 text-blue-400" />
-              </div>
-              <div>
-                <div className="text-white/80 text-sm font-medium group-hover:text-white transition-colors">Time Zone Converter</div>
-                <div className="text-white/30 text-xs">Live clocks · 25+ cities</div>
-              </div>
-            </Link>
-            <Link to="/currency-converter" className="group flex items-center gap-3 bg-white/5 hover:bg-white/10 rounded-xl p-4 transition-colors">
-              <div className="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-4 h-4 text-emerald-400" />
-              </div>
-              <div>
-                <div className="text-white/80 text-sm font-medium group-hover:text-white transition-colors">Currency Converter</div>
-                <div className="text-white/30 text-xs">Live rates · 160+ currencies</div>
-              </div>
-            </Link>
-            <Link to="/meeting-planner" className="group flex items-center gap-3 bg-white/5 hover:bg-white/10 rounded-xl p-4 transition-colors">
-              <div className="w-8 h-8 bg-orange-500/20 rounded-lg flex items-center justify-center">
-                <Users className="w-4 h-4 text-orange-400" />
-              </div>
-              <div>
-                <div className="text-white/80 text-sm font-medium group-hover:text-white transition-colors">Meeting Planner</div>
-                <div className="text-white/30 text-xs">Business hour overlaps</div>
-              </div>
-            </Link>
-          </div>
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center">
-                <img
-                  src="/logo-dark.png.png"
-                  alt="GlobalSync AI"
-                  className="h-12 w-auto transition-transform duration-300 hover:scale-105"
-                  style={{ filter: "drop-shadow(0 0 18px rgba(27,122,154,0.6)) drop-shadow(0 0 6px rgba(255,255,255,0.12))" }}
-                />
-              </div>
-              <p className="text-white/20 text-xs">Free · Open · AI-Powered · Live Rates</p>
-              <button onClick={() => navigate("/dashboard")} className="text-white/30 hover:text-white/60 text-sm transition-colors flex items-center gap-1">
-                Get Started <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 pt-2 border-t border-white/5">
-              <Link to="/about" className="text-white/25 hover:text-white/50 text-xs transition-colors">About</Link>
-              <Link to="/blog"  className="text-white/25 hover:text-white/50 text-xs transition-colors">Blog</Link>
-
-              <Link to="/contact" className="text-white/25 hover:text-white/50 text-xs transition-colors">Contact</Link>
-              <Link to="/privacy-policy" className="text-white/25 hover:text-white/50 text-xs transition-colors">Privacy Policy</Link>
-              <Link to="/terms-of-service" className="text-white/25 hover:text-white/50 text-xs transition-colors">Terms of Service</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

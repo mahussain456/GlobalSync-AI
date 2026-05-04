@@ -5,6 +5,7 @@ const TOOL_LINKS = [
   { label: "Time Zone Converter", to: "/time-zone-converter" },
   { label: "Currency Converter",  to: "/currency-converter"  },
   { label: "Meeting Planner",     to: "/meeting-planner"     },
+  { label: "Freelancer Rates",    to: "/freelancer-rate-converter" },
   { label: "Open Dashboard",      to: "/dashboard"           },
 ];
 
@@ -19,6 +20,7 @@ const LEGAL_LINKS = [
   { label: "Terms of Service",  to: "/terms-of-service"  },
   { label: "Editorial Policy",  to: "/editorial-policy"  },
   { label: "Methodology",       to: "/methodology"       },
+  { label: "Data Sources",      to: "/data-sources"      },
 ];
 
 const POPULAR_TIME_PAIRS = [

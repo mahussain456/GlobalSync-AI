@@ -7,11 +7,11 @@ import { getStaticPageSEO } from "@/lib/seo";
 
 const Section = ({ icon: Icon, color = "blue", title, children }) => {
   const colors = {
-    blue:    "bg-blue-50 border-blue-100 text-blue-600",
-    emerald: "bg-emerald-50 border-emerald-100 text-emerald-600",
-    violet:  "bg-violet-50 border-violet-100 text-violet-600",
-    orange:  "bg-orange-50 border-orange-100 text-orange-600",
-    red:     "bg-red-50 border-red-100 text-red-600",
+    blue:    "bg-blue-900/20 border-blue-500/20 text-blue-400",
+    emerald: "bg-emerald-900/20 border-emerald-500/20 text-emerald-400",
+    violet:  "bg-violet-900/20 border-violet-500/20 text-violet-400",
+    orange:  "bg-orange-900/20 border-orange-500/20 text-orange-400",
+    red:     "bg-red-900/20 border-red-500/20 text-red-400",
   };
   return (
     <section className="mb-12">
@@ -19,9 +19,9 @@ const Section = ({ icon: Icon, color = "blue", title, children }) => {
         <div className={`w-9 h-9 rounded-xl border flex items-center justify-center shrink-0 ${colors[color]}`}>
           <Icon size={18} />
         </div>
-        <h2 className="font-heading text-xl font-bold text-zinc-900">{title}</h2>
+        <h2 className="font-heading text-xl font-bold text-white">{title}</h2>
       </div>
-      <div className="pl-12 space-y-4 text-zinc-600 text-sm leading-relaxed">
+      <div className="pl-12 space-y-4 text-white/70 text-sm leading-relaxed">
         {children}
       </div>
     </section>
@@ -29,44 +29,44 @@ const Section = ({ icon: Icon, color = "blue", title, children }) => {
 };
 
 const InfoCard = ({ label, value }) => (
-  <div className="flex items-start gap-3 bg-zinc-50 border border-zinc-200 rounded-xl p-4">
-    <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wide mt-0.5 w-28 shrink-0">{label}</div>
-    <div className="text-sm text-zinc-700">{value}</div>
+  <div className="flex items-start gap-3 bg-[#0A0F1E] border border-white/10 rounded-xl p-4">
+    <div className="text-xs font-semibold text-white/40 uppercase tracking-wide mt-0.5 w-28 shrink-0">{label}</div>
+    <div className="text-sm text-white/80">{value}</div>
   </div>
 );
 
 export default function MethodologyPage() {
   const seo = getStaticPageSEO("methodology");
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
+    <div className="min-h-screen bg-[#050816] text-white">
       <SEOHead {...seo} />
       <SiteNav />
 
       <article className="max-w-3xl mx-auto px-6 py-12">
         {/* Breadcrumb */}
-        <nav className="text-xs text-zinc-400 mb-8 flex items-center gap-1.5">
-          <Link to="/" className="hover:text-zinc-600">Home</Link>
+        <nav className="text-xs text-white/40 mb-8 flex items-center gap-1.5">
+          <Link to="/" className="hover:text-white/80">Home</Link>
           <span>/</span>
-          <span className="text-zinc-600">Methodology</span>
+          <span className="text-white/80">Methodology</span>
         </nav>
 
         {/* Header */}
         <header className="mb-12">
-          <div className="inline-flex items-center gap-2 bg-violet-50 text-violet-700 rounded-full px-3 py-1 text-xs font-medium mb-4 border border-violet-100">
+          <div className="inline-flex items-center gap-2 bg-violet-500/20 text-violet-400 rounded-full px-3 py-1 text-xs font-medium mb-4 border border-violet-500/30">
             <Cpu className="w-3.5 h-3.5" /> Data & AI Transparency
           </div>
-          <h1 className="font-heading text-3xl md:text-4xl font-bold text-zinc-900 mb-4">
+          <h1 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
             Our Methodology
           </h1>
-          <p className="text-zinc-500 text-lg leading-relaxed">
+          <p className="text-white/60 text-lg leading-relaxed">
             Transparency matters. This page explains exactly where GlobalSync AI gets its data, how our AI assistant generates answers, what our update frequencies are, and what limitations users should understand.
           </p>
-          <p className="text-xs text-zinc-400 mt-4">Last updated: April 2026</p>
+          <p className="text-xs text-white/40 mt-4">Last updated: April 2026</p>
         </header>
 
         {/* Quick reference */}
-        <div className="mb-12 bg-white rounded-2xl border border-zinc-200 p-6">
-          <h2 className="font-heading text-base font-bold text-zinc-800 mb-4">Quick Reference</h2>
+        <div className="mb-12 bg-[#0A0F1E] rounded-2xl border border-white/10 p-6">
+          <h2 className="font-heading text-base font-bold text-white mb-4">Quick Reference</h2>
           <div className="space-y-3">
             <InfoCard label="Time Zones" value="IANA Time Zone Database (TZDB) — the global standard used by all major operating systems" />
             <InfoCard label="Exchange Rates" value="Live market rates via European Central Bank (ECB) and supplementary providers, fetched in real time" />
@@ -78,35 +78,35 @@ export default function MethodologyPage() {
         <Section icon={Clock} color="blue" title="Time Zone Data">
           <p>
             All time zone conversions on GlobalSync AI use the{" "}
-            <strong className="text-zinc-800">IANA Time Zone Database</strong> (also called the Olson database or tzdata), the globally authoritative source for time zone and daylight saving time rules. It is maintained by a team of volunteer experts and is used by virtually every operating system, programming language, and device worldwide.
+            <strong className="text-white">IANA Time Zone Database</strong> (also called the Olson database or tzdata), the globally authoritative source for time zone and daylight saving time rules. It is maintained by a team of volunteer experts and is used by virtually every operating system, programming language, and device worldwide.
           </p>
           <p>
             The IANA TZDB is updated multiple times per year — often just weeks before a DST transition — to reflect decisions by governments that change their clock rules. GlobalSync AI updates its time zone logic whenever a new TZDB version is released.
           </p>
           <p>
-            <strong className="text-zinc-800">Daylight Saving Time (DST):</strong> Our converters account for DST rules for all cities that observe them. Because DST dates vary by country and change year to year, we display DST status on relevant city-pair pages to help users understand seasonal gaps. Users should always verify with a live tool — including ours — rather than relying on memorized offsets.
+            <strong className="text-white">Daylight Saving Time (DST):</strong> Our converters account for DST rules for all cities that observe them. Because DST dates vary by country and change year to year, we display DST status on relevant city-pair pages to help users understand seasonal gaps. Users should always verify with a live tool — including ours — rather than relying on memorized offsets.
           </p>
           <p>
-            <strong className="text-zinc-800">What we don't cover:</strong> Real-time DST announcements made by governments after our last TZDB update. In rare cases where a government changes its DST rules with very short notice (which does happen), our data may lag until the next TZDB release.
+            <strong className="text-white">What we don't cover:</strong> Real-time DST announcements made by governments after our last TZDB update. In rare cases where a government changes its DST rules with very short notice (which does happen), our data may lag until the next TZDB release.
           </p>
         </Section>
 
         <Section icon={DollarSign} color="emerald" title="Currency Exchange Rates">
           <p>
             Live exchange rates displayed on GlobalSync AI are fetched in real time from our backend, which aggregates data from the{" "}
-            <strong className="text-zinc-800">European Central Bank (ECB)</strong> reference rates and supplementary market data providers.
+            <strong className="text-white">European Central Bank (ECB)</strong> reference rates and supplementary market data providers.
           </p>
           <p>
-            <strong className="text-zinc-800">Rate type:</strong> We display the <em>mid-market rate</em> — the midpoint between the buy and sell rates used in interbank trading. This is the most accurate benchmark for the true value of a currency pair. It is not the rate you will receive from a bank, payment app, or money transfer service, which will apply their own margin on top.
+            <strong className="text-white">Rate type:</strong> We display the <em>mid-market rate</em> — the midpoint between the buy and sell rates used in interbank trading. This is the most accurate benchmark for the true value of a currency pair. It is not the rate you will receive from a bank, payment app, or money transfer service, which will apply their own margin on top.
           </p>
           <p>
-            <strong className="text-zinc-800">Update frequency:</strong> Rates are fetched live on each query from the currency converter or currency pair pages. There is no cached "daily rate" — each page load requests the current market rate.
+            <strong className="text-white">Update frequency:</strong> Rates are fetched live on each query from the currency converter or currency pair pages. There is no cached "daily rate" — each page load requests the current market rate.
           </p>
           <p>
-            <strong className="text-zinc-800">Coverage:</strong> Our converter supports 160+ currencies including major, minor, and emerging market currencies. Exotic or illiquid currency pairs may have less precise rate data than major pairs (e.g., USD/EUR, GBP/INR).
+            <strong className="text-white">Coverage:</strong> Our converter supports 160+ currencies including major, minor, and emerging market currencies. Exotic or illiquid currency pairs may have less precise rate data than major pairs (e.g., USD/EUR, GBP/INR).
           </p>
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mt-4">
-            <p className="text-amber-800 font-medium text-sm">
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 mt-4">
+            <p className="text-amber-400 font-medium text-sm">
               ⚠️ Important: Exchange rates are for informational purposes only. They are not financial advice and should not be used as the sole basis for financial, investment, or business decisions. Always verify rates with your bank or financial institution before executing any transaction.
             </p>
           </div>
@@ -115,13 +115,13 @@ export default function MethodologyPage() {
         <Section icon={Cpu} color="violet" title="AI-Generated Answers">
           <p>
             GlobalSync AI's natural language assistant is powered by{" "}
-            <strong className="text-zinc-800">Anthropic Claude (claude-3-5-sonnet)</strong>, a large language model developed by Anthropic. When you ask a question in natural language — such as "What time is 3 PM New York in Tokyo?" or "Convert 500 USD to INR" — the AI processes your query and generates a response.
+            <strong className="text-white">Anthropic Claude (claude-3-5-sonnet)</strong>, a large language model developed by Anthropic. When you ask a question in natural language — such as "What time is 3 PM New York in Tokyo?" or "Convert 500 USD to INR" — the AI processes your query and generates a response.
           </p>
           <p>
-            <strong className="text-zinc-800">How it works:</strong> The AI receives your query along with current time zone and exchange rate context from our backend, and generates a natural language answer. For simple conversions, the answer is computed directly from live data. For more complex questions, the AI uses its training knowledge to provide context and guidance.
+            <strong className="text-white">How it works:</strong> The AI receives your query along with current time zone and exchange rate context from our backend, and generates a natural language answer. For simple conversions, the answer is computed directly from live data. For more complex questions, the AI uses its training knowledge to provide context and guidance.
           </p>
           <p>
-            <strong className="text-zinc-800">Limitations you must understand:</strong>
+            <strong className="text-white">Limitations you must understand:</strong>
           </p>
           <ul className="list-disc list-outside ml-5 space-y-2">
             <li>AI responses can occasionally be inaccurate, especially for edge cases involving unusual time zones, newly changed DST rules, or complex multi-currency scenarios.</li>
@@ -144,28 +144,28 @@ export default function MethodologyPage() {
 
         <Section icon={AlertTriangle} color="red" title="Disclaimer">
           <p>
-            All content and tools on GlobalSync AI are provided for <strong className="text-zinc-800">informational purposes only</strong>. We do not guarantee the accuracy, completeness, or timeliness of any data, and we are not liable for any decisions made based on information obtained from this site.
+            All content and tools on GlobalSync AI are provided for <strong className="text-white">informational purposes only</strong>. We do not guarantee the accuracy, completeness, or timeliness of any data, and we are not liable for any decisions made based on information obtained from this site.
           </p>
           <p>
             For time-sensitive financial transactions, legal matters, or professional decisions, always verify information independently with qualified professionals or official sources.
           </p>
           <p>
             For the full legal terms of use, see our{" "}
-            <Link to="/terms-of-service" className="text-blue-600 hover:text-blue-700 underline">Terms of Service</Link>{" "}
+            <Link to="/terms-of-service" className="text-blue-400 hover:text-blue-300 underline">Terms of Service</Link>{" "}
             and{" "}
-            <Link to="/privacy-policy" className="text-blue-600 hover:text-blue-700 underline">Privacy Policy</Link>.
+            <Link to="/privacy-policy" className="text-blue-400 hover:text-blue-300 underline">Privacy Policy</Link>.
           </p>
         </Section>
 
         {/* Related links */}
-        <div className="mt-4 pt-8 border-t border-zinc-100 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Link to="/editorial-policy" className="bg-white rounded-xl border border-zinc-200 p-5 hover:border-violet-200 hover:shadow-sm transition-all group">
-            <div className="font-semibold text-zinc-800 group-hover:text-violet-600 transition-colors mb-1">Editorial Policy →</div>
-            <div className="text-sm text-zinc-500">How our content is written, reviewed, and corrected</div>
+        <div className="mt-4 pt-8 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Link to="/editorial-policy" className="bg-[#0A0F1E] rounded-xl border border-white/10 p-5 hover:border-white/20 hover:bg-white/5 transition-all group">
+            <div className="font-semibold text-white group-hover:text-violet-400 transition-colors mb-1">Editorial Policy →</div>
+            <div className="text-sm text-white/60">How our content is written, reviewed, and corrected</div>
           </Link>
-          <Link to="/about" className="bg-white rounded-xl border border-zinc-200 p-5 hover:border-violet-200 hover:shadow-sm transition-all group">
-            <div className="font-semibold text-zinc-800 group-hover:text-violet-600 transition-colors mb-1">About GlobalSync AI →</div>
-            <div className="text-sm text-zinc-500">Our mission, tools, and the team behind the platform</div>
+          <Link to="/about" className="bg-[#0A0F1E] rounded-xl border border-white/10 p-5 hover:border-white/20 hover:bg-white/5 transition-all group">
+            <div className="font-semibold text-white group-hover:text-violet-400 transition-colors mb-1">About GlobalSync AI →</div>
+            <div className="text-sm text-white/60">Our mission, tools, and the team behind the platform</div>
           </Link>
         </div>
       </article>

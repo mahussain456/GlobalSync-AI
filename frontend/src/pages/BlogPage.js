@@ -10,20 +10,20 @@ export default function BlogPage() {
   const seo = getBlogIndexSEO();
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
+    <div className="min-h-screen bg-[#050816] text-white">
       <SEOHead {...seo} />
       <SiteNav />
 
       <div className="max-w-5xl mx-auto px-6 py-12">
         {/* Header */}
         <header className="mb-12">
-          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 rounded-full px-3 py-1 text-xs font-medium mb-4 border border-blue-100">
+          <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 rounded-full px-3 py-1 text-xs font-medium mb-4 border border-blue-500/20">
             <BookOpen className="w-3.5 h-3.5" /> Resources & Guides
           </div>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold text-zinc-900 leading-tight mb-4">
+          <h1 className="font-heading text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
             GlobalSync AI Blog
           </h1>
-          <p className="text-lg text-zinc-500 max-w-2xl">
+          <p className="text-lg text-white/60 max-w-2xl">
             Practical guides for remote teams, freelancers, and digital nomads — covering time zones, currency, and the tools that make global work easier.
           </p>
         </header>
@@ -35,7 +35,7 @@ export default function BlogPage() {
             return (
               <article
                 key={post.slug}
-                className={`bg-white rounded-2xl border border-zinc-200 overflow-hidden hover:shadow-md transition-all group ${style.hover}`}
+                className={`bg-[#0A0F1E] rounded-2xl border border-white/10 overflow-hidden hover:border-white/20 transition-all group`}
                 data-testid={`blog-card-${post.slug}`}
               >
                 {/* Color accent top bar */}
@@ -46,19 +46,19 @@ export default function BlogPage() {
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${style.badge}`}>
                       {post.category}
                     </span>
-                    <span className="text-xs text-zinc-400 flex items-center gap-1">
+                    <span className="text-xs text-white/40 flex items-center gap-1">
                       <Clock className="w-3 h-3" /> {post.readTime}
                     </span>
-                    <span className="text-xs text-zinc-300">{post.publishDate}</span>
+                    <span className="text-xs text-white/30">{post.publishDate}</span>
                   </div>
 
                   {/* Title */}
-                  <h2 className="font-heading text-xl font-bold text-zinc-900 leading-snug mb-3 group-hover:text-zinc-700 transition-colors">
+                  <h2 className="font-heading text-xl font-bold text-white leading-snug mb-3 group-hover:text-white/80 transition-colors">
                     {post.title}
                   </h2>
 
                   {/* Excerpt */}
-                  <p className="text-sm text-zinc-500 leading-relaxed mb-5 flex-1">
+                  <p className="text-sm text-white/60 leading-relaxed mb-5 flex-1">
                     {post.excerpt}
                   </p>
 
@@ -66,10 +66,10 @@ export default function BlogPage() {
                   <Link
                     to={`/blog/${post.slug}`}
                     className={`inline-flex items-center gap-2 text-sm font-semibold transition-colors ${
-                      post.categoryColor === "blue" ? "text-blue-600 hover:text-blue-700" :
-                      post.categoryColor === "emerald" ? "text-emerald-600 hover:text-emerald-700" :
-                      post.categoryColor === "orange" ? "text-orange-500 hover:text-orange-600" :
-                      "text-violet-600 hover:text-violet-700"
+                      post.categoryColor === "blue" ? "text-blue-400 hover:text-blue-300" :
+                      post.categoryColor === "emerald" ? "text-emerald-400 hover:text-emerald-300" :
+                      post.categoryColor === "orange" ? "text-orange-400 hover:text-orange-300" :
+                      "text-violet-400 hover:text-violet-300"
                     }`}
                     data-testid={`read-more-${post.slug}`}
                   >
@@ -82,10 +82,10 @@ export default function BlogPage() {
         </div>
 
         {/* SEO text block */}
-        <section className="mt-16 bg-white rounded-2xl border border-zinc-200 p-8">
-          <h2 className="font-heading text-xl font-bold text-zinc-800 mb-3">Resources for Remote Teams, Freelancers &amp; Digital Nomads</h2>
-          <p className="text-sm text-zinc-500 leading-relaxed">
-            The GlobalSync AI blog covers practical tips on <strong className="text-zinc-700">remote work productivity tools</strong>, <strong className="text-zinc-700">tools for digital nomads 2026</strong>, <strong className="text-zinc-700">freelancer currency tracking</strong>, and <strong className="text-zinc-700">distributed team scheduling software</strong>. Find guides on how to use a <Link to="/time-zone-converter" className="text-blue-600 hover:underline font-semibold">free time zone converter no signup</Link>, get a <Link to="/currency-converter" className="text-blue-600 hover:underline font-semibold">live currency converter for 160 currencies</Link>, plan meetings with a <Link to="/meeting-planner" className="text-blue-600 hover:underline font-semibold">meeting overlap planner online</Link>, and answer questions like <Link to="/time/new-york-to-mumbai" className="text-blue-600 hover:underline font-semibold">what is the best time to call India from the US</Link>. Whether you're a <strong className="text-zinc-700">work from anywhere</strong> professional or a team lead managing globally distributed colleagues, these guides are built for you.
+        <section className="mt-16 bg-[#0A0F1E] rounded-2xl border border-white/10 p-8">
+          <h2 className="font-heading text-xl font-bold text-white mb-3">Resources for Remote Teams, Freelancers &amp; Digital Nomads</h2>
+          <p className="text-sm text-white/60 leading-relaxed">
+            The GlobalSync AI blog covers practical tips on <strong className="text-white">remote work productivity tools</strong>, <strong className="text-white">tools for digital nomads 2026</strong>, <strong className="text-white">freelancer currency tracking</strong>, and <strong className="text-white">distributed team scheduling software</strong>. Find guides on how to use a <Link to="/time-zone-converter" className="text-blue-400 hover:underline font-semibold">free time zone converter no signup</Link>, get a <Link to="/currency-converter" className="text-blue-400 hover:underline font-semibold">live currency converter for 160 currencies</Link>, plan meetings with a <Link to="/meeting-planner" className="text-blue-400 hover:underline font-semibold">meeting overlap planner online</Link>, and answer questions like <Link to="/time/new-york-to-mumbai" className="text-blue-400 hover:underline font-semibold">what is the best time to call India from the US</Link>. Whether you're a <strong className="text-white">work from anywhere</strong> professional or a team lead managing globally distributed colleagues, these guides are built for you.
           </p>
         </section>
       </div>
