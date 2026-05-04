@@ -66,6 +66,22 @@ export default function ContactPage() {
               partnerships@globalsync-ai.com
             </a>
           </div>
+
+          <div className="bg-white rounded-2xl border border-zinc-200 p-6 md:col-span-2">
+            <div className="w-10 h-10 bg-violet-100 rounded-xl flex items-center justify-center mb-4">
+              <Globe className="w-5 h-5 text-violet-600" />
+            </div>
+            <h2 className="font-semibold text-zinc-900 mb-1">Connect With Us</h2>
+            <p className="text-sm text-zinc-500 mb-3">Follow Mahussain and the GlobalSync team for remote work tips and updates.</p>
+            <div className="flex gap-4">
+              <a href="https://twitter.com/globalsync_ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors">
+                Twitter (X)
+              </a>
+              <a href="https://linkedin.com/company/globalsync-ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors">
+                LinkedIn
+              </a>
+            </div>
+          </div>
         </div>
 
         <div className="bg-white rounded-2xl border border-zinc-200 p-7 mb-10">

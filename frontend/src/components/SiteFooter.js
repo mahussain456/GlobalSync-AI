@@ -135,6 +135,13 @@ export default function SiteFooter() {
           </div>
         </div>
 
+        {/* Financial Disclaimer */}
+        <div className="mb-8 p-4 rounded-xl" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
+          <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.25)" }}>
+            <strong>Disclaimer:</strong> The currency conversion data provided on GlobalSync AI is for informational purposes only and does not constitute financial advice. While we strive to present accurate, real-time mid-market rates sourced from ExchangeRate-API and the European Central Bank, we do not guarantee the accuracy, completeness, or timeliness of the information. Exchange rates offered by your bank, payment processor, or remittance service will differ and typically include margins or hidden fees. Always verify actual rates and fees with your financial institution before initiating any international transfer, invoicing clients, or making financial decisions. GlobalSync AI accepts no liability for financial losses incurred as a result of using this tool.
+          </p>
+        </div>
+
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           <p className="text-xs" style={{ color: "rgba(255,255,255,0.2)" }}>
