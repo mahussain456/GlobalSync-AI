@@ -6,7 +6,6 @@ const NAV_LINKS = [
   { label: "Time Zones",      to: "/time-zone-converter" },
   { label: "Currency",        to: "/currency-converter"  },
   { label: "Meeting Planner", to: "/meeting-planner"     },
-  { label: "Daily Feed",      to: "/news"                },
   { label: "Blog",            to: "/blog"                },
 ];
 

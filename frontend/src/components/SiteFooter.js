@@ -10,7 +10,6 @@ const TOOL_LINKS = [
 
 const RESOURCE_LINKS = [
   { label: "Blog",       to: "/blog"    },
-  { label: "Daily Feed", to: "/news"    },
   { label: "About Us",   to: "/about"   },
   { label: "Contact",    to: "/contact" },
 ];

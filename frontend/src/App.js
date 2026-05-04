@@ -15,7 +15,6 @@ import EditorialPolicyPage from "@/pages/EditorialPolicyPage";
 import MethodologyPage from "@/pages/MethodologyPage";
 import BlogPage from "@/pages/BlogPage";
 import BlogPostPage from "@/pages/BlogPostPage";
-import NewsPage from "@/pages/NewsPage";
 import CityPairPage from "@/pages/CityPairPage";
 import CurrencyPairPage from "@/pages/CurrencyPairPage";
 import NotFoundPage from "@/pages/NotFoundPage";
@@ -33,7 +32,6 @@ function App() {
           <Route path="/meeting-planner" element={<MeetingPlannerPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
-          <Route path="/news" element={<NewsPage />} />
           <Route path="/time/:pair" element={<CityPairPage />} />
           <Route path="/currency/:pair" element={<CurrencyPairPage />} />
           <Route path="/about" element={<AboutPage />} />

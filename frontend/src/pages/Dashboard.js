@@ -160,6 +160,30 @@ export default function Dashboard() {
               <HistoryPanel />
             </TabsContent>
           </Tabs>
+
+          {/* Humanized SEO Guide */}
+          <div className="mt-16 bg-white rounded-3xl p-8 md:p-10 border border-zinc-200 shadow-sm fade-in-up stagger-3">
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-zinc-900 mb-6">
+              How to Get the Most Out of GlobalSync
+            </h2>
+            <div className="space-y-5 text-zinc-600 text-[15px] leading-relaxed">
+              <p>
+                Hey there! If you're working remotely or managing a distributed team, you already know the struggle. Trying to figure out what time it is for your co-worker in London while simultaneously calculating how much that invoice from Europe is actually worth in US dollars... it's just exhausting. We built the GlobalSync Dashboard specifically to solve that headache so you don't have to keep doing mental math.
+              </p>
+              <p>
+                <strong className="text-zinc-900 block mb-1">Just type exactly like you talk</strong>
+                The best part about this tool is the AI input box right at the top. You don't have to click through clunky dropdown menus or manually select time zones. Just type what's on your mind. Trying to set up a group call? Literally just type <em>"Best meeting time for New York, Dubai, and Singapore"</em> and hit enter. The AI will instantly calculate the business hour overlap for all three cities and show you the perfect window to schedule your call.
+              </p>
+              <p>
+                <strong className="text-zinc-900 block mb-1">Live currency conversions without the fluff</strong>
+                We also baked in live, mid-market exchange rates. As freelancers and remote workers, we're constantly dealing with cross-border payments, and knowing the exact rate is crucial. If you need to check how much 1,500 Euros is in USD today, just type <em>"1500 EUR to USD"</em>. The dashboard immediately flips to the Currency tab and gives you the exact conversion based on the latest global forex data. No annoying pop-ups, no confusing charts you don't need—just the actual numbers.
+              </p>
+              <p>
+                <strong className="text-zinc-900 block mb-1">Save your brainpower for the work that matters</strong>
+                Honestly, messing up time zone conversions is a guaranteed recipe for missed meetings and frustrated clients. By relying on our live world clocks and the meeting planner, you can finally stop triple-checking your Google Calendar invites. Feel free to bookmark this page—it's completely free to use, and you'll never be forced to create an account or sign in.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </>
