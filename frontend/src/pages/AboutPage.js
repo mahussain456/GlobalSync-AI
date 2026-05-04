@@ -39,15 +39,15 @@ export default function AboutPage() {
         </header>
 
         <section className="mb-10 bg-white rounded-2xl border border-zinc-200 p-7">
-          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-4">What is GlobalSync AI?</h2>
+          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-4">The Story Behind GlobalSync AI</h2>
           <p className="text-zinc-600 leading-relaxed mb-4">
-            GlobalSync AI is a free online toolkit designed to eliminate the friction of working across time zones and currencies. Whether you are a remote worker scheduling a meeting between New York and Singapore, a freelancer invoicing a client in a different currency, or a team manager coordinating a global standup — GlobalSync AI gives you the answers you need instantly.
+            Hi, I'm Mahussain. A few years ago, I was managing a completely distributed engineering team spread across New York, London, and Tokyo. I cannot tell you how many times I accidentally scheduled a critical client call when it was 2 AM for one of our lead developers, or how much money I lost on freelance invoices because I didn't understand the hidden bank fees in currency conversions.
           </p>
           <p className="text-zinc-600 leading-relaxed mb-4">
-            Unlike traditional conversion tools that require you to remember time zone abbreviations or manually look up exchange rates, GlobalSync AI lets you ask questions in plain English. Just type <em>"Best meeting time for London, Dubai, and Mumbai"</em> or <em>"Convert 500 dollars to euros"</em> and the AI handles the rest.
+            I got tired of having 14 browser tabs open just to figure out what time it was, so I built GlobalSync AI. It's a toolkit designed specifically to eliminate the friction of working globally. Unlike clunky dropdown menus on standard time converters, I hooked this up to an AI so you can just type naturally—like <em>"Best meeting time for London, Dubai, and Mumbai"</em> or <em>"Convert 500 dollars to euros."</em>
           </p>
           <p className="text-zinc-600 leading-relaxed">
-            The platform is completely free, requires no account or subscription, and is updated with live data. Our goal is to make global collaboration simpler for everyone.
+            I kept it completely free. There are no paywalls, no forced account signups, and no aggressive tracking. My goal is just to make remote work a little less exhausting for everyone.
           </p>
         </section>
 
@@ -71,29 +71,29 @@ export default function AboutPage() {
         </section>
 
         <section className="mb-10 bg-white rounded-2xl border border-zinc-200 p-7">
-          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-6">Meet the Team</h2>
+          <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-6">Meet the Creator</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="flex gap-4">
               <div className="w-14 h-14 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xl shrink-0">
-                SJ
+                MH
               </div>
               <div>
-                <h3 className="font-semibold text-zinc-900">Sarah Jenkins</h3>
-                <div className="text-sm text-blue-600 mb-2">Remote Work Expert</div>
+                <h3 className="font-semibold text-zinc-900">Mahussain</h3>
+                <div className="text-sm text-blue-600 mb-2">Founder & Developer</div>
                 <p className="text-sm text-zinc-600 leading-relaxed">
-                  Sarah has spent a decade managing distributed teams across 12 time zones. She leads our content on global scheduling strategies and async workflows.
+                  I'm a developer and remote work advocate who got tired of the mental math required to manage global teams. I built GlobalSync AI to solve my own scheduling nightmares, and now I'm sharing it with you.
                 </p>
               </div>
             </div>
             <div className="flex gap-4">
               <div className="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xl shrink-0">
-                DC
+                GC
               </div>
               <div>
-                <h3 className="font-semibold text-zinc-900">David Chen</h3>
-                <div className="text-sm text-emerald-600 mb-2">Scheduling Specialist</div>
+                <h3 className="font-semibold text-zinc-900">Global Contributors</h3>
+                <div className="text-sm text-emerald-600 mb-2">The Remote Community</div>
                 <p className="text-sm text-zinc-600 leading-relaxed">
-                  David specializes in cross-border productivity and financial logistics for digital nomads, bringing real-world experience to our tools.
+                  This tool wouldn't be possible without the ongoing feedback from digital nomads, freelance designers, and remote engineering teams who constantly tell me how to make it better.
                 </p>
               </div>
             </div>
