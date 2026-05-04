@@ -159,7 +159,7 @@ export default function BlogPostPage() {
             <div>
               <h3 className="font-semibold text-zinc-900 mb-1">About the Author: {post.authorName}</h3>
               <p className="text-sm text-zinc-600 leading-relaxed">
-                {post.authorName} is a {post.authorRole} at GlobalSync. They write extensively about global scheduling, remote team productivity, and managing cross-border financial logistics.
+                {post.authorBio || "Ahmed Hussain is a technology enthusiast and experienced IT professional with a strong interest in AI, automation, and emerging digital tools. Through his blogs, he shares practical insights, simplified explanations, and real-world perspectives on how artificial intelligence and technology are changing the way we work, build, and solve problems."}
               </p>
             </div>
           </div>
