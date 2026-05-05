@@ -182,6 +182,24 @@ export default function TimeZoneConverterPage() {
           </div>
         </section>
 
+        <section className="mb-12">
+          <h2 className="font-heading text-xl font-bold text-white mb-4">Planning and policy resources</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Link to="/global-meeting-planner-for-remote-teams" className="bg-[#0A0F1E] rounded-xl border border-white/10 p-4 hover:border-blue-500/50 transition-all group">
+              <div className="font-semibold text-white text-sm mb-1 group-hover:text-blue-400 transition-colors">Global Meeting Planner for Remote Teams</div>
+              <div className="text-xs text-white/40">Fair scheduling guidance for distributed teams</div>
+            </Link>
+            <Link to="/us-india-meeting-time" className="bg-[#0A0F1E] rounded-xl border border-white/10 p-4 hover:border-blue-500/50 transition-all group">
+              <div className="font-semibold text-white text-sm mb-1 group-hover:text-blue-400 transition-colors">US and India Meeting Time Guide</div>
+              <div className="text-xs text-white/40">High-intent overlap guide for a major remote-work use case</div>
+            </Link>
+            <Link to="/editorial-policy" className="bg-[#0A0F1E] rounded-xl border border-white/10 p-4 hover:border-blue-500/50 transition-all group">
+              <div className="font-semibold text-white text-sm mb-1 group-hover:text-blue-400 transition-colors">Editorial Policy</div>
+              <div className="text-xs text-white/40">See how guides and pair pages are maintained</div>
+            </Link>
+          </div>
+        </section>
+
         {/* Internal links */}
         <section className="bg-blue-900/20 rounded-2xl border border-blue-500/20 p-6">
           <h2 className="font-heading text-lg font-bold text-white mb-4">Explore More GlobalSync AI Tools</h2>

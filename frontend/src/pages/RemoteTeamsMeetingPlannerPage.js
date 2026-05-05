@@ -47,6 +47,12 @@ export default function RemoteTeamsMeetingPlannerPage() {
             <p>
               GlobalSync AI introduces the AI Meeting Overlap Score, which evaluates any proposed time slot from 0 to 100 based on local time fairness, weekend collisions, and lunch-hour disruptions.
             </p>
+            <h3 className="text-xl font-semibold text-white mt-8 mb-3">Related resources</h3>
+            <ul>
+              <li><Link to="/us-india-meeting-time" className="text-blue-400 hover:text-blue-300">Best time for US and India meetings</Link></li>
+              <li><Link to="/blog/schedule-meetings-across-time-zones-2026" className="text-blue-400 hover:text-blue-300">How to schedule meetings across time zones</Link></li>
+              <li><Link to="/methodology" className="text-blue-400 hover:text-blue-300">How our overlap recommendations work</Link></li>
+            </ul>
           </div>
         </div>
       </main>

@@ -187,6 +187,24 @@ export default function CurrencyConverterPage() {
           </div>
         </section>
 
+        <section className="mb-12">
+          <h2 className="font-heading text-xl font-bold text-white mb-4">Freelancer and transparency resources</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Link to="/freelancer-rate-converter" className="bg-[#0A0F1E] rounded-xl border border-white/10 p-4 hover:border-emerald-500/50 transition-all group">
+              <div className="font-semibold text-white text-sm mb-1 group-hover:text-emerald-400 transition-colors">Freelancer Rate Converter</div>
+              <div className="text-xs text-white/40">Turn live rates into practical pricing decisions</div>
+            </Link>
+            <Link to="/data-sources" className="bg-[#0A0F1E] rounded-xl border border-white/10 p-4 hover:border-emerald-500/50 transition-all group">
+              <div className="font-semibold text-white text-sm mb-1 group-hover:text-emerald-400 transition-colors">Data Sources</div>
+              <div className="text-xs text-white/40">See where exchange-rate data comes from</div>
+            </Link>
+            <Link to="/methodology" className="bg-[#0A0F1E] rounded-xl border border-white/10 p-4 hover:border-emerald-500/50 transition-all group">
+              <div className="font-semibold text-white text-sm mb-1 group-hover:text-emerald-400 transition-colors">Methodology</div>
+              <div className="text-xs text-white/40">Understand limitations, updates, and disclaimers</div>
+            </Link>
+          </div>
+        </section>
+
         {/* Internal links */}
         <section className="bg-emerald-900/20 rounded-2xl border border-emerald-500/20 p-6">
           <h2 className="font-heading text-lg font-bold text-white mb-4">More GlobalSync AI Tools</h2>

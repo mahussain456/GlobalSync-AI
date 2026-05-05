@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import { getStaticPageSEO } from "@/lib/seo";
 
 export default function FreelancerRateConverterPage() {
   const [amount, setAmount] = useState(50);
   const [rateType, setRateType] = useState("hourly");
-  
+  const seo = getStaticPageSEO("freelancer-rate-converter");
+
   return (
     <div className="min-h-screen flex flex-col bg-[#050816] text-white">
-      <SEOHead 
-        title="Freelancer Rate Converter | Calculate Hourly & Project Fees Across Currencies"
-        description="Convert freelancer hourly rates, monthly retainers, and project fees across USD, EUR, GBP, INR, and 160+ currencies with live exchange rates."
-      />
+      <SEOHead {...seo} />
       <SiteNav />
       <main className="flex-1 max-w-4xl mx-auto px-6 py-12 w-full">
         <div className="mb-10 text-center">
@@ -61,6 +61,13 @@ export default function FreelancerRateConverterPage() {
             <li><strong>USD to INR:</strong> Standard for Indian developers and designers working with US clients.</li>
             <li><strong>USD to PKR:</strong> Common for Pakistani tech talent and agencies.</li>
             <li><strong>EUR to GBP:</strong> Frequent for European and UK cross-border remote work.</li>
+          </ul>
+
+          <h3 className="text-xl font-semibold text-white mt-8 mb-3">Related guides</h3>
+          <ul className="list-disc pl-5 text-white/70 space-y-2">
+            <li><Link to="/blog/usd-to-inr-freelancers-live-currency-converter-2026" className="text-blue-400 hover:text-blue-300">Why freelancers need a live currency converter</Link></li>
+            <li><Link to="/currency-converter" className="text-blue-400 hover:text-blue-300">Open the live currency converter</Link></li>
+            <li><Link to="/methodology" className="text-blue-400 hover:text-blue-300">Review our rate and data methodology</Link></li>
           </ul>
         </div>
       </main>

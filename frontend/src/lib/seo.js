@@ -340,6 +340,12 @@ const STATIC_META = {
     canonical: "/data-sources",
     keywords: "GlobalSync AI data sources, exchange rate sources, IANA time zone database, ECB exchange rates",
   },
+  "freelancer-rate-converter": {
+    rawTitle: `Freelancer Rate Converter | Convert Hourly and Project Rates | ${BRAND}`,
+    description: `Convert freelancer hourly rates, project fees, and monthly retainers across major currencies with practical guidance for remote workers and international clients.`,
+    canonical: "/freelancer-rate-converter",
+    keywords: "freelancer rate converter, hourly rate converter, project fee converter, international freelancer pricing",
+  },
 };
 
 /**
