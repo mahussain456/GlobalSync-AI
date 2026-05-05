@@ -334,6 +334,12 @@ const STATIC_META = {
     canonical: "/methodology",
     keywords: "GlobalSync AI methodology, IANA time zone database, ECB exchange rates, AI transparency",
   },
+  "data-sources": {
+    rawTitle: `Data Sources | Time Zone and Exchange Rate Sources | ${BRAND}`,
+    description: `See the data sources behind ${BRAND}, including IANA time zone rules, ECB and ExchangeRate-API currency data, and our accuracy limitations.`,
+    canonical: "/data-sources",
+    keywords: "GlobalSync AI data sources, exchange rate sources, IANA time zone database, ECB exchange rates",
+  },
 };
 
 /**

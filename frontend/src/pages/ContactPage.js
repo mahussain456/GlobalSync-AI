@@ -49,8 +49,8 @@ export default function ContactPage() {
             <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4">
               <Mail className="w-5 h-5 text-blue-400" />
             </div>
-            <h2 className="font-semibold text-white mb-1">General Enquiries</h2>
-            <p className="text-sm text-white/60 mb-3">Questions, feedback, or anything else.</p>
+            <h2 className="font-semibold text-white mb-1">General Support</h2>
+            <p className="text-sm text-white/60 mb-3">Questions, feedback, bug reports, or requests for help using the site.</p>
             <a href="mailto:hello@globalsync-ai.com" className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors">
               hello@globalsync-ai.com
             </a>
@@ -60,10 +60,10 @@ export default function ContactPage() {
             <div className="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center mb-4">
               <MessageSquare className="w-5 h-5 text-emerald-400" />
             </div>
-            <h2 className="font-semibold text-white mb-1">Advertising & Partnerships</h2>
-            <p className="text-sm text-white/60 mb-3">Sponsorships, affiliate partnerships, and collaborations.</p>
-            <a href="mailto:partnerships@globalsync-ai.com" className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors">
-              partnerships@globalsync-ai.com
+            <h2 className="font-semibold text-white mb-1">Corrections & Editorial Feedback</h2>
+            <p className="text-sm text-white/60 mb-3">Flag an error, suggest an update, or share feedback about any guide or landing page.</p>
+            <a href="mailto:editorial@globalsync-ai.com" className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors">
+              editorial@globalsync-ai.com
             </a>
           </div>
 
@@ -71,23 +71,16 @@ export default function ContactPage() {
             <div className="w-10 h-10 bg-violet-500/20 rounded-xl flex items-center justify-center mb-4">
               <Globe className="w-5 h-5 text-violet-400" />
             </div>
-            <h2 className="font-semibold text-white mb-1">Connect With Us</h2>
-            <p className="text-sm text-white/60 mb-3">Follow Ahmed Hussain and the GlobalSync team for remote work tips and updates.</p>
-            <div className="flex flex-wrap gap-4">
-              <a href="https://twitter.com/globalsync_ai" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors">
-                Twitter (X)
-              </a>
-              <a href="https://linkedin.com/company/globalsync-ai" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors">
-                LinkedIn
-              </a>
-            </div>
-            <div className="mt-5 pt-4 border-t border-white/10">
-              <h3 className="font-semibold text-white mb-1 text-sm">Headquarters</h3>
-              <p className="text-xs text-white/60">
-                123 AI Avenue, Innovation District<br />
-                San Francisco, CA 94105, USA
-              </p>
-            </div>
+            <h2 className="font-semibold text-white mb-2">About This Site</h2>
+            <p className="text-sm text-white/60 mb-3">
+              GlobalSync AI is an independent project built by Ahmed Hussain for remote teams, freelancers, and international workers who need clearer time zone and currency tools.
+            </p>
+            <p className="text-sm text-white/60 mb-3">
+              We do not publish a public office address on the site. The fastest way to reach us is by email or the form below.
+            </p>
+            <p className="text-xs text-white/40">
+              For business, sponsorship, or product questions, start with <a href="mailto:hello@globalsync-ai.com" className="text-blue-400 hover:text-blue-300">hello@globalsync-ai.com</a> and we will route your message.
+            </p>
           </div>
         </div>
 

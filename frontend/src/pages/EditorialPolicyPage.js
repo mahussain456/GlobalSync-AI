@@ -50,13 +50,13 @@ export default function EditorialPolicyPage() {
 
         <Section icon={Edit3} title="How We Create Content">
           <p>
-            Content published on GlobalSync AI — including blog posts, tool descriptions, city-pair pages, and currency-pair pages — is written by our internal editorial team. Our writers have expertise in remote work, international finance, and global team operations.
+            Content published on GlobalSync AI — including blog posts, tool descriptions, city-pair pages, and currency-pair pages — is produced by Ahmed Hussain with editorial review against product behavior, public source material, and data-provider documentation.
           </p>
           <p>
             We do not accept sponsored articles, paid placements, or "native advertising" that is presented as editorial content. Advertising on GlobalSync AI (such as Google AdSense display ads) is clearly separated from editorial content and does not influence what we write or how we write it.
           </p>
           <p>
-            All content is written to inform users — not to serve advertiser interests. If we reference a third-party product or service (such as Wise, Payoneer, or Revolut), it is because our editors believe it is genuinely useful, not because of any commercial relationship.
+            All content is written to inform users — not to serve advertiser interests. If we reference a third-party product or service, it should be because it is relevant to the reader task, not because of a hidden commercial arrangement.
           </p>
         </Section>
 

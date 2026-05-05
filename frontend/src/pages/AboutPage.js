@@ -71,6 +71,16 @@ export default function AboutPage() {
         </section>
 
         <section className="mb-10 bg-[#0A0F1E] rounded-2xl border border-white/10 p-7">
+          <h2 className="font-heading text-2xl font-bold text-white mb-4">How GlobalSync AI Makes Money</h2>
+          <p className="text-white/70 leading-relaxed mb-4">
+            GlobalSync AI is free to use. Over time, the site may earn money through clearly labeled display advertising, affiliate partnerships, or product recommendations. Those relationships do not change how the core tools work or how editorial content is written.
+          </p>
+          <p className="text-white/70 leading-relaxed">
+            We aim to keep advertising separate from utility pages and to publish methodology, editorial, and contact information openly so users can judge the site on its merits.
+          </p>
+        </section>
+
+        <section className="mb-10 bg-[#0A0F1E] rounded-2xl border border-white/10 p-7">
           <h2 className="font-heading text-2xl font-bold text-white mb-6">Meet the Creator</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="flex gap-4">
