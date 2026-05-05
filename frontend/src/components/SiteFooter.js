@@ -13,6 +13,7 @@ const RESOURCE_LINKS = [
   { label: "Blog",       to: "/blog"    },
   { label: "About Us",   to: "/about"   },
   { label: "Contact",    to: "/contact" },
+  { label: "Data Sources", to: "/data-sources" },
 ];
 
 const LEGAL_LINKS = [
@@ -80,7 +81,7 @@ export default function SiteFooter() {
             <div className="flex items-center gap-2">
               {[
                 { icon: Globe, label: "Website",  href: "https://www.globalsync-ai.com" },
-                { icon: Github, label: "GitHub",  href: "https://github.com"        },
+                { icon: Github, label: "GitHub",  href: "https://github.com/mahussain456/GlobalSync-AI"        },
                 { icon: Mail,   label: "Contact", href: "/contact"                  },
               ].map(({ icon: Icon, label, href }) => (
                 href.startsWith("/") ? (

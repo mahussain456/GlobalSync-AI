@@ -86,11 +86,13 @@
       "/time-zone-converter",
       "/currency-converter",
       "/meeting-planner",
+      "/freelancer-rate-converter",
       "/blog",
       "/about",
       "/contact",
       "/privacy-policy",
       "/terms-of-service",
+      "/data-sources",
       "/time/new-york-to-london",
       "/time/london-to-tokyo",
       "/time/dubai-to-mumbai",
@@ -119,6 +121,8 @@
       "/blog/remote-work-time-zones-productivity-guide",
       "/blog/best-currency-to-invoice-freelancers-usd-eur-gbp",
       "/blog/work-from-anywhere-setup-guide-2026",
+      "/global-meeting-planner-for-remote-teams",
+      "/us-india-meeting-time",
       "/methodology",
       "/editorial-policy"
     ]
