@@ -58,12 +58,13 @@
     "zod": "^3.24.4"
   },
   "scripts": {
-    "start": "craco build && node static-server.js",
-    "start:dev": "craco start",
-    "build": "craco build",
-    "postbuild": "node scripts/run-snap-with-info.js && node scripts/generate-serve-config.js",
-    "test": "craco test"
-  },
+  "start": "craco start",
+  "start:prod": "craco build && node static-server.js",
+  "start:dev": "craco start",
+  "build": "CI=false GENERATE_SOURCEMAP=false DISABLE_ESLINT_PLUGIN=true craco build",
+  "postbuild:local": "node scripts/run-snap-with-info.js && node scripts/generate-serve-config.js",
+  "test": "craco test"
+}
   "reactSnap": {
     "puppeteerArgs": [
       "--no-sandbox",
