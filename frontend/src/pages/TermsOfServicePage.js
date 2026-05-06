@@ -9,7 +9,6 @@ const LAST_UPDATED = "March 2026";
 export default function TermsOfServicePage() {
   const seo = getStaticPageSEO("terms-of-service");
   return (
-  return (
     <div className="min-h-screen bg-[#050816] text-white">
       <SEOHead {...seo} />
       <SiteNav />

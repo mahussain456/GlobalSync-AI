@@ -625,4 +625,10 @@ export const CATEGORY_STYLES = {
   emerald: { badge: "bg-emerald-100 text-emerald-700 border-emerald-200", accent: "bg-emerald-600", hover: "hover:border-emerald-300" },
   orange:  { badge: "bg-orange-100 text-orange-700 border-orange-200",  accent: "bg-orange-500",  hover: "hover:border-orange-300" },
   violet:  { badge: "bg-violet-100 text-violet-700 border-violet-200",  accent: "bg-violet-600",  hover: "hover:border-violet-300" },
+  
+  };
+  export const getBlogPost = (slug) => {
+  if (!slug) return undefined;
+
+  return blogPosts.find((post) => post.slug === slug);
 };

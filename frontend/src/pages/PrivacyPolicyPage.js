@@ -1,8 +1,4 @@
-import { Link } from "react-router-dom";
-import SEOHead from "@/components/SEOHead";
-import SiteNav from "@/components/SiteNav";
-import SiteFooter from "@/components/SiteFooter";
-import { getStaticPageSEO } from "@/lib/seo";
+import React from "react";
 import { Link } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
