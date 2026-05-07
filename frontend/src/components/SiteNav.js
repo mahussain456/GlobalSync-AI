@@ -53,11 +53,7 @@ export default function SiteNav() {
 
         {/* Right: CTAs */}
         <div className="flex items-center gap-3 shrink-0">
-          <button
-            className="hidden lg:block text-white/60 hover:text-white text-sm font-medium transition-colors"
-          >
-            Chrome Extension Waitlist
-          </button>
+
           <Link
             to="/dashboard"
             className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all"
@@ -89,9 +85,7 @@ export default function SiteNav() {
               {label}
             </Link>
           ))}
-          <button className="px-3 py-2.5 rounded-lg text-sm font-medium text-white/70 hover:bg-white/5 text-left">
-            Chrome Extension Waitlist
-          </button>
+
           <Link
             to="/dashboard"
             onClick={() => setMobileOpen(false)}

@@ -8,7 +8,30 @@ import { getStaticPageSEO } from "@/lib/seo";
 export default function FreelancerRateConverterPage() {
   const [amount, setAmount] = useState(50);
   const [rateType, setRateType] = useState("hourly");
+  const [baseCurrency, setBaseCurrency] = useState("USD");
+  const [targetCurrency, setTargetCurrency] = useState("INR");
   const seo = getStaticPageSEO("freelancer-rate-converter");
+
+  const EXCHANGE_RATES = {
+    USD: 1,
+    INR: 83.5,
+    PKR: 278.5,
+    EUR: 0.92,
+    GBP: 0.79,
+    AED: 3.67,
+    NGN: 1450,
+    PHP: 56.5,
+    ZAR: 18.9,
+    CAD: 1.36,
+    AUD: 1.52
+  };
+
+  const SYMBOLS = {
+    USD: "$", INR: "₹", PKR: "Rs", EUR: "€", GBP: "£", AED: "د.إ", NGN: "₦", PHP: "₱", ZAR: "R", CAD: "C$", AUD: "A$"
+  };
+
+  const conversionRate = EXCHANGE_RATES[targetCurrency] / EXCHANGE_RATES[baseCurrency];
+  const convertedAmount = (amount * conversionRate).toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 0 });
 
   return (
     <div className="min-h-screen flex flex-col bg-[#050816] text-white">
@@ -26,14 +49,30 @@ export default function FreelancerRateConverterPage() {
         
         {/* Placeholder UI for Converter */}
         <div className="bg-[#0A0F1E] border border-white/10 rounded-3xl p-8 mb-12 shadow-2xl">
-          <div className="flex flex-col md:flex-row gap-6 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
             <div className="w-full">
               <label className="block text-white/50 text-xs uppercase tracking-wider mb-2 font-semibold">Rate Amount</label>
-              <input type="number" value={amount} onChange={e => setAmount(Number(e.target.value))} className="w-full bg-[#050816] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500" />
+              <input type="number" value={amount} onChange={e => setAmount(Number(e.target.value))} className="w-full bg-[#050816] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-emerald-500 transition-colors" />
+            </div>
+            <div className="w-full">
+              <label className="block text-white/50 text-xs uppercase tracking-wider mb-2 font-semibold">Base Currency</label>
+              <select value={baseCurrency} onChange={e => setBaseCurrency(e.target.value)} className="w-full bg-[#050816] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-emerald-500 transition-colors">
+                {Object.keys(EXCHANGE_RATES).map(code => (
+                  <option key={code} value={code}>{code}</option>
+                ))}
+              </select>
+            </div>
+            <div className="w-full">
+              <label className="block text-white/50 text-xs uppercase tracking-wider mb-2 font-semibold">Target Currency</label>
+              <select value={targetCurrency} onChange={e => setTargetCurrency(e.target.value)} className="w-full bg-[#050816] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-emerald-500 transition-colors">
+                {Object.keys(EXCHANGE_RATES).map(code => (
+                  <option key={code} value={code}>{code}</option>
+                ))}
+              </select>
             </div>
             <div className="w-full">
               <label className="block text-white/50 text-xs uppercase tracking-wider mb-2 font-semibold">Billing Type</label>
-              <select value={rateType} onChange={e => setRateType(e.target.value)} className="w-full bg-[#050816] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500">
+              <select value={rateType} onChange={e => setRateType(e.target.value)} className="w-full bg-[#050816] border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-emerald-500 transition-colors">
                 <option value="hourly">Hourly Rate</option>
                 <option value="project">Fixed Project Fee</option>
                 <option value="monthly">Monthly Retainer</option>
@@ -44,9 +83,9 @@ export default function FreelancerRateConverterPage() {
           <div className="mt-8 pt-8 border-t border-white/10 text-center">
             <p className="text-white/40 text-sm mb-2">Equivalent to approx.</p>
             <div className="text-4xl font-bold text-emerald-400">
-              {rateType === 'hourly' ? `₹${amount * 83}` : rateType === 'project' ? `₹${amount * 83}` : `₹${amount * 83}`} INR
+              {SYMBOLS[targetCurrency]}{convertedAmount} {targetCurrency}
             </div>
-            <p className="text-white/30 text-xs mt-2">Live market rate calculation example</p>
+            <p className="text-white/30 text-xs mt-2">Example calculation based on recent market rates. For actual real-time conversions, use our main <Link to="/currency-converter" className="text-emerald-400 hover:underline">Currency Converter</Link>.</p>
           </div>
         </div>
 
