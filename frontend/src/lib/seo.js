@@ -318,7 +318,7 @@ const STATIC_META = {
   },
   "terms-of-service": {
     rawTitle: `Terms of Service | ${BRAND}`,
-    description: `Read the ${BRAND} terms of service. By using our time zone and currency tools, you agree to these terms.`,
+    description: `Read the ${BRAND} terms of service. By using our free time zone and currency tools, you agree to these terms and conditions.`,
     canonical: "/terms-of-service",
     keywords: "GlobalSync AI terms of service",
   },
