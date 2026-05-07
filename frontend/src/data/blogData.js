@@ -627,8 +627,8 @@ export const CATEGORY_STYLES = {
   violet:  { badge: "bg-violet-100 text-violet-700 border-violet-200",  accent: "bg-violet-600",  hover: "hover:border-violet-300" },
   
   };
-  export const getBlogPost = (slug) => {
+export const getBlogPost = (slug) => {
   if (!slug) return undefined;
 
-  return blogPosts.find((post) => post.slug === slug);
+  return BLOG_POSTS.find((post) => post.slug === slug);
 };
