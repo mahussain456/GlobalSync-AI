@@ -38,8 +38,18 @@
         <meta name="theme-color" content="#050816" />
         
         <!-- Default SEO fallback for bots that do not execute JavaScript -->
-        <title data-rh="true">GlobalSync AI | Free Time Zone & Currency Converter</title>
-        <meta data-rh="true" name="description" content="AI-powered tools for remote teams, freelancers, and global workers. Convert time zones, plan meetings, compare freelancer rates, and check live exchange rates." />
+        <title id="fallback-title">GlobalSync AI | Free Time Zone & Currency Converter</title>
+        <meta id="fallback-desc" name="description" content="AI-powered tools for remote teams, freelancers, and global workers. Convert time zones, plan meetings, compare freelancer rates, and check live exchange rates." />
+        <script>
+          // Remove fallbacks before React Helmet mounts so we don't get duplicate tags
+          // This ensures basic bots see the fallbacks, but advanced bots (Google/Ahrefs w/ JS) see only the Helmet tags.
+          document.addEventListener("DOMContentLoaded", function() {
+            var t = document.getElementById("fallback-title");
+            var d = document.getElementById("fallback-desc");
+            if (t) t.remove();
+            if (d) d.remove();
+          });
+        </script>
 
         <!-- SEO tags (title, description, canonical, og:*, twitter:*) are injected
              per-page by react-helmet-async and captured by react-snap. -->
