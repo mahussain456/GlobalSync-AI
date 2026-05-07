@@ -204,8 +204,8 @@ export const getMeetingPlannerSEO = () => ({
  * @param {object} pairData — entry from CITY_PAIRS[pair] (has .faqs etc.)
  */
 export const getCityPairSEO = ({ cityA, cityB, pair, pairData }) => ({
-  rawTitle: `${cityA.name} to ${cityB.name} Time Difference | Current Time & Overlap | ${BRAND}`,
-  description: `See the current time in ${cityA.name} and ${cityB.name}, find the best overlap window for meetings, and check the time difference at any hour of the day.`,
+  rawTitle: `${cityA.name} to ${cityB.name} Time Difference | ${BRAND}`,
+  description: `See the current time in ${cityA.name} and ${cityB.name}, find the best overlap window for meetings, and check the time difference.`,
   canonical: `/time/${pair}`,
   keywords: `${cityA.name} to ${cityB.name} time, ${cityA.abbr} to ${cityB.abbr}, time difference ${cityA.name} ${cityB.name}, ${cityA.name} time now, ${cityB.name} time now, meeting overlap ${cityA.name} ${cityB.name}`,
   ogType: "website",
@@ -233,8 +233,8 @@ export const getCityPairSEO = ({ cityA, cityB, pair, pairData }) => ({
  * @param {object} pairData — entry from CURRENCY_PAIRS[pair] (has .faqs etc.)
  */
 export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData }) => ({
-  rawTitle: `${fromMeta.code} to ${toMeta.code} Exchange Rate | Live Converter & Chart | ${BRAND}`,
-  description: `Convert ${fromMeta.code} to ${toMeta.code} with our live currency converter. Check the current exchange rate, see a 7-day trend chart, and calculate costs for freelancers or remote teams.`,
+  rawTitle: `${fromMeta.code} to ${toMeta.code} Live Exchange Rate | ${BRAND}`,
+  description: `Convert ${fromMeta.code} to ${toMeta.code} live. Check real-time exchange rates, view the 7-day trend, and calculate costs for freelancers instantly.`,
   canonical: `/currency/${pair}`,
   keywords: `${fromMeta.code} to ${toMeta.code}, ${fromMeta.name} to ${toMeta.name}, live exchange rate, ${fromMeta.code} ${toMeta.code} converter, ${fromMeta.code} rate today, real-time currency converter`,
   ogType: "website",
@@ -278,7 +278,7 @@ export const getBlogIndexSEO = () => ({
  * @param {object} post — full BLOG_POSTS entry
  */
 export const getBlogPostSEO = ({ post }) => ({
-  rawTitle: `${post.metaTitle || post.title} | ${BRAND} Blog`,
+  rawTitle: post.metaTitle ? post.metaTitle : `${post.title} | ${BRAND}`,
   description: post.metaDescription,
   canonical: `/blog/${post.slug}`,
   keywords: post.keywords,

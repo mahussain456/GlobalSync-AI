@@ -11,6 +11,7 @@ export default function USIndiaMeetingTimePage() {
       <SEOHead 
         title="Best Time for US and India Meetings | EST/PST to IST"
         description="Find the best meeting time window between the United States (EST, PST) and India (IST). Overlap charts, DST warnings, and remote team scheduling tips."
+        canonical="/us-india-meeting-time"
       />
       <SiteNav />
       <main className="flex-1 max-w-4xl mx-auto px-6 py-12 w-full">

@@ -11,6 +11,7 @@ export default function RemoteTeamsMeetingPlannerPage() {
       <SEOHead 
         title="Global Meeting Planner for Remote Teams | Time Zone Overlaps"
         description="Schedule fair meetings for remote teams. Find business hour overlaps, check AI Meeting Scores, and avoid time zone burnout with GlobalSync AI."
+        canonical="/global-meeting-planner-for-remote-teams"
       />
       <SiteNav />
       <main className="flex-1 max-w-4xl mx-auto px-6 py-12 w-full">
