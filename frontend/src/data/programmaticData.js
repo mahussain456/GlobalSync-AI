@@ -291,6 +291,50 @@ export const CURRENCY_PAIRS = {
   },
 };
 
+// ─── GENERATE MISSING PERMUTATIONS ──────────────────────────────────────────────
+Object.keys(CITIES).forEach(cityA => {
+  Object.keys(CITIES).forEach(cityB => {
+    if (cityA !== cityB) {
+      const slug = `${cityA}-to-${cityB}`;
+      if (!CITY_PAIRS[slug]) {
+        CITY_PAIRS[slug] = {
+          from: cityA,
+          to: cityB,
+          searchVolume: "low",
+          context: `Coordinating between ${CITIES[cityA].name} and ${CITIES[cityB].name}? Use our live converter to find the current time difference and easily plan your next cross-border meeting.`,
+          meetingTip: `Check the working hours overlap above to schedule a meeting that respects both ${CITIES[cityA].abbr} and ${CITIES[cityB].abbr} standard business hours.`,
+          faqs: [
+            { q: `What is the time difference between ${CITIES[cityA].name} and ${CITIES[cityB].name}?`, a: `The time difference varies depending on daylight saving time. Use the live clock above to see the exact current time gap.` },
+            { q: `How can I schedule a meeting for both cities?`, a: `Find a time window where both cities are between 9 AM and 5 PM local time using the conversion table or our Meeting Planner tool.` }
+          ],
+          related: []
+        };
+      }
+    }
+  });
+});
+
+Object.keys(CURRENCIES_META).forEach(curA => {
+  Object.keys(CURRENCIES_META).forEach(curB => {
+    if (curA !== curB) {
+      const slug = `${curA}-to-${curB}`;
+      if (!CURRENCY_PAIRS[slug]) {
+        CURRENCY_PAIRS[slug] = {
+          from: curA,
+          to: curB,
+          context: `Check the live mid-market exchange rate for ${CURRENCIES_META[curA].code} to ${CURRENCIES_META[curB].code}. Whether you are invoicing a client or sending remittances, tracking this rate ensures you get the best value.`,
+          remoteTip: `Always use the real mid-market rate when calculating your earnings from ${CURRENCIES_META[curA].code} to ${CURRENCIES_META[curB].code}.`,
+          faqs: [
+            { q: `What is the current ${CURRENCIES_META[curA].code} to ${CURRENCIES_META[curB].code} exchange rate?`, a: `The rate fluctuates constantly. Check the live value at the top of this page.` },
+            { q: `Why does the exchange rate change?`, a: `Exchange rates are driven by global supply and demand, inflation, and central bank interest rates for both the ${CURRENCIES_META[curA].name} and the ${CURRENCIES_META[curB].name}.` }
+          ],
+          related: []
+        };
+      }
+    }
+  });
+});
+
 // ─── Helper: get city pair from slug ─────────────────────────────────────────
 export const getCityPair = (slug) => CITY_PAIRS[slug] || null;
 export const getCurrencyPair = (slug) => CURRENCY_PAIRS[slug] || null;

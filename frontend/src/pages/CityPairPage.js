@@ -133,6 +133,58 @@ function CustomTimeConverter({ cityA, cityB }) {
   );
 }
 
+// ─── 24-Hour Conversion Table ──────────────────────────────────────────────────
+function FullDayConversionTable({ cityA, cityB }) {
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const fromOffset = getTimezoneOffsetMinutes(cityA.timezone);
+  const toOffset = getTimezoneOffsetMinutes(cityB.timezone);
+
+  return (
+    <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6" data-testid="24-hour-table">
+      <h2 className="font-heading text-xl font-bold text-zinc-900 mb-4 flex items-center gap-2">
+        <Clock className="w-5 h-5 text-blue-600" />
+        24-Hour Conversion Table: {cityA.name} to {cityB.name}
+      </h2>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left text-zinc-600">
+          <thead className="text-xs text-zinc-400 uppercase bg-zinc-50 border-b border-zinc-200">
+            <tr>
+              <th scope="col" className="px-4 py-3 font-semibold">{cityA.name} Time ({cityA.abbr})</th>
+              <th scope="col" className="px-4 py-3 font-semibold">{cityB.name} Time ({cityB.abbr})</th>
+            </tr>
+          </thead>
+          <tbody>
+            {hours.map(h => {
+              const utcMinutes = h * 60 - fromOffset;
+              const rawOut = utcMinutes + toOffset;
+              const outMinutes = ((rawOut % (24 * 60)) + 24 * 60) % (24 * 60);
+              const outH24 = Math.floor(outMinutes / 60);
+              const outMin = outMinutes % 60;
+              const dayShift = Math.sign(Math.round((rawOut - outMinutes) / (24 * 60)));
+              
+              const fmtH12 = (hour24) => {
+                const h12 = hour24 % 12 || 12;
+                const ampm = hour24 < 12 ? "AM" : "PM";
+                return `${h12}:00 ${ampm}`;
+              };
+
+              const outFmt = `${(outH24 % 12 || 12)}:${String(outMin).padStart(2, '0')} ${outH24 < 12 ? 'AM' : 'PM'}`;
+              const dayStr = dayShift > 0 ? " (Next Day)" : dayShift < 0 ? " (Previous Day)" : "";
+
+              return (
+                <tr key={h} className="border-b border-zinc-100 hover:bg-zinc-50">
+                  <td className="px-4 py-2 font-medium text-zinc-800">{fmtH12(h)}</td>
+                  <td className="px-4 py-2">{outFmt}{dayStr && <span className="text-xs text-zinc-400 ml-1">{dayStr}</span>}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
 // ─── Main page ────────────────────────────────────────────────────────────────
 export default function CityPairPage() {
   const { pair } = useParams();
@@ -198,6 +250,8 @@ export default function CityPairPage() {
         </section>
 
         <CustomTimeConverter cityA={cityA} cityB={cityB} />
+
+        <FullDayConversionTable cityA={cityA} cityB={cityB} />
 
         <AdBanner slot="leaderboard" className="mb-8" />
 
