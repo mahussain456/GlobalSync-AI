@@ -7,9 +7,9 @@ import { toast } from "sonner";
 const API = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
 const INTENT_LABELS = {
-  time_conversion: { label: "Time Zone", color: "bg-blue-50 text-blue-700 border-blue-200" },
-  meeting_overlap: { label: "Meeting Overlap", color: "bg-orange-50 text-orange-700 border-orange-200" },
-  currency_conversion: { label: "Currency", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  time_conversion: { label: "Time Zone", color: "bg-[#0B2E33]/60 text-[#B8E3E9] border-[#4F7C82]/50 shadow-[0_0_10px_rgba(79,124,130,0.3)]" },
+  meeting_overlap: { label: "Meeting Overlap", color: "bg-[#0B2E33]/60 text-[#B8E3E9] border-[#4F7C82]/50 shadow-[0_0_10px_rgba(79,124,130,0.3)]" },
+  currency_conversion: { label: "Currency", color: "bg-[#0B2E33]/60 text-[#B8E3E9] border-[#4F7C82]/50 shadow-[0_0_10px_rgba(79,124,130,0.3)]" },
 };
 
 export default function AIInput({ onResult, initialQuery = "", autoSubmit = false, onAutoSubmitDone }) {
@@ -50,7 +50,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
 
   return (
     <div data-testid="ai-input-section" className={`ai-glow-wrap${isFocused ? " focused" : ""}`}>
-      <div className="glass-light rounded-2xl p-3 shadow-lg shadow-zinc-900/5 border border-zinc-200/60">
+      <div className="bg-[#0B2E33]/40 backdrop-blur-xl rounded-2xl p-3 shadow-2xl border border-white/10 transition-all">
         <div className="flex items-center gap-3">
           <div className="flex-1 relative">
             <div className="absolute left-3.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-violet-500 flex items-center justify-center">
@@ -63,14 +63,14 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               placeholder='Ask anything: "Best meeting time for NY, London, Tokyo" or "Convert 100 USD to EUR"'
-              className="w-full pl-14 pr-10 py-3.5 bg-transparent text-zinc-800 placeholder-zinc-400 outline-none text-sm sm:text-base font-medium"
+              className="w-full pl-14 pr-10 py-3.5 bg-transparent text-white placeholder-[#4F7C82] outline-none text-sm sm:text-base font-medium"
               data-testid="ai-query-input"
               disabled={loading}
             />
             {query && (
               <button
                 onClick={() => { setQuery(""); setDetectedIntent(null); }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#93B1B5] hover:text-white"
                 data-testid="ai-input-clear"
               >
                 <X className="w-4 h-4" />
@@ -80,7 +80,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
           <Button
             onClick={() => handleSubmit()}
             disabled={loading || !query.trim()}
-            className="rounded-xl btn-gradient px-5 py-3 font-semibold flex items-center gap-2 shrink-0 border-0"
+            className="rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 px-5 py-3 font-semibold flex items-center gap-2 shrink-0 border-0 text-white shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] transition-all"
             data-testid="ai-submit-btn"
           >
             {loading ? (
@@ -97,7 +97,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
           <span className={`text-xs font-medium border rounded-full px-3 py-1 ${intentMeta.color}`}>
             Detected: {intentMeta.label}
           </span>
-          <span className="text-xs text-zinc-400">Routing to the correct tool...</span>
+          <span className="text-xs text-[#93B1B5]">Routing to the correct tool...</span>
         </div>
       )}
     </div>

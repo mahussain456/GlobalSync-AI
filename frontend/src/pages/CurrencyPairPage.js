@@ -297,7 +297,7 @@ export default function CurrencyPairPage() {
   const seo = getCurrencyPairSEO({ fromMeta, toMeta, pair, pairData });
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
+    <div className="min-h-screen bg-background">
       <SEOHead {...seo} />
       <SiteNav />
 

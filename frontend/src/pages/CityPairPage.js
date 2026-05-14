@@ -211,7 +211,7 @@ export default function CityPairPage() {
   const seo = getCityPairSEO({ cityA, cityB, pair, pairData });
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
+    <div className="min-h-screen bg-background">
       <SEOHead {...seo} />
       <SiteNav />
 

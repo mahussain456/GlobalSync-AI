@@ -2,7 +2,7 @@
 
 /* ===== HERO GRADIENT BACKGROUND ===== */
 .hero-bg {
-  background: linear-gradient(160deg, #050816 0%, #0b1230 45%, #160b2e 100%);
+  background: linear-gradient(160deg, #061d21 0%, #0B2E33 45%, #051619 100%);
   position: relative;
   overflow: hidden;
 }
@@ -16,19 +16,19 @@
 }
 .orb-blue {
   width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(37,99,235,0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%);
   top: -200px; right: -200px;
   animation-delay: 0s;
 }
 .orb-purple {
   width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(20,184,166,0.15) 0%, transparent 70%);
   bottom: -100px; left: -100px;
   animation-delay: -4s;
 }
 .orb-pink {
   width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
   top: 40%; left: 30%;
   animation-delay: -2s;
 }
@@ -282,7 +282,7 @@
 
 /* ===== DARK FOOTER ===== */
 .footer-dark {
-  background: linear-gradient(160deg, #050816 0%, #0b1230 60%, #0d0b20 100%);
+  background: linear-gradient(160deg, #061d21 0%, #0B2E33 60%, #051619 100%);
   border-top: 1px solid rgba(255,255,255,0.05);
 }
 .footer-dark-col-title {

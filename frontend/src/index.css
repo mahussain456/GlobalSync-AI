@@ -19,7 +19,6 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: hsl(224, 71%, 4%);
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {
@@ -28,25 +27,25 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 
 @layer base {
   :root {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
-    --card: 222 47% 11%;
-    --card-foreground: 213 31% 91%;
-    --popover: 224 71% 4%;
-    --popover-foreground: 215 20.2% 65.1%;
-    --primary: 199 89% 48%; /* Teal/Cyan */
-    --primary-foreground: 222 47% 11%;
-    --secondary: 222 47% 11%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
+    --background: 187 64% 12%;
+    --foreground: 187 47% 82%;
+    --card: 187 24% 41%;
+    --card-foreground: 187 47% 82%;
+    --popover: 187 64% 12%;
+    --popover-foreground: 187 47% 82%;
+    --primary: 187 47% 82%;
+    --primary-foreground: 187 64% 12%;
+    --secondary: 187 24% 41%;
+    --secondary-foreground: 187 47% 82%;
+    --muted: 187 24% 41%;
+    --muted-foreground: 187 21% 64%;
+    --accent: 187 21% 64%;
+    --accent-foreground: 187 64% 12%;
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
-    --ring: 199 89% 48%;
+    --border: 187 24% 41%;
+    --input: 187 24% 41%;
+    --ring: 187 47% 82%;
     --radius: 0.75rem;
   }
 }

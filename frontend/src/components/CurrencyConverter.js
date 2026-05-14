@@ -80,9 +80,9 @@ const CURRENCIES = [
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-white border border-zinc-200 rounded-xl p-3 shadow-lg text-xs">
-      <p className="text-zinc-400 mb-1">{label}</p>
-      <p className="font-semibold text-zinc-900">{payload[0]?.value?.toFixed(4)}</p>
+    <div className="bg-[#0B2E33]/90 backdrop-blur-xl border border-white/10 rounded-xl p-3 shadow-2xl text-xs">
+      <p className="text-[#93B1B5] mb-1">{label}</p>
+      <p className="font-semibold text-cyan-400">{payload[0]?.value?.toFixed(4)}</p>
     </div>
   );
 };
@@ -164,21 +164,21 @@ export default function CurrencyConverter({ aiDispatch }) {
   return (
     <div className="space-y-5" data-testid="currency-converter">
       {/* Input Card */}
-      <div className="bg-white rounded-2xl border border-zinc-200 p-5">
-        <h2 className="font-heading font-semibold text-zinc-900 mb-5 flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-emerald-600" /> Currency Converter
+      <div className="bg-[#0B2E33]/40 backdrop-blur-xl rounded-2xl border border-white/10 p-5 shadow-xl">
+        <h2 className="font-heading font-semibold text-white mb-5 flex items-center gap-2">
+          <TrendingUp className="w-5 h-5 text-cyan-400" /> Currency Converter
         </h2>
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
           {/* Amount */}
           <div className="flex-1">
-            <label className="text-xs text-zinc-500 mb-1 block font-medium">Amount</label>
+            <label className="text-xs text-[#93B1B5] mb-1 block font-medium">Amount</label>
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleConvert()}
-              className="w-full h-12 px-4 rounded-xl border border-zinc-200 text-zinc-900 font-medium text-base outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+              className="w-full h-12 px-4 rounded-xl border border-white/10 bg-white/5 text-white font-medium text-base outline-none focus:border-cyan-400/50 focus:bg-white/10 transition-all placeholder-[#4F7C82]"
               placeholder="100"
               data-testid="currency-amount-input"
             />
@@ -186,7 +186,7 @@ export default function CurrencyConverter({ aiDispatch }) {
 
           {/* From */}
           <div className="flex-1">
-            <label className="text-xs text-zinc-500 mb-1 block font-medium">From</label>
+            <label className="text-xs text-[#93B1B5] mb-1 block font-medium">From</label>
             <CurrencySelect
               currencies={CURRENCIES}
               value={fromCurrency}
@@ -198,7 +198,7 @@ export default function CurrencyConverter({ aiDispatch }) {
           {/* Swap */}
           <button
             onClick={handleSwap}
-            className="h-12 w-12 rounded-xl border border-zinc-200 flex items-center justify-center text-zinc-500 hover:text-blue-600 hover:border-blue-300 transition-all self-end shrink-0"
+            className="h-12 w-12 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center text-[#93B1B5] hover:text-white hover:border-cyan-400/50 hover:bg-white/10 transition-all self-end shrink-0"
             data-testid="swap-currencies-btn"
           >
             <ArrowLeftRight className="w-5 h-5" />
@@ -206,7 +206,7 @@ export default function CurrencyConverter({ aiDispatch }) {
 
           {/* To */}
           <div className="flex-1">
-            <label className="text-xs text-zinc-500 mb-1 block font-medium">To</label>
+            <label className="text-xs text-[#93B1B5] mb-1 block font-medium">To</label>
             <CurrencySelect
               currencies={CURRENCIES}
               value={toCurrency}
@@ -219,7 +219,7 @@ export default function CurrencyConverter({ aiDispatch }) {
           <Button
             onClick={() => handleConvert()}
             disabled={loading}
-            className="h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white px-6 font-medium flex items-center gap-2 self-end shrink-0 transition-transform active:scale-95"
+            className="h-12 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-white hover:from-cyan-400 hover:to-teal-400 px-6 font-medium flex items-center gap-2 self-end shrink-0 transition-transform active:scale-95 shadow-[0_0_15px_rgba(6,182,212,0.3)] border-0"
             data-testid="convert-btn"
           >
             {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Converting...</> : "Convert"}
@@ -228,10 +228,10 @@ export default function CurrencyConverter({ aiDispatch }) {
 
         {/* Error */}
         {errorMsg && (
-          <div className="mt-4 p-4 bg-red-50 rounded-xl border border-red-200 text-sm text-red-700 fade-in-up" data-testid="currency-error">
+          <div className="mt-4 p-4 bg-orange-500/10 rounded-xl border border-orange-500/30 text-sm text-orange-300 fade-in-up" data-testid="currency-error">
             <strong>Not supported:</strong> {errorMsg.split("Supported currencies:")[0]}
             {errorMsg.includes("Supported currencies:") && (
-              <span className="block mt-1 text-xs text-red-500">
+              <span className="block mt-1 text-xs text-orange-400/70">
                 Supported: {errorMsg.split("Supported currencies:")[1]?.trim()}
               </span>
             )}
@@ -240,33 +240,33 @@ export default function CurrencyConverter({ aiDispatch }) {
 
         {/* Result */}
         {result && (
-          <div className="mt-5 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100 fade-in-up" data-testid="conversion-result-display">
+          <div className="mt-5 p-4 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 rounded-xl border border-cyan-500/20 fade-in-up shadow-[inset_0_0_20px_rgba(34,211,238,0.05)]" data-testid="conversion-result-display">
             <div className="flex items-start justify-between">
               <div>
-                <div className="text-sm text-zinc-500 mb-1">
+                <div className="text-sm text-[#93B1B5] mb-1">
                   {result.amount.toLocaleString()} {fromMeta?.name || result.from}
                 </div>
-                <div className="font-heading text-3xl font-bold text-zinc-900" data-testid="converted-amount">
+                <div className="font-heading text-3xl font-bold text-white" data-testid="converted-amount">
                   {result.converted >= 1 ? result.converted.toLocaleString("en-US", { maximumFractionDigits: 4 }) : result.converted.toFixed(6)}
-                  <span className="text-lg ml-2 text-zinc-500">{toMeta?.code || result.to}</span>
+                  <span className="text-lg ml-2 text-[#4F7C82]">{toMeta?.code || result.to}</span>
                 </div>
-                <div className="text-xs text-zinc-400 mt-1.5 flex items-center gap-1">
+                <div className="text-xs text-[#4F7C82] mt-1.5 flex items-center gap-1">
                   <RefreshCw className="w-3 h-3" />
                   1 {result.from} = {result.rate} {result.to} · Updated {result.date}
                 </div>
               </div>
               <div className="flex flex-col items-end gap-2">
                 {trend && (
-                  <div className={`flex items-center gap-1 text-sm font-semibold ${isPositive ? "text-emerald-600" : "text-red-500"}`} data-testid="trend-change">
+                  <div className={`flex items-center gap-1 text-sm font-semibold ${isPositive ? "text-teal-400" : "text-orange-400"}`} data-testid="trend-change">
                     {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
                     {isPositive ? "+" : ""}{trend.change_percent}%
-                    <span className="text-xs font-normal text-zinc-400 ml-0.5">7d</span>
+                    <span className="text-xs font-normal text-[#4F7C82] ml-0.5">7d</span>
                   </div>
                 )}
                 <div className="flex items-center gap-1.5 mt-1">
                   <button
                     onClick={copyResult}
-                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white border border-zinc-200 text-zinc-500 hover:text-zinc-800 hover:border-zinc-300 text-xs font-medium transition-all"
+                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[#93B1B5] hover:text-white hover:bg-white/10 text-xs font-medium transition-all"
                     data-testid="copy-result-btn"
                     title="Copy result"
                   >
@@ -274,7 +274,7 @@ export default function CurrencyConverter({ aiDispatch }) {
                   </button>
                   <button
                     onClick={shareLink}
-                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-xs font-medium transition-all"
+                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/30 text-xs font-medium transition-all border border-cyan-500/30"
                     data-testid="share-link-btn"
                     title="Copy shareable link"
                   >
@@ -289,11 +289,11 @@ export default function CurrencyConverter({ aiDispatch }) {
 
       {/* Trend Chart */}
       {(trend || loadingTrend) && (
-        <div className="bg-white rounded-2xl border border-zinc-200 p-5 fade-in-up" data-testid="trend-chart">
+        <div className="bg-[#0B2E33]/40 backdrop-blur-xl rounded-2xl border border-white/10 p-5 shadow-xl fade-in-up" data-testid="trend-chart">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-heading font-semibold text-zinc-900">7-Day Rate Trend</h3>
+            <h3 className="font-heading font-semibold text-white">7-Day Rate Trend</h3>
             {trend?.available && (
-              <div className={`text-sm font-medium flex items-center gap-1 ${isPositive ? "text-emerald-600" : "text-red-500"}`}>
+              <div className={`text-sm font-medium flex items-center gap-1 ${isPositive ? "text-teal-400" : "text-orange-400"}`}>
                 {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
                 {fromCurrency}/{toCurrency}
               </div>
@@ -301,13 +301,13 @@ export default function CurrencyConverter({ aiDispatch }) {
           </div>
           {loadingTrend ? (
             <div className="h-40 flex items-center justify-center">
-              <Loader2 className="w-6 h-6 text-zinc-400 animate-spin" />
+              <Loader2 className="w-6 h-6 text-[#4F7C82] animate-spin" />
             </div>
           ) : trend?.available === false ? (
             <div className="h-24 flex items-center justify-center text-center" data-testid="trend-unavailable">
               <div>
-                <p className="text-sm text-zinc-500">{trend.message}</p>
-                <p className="text-xs text-zinc-400 mt-1">Trend available for major ECB pairs (USD, EUR, GBP, INR…)</p>
+                <p className="text-sm text-[#93B1B5]">{trend.message}</p>
+                <p className="text-xs text-[#4F7C82] mt-1">Trend available for major ECB pairs (USD, EUR, GBP, INR…)</p>
               </div>
             </div>
           ) : trend?.trend?.length ? (
@@ -315,14 +315,14 @@ export default function CurrencyConverter({ aiDispatch }) {
               <AreaChart data={trend.trend} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
                 <defs>
                   <linearGradient id="rateGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#2563EB" stopOpacity={0.15} />
-                    <stop offset="100%" stopColor="#2563EB" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#22d3ee" stopOpacity={0.2} />
+                    <stop offset="100%" stopColor="#22d3ee" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#a1a1aa" }} tickFormatter={(d) => d.slice(5)} axisLine={false} tickLine={false} />
-                <YAxis domain={["auto", "auto"]} tick={{ fontSize: 10, fill: "#a1a1aa" }} axisLine={false} tickLine={false} width={55} tickFormatter={(v) => v.toFixed(3)} />
+                <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#4F7C82" }} tickFormatter={(d) => d.slice(5)} axisLine={false} tickLine={false} />
+                <YAxis domain={["auto", "auto"]} tick={{ fontSize: 10, fill: "#4F7C82" }} axisLine={false} tickLine={false} width={55} tickFormatter={(v) => v.toFixed(3)} />
                 <Tooltip content={<CustomTooltip />} />
-                <Area type="monotone" dataKey="rate" stroke="#2563EB" strokeWidth={2} fill="url(#rateGrad)" dot={false} />
+                <Area type="monotone" dataKey="rate" stroke="#22d3ee" strokeWidth={2} fill="url(#rateGrad)" dot={false} />
               </AreaChart>
             </ResponsiveContainer>
           ) : null}

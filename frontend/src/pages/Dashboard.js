@@ -60,7 +60,7 @@ export default function Dashboard() {
       />
       {showOnboarding && <OnboardingModal onComplete={handleOnboardingComplete} />}
 
-      <div className="min-h-screen bg-[#F8FAFC]" data-testid="dashboard">
+      <div className="min-h-screen bg-background" data-testid="dashboard">
         {/* Header — gradient accent */}
         <header className="bg-white border-b border-zinc-100 sticky top-0 z-50 shadow-sm">
           <div className="max-w-6xl mx-auto px-6 py-3.5 flex items-center justify-between">

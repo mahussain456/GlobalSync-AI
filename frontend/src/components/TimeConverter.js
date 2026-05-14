@@ -38,28 +38,28 @@ function CityCard({ city, onRemove }) {
   }, [city.timezone_id]);
 
   return (
-    <div className={`bg-white rounded-2xl border p-5 transition-all hover:shadow-md ${timeData.isBusinessHours ? "border-zinc-200" : "border-zinc-100 opacity-80"}`} data-testid={`city-card-${city.name}`}>
+    <div className={`bg-[#0B2E33]/40 backdrop-blur-md rounded-2xl border p-5 transition-all hover:shadow-[0_0_20px_rgba(79,124,130,0.15)] ${timeData.isBusinessHours ? "border-[#4F7C82]/50 shadow-[0_0_15px_rgba(79,124,130,0.1)]" : "border-white/5 opacity-80"}`} data-testid={`city-card-${city.name}`}>
       <div className="flex items-start justify-between mb-3">
         <div>
-          <h3 className="font-heading font-semibold text-zinc-900">{city.name}</h3>
-          <p className="text-xs text-zinc-400 mt-0.5">{city.utc_offset || city.timezone_id}</p>
+          <h3 className="font-heading font-semibold text-white">{city.name}</h3>
+          <p className="text-xs text-[#4F7C82] mt-0.5">{city.utc_offset || city.timezone_id}</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className={`text-xs rounded-full px-2 py-0.5 font-medium ${timeData.isBusinessHours ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-zinc-50 text-zinc-500 border border-zinc-200"}`}>
+          <span className={`text-xs rounded-full px-2 py-0.5 font-medium ${timeData.isBusinessHours ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/30" : "bg-white/5 text-[#93B1B5] border border-white/10"}`}>
             {timeData.isBusinessHours ? "In Office" : "Off Hours"}
           </span>
           {onRemove && (
-            <button onClick={() => onRemove(city.name)} className="text-zinc-300 hover:text-zinc-600 transition-colors" data-testid={`remove-city-${city.name}`}>
+            <button onClick={() => onRemove(city.name)} className="text-[#4F7C82] hover:text-[#B8E3E9] transition-colors" data-testid={`remove-city-${city.name}`}>
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
       </div>
       <div className="mt-2">
-        <div className="font-heading text-3xl font-semibold text-zinc-900 tabular-nums" data-testid={`city-time-${city.name}`}>
+        <div className="font-heading text-3xl font-semibold text-[#B8E3E9] tabular-nums" data-testid={`city-time-${city.name}`}>
           {timeData.time12}
         </div>
-        <div className="text-xs text-zinc-400 mt-1">{timeData.date}</div>
+        <div className="text-xs text-[#93B1B5] mt-1">{timeData.date}</div>
       </div>
     </div>
   );
@@ -71,7 +71,7 @@ function OverlapBar({ cityDetails, overlapStartDec, overlapEndDec }) {
     <div className="space-y-3" data-testid="overlap-timeline">
       <div className="relative flex pl-24 pr-2 mb-1">
         {hours.map((h) => (
-          <div key={h} className="absolute text-xs text-zinc-300" style={{ left: `calc(${(h / 24) * 100}% + 6rem)` }}>
+          <div key={h} className="absolute text-xs text-[#4F7C82]" style={{ left: `calc(${(h / 24) * 100}% + 6rem)` }}>
             {String(h).padStart(2, "0")}:00
           </div>
         ))}
@@ -87,31 +87,31 @@ function OverlapBar({ cityDetails, overlapStartDec, overlapEndDec }) {
           ? ((overlapEndDec - overlapStartDec) / 24) * 100 : 0;
         return (
           <div key={city.name} className="flex items-center gap-3">
-            <span className="w-24 text-xs text-right text-zinc-500 shrink-0 font-medium">{city.name}</span>
-            <div className="flex-1 overlap-bar rounded-lg">
+            <span className="w-24 text-xs text-right text-[#93B1B5] shrink-0 font-medium">{city.name}</span>
+            <div className="flex-1 bg-white/5 h-2 rounded-lg relative overflow-hidden">
               <div
-                className="overlap-segment bg-blue-100 rounded-lg"
+                className="absolute h-full bg-[#4F7C82]/40 rounded-lg"
                 style={{ left: `${startPct}%`, width: `${widthPct}%` }}
               />
               {ovStartPct != null && ovWidthPct > 0 && (
                 <div
-                  className="overlap-segment bg-emerald-400 rounded-lg z-10"
+                  className="absolute h-full bg-cyan-400 rounded-lg z-10 shadow-[0_0_10px_rgba(34,211,238,0.5)]"
                   style={{ left: `${ovStartPct}%`, width: `${ovWidthPct}%` }}
                 />
               )}
             </div>
-            <span className="text-xs text-zinc-400 shrink-0 w-32 hidden sm:block">
+            <span className="text-xs text-[#4F7C82] shrink-0 w-32 hidden sm:block">
               {city.overlap_start_local ? `${city.overlap_start_local}` : city.business_hours_local}
             </span>
           </div>
         );
       })}
-      <div className="flex gap-3 pl-24 mt-1">
-        <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-          <div className="w-3 h-3 bg-blue-100 rounded" /> Business hrs
+      <div className="flex gap-3 pl-24 mt-3">
+        <div className="flex items-center gap-1.5 text-xs text-[#93B1B5]">
+          <div className="w-3 h-3 bg-[#4F7C82]/40 rounded" /> Business hrs
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-zinc-400">
-          <div className="w-3 h-3 bg-emerald-400 rounded" /> Overlap
+        <div className="flex items-center gap-1.5 text-xs text-[#93B1B5]">
+          <div className="w-3 h-3 bg-cyan-400 rounded shadow-[0_0_5px_rgba(34,211,238,0.5)]" /> Overlap
         </div>
       </div>
     </div>
@@ -247,12 +247,12 @@ export default function TimeConverter({ aiDispatch }) {
   return (
     <div className="space-y-6" data-testid="time-converter">
       {/* City Selector */}
-      <div className="bg-white rounded-2xl border border-zinc-200 p-5">
+      <div className="bg-[#0B2E33]/40 backdrop-blur-xl rounded-2xl border border-white/10 p-5 shadow-xl">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-heading font-semibold text-zinc-900 flex items-center gap-2">
-            <Clock className="w-5 h-5 text-blue-600" /> World Clocks
+          <h2 className="font-heading font-semibold text-white flex items-center gap-2">
+            <Clock className="w-5 h-5 text-cyan-400" /> Live World Clocks
           </h2>
-          <span className="text-xs text-zinc-400">{selectedCities.length}/5 cities</span>
+          <span className="text-xs text-[#93B1B5]">{selectedCities.length}/5 cities</span>
         </div>
 
         {/* Add city input */}
@@ -263,17 +263,17 @@ export default function TimeConverter({ aiDispatch }) {
             onFocus={() => setShowDropdown(true)}
             onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
             placeholder="Add a city (e.g. Tokyo, Dubai, Berlin)..."
-            className="w-full h-10 px-4 rounded-xl border border-zinc-200 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all"
+            className="w-full h-10 px-4 rounded-xl border border-[#4F7C82]/30 bg-white/5 text-white placeholder-[#4F7C82] text-sm outline-none focus:border-cyan-400/50 focus:bg-white/10 transition-all"
             data-testid="city-search-input"
             onKeyDown={(e) => { if (e.key === "Enter" && citySearch.trim()) addCity(citySearch.trim()); }}
           />
           {showDropdown && (citySearch || true) && filtered.length > 0 && (
-            <div className="absolute z-50 top-11 left-0 right-0 bg-white border border-zinc-200 rounded-xl shadow-xl max-h-48 overflow-y-auto" data-testid="city-dropdown">
+            <div className="absolute z-50 top-11 left-0 right-0 bg-[#0B2E33]/90 backdrop-blur-2xl border border-[#4F7C82]/30 rounded-xl shadow-2xl max-h-48 overflow-y-auto" data-testid="city-dropdown">
               {filtered.slice(0, 12).map((city) => (
                 <button
                   key={city}
                   onMouseDown={() => addCity(city)}
-                  className="w-full text-left px-4 py-2.5 text-sm text-zinc-700 hover:bg-blue-50 hover:text-blue-700 transition-colors first:rounded-t-xl last:rounded-b-xl"
+                  className="w-full text-left px-4 py-2.5 text-sm text-[#B8E3E9] hover:bg-white/10 hover:text-white transition-colors first:rounded-t-xl last:rounded-b-xl"
                   data-testid={`city-option-${city}`}
                 >
                   {city}
@@ -296,7 +296,7 @@ export default function TimeConverter({ aiDispatch }) {
             <Button
               onClick={handleFindOverlap}
               disabled={loadingOverlap}
-              className="rounded-xl bg-zinc-900 text-white hover:bg-zinc-700 flex items-center gap-2"
+              className="rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-white hover:from-cyan-400 hover:to-teal-400 flex items-center gap-2 shadow-[0_0_15px_rgba(6,182,212,0.3)] border-0"
               data-testid="find-overlap-btn"
             >
               <Users className="w-4 h-4" />
@@ -308,13 +308,13 @@ export default function TimeConverter({ aiDispatch }) {
 
       {/* Conversion Result */}
       {conversionResult?.conversion_note && (
-        <div className="bg-white rounded-2xl border border-blue-200 p-5 fade-in-up" data-testid="conversion-result">
+        <div className="bg-[#0B2E33]/40 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-5 shadow-xl fade-in-up" data-testid="conversion-result">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="font-heading font-semibold text-zinc-900">{conversionResult.conversion_note}</h3>
+            <h3 className="font-heading font-semibold text-white">{conversionResult.conversion_note}</h3>
             <div className="flex items-center gap-1">
               <button
                 onClick={shareTimeConversion}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-xs font-medium transition-all"
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/30 text-xs font-medium transition-all border border-cyan-500/30"
                 data-testid="share-time-btn"
                 title="Share this conversion"
               >
@@ -324,10 +324,10 @@ export default function TimeConverter({ aiDispatch }) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {conversionResult.cities?.map(city => (
-              <div key={city.name} className="bg-blue-50 rounded-xl p-4 border border-blue-100">
-                <div className="text-sm font-medium text-zinc-700 mb-1">{city.name}</div>
-                <div className="font-heading text-2xl font-semibold text-zinc-900" data-testid={`converted-time-${city.name}`}>{city.current_time_12h}</div>
-                <div className="text-xs text-zinc-400 mt-0.5">{city.date} · {city.timezone_abbr}</div>
+              <div key={city.name} className="bg-white/5 rounded-xl p-4 border border-white/10">
+                <div className="text-sm font-medium text-[#93B1B5] mb-1">{city.name}</div>
+                <div className="font-heading text-2xl font-semibold text-[#B8E3E9]" data-testid={`converted-time-${city.name}`}>{city.current_time_12h}</div>
+                <div className="text-xs text-[#4F7C82] mt-0.5">{city.date} · {city.timezone_abbr}</div>
               </div>
             ))}
           </div>
@@ -336,19 +336,19 @@ export default function TimeConverter({ aiDispatch }) {
 
       {/* Overlap Result */}
       {overlapResult && (
-        <div className="bg-white rounded-2xl border border-zinc-200 p-5 fade-in-up" data-testid="overlap-result">
+        <div className="bg-[#0B2E33]/40 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-5 shadow-xl fade-in-up" data-testid="overlap-result">
           <div className="flex items-start justify-between mb-4">
-            <h3 className="font-heading font-semibold text-zinc-900 flex items-center gap-2">
-              <Users className="w-5 h-5 text-emerald-600" /> Meeting Overlap
+            <h3 className="font-heading font-semibold text-white flex items-center gap-2">
+              <Users className="w-5 h-5 text-cyan-400" /> Meeting Overlap
             </h3>
             <div className="flex items-center gap-2">
               {overlapResult.has_overlap ? (
-                <span className="flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1">
+                <span className="flex items-center gap-1.5 text-xs text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-3 py-1 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   {overlapResult.overlap_duration_hours}h window found
                 </span>
               ) : (
-                <span className="flex items-center gap-1.5 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-3 py-1">
+                <span className="flex items-center gap-1.5 text-xs text-orange-300 bg-orange-500/10 border border-orange-500/30 rounded-full px-3 py-1">
                   <AlertCircle className="w-3.5 h-3.5" />
                   No overlap
                 </span>
@@ -357,7 +357,7 @@ export default function TimeConverter({ aiDispatch }) {
                 <div className="flex items-center gap-1">
                   <button
                     onClick={copyOverlapResult}
-                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-zinc-50 border border-zinc-200 text-zinc-500 hover:text-zinc-800 text-xs font-medium transition-all"
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-[#93B1B5] hover:text-white hover:bg-white/10 text-xs font-medium transition-all"
                     data-testid="copy-overlap-btn"
                     title="Copy result"
                   >
@@ -365,7 +365,7 @@ export default function TimeConverter({ aiDispatch }) {
                   </button>
                   <button
                     onClick={shareOverlap}
-                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-blue-600 text-white hover:bg-blue-700 text-xs font-medium transition-all"
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/30 text-xs font-medium transition-all"
                     data-testid="share-overlap-btn"
                     title="Share this overlap"
                   >
@@ -379,18 +379,18 @@ export default function TimeConverter({ aiDispatch }) {
           {overlapResult.has_overlap ? (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-                <div className="bg-zinc-50 rounded-xl p-3 border border-zinc-100">
-                  <div className="text-xs text-zinc-400 mb-1">Window (UTC)</div>
-                  <div className="font-heading font-semibold text-zinc-900 text-sm" data-testid="overlap-window">
+                <div className="bg-white/5 rounded-xl p-3 border border-white/10">
+                  <div className="text-xs text-[#93B1B5] mb-1">Window (UTC)</div>
+                  <div className="font-heading font-semibold text-white text-sm" data-testid="overlap-window">
                     {overlapResult.overlap_start_utc} – {overlapResult.overlap_end_utc}
                   </div>
                 </div>
-                <div className="bg-emerald-50 rounded-xl p-3 border border-emerald-100 col-span-1 sm:col-span-2">
-                  <div className="text-xs text-emerald-600 mb-1">Best Meeting Time</div>
+                <div className="bg-cyan-500/10 rounded-xl p-3 border border-cyan-500/30 col-span-1 sm:col-span-2">
+                  <div className="text-xs text-cyan-400 mb-1">Best Meeting Time</div>
                   <div className="space-y-0.5">
                     {overlapResult.city_details?.filter(c => c.best_time_local).map(city => (
-                      <div key={city.name} className="text-sm text-emerald-900 font-medium">
-                        <span className="text-emerald-600">{city.name}:</span> {city.best_time_local}
+                      <div key={city.name} className="text-sm text-white font-medium">
+                        <span className="text-cyan-400">{city.name}:</span> {city.best_time_local}
                       </div>
                     ))}
                   </div>
@@ -403,7 +403,7 @@ export default function TimeConverter({ aiDispatch }) {
               />
             </>
           ) : (
-            <p className="text-sm text-zinc-500 py-2">{overlapResult.message}</p>
+            <p className="text-sm text-[#93B1B5] py-2">{overlapResult.message}</p>
           )}
         </div>
       )}

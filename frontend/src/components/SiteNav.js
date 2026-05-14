@@ -56,7 +56,7 @@ export default function SiteNav() {
 
           <Link
             to="/dashboard"
-            className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold hover:bg-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all"
+            className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full bg-cyan-500/10 backdrop-blur-md border border-cyan-500/40 text-cyan-300 text-sm font-semibold hover:bg-cyan-500/20 hover:text-cyan-100 shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all"
           >
             Open App <ArrowRight className="w-3.5 h-3.5" />
           </Link>
@@ -89,7 +89,7 @@ export default function SiteNav() {
           <Link
             to="/dashboard"
             onClick={() => setMobileOpen(false)}
-            className="mt-2 flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-blue-600 text-white text-sm font-semibold"
+            className="mt-2 flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-cyan-500/10 backdrop-blur-md border border-cyan-500/40 text-cyan-300 text-sm font-semibold hover:bg-cyan-500/20 hover:text-cyan-100 transition-all"
           >
             Open App <ArrowRight className="w-3.5 h-3.5" />
           </Link>
