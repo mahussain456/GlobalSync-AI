@@ -21,8 +21,8 @@ export default function NotFoundPage() {
           <img
             src="/logo-dark.png"
             alt="GlobalSync AI"
-            className="h-20 w-auto transition-transform duration-300 hover:scale-105"
-            style={{ filter: "drop-shadow(0 0 32px rgba(200,169,106,0.4)) drop-shadow(0 0 12px rgba(255,255,255,0.1))" }}
+            className="w-auto transition-transform duration-300 hover:scale-105"
+            style={{ height: "90px", filter: "drop-shadow(0 0 16px rgba(200, 169, 106, 0.55)) drop-shadow(0 0 36px rgba(200, 169, 106, 0.35))" }}
           />
         </Link>
 

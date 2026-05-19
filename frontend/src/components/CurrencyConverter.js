@@ -105,13 +105,41 @@ export default function CurrencyConverter({ aiDispatch }) {
     setResult(null);
     setErrorMsg(null);
     try {
-      const res = await axios.get(`${API}/currency/convert`, { params: { amount: numAmt, from_currency: from, to_currency: to } });
+      const res = await axios.get(`${API}/currency/convert`, {
+        params: { amount: numAmt, from_currency: from, to_currency: to },
+        timeout: 2500
+      });
       setResult(res.data);
       fetchTrend(from, to);
     } catch (err) {
-      const msg = err.response?.data?.detail || "Conversion failed. Please try again.";
-      setErrorMsg(msg);
-      toast.error(msg);
+      console.warn("API conversion failed, using frontend local rates fallback", err);
+      const fallbackRates = {
+        USD: 1.0, EUR: 0.92, GBP: 0.79, JPY: 156.2, CHF: 0.91, CNY: 7.24, CAD: 1.36, AUD: 1.50,
+        INR: 83.3, PKR: 278.5, BDT: 117.2, LKR: 300.5, NPR: 133.3, SGD: 1.35, HKD: 7.81, KRW: 1360.0,
+        MYR: 4.69, THB: 36.3, IDR: 16000.0, PHP: 58.0, VND: 25400.0, TWD: 32.2, KZT: 443.0, UZS: 12600.0,
+        MMK: 2100.0, AED: 3.67, SAR: 3.75, QAR: 3.64, KWD: 0.31, BHD: 0.38, OMR: 0.38, JOD: 0.71,
+        ILS: 3.68, ZAR: 18.2, NGN: 1450.0, EGP: 47.2, KES: 130.0, GHS: 14.5, MAD: 10.0, ETB: 57.0,
+        TZS: 2600.0, MXN: 16.7, BRL: 5.15, ARS: 885.0, CLP: 910.0, COP: 3850.0, PEN: 3.72, NZD: 1.63,
+        SEK: 10.6, NOK: 10.7, DKK: 6.87, PLN: 3.92, CZK: 22.8, HUF: 355.0, RON: 4.58, BGN: 1.80,
+        TRY: 32.2, RUB: 91.0, UAH: 39.5, ISK: 138.0
+      };
+      
+      const rFrom = fallbackRates[from] || 1.0;
+      const rTo = fallbackRates[to] || 1.0;
+      const calcRate = rTo / rFrom;
+      const converted = Number((numAmt * calcRate).toFixed(6));
+      
+      setResult({
+        from,
+        to,
+        amount: numAmt,
+        rate: Number(calcRate.toFixed(6)),
+        converted,
+        date: "Offline Cache (Approximate)",
+        formatted: `${numAmt.toLocaleString()} ${from} = ${converted.toLocaleString()} ${to}`,
+        is_fallback: true
+      });
+      toast.info("Offline mode active: Using approximate rates");
     } finally {
       setLoading(false);
     }
@@ -120,7 +148,10 @@ export default function CurrencyConverter({ aiDispatch }) {
   const fetchTrend = async (from = fromCurrency, to = toCurrency) => {
     setLoadingTrend(true);
     try {
-      const res = await axios.get(`${API}/currency/trend`, { params: { from_currency: from, to_currency: to } });
+      const res = await axios.get(`${API}/currency/trend`, {
+        params: { from_currency: from, to_currency: to },
+        timeout: 2500
+      });
       setTrend(res.data);
     } catch {
       // trend is optional
@@ -244,6 +275,12 @@ export default function CurrencyConverter({ aiDispatch }) {
           <div className="mt-5 p-4 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 rounded-xl border border-gem-gold/20 fade-in-up shadow-[inset_0_0_20px_rgba(34,211,238,0.05)]" data-testid="conversion-result-display">
             <div className="flex items-start justify-between">
               <div>
+                {result.is_fallback && (
+                  <div className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-300 rounded-full px-2 py-0.5 text-[10px] font-semibold border border-amber-500/30 mb-2">
+                    <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
+                    Offline Cache Rates
+                  </div>
+                )}
                 <div className="text-sm text-gem-sage mb-1">
                   {result.amount.toLocaleString()} {fromMeta?.name || result.from}
                 </div>
@@ -253,7 +290,7 @@ export default function CurrencyConverter({ aiDispatch }) {
                 </div>
                 <div className="text-xs text-gem-mist mt-1.5 flex items-center gap-1">
                   <RefreshCw className="w-3 h-3" />
-                  1 {result.from} = {result.rate} {result.to} · Updated {result.date}
+                  1 {result.from} = {result.rate} {result.to} · {result.date}
                 </div>
               </div>
               <div className="flex flex-col items-end gap-2">

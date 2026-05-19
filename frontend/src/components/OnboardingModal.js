@@ -34,11 +34,13 @@ export default function OnboardingModal({ onComplete }) {
         {step === 1 ? (
           <>
             {/* Logo */}
-            <div className="flex items-center gap-2 mb-8">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-gem-pine to-gem-forest flex items-center justify-center">
-                <Globe className="w-5 h-5 text-gem-beige" />
-              </div>
-              <span className="font-heading text-gem-beige font-semibold text-lg">GlobalSync AI</span>
+            <div className="flex justify-center mb-8">
+              <img
+                src="/logo-dark.png"
+                alt="GlobalSync AI"
+                className="w-auto transition-transform duration-300 hover:scale-105"
+                style={{ height: "60px", filter: "drop-shadow(0 0 12px rgba(200, 169, 106, 0.45)) drop-shadow(0 0 24px rgba(200, 169, 106, 0.25))" }}
+              />
             </div>
 
             {/* Headline */}

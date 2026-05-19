@@ -12,8 +12,8 @@ export default function SiteFooter() {
             <img
               src="/logo-dark.png"
               alt="GlobalSync AI"
-              className="h-10 w-auto"
-              style={{ filter: "drop-shadow(0 0 12px rgba(200,169,106,0.15))" }}
+              className="w-auto"
+              style={{ height: "48px", filter: "drop-shadow(0 0 10px rgba(200, 169, 106, 0.45)) drop-shadow(0 0 20px rgba(200, 169, 106, 0.25))" }}
             />
           </Link>
           <p className="text-sm text-gem-sage mb-6 leading-relaxed">

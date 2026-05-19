@@ -352,6 +352,69 @@ FRANKFURTER_SUPPORTED = {
 # ExchangeRate-API base URL — free, no key, 160+ currencies worldwide
 EXCHANGERATE_BASE = "https://open.exchangerate-api.com/v6/latest"
 
+FALLBACK_USD_RATES = {
+    "USD": 1.0,
+    "EUR": 0.92,
+    "GBP": 0.79,
+    "JPY": 156.2,
+    "CHF": 0.91,
+    "CNY": 7.24,
+    "CAD": 1.36,
+    "AUD": 1.50,
+    "INR": 83.3,
+    "PKR": 278.5,
+    "BDT": 117.2,
+    "LKR": 300.5,
+    "NPR": 133.3,
+    "SGD": 1.35,
+    "HKD": 7.81,
+    "KRW": 1360.0,
+    "MYR": 4.69,
+    "THB": 36.3,
+    "IDR": 16000.0,
+    "PHP": 58.0,
+    "VND": 25400.0,
+    "TWD": 32.2,
+    "KZT": 443.0,
+    "UZS": 12600.0,
+    "MMK": 2100.0,
+    "AED": 3.67,
+    "SAR": 3.75,
+    "QAR": 3.64,
+    "KWD": 0.31,
+    "BHD": 0.38,
+    "OMR": 0.38,
+    "JOD": 0.71,
+    "ILS": 3.68,
+    "ZAR": 18.2,
+    "NGN": 1450.0,
+    "EGP": 47.2,
+    "KES": 130.0,
+    "GHS": 14.5,
+    "MAD": 10.0,
+    "ETB": 57.0,
+    "TZS": 2600.0,
+    "MXN": 16.7,
+    "BRL": 5.15,
+    "ARS": 885.0,
+    "CLP": 910.0,
+    "COP": 3850.0,
+    "PEN": 3.72,
+    "NZD": 1.63,
+    "SEK": 10.6,
+    "NOK": 10.7,
+    "DKK": 6.87,
+    "PLN": 3.92,
+    "CZK": 22.8,
+    "HUF": 355.0,
+    "RON": 4.58,
+    "BGN": 1.80,
+    "TRY": 32.2,
+    "RUB": 91.0,
+    "UAH": 39.5,
+    "ISK": 138.0
+}
+
 @api_router.get("/currency/supported")
 def get_supported_currencies():
     return {"currencies": sorted(list(FRANKFURTER_SUPPORTED))}
@@ -368,36 +431,49 @@ def convert_currency(
     to_c = to_currency.strip().upper()
     if from_c == to_c:
         raise HTTPException(status_code=422, detail="From and to currencies must be different")
+    
+    # Try fetching live rate
     try:
         url = f"{EXCHANGERATE_BASE}/{from_c}"
-        resp = requests.get(url, timeout=10)
-        if resp.status_code == 404:
-            raise HTTPException(status_code=422, detail=f"Currency '{from_c}' not recognised")
+        resp = requests.get(url, timeout=3.0)
         resp.raise_for_status()
         data = resp.json()
-        if data.get("result") != "success":
-            raise HTTPException(status_code=422, detail="Currency data unavailable from provider")
-        rates = data.get("rates", {})  # ExchangeRate-API free tier uses 'rates' key
-        rate = rates.get(to_c)
-        if rate is None:
-            raise HTTPException(status_code=422, detail=f"Currency '{to_c}' not recognised")
-        converted = round(amount * rate, 6)
-        last_update = data.get("time_last_update_utc", "")[:16]
-        return {
-            "from": from_c, "to": to_c,
-            "amount": amount, "rate": rate, "converted": converted,
-            "date": last_update,
-            "formatted": f"{amount:,.2f} {from_c} = {converted:,.4f} {to_c}"
-        }
-    except HTTPException:
-        raise
-    except requests.exceptions.Timeout:
-        raise HTTPException(status_code=504, detail="Currency API timed out. Please try again.")
-    except requests.exceptions.ConnectionError:
-        raise HTTPException(status_code=503, detail="Currency API is temporarily unreachable.")
+        if data.get("result") == "success":
+            rates = data.get("rates", {})
+            rate = rates.get(to_c)
+            if rate is not None:
+                converted = round(amount * rate, 6)
+                last_update = data.get("time_last_update_utc", "")[:16]
+                return {
+                    "from": from_c, "to": to_c,
+                    "amount": amount, "rate": rate, "converted": converted,
+                    "date": last_update,
+                    "formatted": f"{amount:,.2f} {from_c} = {converted:,.4f} {to_c}",
+                    "is_fallback": False
+                }
     except Exception as e:
-        logger.error(f"Currency convert error: {e}")
-        raise HTTPException(status_code=500, detail="Unexpected error fetching exchange rate")
+        logger.warning(f"Live currency API failed, using fallback: {e}")
+
+    # Fallback calculation
+    rate_from = FALLBACK_USD_RATES.get(from_c)
+    rate_to = FALLBACK_USD_RATES.get(to_c)
+    
+    if rate_from is None:
+        rate_from = 1.0
+    if rate_to is None:
+        rate_to = 1.0
+        
+    rate = rate_to / rate_from
+    converted = round(amount * rate, 6)
+    last_update = "Offline Cache (Approximate)"
+    
+    return {
+        "from": from_c, "to": to_c,
+        "amount": amount, "rate": round(rate, 6), "converted": converted,
+        "date": last_update,
+        "formatted": f"{amount:,.2f} {from_c} = {converted:,.4f} {to_c}",
+        "is_fallback": True
+    }
 
 @api_router.get("/currency/trend")
 @limiter.limit("30/minute")
@@ -415,7 +491,7 @@ def get_currency_trend(request: Request, from_currency: str = Query(...), to_cur
         end_date = date.today()
         start_date = end_date - timedelta(days=14)
         url = f"https://api.frankfurter.app/{start_date}..{end_date}?from={from_c}&to={to_c}"
-        resp = requests.get(url, timeout=10)
+        resp = requests.get(url, timeout=3.0)
         if resp.status_code in (400, 404):
             return {"from": from_c, "to": to_c, "trend": [], "available": False, "message": "Trend data not available for this pair"}
         resp.raise_for_status()

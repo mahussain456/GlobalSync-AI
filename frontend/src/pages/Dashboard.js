@@ -72,8 +72,8 @@ export default function Dashboard() {
                 <img
                   src="/logo-dark.png"
                   alt="GlobalSync AI"
-                  className="h-14 w-auto transition-transform duration-300 hover:scale-105"
-                  style={{ filter: "drop-shadow(0 0 16px rgba(200,169,106,0.3))" }}
+                  className="w-auto transition-transform duration-300 hover:scale-105"
+                  style={{ height: "60px", filter: "drop-shadow(0 0 12px rgba(200, 169, 106, 0.45)) drop-shadow(0 0 24px rgba(200, 169, 106, 0.25))" }}
                 />
               </div>
             </div>

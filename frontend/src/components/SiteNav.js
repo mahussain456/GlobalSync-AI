@@ -28,8 +28,8 @@ export default function SiteNav() {
           <img
             src="/logo-dark.png"
             alt="GlobalSync AI"
-            className="h-10 w-auto transition-transform duration-300 hover:scale-105"
-            style={{ filter: "drop-shadow(0 0 12px rgba(200,169,106,0.15))" }}
+            className="w-auto transition-transform duration-300 hover:scale-105"
+            style={{ height: "48px", filter: "drop-shadow(0 0 10px rgba(200, 169, 106, 0.45)) drop-shadow(0 0 22px rgba(200, 169, 106, 0.25))" }}
           />
         </Link>
 
