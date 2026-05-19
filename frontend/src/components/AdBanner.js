@@ -32,8 +32,8 @@ export default function AdBanner({ slot = "leaderboard", format = "auto", classN
   // Show a subtle placeholder until real slot IDs are added
   if (IS_PLACEHOLDER) {
     return (
-      <div className={`w-full flex items-center justify-center rounded-xl border border-dashed border-zinc-200 bg-zinc-50 text-zinc-400 text-xs py-3 my-2 ${className}`}>
-        Ad placeholder — add your AdSense slot ID in <code className="mx-1 font-mono bg-zinc-100 px-1 rounded">AdBanner.js</code>
+      <div className={`w-full flex items-center justify-center rounded-xl border border-dashed border-white/10 bg-gem-forest text-zinc-400 text-xs py-3 my-2 ${className}`}>
+        Ad placeholder — add your AdSense slot ID in <code className="mx-1 font-mono bg-white/5 px-1 rounded">AdBanner.js</code>
       </div>
     );
   }

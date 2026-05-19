@@ -51,20 +51,20 @@ export default function AdminPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Link to="/" className="text-zinc-500 hover:text-zinc-300 transition-colors">
+            <Link to="/" className="text-gem-sage hover:text-zinc-300 transition-colors">
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
-              <h1 className="font-heading text-2xl font-bold text-white flex items-center gap-2">
-                <Users className="w-6 h-6 text-blue-400" /> Lead Dashboard
+              <h1 className="font-heading text-2xl font-bold text-gem-beige flex items-center gap-2">
+                <Users className="w-6 h-6 text-gem-gold" /> Lead Dashboard
               </h1>
-              <p className="text-zinc-500 text-sm mt-0.5">Collected user registrations</p>
+              <p className="text-gem-sage text-sm mt-0.5">Collected user registrations</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={load}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-sm text-zinc-300 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white/10 hover:bg-zinc-700 text-sm text-zinc-300 transition-colors"
               data-testid="admin-refresh-btn"
             >
               <RefreshCw className="w-3.5 h-3.5" /> Refresh
@@ -72,7 +72,7 @@ export default function AdminPage() {
             <button
               onClick={exportCSV}
               disabled={!data?.users?.length}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-sm text-white transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-gem-gold text-gem-forest font-bold hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-sm transition-colors"
               data-testid="admin-export-btn"
             >
               <Download className="w-3.5 h-3.5" /> Export CSV
@@ -83,28 +83,28 @@ export default function AdminPage() {
         {/* Stats */}
         {data && (
           <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="bg-zinc-900 rounded-xl border border-zinc-800 p-5" data-testid="admin-total-count">
-              <div className="text-3xl font-bold text-white font-heading">{data.total}</div>
-              <div className="text-zinc-500 text-sm mt-1">Total Leads</div>
+            <div className="bg-[#0E2A1F] rounded-xl border border-zinc-800 p-5" data-testid="admin-total-count">
+              <div className="text-3xl font-bold text-gem-beige font-heading">{data.total}</div>
+              <div className="text-gem-sage text-sm mt-1">Total Leads</div>
             </div>
-            <div className="bg-zinc-900 rounded-xl border border-zinc-800 p-5">
-              <div className="text-3xl font-bold text-blue-400 font-heading">
+            <div className="bg-[#0E2A1F] rounded-xl border border-zinc-800 p-5">
+              <div className="text-3xl font-bold text-gem-gold font-heading">
                 {data.users?.filter(u => {
                   const d = new Date(u.timestamp);
                   const now = new Date();
                   return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
                 }).length ?? 0}
               </div>
-              <div className="text-zinc-500 text-sm mt-1">This Month</div>
+              <div className="text-gem-sage text-sm mt-1">This Month</div>
             </div>
           </div>
         )}
 
         {/* Table */}
-        <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden" data-testid="admin-leads-table">
+        <div className="bg-[#0E2A1F] rounded-2xl border border-zinc-800 overflow-hidden" data-testid="admin-leads-table">
           {loading && (
-            <div className="p-12 text-center text-zinc-500">
-              <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-3 text-zinc-600" />
+            <div className="p-12 text-center text-gem-sage">
+              <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-3 text-gem-mist" />
               Loading leads...
             </div>
           )}
@@ -112,7 +112,7 @@ export default function AdminPage() {
             <div className="p-12 text-center text-red-400">{error}</div>
           )}
           {!loading && !error && data?.users?.length === 0 && (
-            <div className="p-12 text-center text-zinc-500">
+            <div className="p-12 text-center text-gem-sage">
               <Mail className="w-8 h-8 mx-auto mb-3 text-zinc-700" />
               No leads collected yet.
             </div>
@@ -121,19 +121,19 @@ export default function AdminPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-zinc-800">
-                  <th className="text-left px-5 py-3 text-zinc-500 font-medium">Name</th>
-                  <th className="text-left px-5 py-3 text-zinc-500 font-medium">Email</th>
-                  <th className="text-left px-5 py-3 text-zinc-500 font-medium">
+                  <th className="text-left px-5 py-3 text-gem-sage font-medium">Name</th>
+                  <th className="text-left px-5 py-3 text-gem-sage font-medium">Email</th>
+                  <th className="text-left px-5 py-3 text-gem-sage font-medium">
                     <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" /> Joined</span>
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {data.users.map((u, i) => (
-                  <tr key={u.id || i} className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors" data-testid={`admin-lead-row-${i}`}>
-                    <td className="px-5 py-3 text-zinc-200 font-medium">{u.name || <span className="text-zinc-600 italic">—</span>}</td>
+                  <tr key={u.id || i} className="border-b border-zinc-800/50 hover:bg-white/10/30 transition-colors" data-testid={`admin-lead-row-${i}`}>
+                    <td className="px-5 py-3 text-zinc-200 font-medium">{u.name || <span className="text-gem-mist italic">—</span>}</td>
                     <td className="px-5 py-3 text-zinc-400">{u.email}</td>
-                    <td className="px-5 py-3 text-zinc-500">{fmt(u.timestamp)}</td>
+                    <td className="px-5 py-3 text-gem-sage">{fmt(u.timestamp)}</td>
                   </tr>
                 ))}
               </tbody>

@@ -7,7 +7,7 @@ import { getStaticPageSEO } from "@/lib/seo";
 export default function DataSourcesPage() {
   const seo = getStaticPageSEO("data-sources");
   return (
-    <div className="min-h-screen flex flex-col bg-[#050816] text-white">
+    <div className="min-h-screen flex flex-col bg-gem-forest text-gem-beige">
       <SEOHead {...seo} />
       <SiteNav />
       <main className="flex-1 max-w-3xl mx-auto px-6 py-12 w-full">

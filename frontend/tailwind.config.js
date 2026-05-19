@@ -66,7 +66,16 @@ module.exports = {
   				900: 'hsl(var(--popover))',
   			},
   			white: 'hsl(var(--card))',
-  			black: 'hsl(var(--background))'
+  			black: 'hsl(var(--background))',
+        'gem-forest': '#0E2A1F',
+        'gem-pine': '#1B4D3E',
+        'gem-sage': '#A7BFAE',
+        'gem-mist': '#E9F1EC',
+        'gem-beige': '#F4EFE6',
+        'gem-stone': '#D8D2C7',
+        'gem-clay': '#DAD4C6',
+        'gem-charcoal': '#1A1A1A',
+        'gem-gold': '#C8A96A',
   		},
   		keyframes: {
   			'accordion-down': {

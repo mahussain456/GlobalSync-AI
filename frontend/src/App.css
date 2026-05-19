@@ -1,41 +1,59 @@
 .App { min-height: 100vh; }
 
-/* ===== HERO GRADIENT BACKGROUND ===== */
-.hero-bg {
-  background: linear-gradient(160deg, #061d21 0%, #0B2E33 45%, #051619 100%);
-  position: relative;
+/* ===== LUXURY DESIGN SYSTEM ===== */
+.hero-luxury-bg {
+  background:
+    radial-gradient(circle at 70% 35%, rgba(27,77,62,0.85), transparent 35%),
+    radial-gradient(circle at 35% 65%, rgba(167,191,174,0.12), transparent 25%),
+    linear-gradient(135deg, #071A13 0%, #0E2A1F 55%, #06120E 100%);
   overflow: hidden;
 }
 
-/* Animated glowing orbs */
-.orb {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: orbFloat 8s ease-in-out infinite;
-}
-.orb-blue {
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%);
-  top: -200px; right: -200px;
-  animation-delay: 0s;
-}
-.orb-purple {
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(20,184,166,0.15) 0%, transparent 70%);
-  bottom: -100px; left: -100px;
-  animation-delay: -4s;
-}
-.orb-pink {
-  width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-  top: 40%; left: 30%;
-  animation-delay: -2s;
+.card-dark {
+  background: rgba(14,42,31,0.72);
+  border: 1px solid rgba(244,239,230,0.10);
+  border-radius: 22px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
-@keyframes orbFloat {
-  0%, 100% { transform: translateY(0px) scale(1); }
-  50% { transform: translateY(-30px) scale(1.08); }
+.card-light {
+  background: rgba(244,239,230,0.94);
+  border: 1px solid rgba(14,42,31,0.08);
+  border-radius: 22px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.btn-primary {
+  background: #C8A96A;
+  color: #0E2A1F;
+  border-radius: 14px;
+  padding: 16px 28px;
+  font-weight: 700;
+  transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 10px 30px rgba(200,169,106,0.18);
+}
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 35px rgba(200,169,106,0.25);
+}
+
+.btn-secondary {
+  background: rgba(14,42,31,0.42);
+  border: 1px solid rgba(200,169,106,0.45);
+  color: #F4EFE6;
+  border-radius: 14px;
+  padding: 16px 28px;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-secondary:hover {
+  background: rgba(14,42,31,0.7);
+  transform: translateY(-1px);
 }
 
 /* Grid noise texture overlay */
@@ -304,8 +322,8 @@
 
 /* ===== DASHBOARD STAT CARDS ===== */
 .dash-stat-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 14px;
   padding: 14px 16px;
   display: flex;

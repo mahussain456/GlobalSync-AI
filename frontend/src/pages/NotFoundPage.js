@@ -32,10 +32,10 @@ export default function NotFoundPage() {
           404
         </div>
 
-        <h1 className="font-heading text-2xl md:text-3xl font-bold text-white mb-3">
+        <h1 className="font-heading text-2xl md:text-3xl font-bold text-gem-beige mb-3">
           Page not found
         </h1>
-        <p className="text-white/40 text-sm md:text-base max-w-sm mb-10 leading-relaxed">
+        <p className="text-gem-beige/40 text-sm md:text-base max-w-sm mb-10 leading-relaxed">
           The page you're looking for doesn't exist or has been moved. Head back home to sync with the world.
         </p>
 
@@ -43,13 +43,13 @@ export default function NotFoundPage() {
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <Link
             to="/"
-            className="btn-gradient inline-flex items-center gap-2 rounded-2xl px-7 py-3 font-semibold text-sm text-white"
+            className="btn-gradient inline-flex items-center gap-2 rounded-2xl px-7 py-3 font-semibold text-sm text-gem-beige"
           >
             <Globe className="w-4 h-4" /> Back to Home
           </Link>
           <Link
             to="/dashboard"
-            className="glass-dark inline-flex items-center gap-2 rounded-2xl px-7 py-3 font-semibold text-sm text-white/70 hover:text-white transition-colors"
+            className="glass-dark inline-flex items-center gap-2 rounded-2xl px-7 py-3 font-semibold text-sm text-gem-beige/70 hover:text-gem-beige transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> Open Dashboard
           </Link>
@@ -66,7 +66,7 @@ export default function NotFoundPage() {
             <Link
               key={to}
               to={to}
-              className="glass-dark text-xs text-white/40 hover:text-white/80 rounded-full px-3 py-1.5 transition-colors"
+              className="glass-dark text-xs text-gem-beige/40 hover:text-gem-beige/80 rounded-full px-3 py-1.5 transition-colors"
             >
               {label}
             </Link>
@@ -75,8 +75,8 @@ export default function NotFoundPage() {
       </div>
 
       {/* Bottom footnote */}
-      <p className="text-center text-white/15 text-xs pb-8 relative z-10">
-        © {new Date().getFullYear()} GlobalSync AI · <Link to="/privacy-policy" className="hover:text-white/40 transition-colors">Privacy Policy</Link>
+      <p className="text-center text-gem-beige/15 text-xs pb-8 relative z-10">
+        © {new Date().getFullYear()} GlobalSync AI · <Link to="/privacy-policy" className="hover:text-gem-beige/40 transition-colors">Privacy Policy</Link>
       </p>
     </div>
   );

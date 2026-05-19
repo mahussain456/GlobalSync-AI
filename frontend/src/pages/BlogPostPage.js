@@ -12,17 +12,17 @@ import { getBlogPostSEO } from "@/lib/seo";
 function renderBlock(block, i) {
   switch (block.type) {
     case "p":
-      return <p key={i} className="text-white/70 leading-relaxed mb-4 text-base">{block.text}</p>;
+      return <p key={i} className="text-gem-beige/70 leading-relaxed mb-4 text-base">{block.text}</p>;
 
     case "h2":
-      return <h2 key={i} className="font-heading text-2xl font-bold text-white mt-10 mb-4 pb-2 border-b border-white/10">{block.text}</h2>;
+      return <h2 key={i} className="font-heading text-2xl font-bold text-gem-beige mt-10 mb-4 pb-2 border-b border-white/10">{block.text}</h2>;
 
     case "h3":
-      return <h3 key={i} className="font-heading text-lg font-semibold text-white mt-6 mb-3">{block.text}</h3>;
+      return <h3 key={i} className="font-heading text-lg font-semibold text-gem-beige mt-6 mb-3">{block.text}</h3>;
 
     case "ul":
       return (
-        <ul key={i} className="list-disc list-outside ml-5 space-y-2 mb-5 text-white/70">
+        <ul key={i} className="list-disc list-outside ml-5 space-y-2 mb-5 text-gem-beige/70">
           {block.items.map((item, j) => (
             <li key={j} className="leading-relaxed">{item}</li>
           ))}
@@ -34,9 +34,9 @@ function renderBlock(block, i) {
         <ul key={i} className="space-y-4 mb-5">
           {block.items.map((item, j) => (
             <li key={j} className="flex gap-3">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-              <span className="text-white/70 leading-relaxed">
-                <strong className="text-white">{item.title}</strong>{" "}{item.desc}
+              <CheckCircle2 className="w-5 h-5 text-gem-gold shrink-0 mt-0.5" />
+              <span className="text-gem-beige/70 leading-relaxed">
+                <strong className="text-gem-beige">{item.title}</strong>{" "}{item.desc}
               </span>
             </li>
           ))}
@@ -48,12 +48,12 @@ function renderBlock(block, i) {
         <ol key={i} className="space-y-5 mb-5">
           {block.items.map((item, j) => (
             <li key={j} className="flex gap-4">
-              <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
+              <div className="w-8 h-8 rounded-full bg-gem-gold/20 text-gem-gold font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">
                 {j + 1}
               </div>
               <div>
-                <strong className="text-white font-semibold">{item.title}</strong>
-                <p className="text-white/70 text-sm mt-1 leading-relaxed">{item.desc}</p>
+                <strong className="text-gem-beige font-semibold">{item.title}</strong>
+                <p className="text-gem-beige/70 text-sm mt-1 leading-relaxed">{item.desc}</p>
               </div>
             </li>
           ))}
@@ -70,7 +70,7 @@ function RelatedPosts({ currentSlug }) {
   const related = BLOG_POSTS.filter(p => p.slug !== currentSlug).slice(0, 2);
   return (
     <section className="mt-12 pt-8 border-t border-white/10">
-      <h2 className="font-heading text-xl font-bold text-white mb-5">More Articles</h2>
+      <h2 className="font-heading text-xl font-bold text-gem-beige mb-5">More Articles</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {related.map(post => {
           const style = CATEGORY_STYLES[post.categoryColor];
@@ -78,11 +78,11 @@ function RelatedPosts({ currentSlug }) {
             <Link
               key={post.slug}
               to={`/blog/${post.slug}`}
-              className={`bg-[#0A0F1E] rounded-xl border border-white/10 p-4 hover:border-white/20 transition-all group`}
+              className={`bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-4 hover:border-white/20 transition-all group`}
             >
               <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${style.badge} mb-2 inline-block`}>{post.category}</span>
-              <h3 className="font-semibold text-white text-sm leading-snug group-hover:text-white/80 transition-colors">{post.title}</h3>
-              <div className="flex items-center gap-1 mt-2 text-xs text-white/40">
+              <h3 className="font-semibold text-gem-beige text-sm leading-snug group-hover:text-gem-beige/80 transition-colors">{post.title}</h3>
+              <div className="flex items-center gap-1 mt-2 text-xs text-gem-beige/40">
                 <Clock className="w-3 h-3" /> {post.readTime}
               </div>
             </Link>
@@ -104,7 +104,7 @@ export default function BlogPostPage() {
   const seo = getBlogPostSEO({ post });
 
   return (
-    <div className="min-h-screen bg-[#050816] text-white">
+    <div className="min-h-screen bg-gem-forest text-gem-beige">
       <SEOHead {...seo} />
       <SiteNav />
 
@@ -113,31 +113,31 @@ export default function BlogPostPage() {
         <header className="mb-8">
           <div className="flex flex-wrap items-center gap-3 mb-5">
             <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${style.badge}`}>{post.category}</span>
-            <span className="text-xs text-white/40 flex items-center gap-1"><Calendar className="w-3 h-3" /> {post.publishDate}</span>
-            <span className="text-xs text-white/40 flex items-center gap-1"><Clock className="w-3 h-3" /> {post.readTime}</span>
-            <span className="text-xs text-white/40 flex items-center gap-1 hidden sm:flex"><Tag className="w-3 h-3" /> {post.keywords.split(",")[0].trim()}</span>
+            <span className="text-xs text-gem-beige/40 flex items-center gap-1"><Calendar className="w-3 h-3" /> {post.publishDate}</span>
+            <span className="text-xs text-gem-beige/40 flex items-center gap-1"><Clock className="w-3 h-3" /> {post.readTime}</span>
+            <span className="text-xs text-gem-beige/40 flex items-center gap-1 hidden sm:flex"><Tag className="w-3 h-3" /> {post.keywords.split(",")[0].trim()}</span>
           </div>
 
           {/* H1 */}
-          <h1 className="font-heading text-3xl md:text-4xl font-bold text-white leading-tight mb-5">
+          <h1 className="font-heading text-3xl md:text-4xl font-bold text-gem-beige leading-tight mb-5">
             {post.title}
           </h1>
 
           {/* Author Byline */}
           {post.authorName && (
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center font-bold text-white/50 shrink-0">
+              <div className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center font-bold text-gem-beige/50 shrink-0">
                 {post.authorName.charAt(0)}
               </div>
               <div>
-                <div className="text-sm font-bold text-white">{post.authorName}</div>
-                <div className="text-xs text-white/50">{post.authorRole}</div>
+                <div className="text-sm font-bold text-gem-beige">{post.authorName}</div>
+                <div className="text-xs text-gem-beige/50">{post.authorRole}</div>
               </div>
             </div>
           )}
 
           {/* Intro excerpt */}
-          <p className="text-lg text-white/70 leading-relaxed border-l-4 border-white/10 pl-4">
+          <p className="text-lg text-gem-beige/70 leading-relaxed border-l-4 border-white/10 pl-4">
             {post.excerpt}
           </p>
         </header>
@@ -152,13 +152,13 @@ export default function BlogPostPage() {
 
         {/* Author Bio */}
         {post.authorName && (
-          <div className="mt-12 bg-[#0A0F1E] border border-white/10 rounded-2xl p-6 flex flex-col sm:flex-row items-start gap-5">
-            <div className="w-14 h-14 bg-[#050816] border border-white/10 rounded-full flex items-center justify-center font-bold text-white/50 text-xl shrink-0">
+          <div className="mt-12 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 rounded-2xl p-6 flex flex-col sm:flex-row items-start gap-5">
+            <div className="w-14 h-14 bg-gem-forest border border-white/10 rounded-full flex items-center justify-center font-bold text-gem-beige/50 text-xl shrink-0">
               {post.authorName.charAt(0)}
             </div>
             <div>
-              <h3 className="font-semibold text-white mb-1">About the Author: {post.authorName}</h3>
-              <p className="text-sm text-white/70 leading-relaxed">
+              <h3 className="font-semibold text-gem-beige mb-1">About the Author: {post.authorName}</h3>
+              <p className="text-sm text-gem-beige/70 leading-relaxed">
                 {post.authorBio || "Ahmed Hussain is a technology enthusiast and experienced IT professional with a strong interest in AI, automation, and emerging digital tools. Through his blogs, he shares practical insights, simplified explanations, and real-world perspectives on how artificial intelligence and technology are changing the way we work, build, and solve problems."}
               </p>
             </div>
@@ -166,21 +166,11 @@ export default function BlogPostPage() {
         )}
 
         {/* CTA */}
-        <div className={`mt-10 p-6 rounded-2xl border ${
-          post.categoryColor === "blue" ? "bg-blue-900/20 border-blue-500/20" :
-          post.categoryColor === "emerald" ? "bg-emerald-900/20 border-emerald-500/20" :
-          post.categoryColor === "orange" ? "bg-orange-900/20 border-orange-500/20" :
-          "bg-violet-900/20 border-violet-500/20"
-        }`} data-testid="blog-post-cta">
-          <p className="font-semibold text-white mb-3">Ready to try it yourself?</p>
+        <div className="mt-10 p-6 rounded-[28px] bg-gem-pine border border-white/10" data-testid="blog-post-cta">
+          <p className="font-semibold text-gem-beige mb-3">Ready to try it yourself?</p>
           <Link
             to={post.ctaUrl}
-            className={`inline-flex items-center gap-2 font-semibold text-sm ${
-              post.categoryColor === "blue" ? "text-blue-400 hover:text-blue-300" :
-              post.categoryColor === "emerald" ? "text-emerald-400 hover:text-emerald-300" :
-              post.categoryColor === "orange" ? "text-orange-400 hover:text-orange-300" :
-              "text-violet-400 hover:text-violet-300"
-            }`}
+            className="inline-flex items-center gap-2 font-semibold text-sm text-gem-gold hover:text-gem-beige transition-colors"
             data-testid="blog-cta-link"
           >
             {post.ctaText} <ArrowRight className="w-4 h-4" />
@@ -195,7 +185,7 @@ export default function BlogPostPage() {
 
         {/* Back link */}
         <div className="mt-8 pt-6 border-t border-white/10">
-          <Link to="/blog" className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
+          <Link to="/blog" className="flex items-center gap-2 text-sm text-gem-beige/50 hover:text-gem-beige transition-colors">
             <ArrowLeft className="w-4 h-4" /> Back to all articles
           </Link>
         </div>

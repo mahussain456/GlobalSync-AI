@@ -1,13 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, Menu, X, Globe } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const NAV_LINKS = [
-  { label: "Time Zones",      to: "/time-zone-converter" },
-  { label: "Meeting Planner", to: "/meeting-planner"     },
-  { label: "Currency",        to: "/currency-converter"  },
-  { label: "Freelancer Rates",to: "/freelancer-rate-converter" },
-  { label: "Blog",            to: "/blog"                },
+  { label: "Time Zones",       to: "/time-zone-converter" },
+  { label: "Meeting Planner",  to: "/meeting-planner"     },
+  { label: "Currency",         to: "/currency-converter"  },
+  { label: "Freelancer Rates", to: "/freelancer-rate-converter" },
+  { label: "Blog",             to: "/blog"                },
 ];
 
 export default function SiteNav() {
@@ -22,16 +22,12 @@ export default function SiteNav() {
   }, []);
 
   return (
-    <header className={`bg-[#0A0F1E] border-b border-white/10 sticky top-0 z-50 transition-all duration-300 ${scrolled ? "backdrop-blur-md bg-[#0A0F1E]/80" : ""}`}>
+    <header className={`bg-gem-forest border-b border-white/10 sticky top-0 z-50 transition-all duration-300 ${scrolled ? "backdrop-blur-md bg-gem-forest/80" : ""}`}>
       <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link to="/" className="shrink-0 flex items-center gap-2">
-          <img
-            src="/logo-dark.png.png"
-            alt="GlobalSync AI"
-            className="h-9 w-auto transition-transform duration-300 hover:scale-105"
-            style={{ filter: "drop-shadow(0 2px 8px rgba(27,122,154,0.4))" }}
-          />
+        <Link to="/" className="shrink-0 flex items-center gap-2 group">
+          <Globe className="w-7 h-7 text-gem-gold group-hover:rotate-12 transition-transform duration-500" />
+          <span className="font-serif text-xl font-semibold text-white tracking-tight">GlobalSync <span className="text-gem-gold">AI</span></span>
         </Link>
 
         {/* Desktop nav links */}
@@ -42,8 +38,8 @@ export default function SiteNav() {
               to={to}
               className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
                 pathname === to
-                  ? "text-white bg-white/5"
-                  : "font-medium text-white/60 hover:text-white hover:bg-white/5"
+                  ? "text-gem-gold bg-white/5 font-semibold"
+                  : "font-medium text-gem-beige/70 hover:text-gem-beige hover:bg-white/5"
               }`}
             >
               {label}
@@ -53,15 +49,14 @@ export default function SiteNav() {
 
         {/* Right: CTAs */}
         <div className="flex items-center gap-3 shrink-0">
-
           <Link
             to="/dashboard"
-            className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full bg-cyan-500/10 backdrop-blur-md border border-cyan-500/40 text-cyan-300 text-sm font-semibold hover:bg-cyan-500/20 hover:text-cyan-100 shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all"
+            className="hidden sm:flex items-center gap-1.5 px-5 py-2 rounded-xl bg-gem-gold text-gem-forest text-sm font-bold hover:opacity-90 shadow-[0_4px_14px_rgba(200,169,106,0.15)] hover:shadow-[0_6px_20px_rgba(200,169,106,0.25)] transition-all"
           >
             Open App <ArrowRight className="w-3.5 h-3.5" />
           </Link>
           <button
-            className="md:hidden p-2 rounded-lg text-white/60 hover:bg-white/10 transition-colors"
+            className="md:hidden p-2 rounded-lg text-gem-beige/60 hover:bg-white/10 transition-colors"
             onClick={() => setMobileOpen(v => !v)}
             aria-label="Toggle menu"
           >
@@ -72,14 +67,14 @@ export default function SiteNav() {
 
       {/* Mobile drawer */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-white/10 bg-[#0A0F1E] px-6 py-4 flex flex-col gap-2 shadow-2xl">
+        <div className="md:hidden border-t border-white/10 bg-gem-forest px-6 py-4 flex flex-col gap-2 shadow-2xl">
           {NAV_LINKS.map(({ label, to }) => (
             <Link
               key={to}
               to={to}
               onClick={() => setMobileOpen(false)}
               className={`px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                pathname === to ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5"
+                pathname === to ? "bg-white/10 text-gem-gold" : "text-gem-beige/70 hover:bg-white/5 hover:text-gem-beige"
               }`}
             >
               {label}
@@ -89,7 +84,7 @@ export default function SiteNav() {
           <Link
             to="/dashboard"
             onClick={() => setMobileOpen(false)}
-            className="mt-2 flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-cyan-500/10 backdrop-blur-md border border-cyan-500/40 text-cyan-300 text-sm font-semibold hover:bg-cyan-500/20 hover:text-cyan-100 transition-all"
+            className="mt-2 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gem-gold text-gem-forest text-sm font-bold hover:opacity-90 transition-all"
           >
             Open App <ArrowRight className="w-3.5 h-3.5" />
           </Link>

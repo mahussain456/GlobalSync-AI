@@ -206,10 +206,10 @@ export const BLOG_POSTS = [
 ];
 
 export const CATEGORY_STYLES = {
-  blue:    { badge: "bg-blue-100 text-blue-700 border-blue-200",    accent: "bg-blue-600",    hover: "hover:border-blue-300" },
-  emerald: { badge: "bg-emerald-100 text-emerald-700 border-emerald-200", accent: "bg-emerald-600", hover: "hover:border-emerald-300" },
-  orange:  { badge: "bg-orange-100 text-orange-700 border-orange-200",  accent: "bg-orange-500",  hover: "hover:border-orange-300" },
-  violet:  { badge: "bg-violet-100 text-violet-700 border-violet-200",  accent: "bg-violet-600",  hover: "hover:border-violet-300" },
+  blue:    { badge: "bg-white/5 text-gem-gold border-gem-gold/20", accent: "bg-gem-gold", hover: "hover:border-gem-gold/50" },
+  emerald: { badge: "bg-white/5 text-gem-sage border-gem-sage/20", accent: "bg-gem-sage", hover: "hover:border-gem-sage/50" },
+  orange:  { badge: "bg-white/5 text-gem-mist border-gem-mist/20", accent: "bg-gem-mist", hover: "hover:border-gem-mist/50" },
+  violet:  { badge: "bg-white/5 text-gem-beige border-gem-beige/20", accent: "bg-gem-beige", hover: "hover:border-gem-beige/50" },
 };
 
 export const getBlogPost = (slug) => {

@@ -19,24 +19,24 @@ const fmt = (n, dec = 4) =>
 function LiveRateWidget({ from, to, fromMeta, toMeta, rate, loading, refreshed, onRefresh }) {
   const AMOUNTS = [1, 10, 100, 500, 1000];
   return (
-    <div className="bg-white rounded-2xl border border-zinc-200 p-6" data-testid="live-rate-widget">
+    <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6" data-testid="live-rate-widget">
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="text-xs text-zinc-400 mb-1">Live Exchange Rate</div>
           {loading ? (
-            <div className="h-10 w-48 bg-zinc-100 rounded-lg animate-pulse" />
+            <div className="h-10 w-48 bg-white/10 rounded-lg animate-pulse" />
           ) : rate ? (
-            <div className="font-heading text-3xl font-bold text-zinc-900" data-testid="live-rate-value">
+            <div className="font-heading text-3xl font-bold text-gem-beige" data-testid="live-rate-value">
               1 {from.toUpperCase()} = {fmt(rate)} {to.toUpperCase()}
             </div>
           ) : (
-            <div className="text-zinc-500 text-sm">Rate unavailable — try the full converter</div>
+            <div className="text-gem-sage text-sm">Rate unavailable — try the full converter</div>
           )}
           <div className="text-xs text-zinc-400 mt-1">Updated: {refreshed.toLocaleTimeString()}</div>
         </div>
         <button
           onClick={onRefresh}
-          className="p-2 rounded-full border border-zinc-200 text-zinc-400 hover:text-zinc-600 hover:border-zinc-300 transition-colors"
+          className="p-2 rounded-full border border-white/10 text-zinc-400 hover:text-gem-mist hover:border-zinc-300 transition-colors"
           title="Refresh rate"
           data-testid="refresh-rate-btn"
         >
@@ -45,13 +45,13 @@ function LiveRateWidget({ from, to, fromMeta, toMeta, rate, loading, refreshed, 
       </div>
 
       {rate && (
-        <div className="border-t border-zinc-100 pt-4">
+        <div className="border-t border-white/5 pt-4">
           <div className="text-xs text-zinc-400 uppercase tracking-wide mb-3 font-medium">Quick Conversions</div>
           <div className="grid grid-cols-2 gap-2">
             {AMOUNTS.map(amt => (
-              <div key={amt} className="flex items-center justify-between text-sm bg-zinc-50 rounded-lg px-3 py-2">
-                <span className="text-zinc-500">{fromMeta.symbol}{amt.toLocaleString()}</span>
-                <span className="font-semibold text-zinc-800">{toMeta.symbol}{fmt(amt * rate, 2)}</span>
+              <div key={amt} className="flex items-center justify-between text-sm bg-white/5 rounded-lg px-3 py-2">
+                <span className="text-gem-sage">{fromMeta.symbol}{amt.toLocaleString()}</span>
+                <span className="font-semibold text-gem-beige/90">{toMeta.symbol}{fmt(amt * rate, 2)}</span>
               </div>
             ))}
           </div>
@@ -77,7 +77,7 @@ function TrendChart({ from, to, fromMeta, toMeta }) {
   }, [from, to]);
 
   if (loading)
-    return <div className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6 h-52 animate-pulse" />;
+    return <div className="mb-8 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6 h-52 animate-pulse" />;
   if (!data || !data.available || !data.trend?.length) return null;
 
   const isPositive = data.change_percent >= 0;
@@ -93,14 +93,14 @@ function TrendChart({ from, to, fromMeta, toMeta }) {
   const gradientId = `trendGrad-${from}-${to}`;
 
   return (
-    <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6" data-testid="trend-chart">
+    <section className="mb-8 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6" data-testid="trend-chart">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
-        <h2 className="font-heading text-xl font-bold text-zinc-900">7-Day Rate Trend</h2>
+        <h2 className="font-heading text-xl font-bold text-gem-beige">7-Day Rate Trend</h2>
         <div
           className={`inline-flex items-center gap-1.5 text-sm font-semibold px-3 py-1 rounded-full border ${
             isPositive
-              ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+              ? "bg-white/5 text-gem-gold border-gem-gold/30"
               : "bg-red-50 text-red-700 border-red-200"
           }`}
           data-testid="trend-change-badge"
@@ -176,21 +176,21 @@ function QuickConvertWidget({ rate, fromMeta, toMeta }) {
   const numAmount    = parseFloat(amount) || 0;
 
   return (
-    <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6" data-testid="quick-convert-widget">
-      <h2 className="font-heading text-xl font-bold text-zinc-900 mb-4 flex items-center gap-2">
-        <TrendingUp className="w-5 h-5 text-emerald-600" />
+    <section className="mb-8 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6" data-testid="quick-convert-widget">
+      <h2 className="font-heading text-xl font-bold text-gem-beige mb-4 flex items-center gap-2">
+        <TrendingUp className="w-5 h-5 text-gem-gold" />
         Quick Amount Converter
       </h2>
 
       {/* Input row */}
       <div className="flex flex-wrap items-center gap-3 mb-5">
-        <div className="flex items-center gap-2 bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2.5 focus-within:ring-2 focus-within:ring-emerald-200 focus-within:border-emerald-300 transition-all">
-          <span className="text-zinc-500 font-semibold text-sm">{fromM.symbol}</span>
+        <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 focus-within:ring-2 focus-within:ring-gem-gold/20 focus-within:border-gem-gold/30 transition-all">
+          <span className="text-gem-sage font-semibold text-sm">{fromM.symbol}</span>
           <input
             type="number"
             value={amount}
             onChange={e => setAmount(e.target.value)}
-            className="bg-transparent w-28 text-zinc-900 font-bold text-lg focus:outline-none tabular-nums"
+            className="bg-transparent w-28 text-gem-beige font-bold text-lg focus:outline-none tabular-nums"
             min="0"
             placeholder="100"
             data-testid="amount-input"
@@ -200,7 +200,7 @@ function QuickConvertWidget({ rate, fromMeta, toMeta }) {
         </div>
         <button
           onClick={() => setReversed(r => !r)}
-          className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 hover:text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl px-3 py-2.5 transition-colors"
+          className="flex items-center gap-1.5 text-xs font-medium text-gem-gold hover:text-gem-gold/80 bg-white/5 hover:bg-white/10 border border-gem-gold/30 rounded-xl px-3 py-2.5 transition-colors"
           data-testid="currency-swap-btn"
         >
           <ArrowRight className="w-3.5 h-3.5 rotate-90" /> Swap
@@ -209,25 +209,25 @@ function QuickConvertWidget({ rate, fromMeta, toMeta }) {
 
       {/* Result */}
       {effectiveRate ? (
-        <div className="bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-100 rounded-xl p-5 mb-6">
-          <div className="text-xs text-zinc-500 mb-2">
+        <div className="bg-white/5 border border-white/10 rounded-xl p-5 mb-6">
+          <div className="text-xs text-gem-sage mb-2">
             {fromM.symbol}{numAmount.toLocaleString()} {fromM.code} =
           </div>
           <div className="flex flex-wrap items-end gap-3">
             <span
-              className="font-heading text-3xl font-bold text-zinc-900 tabular-nums"
+              className="font-heading text-3xl font-bold text-gem-beige tabular-nums"
               data-testid="converted-amount-result"
             >
               {toM.symbol}{fmt(numAmount * effectiveRate, 2)}
             </span>
-            <span className="text-zinc-600 font-semibold text-base pb-0.5">{toM.code}</span>
+            <span className="text-gem-mist font-semibold text-base pb-0.5">{toM.code}</span>
           </div>
           <div className="text-xs text-zinc-400 mt-2">
             Rate: 1 {fromM.code} = {fmt(effectiveRate)} {toM.code}
           </div>
         </div>
       ) : (
-        <div className="bg-zinc-50 border border-zinc-200 rounded-xl p-4 text-sm text-zinc-400 mb-6 animate-pulse">
+        <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-sm text-zinc-400 mb-6 animate-pulse">
           Loading live rate…
         </div>
       )}
@@ -241,11 +241,11 @@ function QuickConvertWidget({ rate, fromMeta, toMeta }) {
               <button
                 key={a}
                 onClick={() => setAmount(String(a))}
-                className="text-left bg-zinc-50 hover:bg-emerald-50 border border-zinc-100 hover:border-emerald-200 rounded-lg px-3 py-2 transition-all group"
+                className="text-left bg-white/5 hover:bg-white/5 border border-white/5 hover:border-gem-gold/30 rounded-lg px-3 py-2 transition-all group"
                 data-testid={`quick-ref-${a}`}
               >
-                <div className="text-xs text-zinc-400 group-hover:text-emerald-600 truncate">{fromM.symbol}{a.toLocaleString()}</div>
-                <div className="text-sm font-semibold text-zinc-800 truncate">{toM.symbol}{fmt(a * effectiveRate, 2)}</div>
+                <div className="text-xs text-zinc-400 group-hover:text-gem-gold truncate">{fromM.symbol}{a.toLocaleString()}</div>
+                <div className="text-sm font-semibold text-gem-beige/90 truncate">{toM.symbol}{fmt(a * effectiveRate, 2)}</div>
               </button>
             ))}
           </div>
@@ -283,6 +283,7 @@ export default function CurrencyPairPage() {
       console.error("Rate fetch error:", e);
     }
     setRateLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pairData]);
 
   useEffect(() => { fetchRate(); }, [fetchRate]);
@@ -304,22 +305,22 @@ export default function CurrencyPairPage() {
       <article className="max-w-4xl mx-auto px-6 py-8">
         {/* Breadcrumb */}
         <nav className="text-xs text-zinc-400 mb-6 flex items-center gap-1.5">
-          <Link to="/" className="hover:text-zinc-600">Home</Link>
+          <Link to="/" className="hover:text-gem-mist">Home</Link>
           <span>/</span>
-          <Link to="/currency-converter" className="hover:text-zinc-600">Currency Converter</Link>
+          <Link to="/currency-converter" className="hover:text-gem-mist">Currency Converter</Link>
           <span>/</span>
-          <span className="text-zinc-600">{fromMeta.code} to {toMeta.code}</span>
+          <span className="text-gem-mist">{fromMeta.code} to {toMeta.code}</span>
         </nav>
 
         {/* H1 */}
         <header className="mb-8">
-          <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 rounded-full px-3 py-1 text-xs font-medium mb-4 border border-emerald-100">
+          <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-gem-gold rounded-full px-3 py-1 text-xs font-medium mb-4 border border-gem-gold/20">
             <TrendingUp className="w-3.5 h-3.5" /> Live Rate · 160+ Currencies · Free
           </div>
-          <h1 className="font-heading text-3xl md:text-4xl font-bold text-zinc-900 mb-3">
+          <h1 className="font-heading text-3xl md:text-4xl font-bold text-gem-beige mb-3">
             {fromMeta.code} to {toMeta.code} Live Exchange Rate — {fromMeta.name} to {toMeta.name}
           </h1>
-          <p className="text-zinc-500 text-lg leading-relaxed max-w-2xl">
+          <p className="text-gem-sage text-lg leading-relaxed max-w-2xl">
             Real-time {fromMeta.name} to {toMeta.name} exchange rate. Free converter with live data — no account required.
           </p>
         </header>
@@ -347,70 +348,70 @@ export default function CurrencyPairPage() {
         <AdBanner slot="leaderboard" className="mb-8" />
 
         {/* Context */}
-        <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6">
-          <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3">
+        <section className="mb-8 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6">
+          <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">
             About the {fromMeta.code} to {toMeta.code} Exchange Rate
           </h2>
-          <p className="text-zinc-600 leading-relaxed mb-4">{pairData.context}</p>
+          <p className="text-gem-mist leading-relaxed mb-4">{pairData.context}</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             {[fromMeta, toMeta].map(c => (
-              <div key={c.code} className="bg-zinc-50 rounded-xl p-4">
-                <div className="font-semibold text-zinc-800 text-sm mb-1">{c.code} — {c.name}</div>
-                <div className="text-xs text-zinc-500">{c.description}.</div>
+              <div key={c.code} className="bg-white/5 rounded-xl p-4">
+                <div className="font-semibold text-gem-beige/90 text-sm mb-1">{c.code} — {c.name}</div>
+                <div className="text-xs text-gem-sage">{c.description}.</div>
               </div>
             ))}
           </div>
         </section>
 
         {/* How this rate affects you — editorial */}
-        <section className="mb-8 bg-zinc-50 border border-zinc-200 rounded-2xl p-6">
-          <h2 className="font-heading text-xl font-bold text-zinc-900 mb-4">
+        <section className="mb-8 bg-white/5 border border-white/10 rounded-2xl p-6">
+          <h2 className="font-heading text-xl font-bold text-gem-beige mb-4">
             How the {fromMeta.code}/{toMeta.code} Rate Affects Your Income
           </h2>
-          <div className="space-y-3 text-zinc-600 text-sm leading-relaxed">
+          <div className="space-y-3 text-gem-mist text-sm leading-relaxed">
             <p>
               The {fromMeta.name} to {toMeta.name} exchange rate is more than a financial statistic — for anyone who earns, spends, or invoices across these two currencies, it directly determines their real-world purchasing power. A 5% shift in {fromMeta.code}/{toMeta.code} over a quarter changes the value of every invoice, salary payment, or remittance sent between these currencies.
             </p>
             <p>
-              <strong className="text-zinc-800">The mid-market rate vs. what you actually receive.</strong> The rate shown above is the mid-market rate — the true benchmark used between major banks. When you convert through a bank or payment app, the provider adds a margin: traditional banks typically charge 2–4% above mid-market; specialist services like Wise, Revolut, or Remitly charge 0.5–1.5%. On a {fromMeta.symbol}10,000 transaction, that difference is {toMeta.symbol}500–{toMeta.symbol}2,500 in {toMeta.code}. Always compare the total amount you receive, not just the headline rate.
+              <strong className="text-gem-beige/90">The mid-market rate vs. what you actually receive.</strong> The rate shown above is the mid-market rate — the true benchmark used between major banks. When you convert through a bank or payment app, the provider adds a margin: traditional banks typically charge 2–4% above mid-market; specialist services like Wise, Revolut, or Remitly charge 0.5–1.5%. On a {fromMeta.symbol}10,000 transaction, that difference is {toMeta.symbol}500–{toMeta.symbol}2,500 in {toMeta.code}. Always compare the total amount you receive, not just the headline rate.
             </p>
             <p>
-              <strong className="text-zinc-800">Timing your conversions.</strong> The 7-day trend chart above shows recent momentum in the {fromMeta.code}/{toMeta.code} pair. A rising chart means {fromMeta.code} is buying more {toMeta.code} than last week. A falling chart means the opposite. For large or predictable conversions, monitoring this trend can meaningfully improve your outcome — though short-term trends do not predict future movements. Convert when rates are favorable rather than on a rigid fixed schedule.
+              <strong className="text-gem-beige/90">Timing your conversions.</strong> The 7-day trend chart above shows recent momentum in the {fromMeta.code}/{toMeta.code} pair. A rising chart means {fromMeta.code} is buying more {toMeta.code} than last week. A falling chart means the opposite. For large or predictable conversions, monitoring this trend can meaningfully improve your outcome — though short-term trends do not predict future movements. Convert when rates are favorable rather than on a rigid fixed schedule.
             </p>
           </div>
         </section>
 
         {/* Context */}
         {pairData && (
-          <section className="mb-8 bg-white rounded-2xl border border-zinc-200 p-6">
-            <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3">
+          <section className="mb-8 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6">
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">
               {fromMeta.code} to {toMeta.code} Exchange Rate Explained
             </h2>
-            <p className="text-zinc-600 leading-relaxed mb-6">{pairData.context}</p>
+            <p className="text-gem-mist leading-relaxed mb-6">{pairData.context}</p>
 
-            <h3 className="font-semibold text-zinc-900 mb-2 mt-4 text-base">Key Drivers for {fromMeta.code}/{toMeta.code}</h3>
-            <p className="text-zinc-600 text-sm leading-relaxed mb-4">
-              <strong className="text-zinc-800">Interest rate differentials.</strong> If the central bank for {fromMeta.code} raises interest rates faster than the bank for {toMeta.code}, {fromMeta.code} often strengthens as it attracts more capital seeking higher yields. Conversely, when rates fall, the currency tends to weaken.
+            <h3 className="font-semibold text-gem-beige mb-2 mt-4 text-base">Key Drivers for {fromMeta.code}/{toMeta.code}</h3>
+            <p className="text-gem-mist text-sm leading-relaxed mb-4">
+              <strong className="text-gem-beige/90">Interest rate differentials.</strong> If the central bank for {fromMeta.code} raises interest rates faster than the bank for {toMeta.code}, {fromMeta.code} often strengthens as it attracts more capital seeking higher yields. Conversely, when rates fall, the currency tends to weaken.
             </p>
-            <p className="text-zinc-600 text-sm leading-relaxed mb-4">
-              <strong className="text-zinc-800">Economic performance.</strong> Strong GDP growth, low unemployment, and high consumer spending in the country using {fromMeta.code} generally lead to a stronger currency relative to {toMeta.code}.
+            <p className="text-gem-mist text-sm leading-relaxed mb-4">
+              <strong className="text-gem-beige/90">Economic performance.</strong> Strong GDP growth, low unemployment, and high consumer spending in the country using {fromMeta.code} generally lead to a stronger currency relative to {toMeta.code}.
             </p>
-            <p className="text-zinc-600 text-sm leading-relaxed">
-              <strong className="text-zinc-800">Managing currency risk in contracts.</strong> If you invoice in {fromMeta.code} but your expenses are in {toMeta.code}, you carry exchange rate risk on every outstanding invoice. Strategies to reduce this risk include: adding a currency-adjustment clause to contracts (price revises if the rate moves more than 3–5% from the invoice date), invoicing in {toMeta.code} to shift risk to the client, or using a multi-currency account to hold {fromMeta.code} until a favorable rate appears.
+            <p className="text-gem-mist text-sm leading-relaxed">
+              <strong className="text-gem-beige/90">Managing currency risk in contracts.</strong> If you invoice in {fromMeta.code} but your expenses are in {toMeta.code}, you carry exchange rate risk on every outstanding invoice. Strategies to reduce this risk include: adding a currency-adjustment clause to contracts (price revises if the rate moves more than 3–5% from the invoice date), invoicing in {toMeta.code} to shift risk to the client, or using a multi-currency account to hold {fromMeta.code} until a favorable rate appears.
             </p>
           </section>
         )}
 
         {/* Remote worker tip */}
         {pairData && (
-          <section className="mb-8 bg-emerald-50 border border-emerald-100 rounded-2xl p-6">
-            <h2 className="font-heading text-xl font-bold text-zinc-900 mb-3">
+          <section className="mb-8 bg-white/5 border border-white/10 rounded-2xl p-6">
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">
               Who Needs This Conversion?
             </h2>
-            <p className="text-zinc-700 leading-relaxed">{pairData.remoteTip}</p>
+            <p className="text-gem-mist leading-relaxed">{pairData.remoteTip}</p>
             <Link
               to="/currency-converter"
-              className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-emerald-700 hover:text-emerald-800 transition-colors"
+              className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-gem-gold hover:text-gem-gold/80 transition-colors"
             >
               Convert any of 160+ currencies with live exchange rates <ArrowRight className="w-4 h-4" />
             </Link>
@@ -418,13 +419,13 @@ export default function CurrencyPairPage() {
         )}
 
         {/* Blog cross-link */}
-        <section className="mb-8 bg-zinc-50 border border-zinc-200 rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <section className="mb-8 bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-semibold text-zinc-800 mb-0.5">Which currency should you invoice in?</p>
-            <p className="text-xs text-zinc-500">USD, EUR, or GBP — a practical guide for freelancers working internationally.</p>
+            <p className="text-sm font-semibold text-gem-beige/90 mb-0.5">Which currency should you invoice in?</p>
+            <p className="text-xs text-gem-sage">USD, EUR, or GBP — a practical guide for freelancers working internationally.</p>
           </div>
           <Link to="/blog/best-currency-to-invoice-freelancers-usd-eur-gbp"
-            className="shrink-0 text-sm font-semibold text-emerald-700 hover:text-emerald-800 transition-colors whitespace-nowrap flex items-center gap-1">
+            className="shrink-0 text-sm font-semibold text-gem-gold hover:text-gem-gold/80 transition-colors whitespace-nowrap flex items-center gap-1">
             Read guide: Invoicing in USD, EUR, or GBP <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </section>
@@ -432,17 +433,17 @@ export default function CurrencyPairPage() {
         {/* FAQ */}
         {pairData?.faqs && (
           <section className="mb-8">
-            <h2 className="font-heading text-2xl font-bold text-zinc-900 mb-5">
+            <h2 className="font-heading text-2xl font-bold text-gem-beige mb-5">
               Frequently Asked Questions
             </h2>
             <div className="space-y-4">
               {pairData.faqs.map((faq, i) => (
-                <div key={i} className="bg-white border border-zinc-200 rounded-xl p-5">
-                  <h3 className="font-semibold text-zinc-900 mb-2 flex gap-2">
-                    <span className="text-emerald-500 font-black">Q.</span> {faq.q}
+                <div key={i} className="bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 text-gem-beige p-5">
+                  <h3 className="font-semibold text-gem-beige mb-2 flex gap-2">
+                    <span className="text-gem-gold font-black">Q.</span> {faq.q}
                   </h3>
-                  <p className="text-zinc-600 text-sm leading-relaxed flex gap-2">
-                    <span className="text-blue-500 font-black">A.</span> {faq.a}
+                  <p className="text-gem-mist text-sm leading-relaxed flex gap-2">
+                    <span className="text-gem-gold font-black">A.</span> {faq.a}
                   </p>
                 </div>
               ))}
@@ -451,14 +452,14 @@ export default function CurrencyPairPage() {
         )}
 
         {/* Full tool CTA */}
-        <section className="mb-8 bg-zinc-900 text-white rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <section className="mb-8 bg-white/5 backdrop-blur-xl rounded-[28px] text-gem-beige border border-white/10 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h2 className="font-heading text-xl font-bold mb-1">Convert any amount or currency</h2>
             <p className="text-zinc-400 text-sm">160+ currencies, 7-day trend charts, and AI natural language input — free, no account needed.</p>
           </div>
           <Link
             to="/currency-converter"
-            className="shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-zinc-900 font-semibold text-sm hover:bg-zinc-100 transition-colors"
+            className="shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-gem-beige font-semibold text-sm hover:bg-white/10 transition-colors"
           >
             Open live currency converter <ArrowRight className="w-4 h-4" />
           </Link>
@@ -469,15 +470,15 @@ export default function CurrencyPairPage() {
         {/* Related pairs */}
         {relatedPairs.length > 0 && (
           <section className="mb-8">
-            <h2 className="font-heading text-xl font-bold text-zinc-900 mb-4">Related Currency Pairs</h2>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-4">Related Currency Pairs</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {relatedPairs.map(({ slug, from, to }) => (
                 <Link
                   key={slug}
                   to={`/currency/${slug}`}
-                  className="bg-white rounded-xl border border-zinc-200 p-4 hover:shadow-sm hover:border-emerald-200 transition-all group"
+                  className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-4 hover:shadow-sm hover:border-gem-gold/30 transition-all group"
                 >
-                  <div className="font-semibold text-zinc-800 text-sm group-hover:text-emerald-600 transition-colors">
+                  <div className="font-semibold text-gem-beige/90 text-sm group-hover:text-gem-gold transition-colors">
                     Check {from.code} to {to.code} Exchange Rate
                   </div>
                   <div className="text-xs text-zinc-400 mt-0.5">{from.name} to {to.name}</div>
