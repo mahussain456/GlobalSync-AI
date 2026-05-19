@@ -8,10 +8,10 @@ import { getStaticPageSEO } from "@/lib/seo";
 const Section = ({ icon: Icon, color = "blue", title, children }) => {
   const colors = {
     blue:    "bg-gem-pine/30 border-gem-gold/20 text-gem-gold",
-    emerald: "bg-gem-pine border-gem-gold/20 text-gem-gold",
+    emerald: "bg-gem-pine/30 border-gem-gold/20 text-gem-gold",
     violet:  "bg-gem-pine/30 border-gem-gold/20 text-gem-gold",
-    orange:  "bg-orange-900/20 border-orange-500/20 text-orange-400",
-    red:     "bg-red-900/20 border-red-500/20 text-red-400",
+    orange:  "bg-gem-gold/10 border-gem-gold/20 text-gem-gold",
+    red:     "bg-red-950/20 border-red-800/20 text-red-300",
   };
   return (
     <section className="mb-12">

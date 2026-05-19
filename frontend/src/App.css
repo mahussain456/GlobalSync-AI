@@ -69,7 +69,7 @@
 
 /* ===== GRADIENT TEXT ===== */
 .gradient-text {
-  background: linear-gradient(135deg, #33B5E5 0%, #0891B2 50%, #0E7490 100%);
+  background: linear-gradient(135deg, #F4EFE6 0%, #C8A96A 50%, #8B6D3F 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -111,12 +111,13 @@
 
 /* ===== GRADIENT BORDER BUTTONS ===== */
 .btn-gradient {
-  background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
-  color: white;
+  background: linear-gradient(135deg, #C8A96A 0%, #8B6D3F 100%);
+  color: #0E2A1F;
   border: none;
   position: relative;
   overflow: hidden;
   transition: opacity 0.2s, transform 0.15s;
+  font-weight: 700;
 }
 .btn-gradient:hover { opacity: 0.9; transform: translateY(-1px); }
 .btn-gradient:active { transform: scale(0.97); }
@@ -191,18 +192,18 @@
 }
 .clock-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(8,145,178,0.35);
-  box-shadow: 0 8px 32px rgba(8,145,178,0.15);
+  border-color: rgba(200,169,106,0.35);
+  box-shadow: 0 8px 32px rgba(200,169,106,0.15);
 }
 
 /* ===== ONBOARDING MODAL ===== */
 .onboarding-overlay {
-  background: rgba(5, 8, 22, 0.85);
+  background: rgba(14, 42, 31, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 .onboarding-card {
-  background: linear-gradient(145deg, #0f1535 0%, #1a1040 100%);
+  background: linear-gradient(145deg, #0E2A1F 0%, #1B4D3E 100%);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 24px;
   box-shadow: 0 32px 64px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
@@ -220,20 +221,20 @@
   transition: border-color 0.2s;
 }
 .onboarding-input::placeholder { color: rgba(255,255,255,0.35); }
-.onboarding-input:focus { border-color: rgba(99,102,241,0.6); box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
+.onboarding-input:focus { border-color: rgba(200,169,106,0.6); box-shadow: 0 0 0 3px rgba(200,169,106,0.15); }
 
 /* ===== DASHBOARD IMPROVEMENTS ===== */
 .tab-active-pill {
-  background: linear-gradient(135deg, #1e40af 0%, #4f46e5 100%);
-  color: white;
+  background: linear-gradient(135deg, #C8A96A 0%, #8B6D3F 100%);
+  color: #0E2A1F;
   border-radius: 10px;
 }
 .city-card-glow:hover {
-  box-shadow: 0 4px 24px rgba(37,99,235,0.1);
+  box-shadow: 0 4px 24px rgba(200,169,106,0.1);
 }
 .stat-badge {
-  background: linear-gradient(135deg, rgba(37,99,235,0.1) 0%, rgba(139,92,246,0.1) 100%);
-  border: 1px solid rgba(37,99,235,0.2);
+  background: linear-gradient(135deg, rgba(200,169,106,0.1) 0%, rgba(167,191,174,0.1) 100%);
+  border: 1px solid rgba(200,169,106,0.25);
 }
 
 /* ===== TEAL ORB ===== */
@@ -253,8 +254,8 @@
   border-bottom-color: rgba(255,255,255,0.4) !important;
 }
 .nav-link-active {
-  background: #EFF6FF;
-  color: #1D4ED8;
+  background: rgba(200,169,106,0.12);
+  color: #C8A96A;
   font-weight: 600;
 }
 

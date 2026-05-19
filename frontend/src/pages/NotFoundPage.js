@@ -4,7 +4,7 @@ import SEOHead from "@/components/SEOHead";
 
 export default function NotFoundPage() {
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "linear-gradient(160deg, #050816 0%, #0b1230 60%, #0d0b20 100%)" }}>
+    <div className="min-h-screen flex flex-col" style={{ background: "linear-gradient(160deg, #0A1E16 0%, #0E2A1F 60%, #050E0B 100%)" }}>
       <SEOHead
         title="Page Not Found — 404 | GlobalSync AI"
         description="The page you were looking for could not be found. Return to GlobalSync AI — free time zone converter, currency converter, and meeting planner."
@@ -13,22 +13,21 @@ export default function NotFoundPage() {
       />
 
       {/* Soft orbs */}
-      <div className="orb orb-blue" style={{ opacity: 0.4 }} />
-      <div className="orb orb-purple" style={{ opacity: 0.3 }} />
+      <div className="orb orb-teal" style={{ opacity: 0.3 }} />
 
       <div className="flex-1 flex flex-col items-center justify-center px-6 text-center relative z-10">
         {/* Logo */}
         <Link to="/" className="mb-10 inline-block">
           <img
-            src="/logo-dark.png.png"
+            src="/logo-dark.png"
             alt="GlobalSync AI"
             className="h-20 w-auto transition-transform duration-300 hover:scale-105"
-            style={{ filter: "drop-shadow(0 0 32px rgba(27,122,154,0.7)) drop-shadow(0 0 12px rgba(255,255,255,0.2))" }}
+            style={{ filter: "drop-shadow(0 0 32px rgba(200,169,106,0.4)) drop-shadow(0 0 12px rgba(255,255,255,0.1))" }}
           />
         </Link>
 
         {/* 404 number */}
-        <div className="mb-4" style={{ fontSize: "clamp(72px, 20vw, 140px)", fontWeight: 900, fontFamily: "'Outfit', sans-serif", lineHeight: 1, background: "linear-gradient(135deg, #33B5E5, #8B5CF6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+        <div className="mb-4" style={{ fontSize: "clamp(72px, 20vw, 140px)", fontWeight: 900, fontFamily: "'Outfit', sans-serif", lineHeight: 1, background: "linear-gradient(135deg, #F4EFE6, #C8A96A)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
           404
         </div>
 

@@ -31,25 +31,25 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 
 @layer base {
   :root {
-    --background: 187 64% 12%;
-    --foreground: 187 47% 82%;
-    --card: 187 24% 41%;
-    --card-foreground: 187 47% 82%;
-    --popover: 187 64% 12%;
-    --popover-foreground: 187 47% 82%;
-    --primary: 187 47% 82%;
-    --primary-foreground: 187 64% 12%;
-    --secondary: 187 24% 41%;
-    --secondary-foreground: 187 47% 82%;
-    --muted: 187 24% 41%;
-    --muted-foreground: 187 21% 64%;
-    --accent: 187 21% 64%;
-    --accent-foreground: 187 64% 12%;
+    --background: 156 50% 8%;
+    --foreground: 38 39% 93%;
+    --card: 156 40% 14%;
+    --card-foreground: 38 39% 93%;
+    --popover: 156 50% 8%;
+    --popover-foreground: 38 39% 93%;
+    --primary: 40 46% 60%;
+    --primary-foreground: 156 50% 8%;
+    --secondary: 156 20% 20%;
+    --secondary-foreground: 38 39% 93%;
+    --muted: 156 20% 20%;
+    --muted-foreground: 137 16% 70%;
+    --accent: 156 20% 25%;
+    --accent-foreground: 40 46% 60%;
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
-    --border: 187 24% 41%;
-    --input: 187 24% 41%;
-    --ring: 187 47% 82%;
+    --border: 156 30% 20%;
+    --input: 156 30% 20%;
+    --ring: 40 46% 60%;
     --radius: 0.75rem;
   }
 }

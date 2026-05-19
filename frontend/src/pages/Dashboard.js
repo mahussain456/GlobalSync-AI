@@ -70,10 +70,10 @@ export default function Dashboard() {
               </Link>
               <div className="flex items-center gap-2">
                 <img
-                  src="/logo-dark.png.png"
+                  src="/logo-dark.png"
                   alt="GlobalSync AI"
                   className="h-14 w-auto transition-transform duration-300 hover:scale-105"
-                  style={{ filter: "drop-shadow(0 0 16px rgba(27,122,154,0.45))" }}
+                  style={{ filter: "drop-shadow(0 0 16px rgba(200,169,106,0.3))" }}
                 />
               </div>
             </div>

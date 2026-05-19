@@ -58,15 +58,22 @@ export default function AboutPage() {
               { icon: Clock, color: "blue", title: "Time Zone Converter", desc: "See live local clocks for 25+ cities worldwide. Compare time zones side by side and identify who is in the office right now.", link: "/time-zone-converter" },
               { icon: TrendingUp, color: "emerald", title: "Currency Converter", desc: "Get live exchange rates for 160+ currencies worldwide — from USD, EUR, GBP, and JPY to INR, PKR, AED, NGN, and beyond.", link: "/currency-converter" },
               { icon: Users, color: "orange", title: "Meeting Planner", desc: "Automatically find the business hour overlap between up to 5 cities. Get the best meeting time displayed in every city's local time.", link: "/meeting-planner" },
-            ].map(({ icon: Icon, color, title, desc, link }) => (
-              <Link key={title} to={link} className={`bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-5 hover:border-${color}-500/50 hover:bg-white/5 transition-all`}>
-                <div className={`w-10 h-10 bg-${color}-500/20 rounded-xl flex items-center justify-center mb-3`}>
-                  <Icon className={`w-5 h-5 text-${color}-400`} />
-                </div>
-                <h3 className="font-semibold text-gem-beige mb-2">{title}</h3>
-                <p className="text-sm text-gem-beige/60 leading-relaxed">{desc}</p>
-              </Link>
-            ))}
+            ].map(({ icon: Icon, color, title, desc, link }) => {
+              const styles = {
+                blue: { borderHover: "hover:border-gem-sage/40", bg: "bg-gem-sage/10", text: "text-gem-sage" },
+                emerald: { borderHover: "hover:border-gem-gold/40", bg: "bg-gem-gold/10", text: "text-gem-gold" },
+                orange: { borderHover: "hover:border-gem-mist/30", bg: "bg-gem-mist/10", text: "text-gem-mist" }
+              }[color];
+              return (
+                <Link key={title} to={link} className={`bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-5 ${styles.borderHover} hover:bg-white/5 transition-all`}>
+                  <div className={`w-10 h-10 ${styles.bg} rounded-xl flex items-center justify-center mb-3`}>
+                    <Icon className={`w-5 h-5 ${styles.text}`} />
+                  </div>
+                  <h3 className="font-semibold text-gem-beige mb-2">{title}</h3>
+                  <p className="text-sm text-gem-beige/60 leading-relaxed">{desc}</p>
+                </Link>
+              );
+            })}
           </div>
         </section>
 

@@ -66,150 +66,165 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Right Column: Floating Ecosystem Cards */}
-          <div className="lg:col-span-7 relative h-[780px] w-full hidden lg:block">
-             {/* Glowing nodes in bg */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gem-sage/10 rounded-full blur-[80px]" />
+          {/* Right Column: Premium Asymmetrical Bento Grid */}
+          <div className="lg:col-span-7 w-full hidden lg:block z-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+              
+              {/* Bento Card 1: World Clocks (Spans 2 columns) */}
+              <div className="col-span-1 md:col-span-2 card-dark p-6 hover:-translate-y-1.5 transition-all duration-300 shadow-[0_12px_40px_rgba(0,0,0,0.25)] hover:shadow-[0_20px_50px_rgba(200,169,106,0.15)] border border-white/10 rounded-[28px] overflow-hidden">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2.5 text-[#E9F1EC] text-sm font-semibold tracking-wide">
+                    <Globe className="w-4 h-4 text-gem-gold animate-pulse" /> Real-Time World Clocks
+                  </div>
+                  <span className="text-xs text-gem-gold font-bold uppercase tracking-wider cursor-pointer hover:underline">Live sync</span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  {/* San Francisco */}
+                  <div className="bg-white/5 border border-white/5 rounded-2xl p-4 transition-all duration-300 hover:bg-white/10 hover:border-gem-gold/20">
+                    <div className="text-[10px] text-gem-sage flex items-center gap-1 mb-2 font-bold tracking-wider"><Sun className="w-3 h-3 text-gem-gold"/> PDT</div>
+                    <div className="text-xs font-bold text-white tracking-tight">San Francisco</div>
+                    <div className="text-2xl font-extrabold text-white mt-1 tracking-tight">08:42 <span className="text-xs text-gem-sage font-normal">AM</span></div>
+                    <div className="text-[10px] text-gem-sage mt-1">May 20 · Tue</div>
+                  </div>
+                  {/* New York */}
+                  <div className="bg-[#1B4D3E]/60 border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:bg-[#1B4D3E]/80 hover:border-gem-gold/30">
+                    <div className="text-[10px] text-gem-sage flex items-center gap-1 mb-2 font-bold tracking-wider"><Sun className="w-3 h-3 text-gem-gold"/> EDT</div>
+                    <div className="text-xs font-bold text-white tracking-tight">New York</div>
+                    <div className="text-2xl font-extrabold text-white mt-1 tracking-tight">11:42 <span className="text-xs text-gem-sage font-normal">AM</span></div>
+                    <div className="text-[10px] text-gem-sage mt-1">May 20 · Tue</div>
+                  </div>
+                  {/* London */}
+                  <div className="bg-[#A7BFAE] border border-[#1B4D3E]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02]">
+                    <div className="text-[10px] flex items-center gap-1 opacity-70 mb-2 font-bold tracking-wider"><Sun className="w-3 h-3"/> BST</div>
+                    <div className="text-xs font-bold tracking-tight">London</div>
+                    <div className="text-2xl font-extrabold mt-1 tracking-tight">04:42 <span className="text-xs font-normal">PM</span></div>
+                    <div className="text-[10px] opacity-70 mt-1">May 20 · Tue</div>
+                  </div>
+                  {/* Singapore */}
+                  <div className="bg-[#F4EFE6] border border-[#0E2A1F]/10 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02]">
+                    <div className="text-[10px] flex items-center gap-1 opacity-70 mb-2 font-bold tracking-wider"><Moon className="w-3 h-3 text-gem-gold"/> SGT</div>
+                    <div className="text-xs font-bold tracking-tight">Singapore</div>
+                    <div className="text-2xl font-extrabold mt-1 tracking-tight">11:42 <span className="text-xs font-normal">PM</span></div>
+                    <div className="text-[10px] opacity-70 mt-1">May 20 · Tue</div>
+                  </div>
+                </div>
+              </div>
 
-             {/* ═══════════ World Clocks Card ═══════════ */}
-             <div className="absolute top-0 right-0 w-[480px] card-dark p-5 z-10 hover:-translate-y-1 transition-transform duration-500">
-               <div className="flex items-center justify-between mb-4">
-                 <div className="flex items-center gap-2 text-[#E9F1EC] text-sm font-semibold">
-                   <Globe className="w-4 h-4 text-gem-sage" /> World Clocks
-                 </div>
-                 <span className="text-xs text-gem-sage font-medium cursor-pointer hover:text-gem-gold transition-colors">See all</span>
-               </div>
-               <div className="grid grid-cols-4 gap-3">
-                 {/* San Francisco — Darkest */}
-                 <div className="bg-[#0A1E16] border border-white/5 rounded-2xl p-3.5">
-                   <div className="text-[10px] text-gem-sage flex items-center gap-1 mb-2"><Sun className="w-3 h-3 text-gem-gold"/> PDT</div>
-                   <div className="text-[11px] font-semibold text-white">San Francisco</div>
-                   <div className="text-[26px] font-bold text-white mt-1 tracking-tight">08:42 <span className="text-[10px] text-gem-sage font-normal tracking-normal">AM</span></div>
-                   <div className="text-[10px] text-gem-sage mt-1">May 20 · Tue</div>
-                 </div>
-                 {/* New York — Dark Teal */}
-                 <div className="bg-[#1B4D3E] border border-white/10 rounded-2xl p-3.5">
-                   <div className="text-[10px] text-gem-sage flex items-center gap-1 mb-2"><Sun className="w-3 h-3 text-gem-gold"/> EDT</div>
-                   <div className="text-[11px] font-semibold text-white">New York</div>
-                   <div className="text-[26px] font-bold text-white mt-1 tracking-tight">11:42 <span className="text-[10px] text-gem-sage font-normal tracking-normal">AM</span></div>
-                   <div className="text-[10px] text-gem-sage mt-1">May 20 · Tue</div>
-                 </div>
-                 {/* London — Sage */}
-                 <div className="bg-[#A7BFAE] border border-[#1B4D3E]/20 rounded-2xl p-3.5 text-[#0E2A1F]">
-                   <div className="text-[10px] flex items-center gap-1 opacity-70 mb-2"><Sun className="w-3 h-3"/> BST</div>
-                   <div className="text-[11px] font-semibold">London</div>
-                   <div className="text-[26px] font-bold mt-1 tracking-tight">04:42 <span className="text-[10px] font-normal tracking-normal">PM</span></div>
-                   <div className="text-[10px] opacity-70 mt-1">May 20 · Tue</div>
-                 </div>
-                 {/* Singapore — Cream/Light */}
-                 <div className="bg-[#F4EFE6] border border-[#0E2A1F]/10 rounded-2xl p-3.5 text-[#0E2A1F]">
-                   <div className="text-[10px] flex items-center gap-1 opacity-70 mb-2"><Moon className="w-3 h-3 text-gem-gold"/> SGT</div>
-                   <div className="text-[11px] font-semibold">Singapore</div>
-                   <div className="text-[26px] font-bold mt-1 tracking-tight">11:42 <span className="text-[10px] font-normal tracking-normal">PM</span></div>
-                   <div className="text-[10px] opacity-70 mt-1">May 20 · Tue</div>
-                 </div>
-               </div>
-             </div>
+              {/* Bento Card 2: Team Overlap (Left column, tall bento) */}
+              <div className="card-light p-6 hover:-translate-y-1.5 transition-all duration-300 shadow-[0_12px_30px_rgba(0,0,0,0.1)] border border-gem-sage/20 rounded-[28px] text-[#0E2A1F] flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2 text-sm font-bold tracking-wide">
+                      <Users className="w-4 h-4 text-gem-forest" /> Team Overlap
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-gem-forest/10 px-2 py-0.5 rounded text-gem-forest">Best slot</span>
+                  </div>
+                  
+                  <div className="text-xs font-semibold text-[#1B4D3E]/70 mb-1">Optimal Meeting Window</div>
+                  <div className="text-2xl font-extrabold tracking-tight mb-1">1:00 PM – 2:30 PM</div>
+                  <div className="text-xs font-semibold text-[#1B4D3E]/60 mb-5">Today · 4 members available</div>
 
-             {/* ═══════════ Team Overlap Card ═══════════ */}
-             <div className="absolute top-[250px] left-[-30px] w-[340px] card-light p-6 z-20 text-[#0E2A1F] hover:-translate-y-1 transition-transform duration-500 delay-75">
-               <div className="flex items-center gap-2 text-sm font-bold mb-4">
-                 <Users className="w-4 h-4" /> Team Overlap
-               </div>
-               <div className="text-xs font-medium text-[#1B4D3E]/70 mb-1">Best time to meet</div>
-               <div className="text-[22px] font-bold mb-1">1:00 PM – 2:30 PM</div>
-               <div className="text-xs font-medium text-[#1B4D3E]/70 mb-5">Today · 3 members available</div>
-               
-               {/* Timeline Bar */}
-               <div className="relative mb-6">
-                 <div className="relative h-3 bg-[#E9F1EC] rounded-full overflow-hidden">
-                   <div className="absolute left-[15%] right-[35%] h-full bg-gradient-to-r from-[#1B4D3E] to-[#A7BFAE] rounded-full"></div>
-                   {/* Overlap dots */}
-                   <div className="absolute left-[38%] top-1/2 -translate-y-1/2 flex gap-1">
-                     <div className="w-2.5 h-2.5 rounded-full bg-[#0E2A1F] border-2 border-white"></div>
-                     <div className="w-2.5 h-2.5 rounded-full bg-[#1B4D3E] border-2 border-white"></div>
-                     <div className="w-2.5 h-2.5 rounded-full bg-[#A7BFAE] border-2 border-white"></div>
-                   </div>
-                 </div>
-                 <div className="flex justify-between mt-2 text-[10px] font-bold text-[#1B4D3E]/50">
-                   <span>8 AM</span><span>12 PM</span><span>4 PM</span><span>8 PM</span>
-                 </div>
-               </div>
-               
-               <div className="space-y-3.5">
-                 {[
-                   {name: 'You', city: 'San Francisco', tz: 'PDT', gradient: 'from-[#A7BFAE] to-[#1B4D3E]'},
-                   {name: 'Alex', city: 'New York', tz: 'EDT', gradient: 'from-[#C8A96A] to-[#8B6D3F]'},
-                   {name: 'Maya', city: 'London', tz: 'BST', gradient: 'from-[#E9F1EC] to-[#A7BFAE]'},
-                   {name: 'Kenji', city: 'Singapore', tz: 'SGT', gradient: 'from-[#1B4D3E] to-[#0E2A1F]'}
-                 ].map((member, i) => (
-                   <div key={member.name} className="flex items-center justify-between">
-                     <div className="flex items-center gap-3">
-                       <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${member.gradient} flex items-center justify-center text-[12px] font-bold text-white shadow-md border-2 border-white/60`}>{member.name[0]}</div>
-                       <div>
-                         <div className="text-[13px] font-bold">{member.name}</div>
-                         <div className="text-[10px] text-[#1B4D3E]/60">{member.city}</div>
-                       </div>
-                     </div>
-                     <div className="flex items-center gap-2">
-                       <div className={`w-2 h-2 rounded-full ${i === 3 ? 'bg-[#1B4D3E]/20' : 'bg-[#1B4D3E]'}`}></div>
-                       <div className="text-[11px] font-semibold text-[#1B4D3E]/60">{member.tz} <span className="text-[9px] opacity-50">▼</span></div>
-                     </div>
-                   </div>
-                 ))}
-               </div>
-             </div>
+                  {/* Timeline Bar */}
+                  <div className="relative mb-6 bg-white/50 p-3.5 rounded-2xl border border-gem-forest/5 shadow-sm">
+                    <div className="relative h-2 bg-[#E9F1EC] rounded-full overflow-hidden mb-1">
+                      <div className="absolute left-[15%] right-[35%] h-full bg-gradient-to-r from-[#1B4D3E] to-[#A7BFAE] rounded-full"></div>
+                      <div className="absolute left-[38%] top-1/2 -translate-y-1/2 flex gap-1">
+                        <div className="w-2 h-2 rounded-full bg-[#0E2A1F] border border-white"></div>
+                        <div className="w-2 h-2 rounded-full bg-[#1B4D3E] border border-white"></div>
+                        <div className="w-2 h-2 rounded-full bg-[#A7BFAE] border border-white"></div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between text-[9px] font-bold text-[#1B4D3E]/50">
+                      <span>8 AM</span><span>12 PM</span><span>4 PM</span><span>8 PM</span>
+                    </div>
+                  </div>
 
-             {/* ═══════════ Currency Converter Card ═══════════ */}
-             <div className="absolute top-[260px] right-0 w-[340px] card-light p-5 z-30 text-[#0E2A1F] hover:-translate-y-1 transition-transform duration-500 delay-150">
-               <div className="flex items-center gap-2 text-sm font-bold mb-5">
-                 <DollarSign className="w-4 h-4" /> Currency Converter
-               </div>
-               <div className="space-y-3">
-                 <div className="bg-[#F4EFE6] border border-[#1B4D3E]/10 rounded-2xl p-4 flex justify-between items-center shadow-inner">
-                   <div>
-                     <div className="text-[10px] font-semibold opacity-60 mb-1">You send</div>
-                     <div className="text-sm font-bold flex items-center gap-1">USD <span className="text-[10px] opacity-50">▼</span></div>
-                   </div>
-                   <div className="text-xl font-bold">1,250.00</div>
-                 </div>
-                 <div className="bg-[#F4EFE6] border border-[#1B4D3E]/10 rounded-2xl p-4 flex justify-between items-center shadow-inner">
-                   <div>
-                     <div className="text-[10px] font-semibold opacity-60 mb-1">They receive</div>
-                     <div className="text-sm font-bold flex items-center gap-1">EUR <span className="text-[10px] opacity-50">▼</span></div>
-                   </div>
-                   <div className="text-xl font-bold">1,158.24</div>
-                 </div>
-               </div>
-               <div className="mt-5 flex items-center justify-between text-[11px] font-bold text-[#1B4D3E]/60 border-t border-[#1B4D3E]/10 pt-4">
-                 <div className="flex items-center gap-2">
-                   <span>1 USD = 0.9266 EUR</span>
-                   <div className="w-4 h-4 rounded-full border border-[#1B4D3E]/20 flex items-center justify-center text-[8px]">i</div>
-                 </div>
-                 {/* Mini sparkline SVG */}
-                 <div className="flex items-center gap-3">
-                   <svg width="48" height="16" viewBox="0 0 48 16" fill="none" className="opacity-60">
-                     <path d="M0 12 L4 10 L8 11 L12 8 L16 9 L20 6 L24 7 L28 4 L32 5 L36 3 L40 5 L44 4 L48 2" stroke="#C8A96A" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                   </svg>
-                   <span className="flex items-center gap-1.5 bg-white px-2 py-1 rounded-full shadow-sm border border-[#1B4D3E]/5"><div className="w-1.5 h-1.5 rounded-full bg-[#1B4D3E] animate-pulse"></div> Live</span>
-                 </div>
-               </div>
-             </div>
+                  <div className="space-y-3">
+                    {[
+                      {name: 'You', city: 'San Francisco', tz: 'PDT', gradient: 'from-[#A7BFAE] to-[#1B4D3E]', active: true},
+                      {name: 'Alex', city: 'New York', tz: 'EDT', gradient: 'from-[#C8A96A] to-[#8B6D3F]', active: true},
+                      {name: 'Maya', city: 'London', tz: 'BST', gradient: 'from-[#E9F1EC] to-[#A7BFAE]', active: true},
+                      {name: 'Kenji', city: 'Singapore', tz: 'SGT', gradient: 'from-[#1B4D3E] to-[#0E2A1F]', active: false}
+                    ].map((member) => (
+                      <div key={member.name} className="flex items-center justify-between transition-transform duration-300 hover:translate-x-1">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${member.gradient} flex items-center justify-center text-[10px] font-bold text-white shadow border-2 border-white`}>{member.name[0]}</div>
+                          <div>
+                            <div className="text-[12px] font-bold leading-tight">{member.name}</div>
+                            <div className="text-[9px] text-[#1B4D3E]/60 leading-none">{member.city}</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <div className={`w-1.5 h-1.5 rounded-full ${member.active ? 'bg-gem-forest' : 'bg-gem-forest/20'}`}></div>
+                          <div className="text-[10px] font-bold text-[#1B4D3E]/60">{member.tz}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
 
-             {/* ═══════════ Ask AI Card ═══════════ */}
-             <div className="absolute bottom-[-10px] right-12 w-[360px] card-light p-5 z-40 text-[#0E2A1F] hover:-translate-y-1 transition-transform duration-500 delay-200">
-               <div className="flex items-center gap-2 text-sm font-bold mb-3">
-                 <Sparkles className="w-4 h-4" /> Ask GlobalSync AI
-               </div>
-               <div className="bg-[#E9F1EC] rounded-[20px] p-4 pr-14 relative border border-[#1B4D3E]/10 shadow-inner">
-                 <p className="text-[13px] font-medium text-[#1B4D3E] leading-relaxed">
-                   What's the best time to meet between New York, London, and Singapore next week?
-                 </p>
-                 <div className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-[#0E2A1F] flex items-center justify-center hover:bg-[#1B4D3E] cursor-pointer transition-colors shadow-lg">
-                   <ArrowRight className="w-4 h-4 text-white" />
-                 </div>
-               </div>
-             </div>
+              {/* Bento Card 3: Currency & AI (Right column stack) */}
+              <div className="flex flex-col gap-6">
+                
+                {/* Currency Sub-card */}
+                <div className="card-light p-6 hover:-translate-y-1.5 transition-all duration-300 shadow-[0_12px_30px_rgba(0,0,0,0.1)] border border-gem-sage/20 rounded-[28px] text-[#0E2A1F]">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2 text-sm font-bold tracking-wide">
+                      <DollarSign className="w-4 h-4 text-gem-forest" /> Currency Exchange
+                    </div>
+                    <span className="text-[9px] font-bold uppercase tracking-wider bg-gem-forest/10 px-2 py-0.5 rounded text-gem-forest">Live conversion</span>
+                  </div>
+                  
+                  <div className="space-y-2.5">
+                    <div className="bg-[#F4EFE6]/80 border border-gem-forest/5 rounded-2xl p-3 flex justify-between items-center shadow-inner">
+                      <div>
+                        <div className="text-[9px] font-bold opacity-60 mb-0.5">Send Amount</div>
+                        <div className="text-xs font-bold flex items-center gap-1">USD <span className="text-[8px] opacity-50">▼</span></div>
+                      </div>
+                      <div className="text-lg font-extrabold tracking-tight">1,250.00</div>
+                    </div>
+                    <div className="bg-[#F4EFE6]/80 border border-gem-forest/5 rounded-2xl p-3 flex justify-between items-center shadow-inner">
+                      <div>
+                        <div className="text-[9px] font-bold opacity-60 mb-0.5">Receive Amount</div>
+                        <div className="text-xs font-bold flex items-center gap-1">EUR <span className="text-[8px] opacity-50">▼</span></div>
+                      </div>
+                      <div className="text-lg font-extrabold tracking-tight">1,158.24</div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 flex items-center justify-between text-[10px] font-bold text-[#1B4D3E]/60 border-t border-[#1B4D3E]/10 pt-3">
+                    <div className="flex items-center gap-1.5">
+                      <span>1 USD = 0.9266 EUR</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <svg width="40" height="12" viewBox="0 0 48 16" fill="none" className="opacity-50">
+                        <path d="M0 12 L4 10 L8 11 L12 8 L16 9 L20 6 L24 7 L28 4 L32 5 L36 3 L40 5 L44 4 L48 2" stroke="#C8A96A" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <span className="flex items-center gap-1 bg-white px-2 py-0.5 rounded-full shadow-sm text-[8px] border border-[#1B4D3E]/5"><div className="w-1 h-1 rounded-full bg-gem-forest animate-pulse"></div> Live</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* AI Ask Sub-card */}
+                <div className="card-light p-6 hover:-translate-y-1.5 transition-all duration-300 shadow-[0_12px_30px_rgba(0,0,0,0.1)] border border-gem-sage/20 rounded-[28px] text-[#0E2A1F] flex-1 flex flex-col justify-between">
+                  <div className="flex items-center gap-2 text-sm font-bold tracking-wide mb-3">
+                    <Sparkles className="w-4 h-4 text-gem-forest animate-pulse" /> Ask GlobalSync AI
+                  </div>
+                  
+                  <div className="bg-[#E9F1EC] rounded-2xl p-4 pr-12 relative border border-[#1B4D3E]/10 shadow-inner flex-1 flex items-center">
+                    <p className="text-[12px] font-medium text-[#1B4D3E] leading-relaxed">
+                      "What's the best time to meet between NY, London, and Singapore next week?"
+                    </p>
+                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#0E2A1F] flex items-center justify-center hover:bg-[#1B4D3E] cursor-pointer transition-colors shadow">
+                      <ArrowRight className="w-3.5 h-3.5 text-white" />
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
           </div>
         </div>
       </main>
