@@ -104,45 +104,119 @@ export default function CurrencyConverter({ aiDispatch }) {
     setLoading(true);
     setResult(null);
     setErrorMsg(null);
+    const isLocalhostBackend = API.includes("localhost") || API.includes("127.0.0.1");
+    const shouldTryBackend = !isLocalhostBackend || window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+
+    if (shouldTryBackend) {
+      try {
+        const res = await axios.get(`${API}/currency/convert`, {
+          params: { amount: numAmt, from_currency: from, to_currency: to },
+          timeout: 2500
+        });
+        if (res.data && !res.data.is_fallback) {
+          setResult(res.data);
+          fetchTrend(from, to);
+          setLoading(false);
+          return;
+        } else {
+          console.warn("Backend returned fallback/offline rates. Attempting direct browser live rates fetch.");
+        }
+      } catch (err) {
+        console.warn("Backend API conversion failed, attempting direct live rates fetch", err);
+      }
+    } else {
+      console.info("Skipping backend call (localhost backend in non-localhost browser environment)");
+    }
+
+    let rates = null;
+    let rate = null;
+    let lastUpdate = "Live rates";
+    let fetchSuccess = false;
+
+    // Try ExchangeRate-API first
     try {
-      const res = await axios.get(`${API}/currency/convert`, {
-        params: { amount: numAmt, from_currency: from, to_currency: to },
-        timeout: 2500
+      const directRes = await axios.get(`https://open.exchangerate-api.com/v6/latest/${from}`, {
+        timeout: 3000
       });
-      setResult(res.data);
-      fetchTrend(from, to);
-    } catch (err) {
-      console.warn("API conversion failed, using frontend local rates fallback", err);
-      const fallbackRates = {
-        USD: 1.0, EUR: 0.92, GBP: 0.79, JPY: 156.2, CHF: 0.91, CNY: 7.24, CAD: 1.36, AUD: 1.50,
-        INR: 83.3, PKR: 278.5, BDT: 117.2, LKR: 300.5, NPR: 133.3, SGD: 1.35, HKD: 7.81, KRW: 1360.0,
-        MYR: 4.69, THB: 36.3, IDR: 16000.0, PHP: 58.0, VND: 25400.0, TWD: 32.2, KZT: 443.0, UZS: 12600.0,
-        MMK: 2100.0, AED: 3.67, SAR: 3.75, QAR: 3.64, KWD: 0.31, BHD: 0.38, OMR: 0.38, JOD: 0.71,
-        ILS: 3.68, ZAR: 18.2, NGN: 1450.0, EGP: 47.2, KES: 130.0, GHS: 14.5, MAD: 10.0, ETB: 57.0,
-        TZS: 2600.0, MXN: 16.7, BRL: 5.15, ARS: 885.0, CLP: 910.0, COP: 3850.0, PEN: 3.72, NZD: 1.63,
-        SEK: 10.6, NOK: 10.7, DKK: 6.87, PLN: 3.92, CZK: 22.8, HUF: 355.0, RON: 4.58, BGN: 1.80,
-        TRY: 32.2, RUB: 91.0, UAH: 39.5, ISK: 138.0
-      };
-      
-      const rFrom = fallbackRates[from] || 1.0;
-      const rTo = fallbackRates[to] || 1.0;
-      const calcRate = rTo / rFrom;
-      const converted = Number((numAmt * calcRate).toFixed(6));
-      
+      rates = directRes.data?.rates || {};
+      rate = rates[to];
+      if (rate !== undefined && rate !== null) {
+        lastUpdate = directRes.data?.time_last_update_utc
+          ? directRes.data.time_last_update_utc.slice(0, 16)
+          : "Live rates";
+        fetchSuccess = true;
+      }
+    } catch (directErr) {
+      console.warn("Direct open.exchangerate-api.com fetch failed, trying Frankfurter", directErr);
+    }
+
+    // Try Frankfurter as secondary fallback
+    if (!fetchSuccess) {
+      try {
+        const frankRes = await axios.get(`https://api.frankfurter.app/latest?from=${from}`, {
+          timeout: 3000
+        });
+        rates = frankRes.data?.rates || {};
+        if (from === to) {
+          rate = 1.0;
+        } else {
+          rate = rates[to];
+        }
+        if (rate !== undefined && rate !== null) {
+          lastUpdate = frankRes.data?.date ? `Live rates (${frankRes.data.date})` : "Live rates";
+          fetchSuccess = true;
+        }
+      } catch (frankErr) {
+        console.warn("Frankfurter fetch failed", frankErr);
+      }
+    }
+
+    if (fetchSuccess) {
+      const converted = Number((numAmt * rate).toFixed(6));
       setResult({
         from,
         to,
         amount: numAmt,
-        rate: Number(calcRate.toFixed(6)),
+        rate: Number(rate.toFixed(6)),
         converted,
-        date: "Offline Cache (Approximate)",
+        date: lastUpdate,
         formatted: `${numAmt.toLocaleString()} ${from} = ${converted.toLocaleString()} ${to}`,
-        is_fallback: true
+        is_fallback: false
       });
-      toast.info("Offline mode active: Using approximate rates");
-    } finally {
+      fetchTrend(from, to);
       setLoading(false);
+      return;
     }
+
+    // Completely offline fallback
+    const fallbackRates = {
+      USD: 1.0, EUR: 0.92, GBP: 0.79, JPY: 156.2, CHF: 0.91, CNY: 7.24, CAD: 1.36, AUD: 1.50,
+      INR: 83.3, PKR: 278.5, BDT: 117.2, LKR: 300.5, NPR: 133.3, SGD: 1.35, HKD: 7.81, KRW: 1360.0,
+      MYR: 4.69, THB: 36.3, IDR: 16000.0, PHP: 58.0, VND: 25400.0, TWD: 32.2, KZT: 443.0, UZS: 12600.0,
+      MMK: 2100.0, AED: 3.67, SAR: 3.75, QAR: 3.64, KWD: 0.31, BHD: 0.38, OMR: 0.38, JOD: 0.71,
+      ILS: 3.68, ZAR: 18.2, NGN: 1450.0, EGP: 47.2, KES: 130.0, GHS: 14.5, MAD: 10.0, ETB: 57.0,
+      TZS: 2600.0, MXN: 16.7, BRL: 5.15, ARS: 885.0, CLP: 910.0, COP: 3850.0, PEN: 3.72, NZD: 1.63,
+      SEK: 10.6, NOK: 10.7, DKK: 6.87, PLN: 3.92, CZK: 22.8, HUF: 355.0, RON: 4.58, BGN: 1.80,
+      TRY: 32.2, RUB: 91.0, UAH: 39.5, ISK: 138.0
+    };
+    
+    const rFrom = fallbackRates[from] || 1.0;
+    const rTo = fallbackRates[to] || 1.0;
+    const calcRate = rTo / rFrom;
+    const converted = Number((numAmt * calcRate).toFixed(6));
+    
+    setResult({
+      from,
+      to,
+      amount: numAmt,
+      rate: Number(calcRate.toFixed(6)),
+      converted,
+      date: "Offline Cache (Approximate)",
+      formatted: `${numAmt.toLocaleString()} ${from} = ${converted.toLocaleString()} ${to}`,
+      is_fallback: true
+    });
+    toast.info("Offline mode active: Using approximate rates");
+    setLoading(false);
   };
 
   const fetchTrend = async (from = fromCurrency, to = toCurrency) => {

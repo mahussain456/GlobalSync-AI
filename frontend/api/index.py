@@ -452,7 +452,29 @@ def convert_currency(
                     "is_fallback": False
                 }
     except Exception as e:
-        logger.warning(f"Live currency API failed, using fallback: {e}")
+        logger.warning(f"Primary live currency API failed: {e}")
+
+    # Secondary Live API: Frankfurter API (if both are supported by Frankfurter)
+    if from_c in FRANKFURTER_SUPPORTED and to_c in FRANKFURTER_SUPPORTED:
+        try:
+            url = f"https://api.frankfurter.app/latest?from={from_c}&to={to_c}"
+            resp = requests.get(url, timeout=3.0)
+            resp.raise_for_status()
+            data = resp.json()
+            rates = data.get("rates", {})
+            rate = rates.get(to_c)
+            if rate is not None:
+                converted = round(amount * rate, 6)
+                last_update = f"{data.get('date', '')} (Frankfurter)"
+                return {
+                    "from": from_c, "to": to_c,
+                    "amount": amount, "rate": rate, "converted": converted,
+                    "date": last_update,
+                    "formatted": f"{amount:,.2f} {from_c} = {converted:,.4f} {to_c}",
+                    "is_fallback": False
+                }
+        except Exception as e:
+            logger.warning(f"Secondary live currency API (Frankfurter) failed: {e}")
 
     # Fallback calculation
     rate_from = FALLBACK_USD_RATES.get(from_c)

@@ -16,13 +16,19 @@ const fmt = (n, dec = 4) =>
   Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: dec });
 
 // ─── Live rate display (props-driven) ─────────────────────────────────────────
-function LiveRateWidget({ from, to, fromMeta, toMeta, rate, loading, refreshed, onRefresh }) {
+function LiveRateWidget({ from, to, fromMeta, toMeta, rate, loading, refreshed, onRefresh, isFallback }) {
   const AMOUNTS = [1, 10, 100, 500, 1000];
   return (
     <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6" data-testid="live-rate-widget">
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="text-xs text-zinc-400 mb-1">Live Exchange Rate</div>
+          {isFallback && (
+            <div className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-300 rounded-full px-2 py-0.5 text-[10px] font-semibold border border-amber-500/30 mb-2">
+              <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" />
+              Offline Cache Rates
+            </div>
+          )}
           {loading ? (
             <div className="h-10 w-48 bg-white/10 rounded-lg animate-pulse" />
           ) : rate ? (
@@ -267,21 +273,86 @@ export default function CurrencyPairPage() {
   const [rate,        setRate]        = useState(null);
   const [rateLoading, setRateLoading] = useState(true);
   const [refreshed,   setRefreshed]   = useState(new Date());
+  const [isFallback,  setIsFallback]  = useState(false);
 
   const pairData = getCurrencyPair(pair);
 
   const fetchRate = useCallback(async () => {
     if (!fromMeta || !toMeta) return;
     setRateLoading(true);
+
+    const isLocalhostBackend = API.includes("localhost") || API.includes("127.0.0.1");
+    const shouldTryBackend = !isLocalhostBackend || window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+
+    if (shouldTryBackend) {
+      try {
+        const res = await axios.get(`${API}/api/currency/convert`, {
+          params: { from_currency: fromMeta.code, to_currency: toMeta.code, amount: 1 },
+          timeout: 2500
+        });
+        if (res.data && !res.data.is_fallback) {
+          setRate(res.data.rate);
+          setRefreshed(new Date());
+          setIsFallback(false);
+          setRateLoading(false);
+          return;
+        } else {
+          console.warn("Backend returned fallback/offline rates. Attempting direct browser live rates fetch.");
+        }
+      } catch (e) {
+        console.warn("Backend rate fetch error, attempting direct live rates fetch:", e);
+      }
+    } else {
+      console.info("Skipping backend call for currency pair page (localhost backend in non-localhost browser)");
+    }
+
+    let rates = null;
+    let rateVal = null;
+    let fetchSuccess = false;
+
+    // Try ExchangeRate-API
     try {
-      const res = await axios.get(`${API}/api/currency/convert`, {
-        params: { from_currency: fromMeta.code, to_currency: toMeta.code, amount: 1 },
-        timeout: 2500
+      const directRes = await axios.get(`https://open.exchangerate-api.com/v6/latest/${fromMeta.code}`, {
+        timeout: 3000
       });
-      setRate(res.data.rate);
-      setRefreshed(new Date());
-    } catch (e) {
-      console.warn("Rate fetch error, using local rates fallback:", e);
+      rates = directRes.data?.rates || {};
+      rateVal = rates[toMeta.code];
+      if (rateVal !== undefined && rateVal !== null) {
+        setRate(Number(rateVal.toFixed(6)));
+        setRefreshed(new Date());
+        setIsFallback(false);
+        fetchSuccess = true;
+      }
+    } catch (directErr) {
+      console.warn("Direct live rates fetch failed, trying Frankfurter", directErr);
+    }
+
+    // Try Frankfurter as secondary fallback
+    if (!fetchSuccess) {
+      try {
+        const frankRes = await axios.get(`https://api.frankfurter.app/latest?from=${fromMeta.code}`, {
+          timeout: 3000
+        });
+        rates = frankRes.data?.rates || {};
+        if (fromMeta.code === toMeta.code) {
+          rateVal = 1.0;
+        } else {
+          rateVal = rates[toMeta.code];
+        }
+        if (rateVal !== undefined && rateVal !== null) {
+          setRate(Number(rateVal.toFixed(6)));
+          setRefreshed(new Date());
+          setIsFallback(false);
+          fetchSuccess = true;
+        }
+      } catch (frankErr) {
+        console.warn("Frankfurter fetch failed", frankErr);
+      }
+    }
+
+    if (fetchSuccess) {
+      setIsFallback(false);
+    } else {
       const fallbackRates = {
         USD: 1.0, EUR: 0.92, GBP: 0.79, JPY: 156.2, CHF: 0.91, CNY: 7.24, CAD: 1.36, AUD: 1.50,
         INR: 83.3, PKR: 278.5, BDT: 117.2, LKR: 300.5, NPR: 133.3, SGD: 1.35, HKD: 7.81, KRW: 1360.0,
@@ -296,7 +367,9 @@ export default function CurrencyPairPage() {
       const rTo = fallbackRates[toMeta.code] || 1.0;
       setRate(Number((rTo / rFrom).toFixed(6)));
       setRefreshed(new Date());
+      setIsFallback(true);
     }
+
     setRateLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pairData]);
@@ -351,6 +424,7 @@ export default function CurrencyPairPage() {
             loading={rateLoading}
             refreshed={refreshed}
             onRefresh={fetchRate}
+            isFallback={isFallback}
           />
         </section>
 
