@@ -42,15 +42,12 @@ export default function LandingPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-12">
-              <Link to="/dashboard" className="w-full sm:w-auto btn-primary flex items-center justify-center gap-2 text-[15px]">
-                Start Free Trial <ArrowRight className="w-4 h-4" />
+              <Link to="/time-zone-converter" className="w-full sm:w-auto btn-primary flex items-center justify-center gap-2 text-[15px]">
+                Timezone Converter <Clock className="w-4 h-4" />
               </Link>
-              <button className="w-full sm:w-auto btn-secondary flex items-center justify-center gap-3 text-[15px] group">
-                <div className="w-6 h-6 rounded-full border border-gem-gold/30 flex items-center justify-center group-hover:bg-gem-gold/10 transition-colors">
-                  <Play className="w-2.5 h-2.5 text-gem-gold fill-gem-gold ml-0.5" />
-                </div>
-                See GlobalSync AI in Action
-              </button>
+              <Link to="/currency-converter" className="w-full sm:w-auto btn-secondary flex items-center justify-center gap-2.5 text-[15px] group">
+                Currency Converter <DollarSign className="w-4 h-4 text-gem-gold" />
+              </Link>
             </div>
 
             {/* Trusted Logos */}
@@ -80,32 +77,32 @@ export default function LandingPage() {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   {/* San Francisco */}
-                  <div className="bg-white/5 border border-white/5 rounded-2xl p-4 transition-all duration-300 hover:bg-white/10 hover:border-gem-gold/20">
-                    <div className="text-[10px] text-gem-sage flex items-center gap-1 mb-2 font-bold tracking-wider"><Sun className="w-3 h-3 text-gem-gold"/> PDT</div>
-                    <div className="text-xs font-bold text-white tracking-tight">San Francisco</div>
-                    <div className="text-2xl font-extrabold text-white mt-1 tracking-tight">08:42 <span className="text-xs text-gem-sage font-normal">AM</span></div>
-                    <div className="text-[10px] text-gem-sage mt-1">May 20 · Tue</div>
+                  <div className="bg-gradient-to-br from-[#E6C687] to-[#C8A96A] border border-[#C8A96A]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02] shadow-[0_4px_12px_rgba(200,169,106,0.15)]">
+                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75"><Sun className="w-3 h-3 text-[#0E2A1F]"/> PDT</div>
+                    <div className="text-xs font-bold tracking-tight">San Francisco</div>
+                    <div className="text-2xl font-extrabold mt-1 tracking-tight">08:42 <span className="text-xs font-normal opacity-75">AM</span></div>
+                    <div className="text-[10px] opacity-75 mt-1">May 20 · Tue</div>
                   </div>
                   {/* New York */}
-                  <div className="bg-[#1B4D3E]/60 border border-white/10 rounded-2xl p-4 transition-all duration-300 hover:bg-[#1B4D3E]/80 hover:border-gem-gold/30">
-                    <div className="text-[10px] text-gem-sage flex items-center gap-1 mb-2 font-bold tracking-wider"><Sun className="w-3 h-3 text-gem-gold"/> EDT</div>
-                    <div className="text-xs font-bold text-white tracking-tight">New York</div>
-                    <div className="text-2xl font-extrabold text-white mt-1 tracking-tight">11:42 <span className="text-xs text-gem-sage font-normal">AM</span></div>
-                    <div className="text-[10px] text-gem-sage mt-1">May 20 · Tue</div>
+                  <div className="bg-gradient-to-br from-[#C3D8CB] to-[#A7BFAE] border border-[#A7BFAE]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02] shadow-[0_4px_12px_rgba(167,191,174,0.15)]">
+                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75"><Sun className="w-3 h-3 text-[#0E2A1F]"/> EDT</div>
+                    <div className="text-xs font-bold tracking-tight">New York</div>
+                    <div className="text-2xl font-extrabold mt-1 tracking-tight">11:42 <span className="text-xs font-normal opacity-75">AM</span></div>
+                    <div className="text-[10px] opacity-75 mt-1">May 20 · Tue</div>
                   </div>
                   {/* London */}
-                  <div className="bg-[#A7BFAE] border border-[#1B4D3E]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02]">
-                    <div className="text-[10px] flex items-center gap-1 opacity-70 mb-2 font-bold tracking-wider"><Sun className="w-3 h-3"/> BST</div>
+                  <div className="bg-gradient-to-br from-[#FAF8F5] to-[#F4EFE6] border border-[#F4EFE6]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02] shadow-[0_4px_12px_rgba(244,239,230,0.1)]">
+                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75"><Sun className="w-3 h-3 text-[#0E2A1F]"/> BST</div>
                     <div className="text-xs font-bold tracking-tight">London</div>
-                    <div className="text-2xl font-extrabold mt-1 tracking-tight">04:42 <span className="text-xs font-normal">PM</span></div>
-                    <div className="text-[10px] opacity-70 mt-1">May 20 · Tue</div>
+                    <div className="text-2xl font-extrabold mt-1 tracking-tight">04:42 <span className="text-xs font-normal opacity-75">PM</span></div>
+                    <div className="text-[10px] opacity-75 mt-1">May 20 · Tue</div>
                   </div>
                   {/* Singapore */}
-                  <div className="bg-[#F4EFE6] border border-[#0E2A1F]/10 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02]">
-                    <div className="text-[10px] flex items-center gap-1 opacity-70 mb-2 font-bold tracking-wider"><Moon className="w-3 h-3 text-gem-gold"/> SGT</div>
+                  <div className="bg-gradient-to-br from-[#F5F8F6] to-[#E9F1EC] border border-[#E9F1EC]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02] shadow-[0_4px_12px_rgba(233,241,236,0.1)]">
+                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75"><Moon className="w-3 h-3 text-[#0E2A1F]"/> SGT</div>
                     <div className="text-xs font-bold tracking-tight">Singapore</div>
-                    <div className="text-2xl font-extrabold mt-1 tracking-tight">11:42 <span className="text-xs font-normal">PM</span></div>
-                    <div className="text-[10px] opacity-70 mt-1">May 20 · Tue</div>
+                    <div className="text-2xl font-extrabold mt-1 tracking-tight">11:42 <span className="text-xs font-normal opacity-75">PM</span></div>
+                    <div className="text-[10px] opacity-75 mt-1">May 20 · Tue</div>
                   </div>
                 </div>
               </div>
