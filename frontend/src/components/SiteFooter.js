@@ -8,9 +8,13 @@ export default function SiteFooter() {
         
         {/* Brand */}
         <div className="md:col-span-1">
-          <Link to="/" className="flex items-center gap-2 mb-4">
-            <Globe className="w-6 h-6 text-gem-gold" />
-            <span className="font-bold text-xl text-gem-beige tracking-tight">GlobalSync AI</span>
+          <Link to="/" className="flex items-center mb-4 transition-transform duration-300 hover:scale-105">
+            <img
+              src="/logo-dark.png"
+              alt="GlobalSync AI"
+              className="h-10 w-auto"
+              style={{ filter: "drop-shadow(0 0 12px rgba(200,169,106,0.15))" }}
+            />
           </Link>
           <p className="text-sm text-gem-sage mb-6 leading-relaxed">
             One calm control center for global schedules, meeting overlaps, and currency conversion. Built for the modern remote workforce.

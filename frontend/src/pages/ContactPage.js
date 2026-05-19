@@ -167,10 +167,10 @@ export default function ContactPage() {
 
         <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-6 text-center">
           <img
-            src="/globalsync-ai-logo-1024x256.png"
+            src="/logo-dark.png"
             alt="GlobalSync AI"
-            className="h-14 w-auto mx-auto mb-3 transition-transform duration-300 hover:scale-105"
-            style={{ filter: "drop-shadow(0 4px 12px rgba(27,122,154,0.4))" }}
+            className="h-12 w-auto mx-auto mb-3 transition-transform duration-300 hover:scale-105"
+            style={{ filter: "drop-shadow(0 4px 12px rgba(200,169,106,0.3))" }}
           />
           <p className="text-sm text-gem-beige/60">Free tools for remote teams worldwide.</p>
           <p className="text-xs text-gem-beige/40 mt-2">globalsync-ai.com</p>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Clock, ArrowRight, Globe, Users, CheckCircle2 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
@@ -6,6 +7,7 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { CITIES, CITY_PAIRS, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
 import { getTimeZoneHubSEO } from "@/lib/seo";
+import TimeConverter from "@/components/TimeConverter";
 
 const FAQ = [
   { q: "Why is converting time zones so confusing?", a: "Honestly, because it involves a lot of mental math that most of us just aren't wired to do on the fly. You're dealing with 24 different standard zones, half-hour offsets (looking at you, India), and countries that spring forward or fall back on completely different weekends. That's exactly why we built this tool—so you can stop doing the math." },
@@ -27,6 +29,7 @@ const CONVERSIONS = [
 export default function TimeZoneConverterPage() {
   const navigate = useNavigate();
   const seo = getTimeZoneHubSEO();
+  const [selectedPair, setSelectedPair] = useState("");
 
   return (
     <div className="min-h-screen bg-gem-forest text-gem-beige">
@@ -46,13 +49,9 @@ export default function TimeZoneConverterPage() {
           <p className="text-lg text-gem-beige/60 max-w-2xl leading-relaxed">
             Free AI time zone converter for remote teams and global workers. Check what time is it in London, what time is it in Dubai, or find IST time now — instantly across 25+ cities. No account needed.
           </p>
-          <button
-            onClick={() => navigate("/dashboard?q=show me time zones")}
-            className="mt-6 btn-gradient rounded-xl px-6 py-3 text-sm font-semibold flex items-center gap-2 inline-flex"
-            data-testid="tz-cta-btn"
-          >
-            <Globe className="w-4 h-4" /> Open Time Zone Converter <ArrowRight className="w-4 h-4" />
-          </button>
+          <div className="mt-8">
+            <TimeConverter />
+          </div>
         </header>
 
         {/* Ad — below hero */}
@@ -80,32 +79,42 @@ export default function TimeZoneConverterPage() {
           </div>
         </section>
 
-        {/* pSEO index — City-to-city deep-dive converters */}
-        <section className="mb-12">
+        {/* City-to-City Dropdown Selector */}
+        <section className="mb-12 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-6">
           <h2 className="font-heading text-2xl font-bold text-gem-beige mb-2">City-to-City Time Zone Converters</h2>
-          <p className="text-gem-beige/60 mb-5 text-sm">Dedicated guides for the most popular international city pairs — with live clocks, meeting overlap tips, and FAQs.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {ALL_CITY_PAIR_SLUGS.map(slug => {
-              const pair = CITY_PAIRS[slug];
-              const from = CITIES[pair.from];
-              const to   = CITIES[pair.to];
-              return (
-                <Link
-                  key={slug}
-                  to={`/time/${slug}`}
-                  className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-4 hover:border-gem-gold/50 transition-all group flex items-center justify-between"
-                  data-testid={`city-pair-link-${slug}`}
-                >
-                  <div>
-                    <div className="font-medium text-gem-beige text-sm group-hover:text-gem-gold transition-colors">
-                      {from.name} to {to.name} Time
-                    </div>
-                    <div className="text-xs text-gem-beige/40 mt-0.5">{from.abbr} → {to.abbr} · Live converter + FAQs</div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-gem-beige/20 group-hover:text-gem-gold transition-colors flex-shrink-0" />
-                </Link>
-              );
-            })}
+          <p className="text-gem-beige/60 mb-6 text-sm">
+            Select a dedicated guide for popular international city pairs to view live clocks, meeting overlap windows, and tailored FAQs.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-4 max-w-xl">
+            <div className="relative w-full">
+              <select
+                value={selectedPair}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedPair(val);
+                  if (val) {
+                    navigate(`/time/${val}`);
+                  }
+                }}
+                className="w-full h-12 pl-4 pr-10 rounded-xl border border-gem-gold/20 bg-gem-forest text-gem-beige text-sm outline-none focus:border-gem-gold/50 transition-all appearance-none cursor-pointer font-medium"
+                data-testid="city-pair-select"
+              >
+                <option value="" className="text-gem-mist/50 bg-gem-forest">-- Choose a city-to-city timezone guide --</option>
+                {ALL_CITY_PAIR_SLUGS.map(slug => {
+                  const pair = CITY_PAIRS[slug];
+                  const from = CITIES[pair.from];
+                  const to   = CITIES[pair.to];
+                  return (
+                    <option key={slug} value={slug} className="text-gem-beige bg-gem-forest font-medium">
+                      {from.name} to {to.name} Time ({from.abbr} → {to.abbr})
+                    </option>
+                  );
+                })}
+              </select>
+              <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gem-gold">
+                ▼
+              </div>
+            </div>
           </div>
         </section>
 
