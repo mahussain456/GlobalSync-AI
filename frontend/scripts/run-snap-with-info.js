@@ -412,9 +412,9 @@ function getFallbackBody(route) {
   // Custom navigation header
   const header = `
     <header class="bg-gem-forest border-b border-white/10 sticky top-0 z-50">
-      <nav style="max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; height: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+      <nav style="max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; height: 5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
         <a href="/" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
-          <img src="/logo-dark.png" alt="GlobalSync AI Logo" style="height: 48px; filter: drop-shadow(0 0 10px rgba(200, 169, 106, 0.45)) drop-shadow(0 0 22px rgba(200, 169, 106, 0.25));" />
+          <img src="/logo-dark.png" alt="GlobalSync AI Logo" class="logo-glowing-effect" style="height: 58px;" />
         </a>
         <div style="display: flex; align-items: center; gap: 1.5rem;">
           <a href="/time-zone-converter" style="font-size: 0.875rem; font-weight: 500; color: rgba(245, 245, 240, 0.7); text-decoration: none;">Time Zones</a>
@@ -436,7 +436,7 @@ function getFallbackBody(route) {
       <div style="max-width: 72rem; margin: 0 auto; display: grid; grid-template-cols: 1fr; gap: 2rem;">
         <div style="display: flex; flex-direction: column; gap: 1rem;">
           <a href="/" style="display: inline-block;">
-            <img src="/logo-dark.png" alt="GlobalSync AI Logo" style="height: 48px; filter: drop-shadow(0 0 10px rgba(200, 169, 106, 0.45));" />
+            <img src="/logo-dark.png" alt="GlobalSync AI Logo" class="logo-glowing-effect" style="height: 58px;" />
           </a>
           <p style="font-size: 0.875rem; color: #A5BCAE; max-width: 20rem; line-height: 1.5;">
             One calm control center for global schedules, meeting overlaps, and currency conversion. Built for the modern remote workforce.

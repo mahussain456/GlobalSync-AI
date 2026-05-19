@@ -70,3 +70,20 @@ h1, h2, h3, h4, h5, h6, .font-heading {
     border-top-color: inherit; border-bottom-color: inherit;
   }
 }
+
+@keyframes logoGlowPulse {
+  0% {
+    filter: drop-shadow(0 0 10px rgba(200, 169, 106, 0.45)) drop-shadow(0 0 20px rgba(200, 169, 106, 0.25));
+  }
+  50% {
+    filter: drop-shadow(0 0 22px rgba(200, 169, 106, 0.85)) drop-shadow(0 0 38px rgba(200, 169, 106, 0.5)) drop-shadow(0 0 55px rgba(200, 169, 106, 0.3));
+  }
+  100% {
+    filter: drop-shadow(0 0 10px rgba(200, 169, 106, 0.45)) drop-shadow(0 0 20px rgba(200, 169, 106, 0.25));
+  }
+}
+
+.logo-glowing-effect {
+  animation: logoGlowPulse 4s infinite ease-in-out;
+}
+

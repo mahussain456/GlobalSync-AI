@@ -169,8 +169,8 @@ export default function ContactPage() {
           <img
             src="/logo-dark.png"
             alt="GlobalSync AI"
-            className="w-auto mx-auto mb-3 transition-transform duration-300 hover:scale-105"
-            style={{ height: "56px", filter: "drop-shadow(0 0 12px rgba(200, 169, 106, 0.45)) drop-shadow(0 0 24px rgba(200, 169, 106, 0.25))" }}
+            className="w-auto mx-auto mb-3 transition-transform duration-300 hover:scale-105 logo-glowing-effect"
+            style={{ height: "68px" }}
           />
           <p className="text-sm text-gem-beige/60">Free tools for remote teams worldwide.</p>
           <p className="text-xs text-gem-beige/40 mt-2">globalsync-ai.com</p>

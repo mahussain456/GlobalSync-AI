@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { TrendingUp, ArrowRight, Clock, Users, CheckCircle2 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
@@ -6,6 +7,7 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { CURRENCIES_META, CURRENCY_PAIRS, ALL_CURRENCY_PAIR_SLUGS } from "@/data/programmaticData";
 import { getCurrencyHubSEO } from "@/lib/seo";
+import CurrencyConverter from "@/components/CurrencyConverter";
 
 const FAQ = [
   { q: "Why is the rate I see here different from what my bank gives me?", a: "Welcome to the world of hidden fees! The rate you see here is the 'mid-market' rate—the true, pure exchange rate that banks use to trade with each other. But when you go to your bank or PayPal to actually convert money, they shave off a percentage (usually 2-4%) as their profit margin. You're never going to get the exact mid-market rate in your bank account, but knowing it helps you realize exactly how much you're being overcharged." },
@@ -30,6 +32,7 @@ const PAIRS = [
 export default function CurrencyConverterPage() {
   const navigate = useNavigate();
   const seo = getCurrencyHubSEO();
+  const [selectedPair, setSelectedPair] = useState("");
 
   return (
     <div className="min-h-screen bg-gem-forest text-gem-beige">
@@ -49,13 +52,9 @@ export default function CurrencyConverterPage() {
           <p className="text-lg text-gem-beige/60 max-w-2xl leading-relaxed">
             Convert between 160+ currencies with real-time exchange rates. USD to EUR, USD to INR, USD to PKR, AED, SAR, NGN and more — updated daily from global forex markets.
           </p>
-          <button
-            onClick={() => navigate("/dashboard?q=Convert 100 USD to EUR")}
-            className="mt-6 btn-gradient rounded-xl px-6 py-3 text-sm font-semibold flex items-center gap-2 inline-flex"
-            data-testid="currency-cta-btn"
-          >
-            <TrendingUp className="w-4 h-4" /> Open Currency Converter <ArrowRight className="w-4 h-4" />
-          </button>
+          <div className="mt-8">
+            <CurrencyConverter />
+          </div>
         </header>
 
         {/* Ad — below hero */}
@@ -84,32 +83,42 @@ export default function CurrencyConverterPage() {
           </div>
         </section>
 
-        {/* pSEO index — Currency pair deep-dive pages */}
-        <section className="mb-12">
+        {/* Currency Pair Dropdown Selector */}
+        <section className="mb-12 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-6">
           <h2 className="font-heading text-2xl font-bold text-gem-beige mb-2">Currency Pair Converter Pages</h2>
-          <p className="text-gem-beige/60 mb-5 text-sm">Dedicated live-rate pages for the most-searched currency pairs — with real-time rates, quick conversion tables, and remote worker tips.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {ALL_CURRENCY_PAIR_SLUGS.map(slug => {
-              const pair = CURRENCY_PAIRS[slug];
-              const from = CURRENCIES_META[pair.from];
-              const to   = CURRENCIES_META[pair.to];
-              return (
-                <Link
-                  key={slug}
-                  to={`/currency/${slug}`}
-                  className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-4 hover:border-gem-gold/50 transition-all group flex items-center justify-between"
-                  data-testid={`currency-pair-link-${slug}`}
-                >
-                  <div>
-                    <div className="font-semibold text-gem-beige text-sm group-hover:text-gem-gold transition-colors">
-                      {from.code} to {to.code} — Live Rate
-                    </div>
-                    <div className="text-xs text-gem-beige/40 mt-0.5">{from.name} to {to.name}</div>
-                  </div>
-                  <ArrowRight className="w-3.5 h-3.5 text-gem-beige/20 group-hover:text-gem-gold transition-colors flex-shrink-0" />
-                </Link>
-              );
-            })}
+          <p className="text-gem-beige/60 mb-6 text-sm">
+            Select a dedicated guide for popular international currency pairs to view live rates, trend charts, and remote worker invoicing tips.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-4 max-w-xl">
+            <div className="relative w-full">
+              <select
+                value={selectedPair}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedPair(val);
+                  if (val) {
+                    navigate(`/currency/${val}`);
+                  }
+                }}
+                className="w-full h-12 pl-4 pr-10 rounded-xl border border-gem-gold/20 bg-gem-forest text-gem-beige text-sm outline-none focus:border-gem-gold/50 transition-all appearance-none cursor-pointer font-medium"
+                data-testid="currency-pair-select"
+              >
+                <option value="" className="text-gem-mist/50 bg-gem-forest">-- Choose a currency-to-currency guide --</option>
+                {ALL_CURRENCY_PAIR_SLUGS.map(slug => {
+                  const pair = CURRENCY_PAIRS[slug];
+                  const from = CURRENCIES_META[pair.from];
+                  const to   = CURRENCIES_META[pair.to];
+                  return (
+                    <option key={slug} value={slug} className="text-gem-beige bg-gem-forest font-medium">
+                      {from.code} to {to.code} Exchange Rate ({from.name} → {to.name})
+                    </option>
+                  );
+                })}
+              </select>
+              <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gem-gold">
+                ▼
+              </div>
+            </div>
           </div>
         </section>
 
