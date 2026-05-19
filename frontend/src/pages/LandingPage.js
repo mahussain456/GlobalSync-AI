@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Globe, ArrowRight, Play, Sun, Moon, CheckCircle2, DollarSign, Clock, Users, Sparkles, Map, TrendingUp } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
@@ -7,6 +7,124 @@ import SiteFooter from "@/components/SiteFooter";
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [mounted, setMounted] = useState(false);
+
+  // Real-time ticking world clocks state
+  const [clocks, setClocks] = useState({
+    sfo: { time: "08:42", ampm: "AM", date: "May 20 · Tue", tz: "PDT", isNight: false },
+    nyc: { time: "11:42", ampm: "AM", date: "May 20 · Tue", tz: "EDT", isNight: false },
+    lon: { time: "04:42", ampm: "PM", date: "May 20 · Tue", tz: "BST", isNight: false },
+    sgp: { time: "11:42", ampm: "PM", date: "May 20 · Tue", tz: "SGT", isNight: true }
+  });
+
+  useEffect(() => {
+    // Avoid running ticking updates during react-snap static pre-rendering
+    if (typeof navigator !== "undefined" && navigator.userAgent === "ReactSnap") {
+      return;
+    }
+
+    setMounted(true);
+
+    const getCityTime = (timeZone) => {
+      try {
+        const now = new Date();
+        const formatterTime = new Intl.DateTimeFormat("en-US", {
+          timeZone,
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true
+        });
+        const formatterDate = new Intl.DateTimeFormat("en-US", {
+          timeZone,
+          month: "short",
+          day: "numeric",
+          weekday: "short"
+        });
+        const formatterTZ = new Intl.DateTimeFormat("en-US", {
+          timeZone,
+          timeZoneName: "short"
+        });
+
+        // Time parts
+        const timeParts = formatterTime.formatToParts(now);
+        let hour = "";
+        let minute = "";
+        let dayPeriod = "";
+        for (const part of timeParts) {
+          if (part.type === "hour") hour = part.value;
+          if (part.type === "minute") minute = part.value;
+          if (part.type === "dayPeriod") dayPeriod = part.value;
+        }
+
+        // Date parts
+        const dateParts = formatterDate.formatToParts(now);
+        let month = "";
+        let day = "";
+        let weekday = "";
+        for (const part of dateParts) {
+          if (part.type === "month") month = part.value;
+          if (part.type === "day") day = part.value;
+          if (part.type === "weekday") weekday = part.value;
+        }
+
+        // Timezone code
+        const tzParts = formatterTZ.formatToParts(now);
+        let tzName = "";
+        for (const part of tzParts) {
+          if (part.type === "timeZoneName") tzName = part.value;
+        }
+
+        // Determine if local hour is night (6pm to 6am)
+        const hour24Str = new Intl.DateTimeFormat("en-US", {
+          timeZone,
+          hour: "numeric",
+          hour12: false
+        }).format(now);
+        const localHour24 = parseInt(hour24Str, 10);
+        const isNight = localHour24 >= 18 || localHour24 < 6;
+
+        return {
+          time: `${hour}:${minute}`,
+          ampm: dayPeriod,
+          date: `${month} ${day} · ${weekday}`,
+          tz: tzName,
+          isNight
+        };
+      } catch (e) {
+        console.error("Error calculating city time for timezone:", timeZone, e);
+        return null;
+      }
+    };
+
+    const updateClocks = () => {
+      const sfoTime = getCityTime("America/Los_Angeles");
+      const nycTime = getCityTime("America/New_York");
+      const lonTime = getCityTime("Europe/London");
+      const sgpTime = getCityTime("Asia/Singapore");
+
+      setClocks(prev => ({
+        sfo: sfoTime || prev.sfo,
+        nyc: nycTime || prev.nyc,
+        lon: lonTime || prev.lon,
+        sgp: sgpTime || prev.sgp
+      }));
+    };
+
+    // Update immediately and then every second
+    updateClocks();
+    const interval = setInterval(updateClocks, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const fallbackClocks = {
+    sfo: { time: "08:42", ampm: "AM", date: "May 20 · Tue", tz: "PDT", isNight: false },
+    nyc: { time: "11:42", ampm: "AM", date: "May 20 · Tue", tz: "EDT", isNight: false },
+    lon: { time: "04:42", ampm: "PM", date: "May 20 · Tue", tz: "BST", isNight: false },
+    sgp: { time: "11:42", ampm: "PM", date: "May 20 · Tue", tz: "SGT", isNight: true }
+  };
+
+  const displayClocks = mounted ? clocks : fallbackClocks;
+
   return (
     <div className="min-h-screen bg-gem-forest text-gem-beige font-sans relative">
       <SEOHead title="GlobalSync AI | Total Alignment" description="GlobalSync AI helps remote teams coordinate across time zones, currencies, and cultures with AI-powered intelligence." />
@@ -78,31 +196,47 @@ export default function LandingPage() {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   {/* San Francisco */}
                   <div className="bg-gradient-to-br from-[#E6C687] to-[#C8A96A] border border-[#C8A96A]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02] shadow-[0_4px_12px_rgba(200,169,106,0.15)]">
-                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75"><Sun className="w-3 h-3 text-[#0E2A1F]"/> PDT</div>
+                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75">
+                      {displayClocks.sfo.isNight ? <Moon className="w-3 h-3 text-[#0E2A1F]" /> : <Sun className="w-3 h-3 text-[#0E2A1F]" />} {displayClocks.sfo.tz}
+                    </div>
                     <div className="text-xs font-bold tracking-tight">San Francisco</div>
-                    <div className="text-2xl font-extrabold mt-1 tracking-tight">08:42 <span className="text-xs font-normal opacity-75">AM</span></div>
-                    <div className="text-[10px] opacity-75 mt-1">May 20 · Tue</div>
+                    <div className="text-2xl font-extrabold mt-1 tracking-tight">
+                      {displayClocks.sfo.time} <span className="text-xs font-normal opacity-75">{displayClocks.sfo.ampm}</span>
+                    </div>
+                    <div className="text-[10px] opacity-75 mt-1">{displayClocks.sfo.date}</div>
                   </div>
                   {/* New York */}
                   <div className="bg-gradient-to-br from-[#C3D8CB] to-[#A7BFAE] border border-[#A7BFAE]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02] shadow-[0_4px_12px_rgba(167,191,174,0.15)]">
-                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75"><Sun className="w-3 h-3 text-[#0E2A1F]"/> EDT</div>
+                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75">
+                      {displayClocks.nyc.isNight ? <Moon className="w-3 h-3 text-[#0E2A1F]" /> : <Sun className="w-3 h-3 text-[#0E2A1F]" />} {displayClocks.nyc.tz}
+                    </div>
                     <div className="text-xs font-bold tracking-tight">New York</div>
-                    <div className="text-2xl font-extrabold mt-1 tracking-tight">11:42 <span className="text-xs font-normal opacity-75">AM</span></div>
-                    <div className="text-[10px] opacity-75 mt-1">May 20 · Tue</div>
+                    <div className="text-2xl font-extrabold mt-1 tracking-tight">
+                      {displayClocks.nyc.time} <span className="text-xs font-normal opacity-75">{displayClocks.nyc.ampm}</span>
+                    </div>
+                    <div className="text-[10px] opacity-75 mt-1">{displayClocks.nyc.date}</div>
                   </div>
                   {/* London */}
                   <div className="bg-gradient-to-br from-[#FAF8F5] to-[#F4EFE6] border border-[#F4EFE6]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02] shadow-[0_4px_12px_rgba(244,239,230,0.1)]">
-                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75"><Sun className="w-3 h-3 text-[#0E2A1F]"/> BST</div>
+                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75">
+                      {displayClocks.lon.isNight ? <Moon className="w-3 h-3 text-[#0E2A1F]" /> : <Sun className="w-3 h-3 text-[#0E2A1F]" />} {displayClocks.lon.tz}
+                    </div>
                     <div className="text-xs font-bold tracking-tight">London</div>
-                    <div className="text-2xl font-extrabold mt-1 tracking-tight">04:42 <span className="text-xs font-normal opacity-75">PM</span></div>
-                    <div className="text-[10px] opacity-75 mt-1">May 20 · Tue</div>
+                    <div className="text-2xl font-extrabold mt-1 tracking-tight">
+                      {displayClocks.lon.time} <span className="text-xs font-normal opacity-75">{displayClocks.lon.ampm}</span>
+                    </div>
+                    <div className="text-[10px] opacity-75 mt-1">{displayClocks.lon.date}</div>
                   </div>
                   {/* Singapore */}
                   <div className="bg-gradient-to-br from-[#F5F8F6] to-[#E9F1EC] border border-[#E9F1EC]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02] shadow-[0_4px_12px_rgba(233,241,236,0.1)]">
-                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75"><Moon className="w-3 h-3 text-[#0E2A1F]"/> SGT</div>
+                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75">
+                      {displayClocks.sgp.isNight ? <Moon className="w-3 h-3 text-[#0E2A1F]" /> : <Sun className="w-3 h-3 text-[#0E2A1F]" />} {displayClocks.sgp.tz}
+                    </div>
                     <div className="text-xs font-bold tracking-tight">Singapore</div>
-                    <div className="text-2xl font-extrabold mt-1 tracking-tight">11:42 <span className="text-xs font-normal opacity-75">PM</span></div>
-                    <div className="text-[10px] opacity-75 mt-1">May 20 · Tue</div>
+                    <div className="text-2xl font-extrabold mt-1 tracking-tight">
+                      {displayClocks.sgp.time} <span className="text-xs font-normal opacity-75">{displayClocks.sgp.ampm}</span>
+                    </div>
+                    <div className="text-[10px] opacity-75 mt-1">{displayClocks.sgp.date}</div>
                   </div>
                 </div>
               </div>
