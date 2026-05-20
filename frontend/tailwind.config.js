@@ -65,8 +65,6 @@ module.exports = {
   				800: 'hsl(var(--foreground))',
   				900: 'hsl(var(--popover))',
   			},
-  			white: 'hsl(var(--card))',
-  			black: 'hsl(var(--background))',
         'gem-forest': '#0E2A1F',
         'gem-pine': '#1B4D3E',
         'gem-sage': '#A7BFAE',
