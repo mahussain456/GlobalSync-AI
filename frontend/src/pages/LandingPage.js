@@ -17,6 +17,111 @@ export default function LandingPage() {
     sgp: { time: "11:42", ampm: "PM", date: "May 20 · Tue", tz: "SGT", isNight: true }
   });
 
+  // Interactive Team Overlap slider state (reference SFO local hour, e.g. 13 for 1:00 PM)
+  const [selectedHour, setSelectedHour] = useState(13);
+
+  // Currency converter state
+  const [currencyAmount, setCurrencyAmount] = useState("1250.00");
+  const [currencyFrom, setCurrencyFrom] = useState("USD");
+  const [currencyTo, setCurrencyTo] = useState("EUR");
+  const [currencyRate, setCurrencyRate] = useState(0.9266);
+
+  // Ask AI search query state
+  const [aiQuery, setAiQuery] = useState("");
+
+  // Dynamic DST-resilient timezone offset calculation
+  const getLocalTimeForSfoHour = (sfoHour, timeZone) => {
+    try {
+      const now = new Date();
+      
+      const sfoFormatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Los_Angeles",
+        timeZoneName: "longOffset"
+      });
+      const sfoTzParts = sfoFormatter.formatToParts(now);
+      const sfoOffsetStr = sfoTzParts.find(p => p.type === "timeZoneName")?.value || "GMT-07:00";
+      
+      const match = sfoOffsetStr.match(/GMT([+-])(\d+):?(\d+)?/);
+      let offsetHours = -7;
+      if (match) {
+        const sign = match[1] === "+" ? 1 : -1;
+        const h = parseInt(match[2], 10);
+        const m = match[3] ? parseInt(match[3], 10) : 0;
+        offsetHours = sign * (h + m / 60);
+      }
+
+      const targetFormatter = new Intl.DateTimeFormat("en-US", {
+        timeZone,
+        timeZoneName: "longOffset"
+      });
+      const targetTzParts = targetFormatter.formatToParts(now);
+      const targetOffsetStr = targetTzParts.find(p => p.type === "timeZoneName")?.value || "GMT";
+      
+      const targetMatch = targetOffsetStr.match(/GMT([+-])(\d+):?(\d+)?/);
+      let targetOffsetHours = 0;
+      if (targetMatch) {
+        const sign = targetMatch[1] === "+" ? 1 : -1;
+        const h = parseInt(targetMatch[2], 10);
+        const m = targetMatch[3] ? parseInt(targetMatch[3], 10) : 0;
+        targetOffsetHours = sign * (h + m / 60);
+      }
+
+      return (sfoHour - offsetHours + targetOffsetHours + 48) % 24;
+    } catch (e) {
+      console.error("Error calculating DST-resilient offset", e);
+      const fallbacks = {
+        "America/Los_Angeles": 0,
+        "America/New_York": 3,
+        "Europe/London": 8,
+        "Asia/Singapore": 15
+      };
+      const diff = fallbacks[timeZone] || 0;
+      return (sfoHour + diff + 24) % 24;
+    }
+  };
+
+  const formatHour12 = (h) => {
+    const rounded = Math.floor(h);
+    const minutePart = h % 1 === 0.5 ? "30" : "00";
+    const ampm = rounded >= 12 ? "PM" : "AM";
+    const displayHour = rounded % 12 === 0 ? 12 : rounded % 12;
+    return `${displayHour}:${minutePart} ${ampm}`;
+  };
+
+  // Fetch live currency rates when currency inputs change
+  useEffect(() => {
+    if (!mounted) return;
+    
+    let isMounted = true;
+    const fetchRate = async () => {
+      try {
+        const res = await fetch(`https://open.exchangerate-api.com/v6/latest/${currencyFrom}`);
+        const data = await res.json();
+        if (isMounted && data?.rates && data.rates[currencyTo]) {
+          setCurrencyRate(data.rates[currencyTo]);
+        }
+      } catch (err) {
+        console.warn("Failed to fetch live currency rate", err);
+        const fallbackRates = {
+          USD: { EUR: 0.9266, GBP: 0.785, AUD: 1.51, CAD: 1.36, SGD: 1.35, USD: 1.0 },
+          EUR: { USD: 1.079, GBP: 0.847, AUD: 1.63, CAD: 1.47, SGD: 1.46, EUR: 1.0 },
+          GBP: { USD: 1.274, EUR: 1.18, AUD: 1.92, CAD: 1.73, SGD: 1.72, GBP: 1.0 },
+          AUD: { USD: 0.662, EUR: 0.613, GBP: 0.521, CAD: 0.901, SGD: 0.894, AUD: 1.0 },
+          CAD: { USD: 0.735, EUR: 0.68, GBP: 0.578, AUD: 1.11, SGD: 0.993, CAD: 1.0 },
+          SGD: { USD: 0.741, EUR: 0.685, GBP: 0.581, AUD: 1.12, CAD: 1.01, SGD: 1.0 }
+        };
+        if (isMounted) {
+          const fromRates = fallbackRates[currencyFrom] || {};
+          const rate = fromRates[currencyTo] || 1.0;
+          setCurrencyRate(rate);
+        }
+      }
+    };
+
+    fetchRate();
+    return () => { isMounted = false; };
+  }, [currencyFrom, currencyTo, mounted]);
+
   useEffect(() => {
     // Avoid running ticking updates during react-snap static pre-rendering
     if (typeof navigator !== "undefined" && navigator.userAgent === "ReactSnap") {
@@ -124,6 +229,22 @@ export default function LandingPage() {
   };
 
   const displayClocks = mounted ? clocks : fallbackClocks;
+
+  const members = [
+    { name: 'You', city: 'San Francisco', tzName: "America/Los_Angeles", tzCode: displayClocks.sfo.tz, gradient: 'from-[#A7BFAE] to-[#1B4D3E]' },
+    { name: 'Alex', city: 'New York', tzName: "America/New_York", tzCode: displayClocks.nyc.tz, gradient: 'from-[#C8A96A] to-[#8B6D3F]' },
+    { name: 'Maya', city: 'London', tzName: "Europe/London", tzCode: displayClocks.lon.tz, gradient: 'from-[#E9F1EC] to-[#A7BFAE]' },
+    { name: 'Kenji', city: 'Singapore', tzName: "Asia/Singapore", tzCode: displayClocks.sgp.tz, gradient: 'from-[#1B4D3E] to-[#0E2A1F]' }
+  ];
+
+  const processedMembers = members.map(m => {
+    const localHour = mounted ? getLocalTimeForSfoHour(selectedHour, m.tzName) : (m.name === 'You' ? 13 : m.name === 'Alex' ? 16 : m.name === 'Maya' ? 21 : 4);
+    const active = localHour >= 8 && localHour <= 21;
+    const timeFormatted = formatHour12(localHour);
+    return { ...m, active, timeFormatted };
+  });
+
+  const activeCount = processedMembers.filter(m => m.active).length;
 
   return (
     <div className="min-h-screen bg-gem-forest text-gem-beige font-sans relative">
@@ -248,35 +369,74 @@ export default function LandingPage() {
                     <div className="flex items-center gap-2 text-sm font-bold tracking-wide">
                       <Users className="w-4 h-4 text-gem-forest" /> Team Overlap
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider bg-gem-forest/10 px-2 py-0.5 rounded text-gem-forest">Best slot</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-gem-forest/10 px-2 py-0.5 rounded text-gem-forest">
+                      {selectedHour === 13 ? "Best slot" : "Custom slot"}
+                    </span>
                   </div>
                   
-                  <div className="text-xs font-semibold text-[#1B4D3E]/70 mb-1">Optimal Meeting Window</div>
-                  <div className="text-2xl font-extrabold tracking-tight mb-1">1:00 PM – 2:30 PM</div>
-                  <div className="text-xs font-semibold text-[#1B4D3E]/60 mb-5">Today · 4 members available</div>
-
+                  <div className="text-xs font-semibold text-[#1B4D3E]/70 mb-1">
+                    {selectedHour === 13 ? "Optimal Meeting Window" : "Selected Meeting Time"}
+                  </div>
+                  <div className="text-2xl font-extrabold tracking-tight mb-1">
+                    {selectedHour === 13 ? "1:00 PM – 2:30 PM" : `${formatHour12(selectedHour)} ${displayClocks.sfo.tz}`}
+                  </div>
+                  <div className="text-xs font-semibold text-[#1B4D3E]/60 mb-5">
+                    Today · {mounted ? `${activeCount} members available` : "4 members available"}
+                  </div>
+ 
                   {/* Timeline Bar */}
                   <div className="relative mb-6 bg-white/50 p-3.5 rounded-2xl border border-gem-forest/5 shadow-sm">
-                    <div className="relative h-2 bg-[#E9F1EC] rounded-full overflow-hidden mb-1">
-                      <div className="absolute left-[15%] right-[35%] h-full bg-gradient-to-r from-[#1B4D3E] to-[#A7BFAE] rounded-full"></div>
-                      <div className="absolute left-[38%] top-1/2 -translate-y-1/2 flex gap-1">
+                    <div className="relative h-2 bg-[#E9F1EC] rounded-full mb-1">
+                      {/* Highlighted green segment: 1:00 PM to 2:30 PM PDT (which is hour 13 to 14.5) */}
+                      <div className="absolute left-[15%] right-[35%] h-full bg-gradient-to-r from-[#1B4D3E] to-[#A7BFAE] rounded-full opacity-60"></div>
+                      
+                      {/* Dots inside optimal window */}
+                      <div className="absolute left-[38%] top-1/2 -translate-y-1/2 flex gap-1 pointer-events-none">
                         <div className="w-2 h-2 rounded-full bg-[#0E2A1F] border border-white"></div>
                         <div className="w-2 h-2 rounded-full bg-[#1B4D3E] border border-white"></div>
                         <div className="w-2 h-2 rounded-full bg-[#A7BFAE] border border-white"></div>
                       </div>
+
+                      {/* Interactive Slider Input Overlay */}
+                      {mounted && (
+                        <input
+                          type="range"
+                          min="0"
+                          max="23.5"
+                          step="0.5"
+                          value={selectedHour}
+                          onChange={(e) => setSelectedHour(parseFloat(e.target.value))}
+                          className="absolute inset-0 w-full h-full cursor-pointer appearance-none bg-transparent 
+                            [&::-webkit-slider-runnable-track]:bg-transparent
+                            [&::-webkit-slider-thumb]:appearance-none
+                            [&::-webkit-slider-thumb]:w-4.5
+                            [&::-webkit-slider-thumb]:h-4.5
+                            [&::-webkit-slider-thumb]:rounded-full
+                            [&::-webkit-slider-thumb]:bg-[#0E2A1F]
+                            [&::-webkit-slider-thumb]:border-2
+                            [&::-webkit-slider-thumb]:border-white
+                            [&::-webkit-slider-thumb]:shadow-lg
+                            [&::-webkit-slider-thumb]:transition-transform
+                            [&::-webkit-slider-thumb]:hover:scale-125
+                            [&::-moz-range-thumb]:w-4.5
+                            [&::-moz-range-thumb]:h-4.5
+                            [&::-moz-range-thumb]:rounded-full
+                            [&::-moz-range-thumb]:bg-[#0E2A1F]
+                            [&::-moz-range-thumb]:border-2
+                            [&::-moz-range-thumb]:border-white
+                            [&::-moz-range-thumb]:shadow-lg
+                            [&::-moz-range-thumb]:transition-transform
+                            [&::-moz-range-thumb]:hover:scale-125"
+                        />
+                      )}
                     </div>
                     <div className="flex justify-between text-[9px] font-bold text-[#1B4D3E]/50">
                       <span>8 AM</span><span>12 PM</span><span>4 PM</span><span>8 PM</span>
                     </div>
                   </div>
-
+ 
                   <div className="space-y-3">
-                    {[
-                      {name: 'You', city: 'San Francisco', tz: 'PDT', gradient: 'from-[#A7BFAE] to-[#1B4D3E]', active: true},
-                      {name: 'Alex', city: 'New York', tz: 'EDT', gradient: 'from-[#C8A96A] to-[#8B6D3F]', active: true},
-                      {name: 'Maya', city: 'London', tz: 'BST', gradient: 'from-[#E9F1EC] to-[#A7BFAE]', active: true},
-                      {name: 'Kenji', city: 'Singapore', tz: 'SGT', gradient: 'from-[#1B4D3E] to-[#0E2A1F]', active: false}
-                    ].map((member) => (
+                    {processedMembers.map((member) => (
                       <div key={member.name} className="flex items-center justify-between transition-transform duration-300 hover:translate-x-1">
                         <div className="flex items-center gap-3">
                           <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${member.gradient} flex items-center justify-center text-[10px] font-bold text-white shadow border-2 border-white`}>{member.name[0]}</div>
@@ -287,7 +447,9 @@ export default function LandingPage() {
                         </div>
                         <div className="flex items-center gap-1.5">
                           <div className={`w-1.5 h-1.5 rounded-full ${member.active ? 'bg-gem-forest' : 'bg-gem-forest/20'}`}></div>
-                          <div className="text-[10px] font-bold text-[#1B4D3E]/60">{member.tz}</div>
+                          <div className="text-[10px] font-bold text-[#1B4D3E]/60">
+                            {mounted ? `${member.timeFormatted} ` : ""}{member.tzCode}
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -311,22 +473,71 @@ export default function LandingPage() {
                     <div className="bg-[#F4EFE6]/80 border border-gem-forest/5 rounded-2xl p-3 flex justify-between items-center shadow-inner">
                       <div>
                         <div className="text-[9px] font-bold opacity-60 mb-0.5">Send Amount</div>
-                        <div className="text-xs font-bold flex items-center gap-1">USD <span className="text-[8px] opacity-50">▼</span></div>
+                        <div className="text-xs font-bold flex items-center gap-1">
+                          <div className="relative inline-block cursor-pointer">
+                            {mounted ? (
+                              <select
+                                value={currencyFrom}
+                                onChange={(e) => setCurrencyFrom(e.target.value)}
+                                className="appearance-none bg-transparent border-none p-0 pr-4 font-bold text-xs text-[#0E2A1F] focus:outline-none focus:ring-0 cursor-pointer"
+                              >
+                                {["USD", "EUR", "GBP", "AUD", "CAD", "SGD"].map(c => (
+                                  <option key={c} value={c}>{c}</option>
+                                ))}
+                              </select>
+                            ) : (
+                              <span className="font-bold text-xs text-[#0E2A1F]">USD</span>
+                            )}
+                            <span className="absolute right-0 top-1/2 -translate-y-1/2 text-[8px] opacity-50 pointer-events-none">▼</span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-lg font-extrabold tracking-tight">1,250.00</div>
+                      {mounted ? (
+                        <input
+                          type="text"
+                          value={currencyAmount}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/[^0-9.]/g, '');
+                            setCurrencyAmount(val);
+                          }}
+                          className="bg-transparent border-none p-0 text-right text-lg font-extrabold text-[#0E2A1F] focus:outline-none focus:ring-0 w-32 placeholder-[#0E2A1F]/30"
+                          placeholder="0.00"
+                        />
+                      ) : (
+                        <div className="text-lg font-extrabold tracking-tight">1,250.00</div>
+                      )}
                     </div>
                     <div className="bg-[#F4EFE6]/80 border border-gem-forest/5 rounded-2xl p-3 flex justify-between items-center shadow-inner">
                       <div>
                         <div className="text-[9px] font-bold opacity-60 mb-0.5">Receive Amount</div>
-                        <div className="text-xs font-bold flex items-center gap-1">EUR <span className="text-[8px] opacity-50">▼</span></div>
+                        <div className="text-xs font-bold flex items-center gap-1">
+                          <div className="relative inline-block cursor-pointer">
+                            {mounted ? (
+                              <select
+                                value={currencyTo}
+                                onChange={(e) => setCurrencyTo(e.target.value)}
+                                className="appearance-none bg-transparent border-none p-0 pr-4 font-bold text-xs text-[#0E2A1F] focus:outline-none focus:ring-0 cursor-pointer"
+                              >
+                                {["USD", "EUR", "GBP", "AUD", "CAD", "SGD"].map(c => (
+                                  <option key={c} value={c}>{c}</option>
+                                ))}
+                              </select>
+                            ) : (
+                              <span className="font-bold text-xs text-[#0E2A1F]">EUR</span>
+                            )}
+                            <span className="absolute right-0 top-1/2 -translate-y-1/2 text-[8px] opacity-50 pointer-events-none">▼</span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-lg font-extrabold tracking-tight">1,158.24</div>
+                      <div className="text-lg font-extrabold tracking-tight text-[#0E2A1F]">
+                        {mounted ? (receiveAmount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })) : "1,158.24"}
+                      </div>
                     </div>
                   </div>
                   
                   <div className="mt-4 flex items-center justify-between text-[10px] font-bold text-[#1B4D3E]/60 border-t border-[#1B4D3E]/10 pt-3">
                     <div className="flex items-center gap-1.5">
-                      <span>1 USD = 0.9266 EUR</span>
+                      <span>1 {mounted ? currencyFrom : "USD"} = {mounted ? currencyRate.toFixed(4) : "0.9266"} {mounted ? currencyTo : "EUR"}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <svg width="40" height="12" viewBox="0 0 48 16" fill="none" className="opacity-50">
@@ -336,23 +547,45 @@ export default function LandingPage() {
                     </div>
                   </div>
                 </div>
-
+ 
                 {/* AI Ask Sub-card */}
                 <div className="card-light p-6 hover:-translate-y-1.5 transition-all duration-300 shadow-[0_12px_30px_rgba(0,0,0,0.1)] border border-gem-sage/20 rounded-[28px] text-[#0E2A1F] flex-1 flex flex-col justify-between">
                   <div className="flex items-center gap-2 text-sm font-bold tracking-wide mb-3">
                     <Sparkles className="w-4 h-4 text-gem-forest animate-pulse" /> Ask GlobalSync AI
                   </div>
                   
-                  <div className="bg-[#E9F1EC] rounded-2xl p-4 pr-12 relative border border-[#1B4D3E]/10 shadow-inner flex-1 flex items-center">
-                    <p className="text-[12px] font-medium text-[#1B4D3E] leading-relaxed">
-                      "What's the best time to meet between NY, London, and Singapore next week?"
-                    </p>
-                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#0E2A1F] flex items-center justify-center hover:bg-[#1B4D3E] cursor-pointer transition-colors shadow">
+                  <div className="bg-[#E9F1EC] rounded-2xl relative border border-[#1B4D3E]/10 shadow-inner flex-1 flex items-center overflow-hidden">
+                    {mounted ? (
+                      <input
+                        type="text"
+                        placeholder="What's the best time to meet between NY, London, and Singapore next week?"
+                        value={aiQuery}
+                        onChange={(e) => setAiQuery(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            const query = aiQuery.trim() || "What's the best time to meet between NY, London, and Singapore next week?";
+                            navigate(`/dashboard?q=${encodeURIComponent(query)}`);
+                          }
+                        }}
+                        className="w-full h-full bg-transparent border-none py-4 pl-4 pr-12 text-[12px] font-medium text-[#1B4D3E] placeholder-[#1B4D3E]/60 focus:outline-none focus:ring-0"
+                      />
+                    ) : (
+                      <p className="text-[12px] font-medium text-[#1B4D3E] leading-relaxed py-4 pl-4 pr-12 select-none">
+                        "What's the best time to meet between NY, London, and Singapore next week?"
+                      </p>
+                    )}
+                    <button
+                      onClick={() => {
+                        const query = aiQuery.trim() || "What's the best time to meet between NY, London, and Singapore next week?";
+                        navigate(`/dashboard?q=${encodeURIComponent(query)}`);
+                      }}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#0E2A1F] flex items-center justify-center hover:bg-[#1B4D3E] cursor-pointer transition-colors shadow border-none"
+                    >
                       <ArrowRight className="w-3.5 h-3.5 text-white" />
-                    </div>
+                    </button>
                   </div>
                 </div>
-
+ 
               </div>
 
             </div>
