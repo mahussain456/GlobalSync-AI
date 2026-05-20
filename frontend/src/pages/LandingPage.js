@@ -246,6 +246,9 @@ export default function LandingPage() {
 
   const activeCount = processedMembers.filter(m => m.active).length;
 
+  const amt = parseFloat(currencyAmount);
+  const receiveAmount = isNaN(amt) ? 0 : amt * currencyRate;
+
   return (
     <div className="min-h-screen bg-gem-forest text-gem-beige font-sans relative">
       <SEOHead title="GlobalSync AI | Total Alignment" description="GlobalSync AI helps remote teams coordinate across time zones, currencies, and cultures with AI-powered intelligence." />
