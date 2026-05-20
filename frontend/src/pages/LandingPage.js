@@ -203,10 +203,20 @@ export default function LandingPage() {
       <SEOHead title="GlobalSync AI | Total Alignment" description="GlobalSync AI helps remote teams coordinate across time zones, currencies, and cultures with AI-powered intelligence." />
       
       {/* LUXURY HERO BACKGROUND with World Map */}
-      <div className="hero-luxury-bg absolute top-0 left-0 right-0 h-[1100px] pointer-events-none z-0">
-        <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay"></div>
+      <div className="hero-luxury-bg absolute top-0 left-0 right-0 h-[1100px] pointer-events-none z-0 overflow-hidden">
+        {/* Subtle gradient overlay to soften */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gem-forest/20 via-transparent to-gem-forest z-10"></div>
         {/* World Map Background */}
-        <div className="absolute inset-0 opacity-[0.75] mix-blend-screen" style={{backgroundImage: "url('/world-map-bg.png')", backgroundSize: 'cover', backgroundPosition: 'center 30%'}}></div>
+        <div 
+          className="absolute inset-0 opacity-[0.35] mix-blend-screen" 
+          style={{
+            backgroundImage: "url('/world-map-bg.png')", 
+            backgroundSize: 'cover', 
+            backgroundPosition: 'center 30%',
+            maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)',
+            WebkitMaskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)'
+          }}
+        ></div>
       </div>
 
       <SiteNav />
