@@ -38,6 +38,7 @@ export default function OnboardingModal({ onComplete }) {
               <img
                 src="/logo-dark.png"
                 alt="GlobalSync AI"
+                loading="lazy"
                 className="w-auto transition-transform duration-300 hover:scale-105 logo-glowing-effect"
                 style={{ height: "72px" }}
               />

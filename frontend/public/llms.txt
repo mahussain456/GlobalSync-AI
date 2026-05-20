@@ -1,0 +1,20 @@
+# GlobalSync AI
+
+GlobalSync AI is a free, web-based platform that helps remote teams, digital nomads, and freelancers coordinate across time zones, currencies, and cultures.
+
+Our primary tools are:
+- Time Zone Converter: Compare multiple cities instantly and find overlapping business hours.
+- Currency Converter: Check live exchange rates for over 150 currencies.
+- Meeting Planner: Schedule meetings across regions with smart overlap suggestions.
+- Freelancer Rate Converter: Calculate hourly to annual rates and invoice conversions.
+
+## Key Resources
+- Homepage: https://www.globalsync-ai.com/
+- Time Zone Converter: https://www.globalsync-ai.com/time-zone-converter
+- Currency Converter: https://www.globalsync-ai.com/currency-converter
+- Meeting Planner: https://www.globalsync-ai.com/meeting-planner
+- Blog & Guides: https://www.globalsync-ai.com/blog
+
+## Full Site Content
+For a full snapshot of our site's content optimized for AI consumption, please read our comprehensive text dump at:
+https://www.globalsync-ai.com/llms-full.txt

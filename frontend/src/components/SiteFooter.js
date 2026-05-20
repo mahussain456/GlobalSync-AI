@@ -12,6 +12,7 @@ export default function SiteFooter() {
             <img
               src="/logo-dark.png"
               alt="GlobalSync AI"
+              loading="lazy"
               className="w-auto logo-glowing-effect"
               style={{ height: "58px" }}
             />

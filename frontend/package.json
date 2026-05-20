@@ -31,6 +31,7 @@
     "@radix-ui/react-toggle": "^1.1.6",
     "@radix-ui/react-toggle-group": "^1.1.7",
     "@radix-ui/react-tooltip": "^1.2.4",
+    "@vercel/og": "^0.11.1",
     "ajv": "^8.18.0",
     "axios": "^1.8.4",
     "class-variance-authority": "^0.7.1",
@@ -61,7 +62,7 @@
     "start": "craco build && node static-server.js",
     "start:dev": "craco start",
     "build": "craco build",
-    "postbuild": "node scripts/run-snap-with-info.js && node scripts/generate-serve-config.js",
+    "postbuild": "node scripts/run-snap-with-info.js && node scripts/generate-serve-config.js && node scripts/generate-seo-assets.js",
     "test": "craco test"
   },
   "reactSnap": {
@@ -74,7 +75,7 @@
       "--no-zygote"
     ],
     "crawl": true,
-    "skipThirdPartyRequests": true,
+    "skipThirdPartyRequests": false,
     "timeout": 12000,
     "viewport": {
       "width": 1200,

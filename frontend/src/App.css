@@ -2,10 +2,7 @@
 
 /* ===== LUXURY DESIGN SYSTEM ===== */
 .hero-luxury-bg {
-  background:
-    radial-gradient(circle at 70% 35%, rgba(27,77,62,0.85), transparent 35%),
-    radial-gradient(circle at 35% 65%, rgba(167,191,174,0.12), transparent 25%),
-    linear-gradient(135deg, #071A13 0%, #0E2A1F 55%, #06120E 100%);
+  background: linear-gradient(145deg, #071A13 0%, #0E2A1F 100%);
   overflow: hidden;
 }
 

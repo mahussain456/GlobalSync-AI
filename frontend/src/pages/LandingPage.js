@@ -4,6 +4,7 @@ import { Globe, ArrowRight, Play, Sun, Moon, CheckCircle2, DollarSign, Clock, Us
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import { getHomepageSEO } from "@/lib/seo";
 
 const SUPPORTED_CURRENCIES = [
   // Popular / major currencies first for premium UX
@@ -197,10 +198,11 @@ export default function LandingPage() {
 
   const amt = parseFloat(currencyAmount);
   const receiveAmount = isNaN(amt) ? 0 : amt * currencyRate;
+  const seo = getHomepageSEO();
 
   return (
     <div className="min-h-screen bg-gem-forest text-gem-beige font-sans relative">
-      <SEOHead title="GlobalSync AI | Total Alignment" description="GlobalSync AI helps remote teams coordinate across time zones, currencies, and cultures with AI-powered intelligence." />
+      <SEOHead {...seo} />
       
       {/* LUXURY HERO BACKGROUND with World Map */}
       <div className="hero-luxury-bg absolute top-0 left-0 right-0 h-[1100px] pointer-events-none z-0 overflow-hidden">
@@ -208,7 +210,7 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-gem-forest/20 via-transparent to-gem-forest z-10"></div>
         {/* World Map Background */}
         <div 
-          className="absolute inset-0 opacity-[0.35] mix-blend-screen" 
+          className="absolute inset-0 opacity-[0.15] mix-blend-screen" 
           style={{
             backgroundImage: "url('/world-map-bg.png')", 
             backgroundSize: 'cover', 

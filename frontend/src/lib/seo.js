@@ -27,6 +27,10 @@ export const buildOrganizationSchema = () => ({
   "name": BRAND,
   "url": BASE_URL,
   "logo": { "@type": "ImageObject", "url": LOGO_URL },
+  "sameAs": [
+    "https://twitter.com/GlobalSyncAI",
+    "https://www.linkedin.com/company/globalsync-ai"
+  ]
 });
 
 export const buildWebSiteSchema = () => ({

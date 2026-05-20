@@ -27,6 +27,9 @@ import RemoteTeamsMeetingPlannerPage from "@/pages/RemoteTeamsMeetingPlannerPage
 import USIndiaMeetingTimePage from "@/pages/USIndiaMeetingTimePage";
 import NotFoundPage from "@/pages/NotFoundPage";
 
+import PressPage from "@/pages/PressPage";
+import AuthorPage from "@/pages/AuthorPage";
+
 function App() {
   return (
     <div className="App">
@@ -42,6 +45,8 @@ function App() {
           <Route path="/time/:pair" element={<CityPairPage />} />
           <Route path="/currency/:pair" element={<CurrencyPairPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/press" element={<PressPage />} />
+          <Route path="/authors/:slug" element={<AuthorPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="/terms-of-service" element={<TermsOfServicePage />} />

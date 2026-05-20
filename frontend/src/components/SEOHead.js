@@ -43,6 +43,10 @@ export default function SEOHead({
       : structuredData
     : null;
 
+  const ogTitle = encodeURIComponent(fullTitle);
+  const ogSubtitle = encodeURIComponent(description || 'One Platform. Every Time Zone. Total Alignment.');
+  const dynamicOgImage = `${BASE_URL}/api/og?title=${ogTitle}&subtitle=${ogSubtitle}&type=${ogType}`;
+
   return (
     <Helmet>
       {/* ── Primary ────────────────────────────────────────────────────────── */}
@@ -57,9 +61,9 @@ export default function SEOHead({
       <meta property="og:type"        content={ogType} />
       <meta property="og:url"         content={fullCanonical} />
       <meta property="og:site_name"   content={BRAND} />
-      <meta property="og:image"       content={OG_IMAGE} />
-      <meta property="og:image:width" content="1600" />
-      <meta property="og:image:height" content="400" />
+      <meta property="og:image"       content={dynamicOgImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       <meta property="og:image:alt"   content={`${BRAND} — Free Time Zone & Currency Converter`} />
       <meta property="og:locale"      content="en_US" />
 
@@ -69,7 +73,7 @@ export default function SEOHead({
       <meta name="twitter:creator"     content="@GlobalSyncAI" />
       <meta name="twitter:title"       content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image"       content={OG_IMAGE} />
+      <meta name="twitter:image"       content={dynamicOgImage} />
       <meta name="twitter:image:alt"   content={`${BRAND} — Free Time Zone & Currency Converter`} />
 
       {/* ── Robots ─────────────────────────────────────────────────────────── */}
