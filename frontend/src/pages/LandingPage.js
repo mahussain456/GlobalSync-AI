@@ -5,6 +5,30 @@ import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 
+const SUPPORTED_CURRENCIES = [
+  // Popular / major currencies first for premium UX
+  "USD", "EUR", "GBP", "INR", "AUD", "CAD", "SGD", "JPY",
+  // 150+ other currencies sorted alphabetically
+  "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AWG", "AZN",
+  "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB",
+  "BRL", "BSD", "BTN", "BWP", "BYN", "BZD", "CDF", "CHF", "CLP",
+  "CNY", "COP", "CRC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP",
+  "DZD", "EGP", "ERN", "ETB", "FJD", "FKP", "FOK", "GEL", "GGP",
+  "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK",
+  "HTG", "HUF", "IDR", "ILS", "IMP", "IQD", "IRR", "ISK", "JEP",
+  "JMD", "JOD", "KES", "KGS", "KHR", "KID", "KMF", "KRW", "KWD",
+  "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LYD", "MAD",
+  "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRU", "MUR", "MVR",
+  "MWK", "MXN", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR",
+  "NZD", "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG",
+  "QAR", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG",
+  "SEK", "SHP", "SLE", "SLL", "SOS", "SRD", "SSP", "STN", "SYP",
+  "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TVD",
+  "TWD", "TZS", "UAH", "UGX", "UYU", "UZS", "VES", "VND", "VUV",
+  "WST", "XAF", "XCD", "XDR", "XOF", "XPF", "YER", "ZAR", "ZMW",
+  "ZWL"
+];
+
 export default function LandingPage() {
   const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
@@ -484,7 +508,7 @@ export default function LandingPage() {
                                 onChange={(e) => setCurrencyFrom(e.target.value)}
                                 className="appearance-none bg-transparent border-none p-0 pr-4 font-bold text-xs text-[#0E2A1F] focus:outline-none focus:ring-0 cursor-pointer"
                               >
-                                {["USD", "EUR", "GBP", "AUD", "CAD", "SGD"].map(c => (
+                                {SUPPORTED_CURRENCIES.map(c => (
                                   <option key={c} value={c}>{c}</option>
                                 ))}
                               </select>
@@ -521,7 +545,7 @@ export default function LandingPage() {
                                 onChange={(e) => setCurrencyTo(e.target.value)}
                                 className="appearance-none bg-transparent border-none p-0 pr-4 font-bold text-xs text-[#0E2A1F] focus:outline-none focus:ring-0 cursor-pointer"
                               >
-                                {["USD", "EUR", "GBP", "AUD", "CAD", "SGD"].map(c => (
+                                {SUPPORTED_CURRENCIES.map(c => (
                                   <option key={c} value={c}>{c}</option>
                                 ))}
                               </select>
