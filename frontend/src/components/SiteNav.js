@@ -23,13 +23,13 @@ export default function SiteNav() {
 
   return (
     <header className={`bg-gem-forest border-b border-white/10 sticky top-0 z-50 transition-all duration-300 ${scrolled ? "backdrop-blur-md bg-gem-forest/80" : ""}`}>
-      <nav className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-4">
+      <nav className="max-w-7xl mx-auto px-6 h-28 flex items-center justify-between gap-4">
         <Link to="/" className="shrink-0 flex items-center gap-2 group">
           <img
             src="/logo-dark.png"
             alt="GlobalSync AI"
-            className="w-auto transition-transform duration-300 hover:scale-105 logo-glowing-effect"
-            style={{ height: "58px" }}
+            className="w-auto transition-all duration-300 hover:scale-105"
+            style={{ height: "85px", filter: "drop-shadow(0px 0px 12px rgba(200, 169, 106, 0.4))" }}
           />
         </Link>
 
