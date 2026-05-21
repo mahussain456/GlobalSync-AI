@@ -35,7 +35,7 @@ export default function Dashboard() {
     if (intent === "currency_conversion") setActiveTab("currency");
     else if (intent === "time_conversion" || intent === "meeting_overlap") setActiveTab("time");
     try {
-      const API = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
+      const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
       await axios.post(`${API}/history`, { query: originalQuery || "", intent, result: result.entities || {} });
     } catch { /* non-critical */ }
   };

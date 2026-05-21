@@ -8,7 +8,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import { getStaticPageSEO } from "@/lib/seo";
 
-const API = process.env.REACT_APP_BACKEND_URL || "";
+const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? process.env.REACT_APP_BACKEND_URL : "";
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", subject: "General Feedback", message: "" });

@@ -4,7 +4,7 @@ import { History, Clock, TrendingUp, Users, Trash2, RefreshCw, Loader2 } from "l
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-const API = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
+const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
 const INTENT_META = {
   time_conversion: { label: "Time Zone", icon: Clock, color: "bg-gem-gold/10 text-gem-gold border-gem-gold/30" },

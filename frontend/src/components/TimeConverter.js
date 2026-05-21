@@ -4,7 +4,7 @@ import { Clock, Plus, X, Users, AlertCircle, CheckCircle2, Share2, Copy, Star, S
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-const API = process.env.REACT_APP_BACKEND_URL ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
+const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
 const POPULAR_CITIES = [
   "New York", "San Francisco", "Chicago", "Toronto", "London", "Paris", "Berlin",
@@ -23,6 +23,269 @@ export function parseOffset(offsetStr) {
   const minutes = match[3] ? parseInt(match[3], 10) : 0;
   return sign * (hours + minutes / 60);
 }
+
+// Client-side fallback database for city-to-timezone matching
+export const CITY_TIMEZONES = {
+  "New York": "America/New_York", "NYC": "America/New_York", "New York City": "America/New_York",
+  "Los Angeles": "America/Los_Angeles", "LA": "America/Los_Angeles",
+  "San Francisco": "America/Los_Angeles", "SF": "America/Los_Angeles",
+  "Chicago": "America/Chicago", "Houston": "America/Chicago", "Dallas": "America/Chicago",
+  "Denver": "America/Denver", "Phoenix": "America/Phoenix", "Seattle": "America/Los_Angeles",
+  "Boston": "America/New_York", "Miami": "America/New_York", "Atlanta": "America/New_York",
+  "Toronto": "America/Toronto", "Vancouver": "America/Vancouver", "Montreal": "America/Toronto",
+  "Mexico City": "America/Mexico_City",
+  "São Paulo": "America/Sao_Paulo", "Sao Paulo": "America/Sao_Paulo",
+  "Buenos Aires": "America/Argentina/Buenos_Aires",
+  "Bogota": "America/Bogota", "Lima": "America/Lima", "Santiago": "America/Santiago",
+  "London": "Europe/London", "Paris": "Europe/Paris", "Berlin": "Europe/Berlin",
+  "Amsterdam": "Europe/Amsterdam", "Madrid": "Europe/Madrid", "Rome": "Europe/Rome",
+  "Milan": "Europe/Rome", "Zurich": "Europe/Zurich", "Geneva": "Europe/Zurich",
+  "Stockholm": "Europe/Stockholm", "Oslo": "Europe/Oslo", "Copenhagen": "Europe/Copenhagen",
+  "Helsinki": "Europe/Helsinki", "Warsaw": "Europe/Warsaw", "Prague": "Europe/Prague",
+  "Vienna": "Europe/Vienna", "Brussels": "Europe/Brussels", "Lisbon": "Europe/Lisbon",
+  "Athens": "Europe/Athens", "Moscow": "Europe/Moscow", "Istanbul": "Europe/Istanbul",
+  "Dubai": "Asia/Dubai", "Abu Dhabi": "Asia/Dubai", "Riyadh": "Asia/Riyadh",
+  "Doha": "Asia/Qatar", "Kuwait City": "Asia/Kuwait",
+  "Cairo": "Africa/Cairo", "Nairobi": "Africa/Nairobi", "Lagos": "Africa/Lagos",
+  "Johannesburg": "Africa/Johannesburg", "Cape Town": "Africa/Johannesburg", "Casablanca": "Africa/Casablanca",
+  "Mumbai": "Asia/Kolkata", "Delhi": "Asia/Kolkata", "New Delhi": "Asia/Kolkata",
+  "Bangalore": "Asia/Kolkata", "Bengaluru": "Asia/Kolkata", "Kolkata": "Asia/Kolkata",
+  "Chennai": "Asia/Kolkata", "Hyderabad": "Asia/Kolkata", "India": "Asia/Kolkata",
+  "Karachi": "Asia/Karachi", "Islamabad": "Asia/Karachi", "Lahore": "Asia/Karachi",
+  "Dhaka": "Asia/Dhaka", "Colombo": "Asia/Colombo", "Kathmandu": "Asia/Kathmandu",
+  "Singapore": "Asia/Singapore", "Kuala Lumpur": "Asia/Kuala_Lumpur", "KL": "Asia/Kuala_Lumpur",
+  "Jakarta": "Asia/Jakarta", "Bangkok": "Asia/Bangkok",
+  "Ho Chi Minh City": "Asia/Ho_Chi_Minh", "Hanoi": "Asia/Bangkok", "Manila": "Asia/Manila",
+  "Hong Kong": "Asia/Hong_Kong", "HK": "Asia/Hong_Kong", "Taipei": "Asia/Taipei",
+  "Seoul": "Asia/Seoul", "Tokyo": "Asia/Tokyo", "Osaka": "Asia/Tokyo",
+  "Beijing": "Asia/Shanghai", "Shanghai": "Asia/Shanghai", "Guangzhou": "Asia/Shanghai",
+  "Shenzhen": "Asia/Shanghai", "Chengdu": "Asia/Shanghai",
+  "Almaty": "Asia/Almaty", "Tashkent": "Asia/Tashkent",
+  "Sydney": "Australia/Sydney", "Melbourne": "Australia/Melbourne",
+  "Brisbane": "Australia/Brisbane", "Perth": "Australia/Perth",
+  "Auckland": "Pacific/Auckland", "Honolulu": "Pacific/Honolulu", "Hawaii": "Pacific/Honolulu",
+};
+
+export function getLocalCityTimezone(cityName) {
+  const clean = cityName.trim();
+  if (CITY_TIMEZONES[clean]) return { name: clean, timezoneId: CITY_TIMEZONES[clean] };
+  
+  // Title case check
+  const titleCase = clean.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+  if (CITY_TIMEZONES[titleCase]) return { name: titleCase, timezoneId: CITY_TIMEZONES[titleCase] };
+  
+  const lower = clean.toLowerCase();
+  
+  // Try exact case-insensitive match
+  for (const [k, v] of Object.entries(CITY_TIMEZONES)) {
+    if (k.toLowerCase() === lower) {
+      return { name: k, timezoneId: v };
+    }
+  }
+  
+  // Try substring match
+  for (const [k, v] of Object.entries(CITY_TIMEZONES)) {
+    if (k.toLowerCase().includes(lower) || lower.includes(k.toLowerCase())) {
+      return { name: k, timezoneId: v };
+    }
+  }
+  
+  return null;
+}
+
+export function isValidTimezone(tz) {
+  try {
+    Intl.DateTimeFormat(undefined, { timeZone: tz });
+    return true;
+  } catch (ex) {
+    return false;
+  }
+}
+
+export function getNormalizedUtcOffset(timezoneId, date = new Date()) {
+  try {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: timezoneId,
+      timeZoneName: "longOffset",
+    }).formatToParts(date);
+    const tzPart = parts.find(p => p.type === "timeZoneName");
+    if (tzPart) {
+      const val = tzPart.value;
+      if (val === "GMT" || val === "UTC" || val === "GMT+0" || val === "GMT-0") {
+        return "UTC+0";
+      }
+      const match = val.match(/(?:GMT|UTC)([+-])(\d+)(?::(\d+))?/);
+      if (match) {
+        const sign = match[1];
+        const hours = parseInt(match[2], 10);
+        const minutes = match[3] ? parseInt(match[3], 10) : 0;
+        if (minutes === 0) {
+          return `UTC${sign}${hours}`;
+        } else {
+          return `UTC${sign}${hours}:${minutes.toString().padStart(2, "0")}`;
+        }
+      }
+    }
+  } catch (err) {
+    console.error("Offset detection error:", err);
+  }
+  return "UTC+0";
+}
+
+export function getLocalHourInUtc(timezoneId, targetHour) {
+  const d = new Date();
+  d.setUTCHours(targetHour, 0, 0, 0);
+  
+  const offsetDecimal = parseOffset(getNormalizedUtcOffset(timezoneId, d));
+  const utcHour = (targetHour - offsetDecimal + 24) % 24;
+  
+  const result = new Date(d);
+  result.setUTCHours(Math.floor(utcHour), (utcHour % 1) * 60, 0, 0);
+  return result;
+}
+
+export function clientSideMeetingOverlap(selectedCities, startHour = 9, endHour = 17) {
+  try {
+    const today = new Date();
+    const cityRanges = [];
+    const cityDetails = [];
+    
+    for (const city of selectedCities) {
+      const tzName = city.timezone_id;
+      if (!tzName) {
+        cityDetails.push({ name: city.name, error: "City not found", known: false });
+        continue;
+      }
+      
+      const localStart = getLocalHourInUtc(tzName, startHour);
+      const localEnd = getLocalHourInUtc(tzName, endHour);
+      
+      const startDec = localStart.getUTCHours() + localStart.getUTCMinutes() / 60;
+      let endDec = localEnd.getUTCHours() + localEnd.getUTCMinutes() / 60;
+      if (endDec <= startDec) {
+        endDec += 24;
+      }
+      
+      const abbr = new Intl.DateTimeFormat("en-US", { timeZone: tzName, timeZoneName: "short" })
+        .formatToParts(today)
+        .find(p => p.type === "timeZoneName")?.value || "";
+        
+      const formatTime12 = (d) => {
+        return d.toLocaleTimeString("en-US", { timeZone: tzName, hour: "2-digit", minute: "2-digit", hour12: true });
+      };
+      
+      cityRanges.push({
+        name: city.name,
+        localStart,
+        localEnd,
+        startDec,
+        endDec,
+        tzName
+      });
+      
+      cityDetails.push({
+        name: city.name,
+        timezone_id: tzName,
+        timezone_abbr: abbr,
+        business_hours_local: `${formatTime12(localStart)} - ${formatTime12(localEnd)}`,
+        business_start_utc_dec: startDec,
+        business_end_utc_dec: endDec,
+        known: true
+      });
+    }
+    
+    if (cityRanges.length < 2) {
+      return { has_overlap: false, message: "Add at least 2 valid cities to find overlap", city_details: cityDetails };
+    }
+    
+    const ticksInDay = 96;
+    const commonTicks = [];
+    
+    for (let t = 0; t < ticksInDay; t++) {
+      const utcTime = new Date(today);
+      const hours = Math.floor(t / 4);
+      const minutes = (t % 4) * 15;
+      utcTime.setUTCHours(hours, minutes, 0, 0);
+      
+      let allMatch = true;
+      for (const city of cityRanges) {
+        const localHourStr = new Intl.DateTimeFormat("en-US", {
+          timeZone: city.tzName,
+          hour: "numeric",
+          hour12: false
+        }).format(utcTime);
+        const localMinStr = new Intl.DateTimeFormat("en-US", {
+          timeZone: city.tzName,
+          minute: "numeric"
+        }).format(utcTime);
+        
+        const localHour = parseInt(localHourStr, 10) % 24;
+        const localMin = parseInt(localMinStr, 10);
+        const localDec = localHour + localMin / 60;
+        
+        if (localDec < startHour || localDec > endHour) {
+          allMatch = false;
+          break;
+        }
+      }
+      
+      if (allMatch) {
+        commonTicks.push(t);
+      }
+    }
+    
+    const hasOverlap = commonTicks.length > 0;
+    if (!hasOverlap) {
+      return { has_overlap: false, message: "No overlapping business hours between these cities", city_details: cityDetails };
+    }
+    
+    const startTick = commonTicks[0];
+    const endTick = commonTicks[commonTicks.length - 1] + 1;
+    
+    const overlapStartUtc = new Date(today);
+    overlapStartUtc.setUTCHours(Math.floor(startTick / 4), (startTick % 4) * 15, 0, 0);
+    
+    const overlapEndUtc = new Date(today);
+    overlapEndUtc.setUTCHours(Math.floor(endTick / 4), (endTick % 4) * 15, 0, 0);
+    
+    const overlapMins = commonTicks.length * 15;
+    const bestUtc = new Date(overlapStartUtc.getTime() + Math.max(30, Math.floor(overlapMins / 4)) * 60000);
+    
+    const overlapStartDec = startTick / 4;
+    const overlapEndDec = endTick / 4;
+    
+    for (const detail of cityDetails) {
+      if (!detail.known) continue;
+      const tz = detail.timezone_id;
+      const fmt = (d) => d.toLocaleTimeString("en-US", { timeZone: tz, hour: "2-digit", minute: "2-digit", timeZoneName: "short" });
+      detail.overlap_start_local = fmt(overlapStartUtc);
+      detail.overlap_end_local = fmt(overlapEndUtc);
+      detail.best_time_local = fmt(bestUtc);
+    }
+    
+    const formatTime24 = (d) => {
+      const h = String(d.getUTCHours()).padStart(2, "0");
+      const m = String(d.getUTCMinutes()).padStart(2, "0");
+      return `${h}:${m} UTC`;
+    };
+    
+    return {
+      has_overlap: true,
+      overlap_start_utc: formatTime24(overlapStartUtc),
+      overlap_end_utc: formatTime24(overlapEndUtc),
+      overlap_start_dec: overlapStartDec,
+      overlap_end_dec: overlapEndDec,
+      overlap_duration_hours: parseFloat((overlapMins / 60).toFixed(1)),
+      best_meeting_time_utc: formatTime24(bestUtc),
+      city_details: cityDetails,
+      message: `${Math.floor(overlapMins / 60)}h ${overlapMins % 60}m overlap window found`
+    };
+  } catch (err) {
+    console.error("Client-side overlap calculation failed:", err);
+    return { has_overlap: false, message: "Error calculating meeting overlap client-side", city_details: [] };
+  }
+}
+
 
 // Helper to get card visual theme classes and properties based on local hour
 export function getCardTheme(hour) {
@@ -313,7 +576,9 @@ export default function TimeConverter({ aiDispatch }) {
         });
         setOverlapResult(res.data);
       } catch (err) {
-        console.error("Overlap automated fetch failed:", err);
+        console.warn("Overlap automated fetch failed. Falling back to client-side computation.", err);
+        const fallbackRes = clientSideMeetingOverlap(selectedCities);
+        setOverlapResult(fallbackRes);
       } finally {
         setLoadingOverlap(false);
       }
@@ -325,8 +590,30 @@ export default function TimeConverter({ aiDispatch }) {
     try {
       const res = await axios.post(`${API}/timezone/convert`, { cities: cityNames });
       return res.data.cities.filter(c => c.known !== false);
-    } catch {
-      return cityNames.map(name => ({ name, timezone_id: null, known: false }));
+    } catch (err) {
+      console.warn("Backend `/timezone/convert` API call failed. Using client-side fallback.", err);
+      const now = new Date();
+      return cityNames.map(name => {
+        const resolved = getLocalCityTimezone(name);
+        if (resolved) {
+          const offset = getNormalizedUtcOffset(resolved.timezoneId, now);
+          return {
+            name: resolved.name,
+            timezone_id: resolved.timezoneId,
+            utc_offset: offset,
+            known: true
+          };
+        } else if (isValidTimezone(name)) {
+          const offset = getNormalizedUtcOffset(name, now);
+          return {
+            name: name.split('/').pop().replace('_', ' '),
+            timezone_id: name,
+            utc_offset: offset,
+            known: true
+          };
+        }
+        return { name, timezone_id: null, known: false };
+      });
     }
   }, []);
 
