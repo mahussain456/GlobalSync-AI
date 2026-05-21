@@ -118,13 +118,23 @@ export default function CurrencyConverter({ aiDispatch }) {
           params: { amount: numAmt, from_currency: fromUpper, to_currency: toUpper },
           timeout: 2500
         });
-        if (res.data && !res.data.is_fallback) {
-          setResult(res.data);
+        // Validate response is a proper conversion object (not HTML or an error page)
+        const d = res.data;
+        if (
+          d &&
+          typeof d === 'object' &&
+          typeof d.converted === 'number' &&
+          !isNaN(d.converted) &&
+          !d.is_fallback
+        ) {
+          setResult(d);
           fetchTrend(fromUpper, toUpper);
           setLoading(false);
           return;
-        } else {
+        } else if (d && typeof d === 'object' && d.is_fallback) {
           console.warn("Backend returned fallback/offline rates. Attempting direct browser live rates fetch.");
+        } else {
+          console.warn("Backend returned unexpected response shape. Attempting direct live rates fetch.", typeof d, d);
         }
       } catch (err) {
         console.warn("Backend API conversion failed, attempting direct live rates fetch", err);
@@ -360,7 +370,7 @@ export default function CurrencyConverter({ aiDispatch }) {
         )}
 
         {/* Result */}
-        {result && (
+        {result && typeof result === 'object' && typeof result.converted === 'number' && (
           <div className="mt-5 p-4 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 rounded-xl border border-gem-gold/20 fade-in-up shadow-[inset_0_0_20px_rgba(34,211,238,0.05)]" data-testid="conversion-result-display">
             <div className="flex items-start justify-between">
               <div>
@@ -371,7 +381,7 @@ export default function CurrencyConverter({ aiDispatch }) {
                   </div>
                 )}
                 <div className="text-sm text-gem-sage mb-1">
-                  {result.amount.toLocaleString()} {fromMeta?.name || result.from}
+                  {(result.amount ?? 0).toLocaleString()} {fromMeta?.name || result.from}
                 </div>
                 <div className="font-heading text-3xl font-bold text-gem-beige" data-testid="converted-amount">
                   {result.converted >= 1 ? result.converted.toLocaleString("en-US", { maximumFractionDigits: 4 }) : result.converted.toFixed(6)}
