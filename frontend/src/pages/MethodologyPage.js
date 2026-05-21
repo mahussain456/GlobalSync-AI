@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Clock, DollarSign, Cpu, RefreshCw, AlertTriangle } from "lucide-react";
+import { Clock, DollarSign, Cpu, RefreshCw, AlertTriangle, Binary, Shield } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
@@ -147,6 +147,27 @@ export default function MethodologyPage() {
             <li>The AI assistant has a knowledge cutoff date and may not be aware of very recent changes to currency policies, government regulations, or DST rule changes.</li>
             <li>AI responses are informational only and do not constitute financial, legal, or professional advice of any kind.</li>
           </ul>
+        </Section>
+
+        <Section icon={Binary} color="blue" title="Decimal Precision, Rounding Rules, and System Reliability">
+          <p>
+            To prevent compounding arithmetic errors during complex multi-currency conversions, all monetary calculations are processed using double-precision floating-point numbers before formatting for visual presentation. Standard currency values are rounded to exactly four decimal places in our backend feeds and truncated to two decimal places in the user interface for standard operations.
+          </p>
+          <p>
+            Time zone math operates on absolute minute-level offsets (e.g., UTC+3:30 for Iran Standard Time) rather than simple decimal hours, preventing errors when coordinating meetings. System health is audited every minute to ensure timezone mapping synchrony.
+          </p>
+          <p>
+            Our core processing pipelines are designed with extensive retry mechanics, failing over automatically to backup institutional servers if primary API gateways face transient connectivity dropouts. This redundancy guarantees high availability, ensuring that teams rely on active clocks even during high-traffic intervals.
+          </p>
+        </Section>
+
+        <Section icon={Shield} color="emerald" title="AI Integration & Large Language Model Parameter Safeguards">
+          <p>
+            GlobalSync AI incorporates state-of-the-art large language models to resolve user questions phrased in casual, conversational dialogue. To secure absolute mathematical consistency, all natural-language prompts are parsed, and numerical values are sent through our dedicated logic APIs. The AI is restricted from performing complex timezone offset arithmetic or currency multiplication inside its own neural parameters.
+          </p>
+          <p>
+            Instead, the model acts as an intelligent translator, identifying the user's intent (e.g., "Schedule a meeting with Karachi"), querying our backend servers for standard UTC offsets and exchange index ratios, and inserting the exact real-time values back into the final conversational response. This keeps responses accurate and prevents hallucination.
+          </p>
         </Section>
 
         <Section icon={RefreshCw} color="orange" title="Update Frequency Summary">

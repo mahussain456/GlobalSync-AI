@@ -22,6 +22,28 @@ const LOGO_URL  = `${BASE_URL}/favicon-512.png`;
 // when it wraps an array in @graph, or you pass it standalone with @context).
 // ─────────────────────────────────────────────────────────────────────────────
 
+export const buildPersonSchema = () => ({
+  "@type": "Person",
+  "name": "Ahmed Hussain",
+  "url": `${BASE_URL}/authors/ahmed-hussain`,
+  "sameAs": [
+    `${BASE_URL}/about`,
+    "https://twitter.com/GlobalSyncAI"
+  ],
+  "jobTitle": "Founder & Developer",
+  "worksFor": {
+    "@type": "Organization",
+    "name": BRAND,
+    "url": BASE_URL
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Karachi",
+    "addressCountry": "PK"
+  },
+  "description": "Ahmed Hussain is the founder and developer of GlobalSync AI, building free tools for remote teams and freelancers working across time zones and currencies."
+});
+
 export const buildOrganizationSchema = () => ({
   "@type": "Organization",
   "name": BRAND,
@@ -92,8 +114,8 @@ export const buildArticleSchema = (post) => ({
   "dateModified": post.dateModified || post.datePublished || "2026-03-01",
   "author": { 
     "@type": "Person", 
-    "name": post.authorName || "GlobalSync AI Team", 
-    "url": `${BASE_URL}/about` 
+    "name": post.authorName || "Ahmed Hussain", 
+    "url": `${BASE_URL}/authors/ahmed-hussain` 
   },
   "publisher": {
     "@type": "Organization",
@@ -350,6 +372,12 @@ const STATIC_META = {
     canonical: "/freelancer-rate-converter",
     keywords: "freelancer rate converter, hourly rate converter, project fee converter, international freelancer pricing",
   },
+  "author-ahmed-hussain": {
+    rawTitle: `Ahmed Hussain — Founder & Developer | ${BRAND}`,
+    description: `Ahmed Hussain is the founder and developer of GlobalSync AI, a free toolkit for remote teams and freelancers working across time zones and currencies. Based in Karachi, Pakistan.`,
+    canonical: "/authors/ahmed-hussain",
+    keywords: "Ahmed Hussain, GlobalSync AI founder, remote work tools developer, Karachi Pakistan",
+  },
 };
 
 /**
@@ -369,7 +397,8 @@ export const getStaticPageSEO = (pageKey) => {
         { name: "Home", path: "/" },
         { name: meta.rawTitle.split(" | ")[0], path: meta.canonical },
       ]),
-      ...(pageKey === "about" ? [buildOrganizationSchema()] : [])
+      ...(pageKey === "about" ? [buildOrganizationSchema(), buildPersonSchema()] : []),
+      ...(pageKey === "author-ahmed-hussain" ? [buildPersonSchema(), buildOrganizationSchema()] : [])
     ],
   };
 };
