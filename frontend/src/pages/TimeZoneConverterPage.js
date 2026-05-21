@@ -57,14 +57,14 @@ export default function TimeZoneConverterPage() {
       <article className="max-w-4xl mx-auto px-6 py-8">
         {/* H1 */}
         <header className="mb-10">
-          <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-gem-gold rounded-full px-3 py-1 text-xs font-medium mb-4 border border-gem-gold/20">
-            <Clock className="w-3.5 h-3.5" /> Free Tool · No Signup Required
+          <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-gem-gold rounded-full px-3 py-1 text-xs font-medium mb-4 border border-gem-gold/20 shadow-[0_0_15px_rgba(200,169,106,0.08)]">
+            <Clock className="w-3.5 h-3.5 text-gem-gold" /> Live Clocks · 25+ Major Cities · 100% Free
           </div>
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-4">
             Time Zone Converter — Live World Clock
           </h1>
           <p className="text-lg text-gem-beige/60 max-w-2xl leading-relaxed">
-            Free AI time zone converter for remote teams and global workers. Check what time is it in London, what time is it in Dubai, or find IST time now — instantly across 25+ cities. No account needed.
+            Free AI-powered time zone converter for remote teams and global workers. Compare live time across major hubs, adjust base hours instantly, and map business-hour overlaps seamlessly.
           </p>
           <div className="mt-8">
             <TimeConverter />

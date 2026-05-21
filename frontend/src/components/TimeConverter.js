@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { Clock, Plus, X, Users, AlertCircle, CheckCircle2, Share2, Copy } from "lucide-react";
+import { Clock, Plus, X, Users, AlertCircle, CheckCircle2, Share2, Copy, Star, Sun, Moon, Sunrise, Sunset, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -13,13 +13,122 @@ const POPULAR_CITIES = [
   "Mexico City", "Los Angeles", "Seattle", "Moscow", "Istanbul",
 ];
 
-export function getLocalTime(timezoneId) {
-  if (!timezoneId) return { time: "--:--", time12: "-- : --", date: "", hour: 0 };
+// Helper to parse timezone offsets (e.g., "UTC-5", "UTC+5:30", "UTC+0") into numerical decimal hours
+export function parseOffset(offsetStr) {
+  if (!offsetStr) return 0;
+  const match = offsetStr.match(/UTC([+-])?(\d+)?(?::(\d+))?/);
+  if (!match) return 0;
+  const sign = match[1] === '-' ? -1 : 1;
+  const hours = match[2] ? parseInt(match[2], 10) : 0;
+  const minutes = match[3] ? parseInt(match[3], 10) : 0;
+  return sign * (hours + minutes / 60);
+}
+
+// Helper to get card visual theme classes and properties based on local hour
+export function getCardTheme(hour) {
+  // Night: 10 PM - 5 AM (22, 23, 0, 1, 2, 3, 4, 5)
+  if (hour >= 22 || hour < 6) {
+    return {
+      bg: "bg-gradient-to-br from-slate-950 via-[#0a0f24] to-[#050816]",
+      border: "border-indigo-500/20 hover:border-indigo-500/40 shadow-[0_0_20px_rgba(99,102,241,0.05)]",
+      glow: "bg-indigo-500/5",
+      text: "text-indigo-200",
+      iconColor: "text-indigo-400",
+      label: "Night",
+      icon: Moon
+    };
+  }
+  // Sunrise: 6 AM - 8 AM (6, 7, 8)
+  if (hour >= 6 && hour < 9) {
+    return {
+      bg: "bg-gradient-to-br from-pink-950/20 via-amber-950/15 to-[#050816]",
+      border: "border-rose-400/20 hover:border-rose-400/40 shadow-[0_0_20px_rgba(251,113,133,0.05)]",
+      glow: "bg-rose-400/5",
+      text: "text-rose-200",
+      iconColor: "text-rose-400",
+      label: "Sunrise",
+      icon: Sunrise
+    };
+  }
+  // Work Hours: 9 AM - 4 PM (9 to 16)
+  if (hour >= 9 && hour < 17) {
+    return {
+      bg: "bg-gradient-to-br from-gem-gold/10 via-[#0a141d]/50 to-[#050816]",
+      border: "border-gem-gold/30 hover:border-gem-gold/50 shadow-[0_0_25px_rgba(200,169,106,0.15)]",
+      glow: "bg-gem-gold/5",
+      text: "text-gem-beige",
+      iconColor: "text-gem-gold",
+      label: "In Office",
+      icon: Sun
+    };
+  }
+  // Sunset: 5 PM - 9 PM (17 to 21)
+  return {
+    bg: "bg-gradient-to-br from-purple-950/20 via-indigo-950/15 to-[#050816]",
+    border: "border-purple-500/20 hover:border-purple-500/40 shadow-[0_0_20px_rgba(168,85,247,0.05)]",
+    glow: "bg-purple-500/5",
+    text: "text-purple-200",
+    iconColor: "text-purple-400",
+    label: "Sunset",
+    icon: Sunset
+  };
+}
+
+// Client-side shifted time mathematics
+export function getShiftedTime(targetTimezoneId, targetUtcOffset, baseUtcOffset, baseLocalHour, baseDate = new Date()) {
   try {
-    const now = new Date();
-    const time12 = now.toLocaleTimeString("en-US", { timeZone: timezoneId, hour: "2-digit", minute: "2-digit", hour12: true });
-    const date = now.toLocaleDateString("en-US", { timeZone: timezoneId, weekday: "short", month: "short", day: "numeric" });
-    const hourStr = new Intl.DateTimeFormat("en-US", { timeZone: timezoneId, hour: "numeric", hour12: false }).format(now);
+    const baseOffset = parseOffset(baseUtcOffset);
+    const targetOffset = parseOffset(targetUtcOffset);
+    
+    // Construct UTC base target date
+    const utcDate = new Date(baseDate);
+    utcDate.setUTCHours(baseLocalHour, 0, 0, 0);
+    
+    // Convert to actual target timestamp using difference
+    const finalTimestamp = utcDate.getTime() - (baseOffset * 3600000);
+    const targetDate = new Date(finalTimestamp);
+    
+    const time12 = targetDate.toLocaleTimeString("en-US", {
+      timeZone: targetTimezoneId,
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true
+    });
+    
+    const date = targetDate.toLocaleDateString("en-US", {
+      timeZone: targetTimezoneId,
+      weekday: "short",
+      month: "short",
+      day: "numeric"
+    });
+    
+    const hourStr = new Intl.DateTimeFormat("en-US", {
+      timeZone: targetTimezoneId,
+      hour: "numeric",
+      hour12: false
+    }).format(targetDate);
+    
+    const hour = parseInt(hourStr) % 24;
+    
+    return {
+      time12,
+      date,
+      hour,
+      isBusinessHours: hour >= 9 && hour < 17
+    };
+  } catch (err) {
+    console.error("Shift computation error:", err);
+    return { time12: "--:--", date: "", hour: 0, isBusinessHours: false };
+  }
+}
+
+// Live ticking time format helper
+export function getLocalTime(timezoneId, liveTime = new Date()) {
+  if (!timezoneId) return { time12: "--:--", date: "", hour: 0, isBusinessHours: false };
+  try {
+    const time12 = liveTime.toLocaleTimeString("en-US", { timeZone: timezoneId, hour: "2-digit", minute: "2-digit", hour12: true });
+    const date = liveTime.toLocaleDateString("en-US", { timeZone: timezoneId, weekday: "short", month: "short", day: "numeric" });
+    const hourStr = new Intl.DateTimeFormat("en-US", { timeZone: timezoneId, hour: "numeric", hour12: false }).format(liveTime);
     const hour = parseInt(hourStr) % 24;
     return { time12, date, hour, isBusinessHours: hour >= 9 && hour < 17 };
   } catch {
@@ -27,39 +136,61 @@ export function getLocalTime(timezoneId) {
   }
 }
 
-function CityCard({ city, onRemove }) {
-  const [timeData, setTimeData] = useState(getLocalTime(city.timezone_id));
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeData(getLocalTime(city.timezone_id));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [city.timezone_id]);
+function CityCard({ city, isBase, makeBase, timeData, onRemove }) {
+  const theme = getCardTheme(timeData.hour);
+  const ThemeIcon = theme.icon;
 
   return (
-    <div className={`bg-white/5 backdrop-blur-md rounded-[28px] border p-5 transition-all hover:shadow-[0_0_20px_rgba(200,169,106,0.15)] ${timeData.isBusinessHours ? "border-gem-gold/30 shadow-[0_0_15px_rgba(200,169,106,0.1)]" : "border-white/5 opacity-80"}`} data-testid={`city-card-${city.name}`}>
-      <div className="flex items-start justify-between mb-3">
+    <div 
+      className={`relative overflow-hidden rounded-[28px] border p-5 transition-all duration-500 ${theme.bg} ${theme.border} group`} 
+      data-testid={`city-card-${city.name}`}
+    >
+      {/* Glow highlight */}
+      <div className={`absolute inset-0 ${theme.glow} pointer-events-none transition-opacity duration-500`} />
+
+      <div className="relative z-10 flex items-start justify-between mb-4">
         <div>
-          <h3 className="font-heading font-semibold text-gem-beige">{city.name}</h3>
-          <p className="text-xs text-gem-mist mt-0.5">{city.utc_offset || city.timezone_id}</p>
+          <div className="flex items-center gap-1.5">
+            <h3 className="font-heading font-bold text-gem-beige text-lg tracking-tight group-hover:text-gem-gold transition-colors">{city.name}</h3>
+            <button
+              onClick={makeBase}
+              className="p-1 rounded text-white/20 hover:text-gem-gold hover:scale-115 transition-all"
+              title={isBase ? "Base Reference City" : "Set as Base Reference City"}
+              data-testid={`star-btn-${city.name}`}
+            >
+              <Star className={`w-4 h-4 ${isBase ? "fill-gem-gold text-gem-gold filter drop-shadow-[0_0_4px_rgba(200,169,106,0.5)]" : "text-white/25"}`} />
+            </button>
+          </div>
+          <p className="text-xs text-gem-mist/60 font-medium mt-0.5">{city.utc_offset || city.timezone_id}</p>
         </div>
+
         <div className="flex items-center gap-2">
-          <span className={`text-xs rounded-full px-2 py-0.5 font-medium ${timeData.isBusinessHours ? "bg-gem-gold/10 text-gem-gold border border-gem-gold/30" : "bg-white/5 text-gem-sage border border-white/10"}`}>
-            {timeData.isBusinessHours ? "In Office" : "Off Hours"}
+          <span className={`text-[10px] uppercase tracking-wider rounded-full px-2.5 py-0.5 font-bold flex items-center gap-1 bg-white/5 border border-white/10 ${theme.text}`}>
+            <ThemeIcon className="w-3 h-3" /> {theme.label}
           </span>
           {onRemove && (
-            <button onClick={() => onRemove(city.name)} className="text-gem-mist hover:text-gem-beige transition-colors" data-testid={`remove-city-${city.name}`}>
+            <button 
+              onClick={() => onRemove(city.name)} 
+              className="text-white/25 hover:text-orange-400 transition-colors p-1 rounded-full hover:bg-white/5" 
+              data-testid={`remove-city-${city.name}`}
+            >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
       </div>
-      <div className="mt-2">
-        <div className="font-heading text-3xl font-semibold text-gem-beige tabular-nums" data-testid={`city-time-${city.name}`}>
-          {timeData.time12}
+
+      <div className="relative z-10 mt-6">
+        <div 
+          className="font-heading text-4xl font-bold text-gem-beige tracking-tight tabular-nums flex items-baseline gap-1" 
+          data-testid={`city-time-${city.name}`}
+        >
+          {timeData.time12.split(" ")[0]}
+          <span className="text-sm font-semibold text-gem-mist uppercase">{timeData.time12.split(" ")[1]}</span>
         </div>
-        <div className="text-xs text-gem-sage mt-1">{timeData.date}</div>
+        <div className="text-xs text-gem-sage/80 mt-1.5 font-medium flex items-center gap-1">
+          <Clock className="w-3 h-3 text-gem-gold/60" /> {timeData.date}
+        </div>
       </div>
     </div>
   );
@@ -68,50 +199,57 @@ function CityCard({ city, onRemove }) {
 function OverlapBar({ cityDetails, overlapStartDec, overlapEndDec }) {
   const hours = [0, 3, 6, 9, 12, 15, 18, 21];
   return (
-    <div className="space-y-3" data-testid="overlap-timeline">
-      <div className="relative flex pl-24 pr-2 mb-1">
+    <div className="space-y-4" data-testid="overlap-timeline">
+      <div className="relative flex pl-28 pr-2 mb-2 h-4">
         {hours.map((h) => (
-          <div key={h} className="absolute text-xs text-gem-mist" style={{ left: `calc(${(h / 24) * 100}% + 6rem)` }}>
+          <div key={h} className="absolute text-[10px] font-bold text-gem-mist/50" style={{ left: `calc(${(h / 24) * 100}% + 7rem)` }}>
             {String(h).padStart(2, "0")}:00
           </div>
         ))}
       </div>
+      
       {cityDetails.filter(c => c.known !== false).map((city) => {
         const start = city.business_start_utc_dec || 0;
         const end = city.business_end_utc_dec || 17;
         const endNorm = end > 24 ? 24 : end;
+        
         const startPct = (start / 24) * 100;
         const widthPct = ((endNorm - start) / 24) * 100;
+        
         const ovStartPct = overlapStartDec != null ? (overlapStartDec / 24) * 100 : null;
         const ovWidthPct = overlapStartDec != null && overlapEndDec != null
           ? ((overlapEndDec - overlapStartDec) / 24) * 100 : 0;
+          
         return (
-          <div key={city.name} className="flex items-center gap-3">
-            <span className="w-24 text-xs text-right text-gem-sage shrink-0 font-medium">{city.name}</span>
-            <div className="flex-1 bg-white/5 h-2 rounded-lg relative overflow-hidden">
+          <div key={city.name} className="flex items-center gap-3 group">
+            <span className="w-28 text-xs text-right text-gem-sage font-semibold truncate shrink-0 tracking-tight">{city.name}</span>
+            <div className="flex-1 bg-white/5 h-2.5 rounded-full relative overflow-hidden border border-white/5">
+              {/* Local Business Hours (Base Track) */}
               <div
-                className="absolute h-full bg-gem-gold/20 rounded-lg"
+                className="absolute h-full bg-gem-gold/15 rounded-full transition-all duration-300"
                 style={{ left: `${startPct}%`, width: `${widthPct}%` }}
               />
+              {/* Overlapping Zone (Highlight Track) */}
               {ovStartPct != null && ovWidthPct > 0 && (
                 <div
-                  className="absolute h-full bg-gem-gold rounded-lg z-10 shadow-[0_0_10px_rgba(34,211,238,0.5)]"
+                  className="absolute h-full bg-gem-gold rounded-full z-10 shadow-[0_0_10px_rgba(200,169,106,0.6)] transition-all duration-300"
                   style={{ left: `${ovStartPct}%`, width: `${ovWidthPct}%` }}
                 />
               )}
             </div>
-            <span className="text-xs text-gem-mist shrink-0 w-32 hidden sm:block">
+            <span className="text-[10px] text-gem-mist/60 shrink-0 w-32 hidden md:block font-medium">
               {city.overlap_start_local ? `${city.overlap_start_local}` : city.business_hours_local}
             </span>
           </div>
         );
       })}
-      <div className="flex gap-3 pl-24 mt-3">
-        <div className="flex items-center gap-1.5 text-xs text-gem-sage">
-          <div className="w-3 h-3 bg-gem-gold/20 rounded" /> Business hrs
+      
+      <div className="flex gap-4 pl-28 mt-4 pt-2 border-t border-white/5">
+        <div className="flex items-center gap-1.5 text-[10px] font-semibold text-gem-sage">
+          <div className="w-3 h-1.5 bg-gem-gold/20 rounded" /> Local Business Hours (9am-5pm)
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-gem-sage">
-          <div className="w-3 h-3 bg-gem-gold rounded shadow-[0_0_5px_rgba(34,211,238,0.5)]" /> Overlap
+        <div className="flex items-center gap-1.5 text-[10px] font-semibold text-gem-gold">
+          <div className="w-3 h-1.5 bg-gem-gold rounded shadow-[0_0_5px_rgba(200,169,106,0.5)]" /> Overlapping Time Window
         </div>
       </div>
     </div>
@@ -124,11 +262,64 @@ export default function TimeConverter({ aiDispatch }) {
     { name: "London", timezone_id: "Europe/London", utc_offset: "UTC+0" },
     { name: "Mumbai", timezone_id: "Asia/Kolkata", utc_offset: "UTC+5:30" },
   ]);
+  const [baseCityName, setBaseCityName] = useState("New York");
+  const [selectedHour, setSelectedHour] = useState(12);
+  const [isCustomTime, setIsCustomTime] = useState(false);
+  const [liveTime, setLiveTime] = useState(new Date());
+  
   const [citySearch, setCitySearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [overlapResult, setOverlapResult] = useState(null);
-  const [conversionResult, setConversionResult] = useState(null);
   const [loadingOverlap, setLoadingOverlap] = useState(false);
+
+  // Maintain real-world clock updates
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setLiveTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Update selected slider hour dynamically in live ticking mode
+  useEffect(() => {
+    if (!isCustomTime) {
+      const baseCity = selectedCities.find(c => c.name === baseCityName) || selectedCities[0];
+      if (baseCity?.timezone_id) {
+        try {
+          const hourStr = new Intl.DateTimeFormat("en-US", {
+            timeZone: baseCity.timezone_id,
+            hour: "numeric",
+            hour12: false
+          }).format(liveTime);
+          setSelectedHour(parseInt(hourStr) % 24);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    }
+  }, [liveTime, isCustomTime, baseCityName, selectedCities]);
+
+  // Automated background calculation of meeting overlaps
+  useEffect(() => {
+    const autoOverlap = async () => {
+      if (selectedCities.length < 2) {
+        setOverlapResult(null);
+        return;
+      }
+      setLoadingOverlap(true);
+      try {
+        const res = await axios.post(`${API}/timezone/overlap`, { 
+          cities: selectedCities.map(c => c.name) 
+        });
+        setOverlapResult(res.data);
+      } catch (err) {
+        console.error("Overlap automated fetch failed:", err);
+      } finally {
+        setLoadingOverlap(false);
+      }
+    };
+    autoOverlap();
+  }, [selectedCities]);
 
   const fetchCityMeta = useCallback(async (cityNames) => {
     try {
@@ -153,31 +344,36 @@ export default function TimeConverter({ aiDispatch }) {
     const meta = await fetchCityMeta([cityName]);
     if (meta.length && meta[0].timezone_id) {
       setSelectedCities(prev => [...prev, meta[0]]);
+      toast.success(`Added ${meta[0].name}`);
     } else {
       toast.error(`City "${cityName}" not found`);
     }
     setCitySearch("");
     setShowDropdown(false);
-    setOverlapResult(null);
   };
 
   const removeCity = (cityName) => {
-    setSelectedCities(prev => prev.filter(c => c.name !== cityName));
-    setOverlapResult(null);
+    setSelectedCities(prev => {
+      const updated = prev.filter(c => c.name !== cityName);
+      // Recalibrate base city if we deleted it
+      if (cityName === baseCityName && updated.length > 0) {
+        setBaseCityName(updated[0].name);
+      }
+      return updated;
+    });
   };
 
-  const handleFindOverlap = async () => {
-    if (selectedCities.length < 2) { toast.warning("Add at least 2 cities"); return; }
-    setLoadingOverlap(true);
-    try {
-      const res = await axios.post(`${API}/timezone/overlap`, { cities: selectedCities.map(c => c.name) });
-      setOverlapResult(res.data);
-      setConversionResult(null);
-    } catch {
-      toast.error("Failed to calculate overlap");
-    } finally {
-      setLoadingOverlap(false);
+  // Click star selector helper
+  const handleMakeBase = (city) => {
+    if (isCustomTime) {
+      const currentBase = selectedCities.find(c => c.name === baseCityName) || selectedCities[0];
+      const newBaseOffset = parseOffset(city.utc_offset);
+      const oldBaseOffset = parseOffset(currentBase.utc_offset);
+      const newHour = (selectedHour + (newBaseOffset - oldBaseOffset) + 24) % 24;
+      setSelectedHour(Math.round(newHour));
     }
+    setBaseCityName(city.name);
+    toast.success(`Starred ${city.name} as base reference`);
   };
 
   useEffect(() => {
@@ -187,30 +383,22 @@ export default function TimeConverter({ aiDispatch }) {
       if (intent === "meeting_overlap" && entities?.cities?.length) {
         const meta = await fetchCityMeta(entities.cities);
         const valid = meta.filter(c => c.known !== false);
-        if (valid.length) { setSelectedCities(valid); }
-        setTimeout(async () => {
-          setLoadingOverlap(true);
-          try {
-            const res = await axios.post(`${API}/timezone/overlap`, { cities: entities.cities });
-            setOverlapResult(res.data);
-          } catch { toast.error("Overlap failed"); }
-          finally { setLoadingOverlap(false); }
-        }, 300);
+        if (valid.length) { 
+          setSelectedCities(valid); 
+          setBaseCityName(valid[0].name);
+        }
       } else if (intent === "time_conversion" && entities) {
         const citiesToShow = [...(entities.from_city ? [entities.from_city] : []), ...(entities.to_cities || [])];
         if (citiesToShow.length) {
           const meta = await fetchCityMeta(citiesToShow);
           const valid = meta.filter(c => c.known !== false);
-          if (valid.length) setSelectedCities(valid);
-        }
-        if (entities.from_time && entities.from_city && entities.to_cities?.length) {
-          try {
-            const res = await axios.post(`${API}/timezone/convert`, {
-              cities: entities.to_cities, from_time: entities.time || entities.from_time, from_city: entities.from_city,
-            });
-            setConversionResult(res.data);
-            setOverlapResult(null);
-          } catch { toast.error("Time conversion failed"); }
+          if (valid.length) {
+            setSelectedCities(valid);
+            if (entities.from_city) {
+              const matchingBase = valid.find(c => c.name.toLowerCase() === entities.from_city.toLowerCase());
+              if (matchingBase) setBaseCityName(matchingBase.name);
+            }
+          }
         }
       }
     };
@@ -221,22 +409,15 @@ export default function TimeConverter({ aiDispatch }) {
     const cities = selectedCities.map(c => c.name).join(", ");
     const q = `Best meeting time for ${cities}`;
     const url = `${window.location.origin}/dashboard?q=${encodeURIComponent(q)}`;
-    navigator.clipboard.writeText(url).then(() => toast.success("Share link copied!"));
-  };
-
-  const shareTimeConversion = () => {
-    const cities = selectedCities.map(c => c.name).join(", ");
-    const q = `What time is it in ${cities}`;
-    const url = `${window.location.origin}/dashboard?q=${encodeURIComponent(q)}`;
-    navigator.clipboard.writeText(url).then(() => toast.success("Share link copied!"));
+    navigator.clipboard.writeText(url).then(() => toast.success("Scheduler link copied!"));
   };
 
   const copyOverlapResult = () => {
     if (!overlapResult?.has_overlap) return;
     const lines = overlapResult.city_details?.filter(c => c.best_time_local)
-      .map(c => `${c.name}: ${c.best_time_local}`) || [];
-    const text = `Best meeting time (${overlapResult.overlap_duration_hours}h window):\n${lines.join("\n")}`;
-    navigator.clipboard.writeText(text).then(() => toast.success("Result copied!"));
+      .map(c => `• ${c.name}: ${c.best_time_local}`) || [];
+    const text = `Optimal Meeting Windows (${overlapResult.overlap_duration_hours}h Overlap):\n${lines.join("\n")}`;
+    navigator.clipboard.writeText(text).then(() => toast.success("Schedule copied!"));
   };
 
   const filtered = POPULAR_CITIES.filter(c =>
@@ -244,36 +425,50 @@ export default function TimeConverter({ aiDispatch }) {
     !selectedCities.find(sc => sc.name.toLowerCase() === c.toLowerCase())
   );
 
+  const ticks = [0, 3, 6, 9, 12, 15, 18, 21];
+  const getTickLabel = (h) => {
+    if (h === 0) return "12 AM";
+    if (h === 12) return "12 PM";
+    return h > 12 ? `${h - 12} PM` : `${h} AM`;
+  };
+
   return (
     <div className="space-y-6" data-testid="time-converter">
-      {/* City Selector */}
-      <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-5 shadow-xl">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-heading font-semibold text-gem-beige flex items-center gap-2">
-            <Clock className="w-5 h-5 text-gem-gold" /> Live World Clocks
-          </h2>
-          <span className="text-xs text-gem-sage">{selectedCities.length}/5 cities</span>
+      {/* World Clocks Control Panel */}
+      <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-6 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+          <div>
+            <h2 className="font-heading font-semibold text-gem-beige flex items-center gap-2 text-xl">
+              <Clock className="w-5.5 h-5.5 text-gem-gold" /> Live World Clocks
+            </h2>
+            <p className="text-xs text-gem-mist mt-0.5">
+              Click the star button on any city card to set it as the primary base reference.
+            </p>
+          </div>
+          <span className="text-xs font-semibold px-2.5 py-1 bg-white/5 rounded-lg border border-white/10 text-gem-sage shrink-0 self-start sm:self-center">
+            {selectedCities.length}/5 Cities Added
+          </span>
         </div>
 
-        {/* Add city input */}
-        <div className="relative mb-5">
+        {/* Search & Add Input */}
+        <div className="relative mb-6">
           <input
             value={citySearch}
             onChange={(e) => { setCitySearch(e.target.value); setShowDropdown(true); }}
             onFocus={() => setShowDropdown(true)}
-            onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
-            placeholder="Add a city (e.g. Tokyo, Dubai, Berlin)..."
-            className="w-full h-10 px-4 rounded-xl border border-gem-gold/20 bg-white/5 text-gem-beige placeholder-gem-mist/50 text-sm outline-none focus:border-gem-gold400/50 focus:bg-white/10 transition-all"
+            onBlur={() => setTimeout(() => setShowDropdown(false), 250)}
+            placeholder="Search & add global cities (e.g. Tokyo, Dubai, Berlin)..."
+            className="w-full h-11 px-4 rounded-xl border border-gem-gold/20 bg-white/5 text-gem-beige placeholder-gem-mist/50 text-sm outline-none focus:border-gem-gold/60 focus:bg-white/10 transition-all font-medium"
             data-testid="city-search-input"
             onKeyDown={(e) => { if (e.key === "Enter" && citySearch.trim()) addCity(citySearch.trim()); }}
           />
-          {showDropdown && (citySearch || true) && filtered.length > 0 && (
-            <div className="absolute z-50 top-11 left-0 right-0 bg-gem-forest/90 backdrop-blur-2xl border border-gem-gold/20 rounded-xl shadow-2xl max-h-48 overflow-y-auto" data-testid="city-dropdown">
-              {filtered.slice(0, 12).map((city) => (
+          {showDropdown && filtered.length > 0 && (
+            <div className="absolute z-50 top-12 left-0 right-0 bg-[#0d1326]/95 backdrop-blur-3xl border border-white/10 rounded-xl shadow-2xl max-h-56 overflow-y-auto" data-testid="city-dropdown">
+              {filtered.slice(0, 10).map((city) => (
                 <button
                   key={city}
                   onMouseDown={() => addCity(city)}
-                  className="w-full text-left px-4 py-2.5 text-sm text-gem-beige hover:bg-white/10 hover:text-gem-beige transition-colors first:rounded-t-xl last:rounded-b-xl"
+                  className="w-full text-left px-4 py-3 text-sm text-gem-beige hover:bg-white/10 hover:text-gem-gold transition-colors font-medium border-b border-white/5 last:border-0"
                   data-testid={`city-option-${city}`}
                 >
                   {city}
@@ -283,127 +478,200 @@ export default function TimeConverter({ aiDispatch }) {
           )}
         </div>
 
-        {/* City Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {selectedCities.map((city) => (
-            <CityCard key={city.name} city={city} onRemove={removeCity} />
-          ))}
+        {/* City Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {selectedCities.map((city) => {
+            const isBase = city.name === baseCityName;
+            const timeData = isCustomTime 
+              ? getCityCustomTime(city) 
+              : getCityLiveTime(city);
+              
+            function getCityLiveTime(c) {
+              return getLocalTime(c.timezone_id, liveTime);
+            }
+            
+            function getCityCustomTime(c) {
+              const baseCity = selectedCities.find(sc => sc.name === baseCityName) || selectedCities[0];
+              return getShiftedTime(c.timezone_id, c.utc_offset, baseCity.utc_offset, selectedHour, liveTime);
+            }
+
+            return (
+              <CityCard
+                key={city.name}
+                city={city}
+                isBase={isBase}
+                makeBase={() => handleMakeBase(city)}
+                timeData={timeData}
+                onRemove={selectedCities.length > 1 ? removeCity : null}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Dynamic Hour Slider Workspace */}
+      <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-6 shadow-xl space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h3 className="font-heading font-semibold text-gem-beige flex items-center gap-2 text-lg">
+              <Clock className="w-5 h-5 text-gem-gold" /> Drag to Shift Time
+            </h3>
+            <p className="text-xs text-gem-mist mt-0.5">
+              Shift hours to see daytime transitions and business openings worldwide.
+            </p>
+          </div>
+          <div className="bg-gem-gold/10 px-3 py-1 rounded-full border border-gem-gold/20 text-xs font-bold text-gem-gold tracking-tight self-start sm:self-center">
+            Reference Anchor: {baseCityName}
+          </div>
         </div>
 
-        {/* Find Overlap Button */}
-        {selectedCities.length >= 2 && (
-          <div className="mt-5 flex justify-end">
-            <Button
-              onClick={handleFindOverlap}
-              disabled={loadingOverlap}
-              className="rounded-full bg-gem-gold text-gem-forest hover:opacity-90 flex items-center gap-2 shadow-md border-0"
-              data-testid="find-overlap-btn"
+        <div className="py-2">
+          <input
+            type="range"
+            min="0"
+            max="23"
+            value={selectedHour}
+            onChange={(e) => {
+              setSelectedHour(parseInt(e.target.value));
+              setIsCustomTime(true);
+            }}
+            className="w-full h-2.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-gem-gold focus:outline-none focus:ring-2 focus:ring-gem-gold/40 transition-all slider-custom shadow-[inset_0_1px_3px_rgba(0,0,0,0.4)]"
+            data-testid="time-slider"
+          />
+          
+          {/* Slider Tickmarks */}
+          <div className="relative flex justify-between mt-4 px-1">
+            {ticks.map((t) => {
+              const isActive = selectedHour === t;
+              return (
+                <button
+                  key={t}
+                  onClick={() => {
+                    setSelectedHour(t);
+                    setIsCustomTime(true);
+                  }}
+                  className={`text-[10px] font-bold transition-all flex flex-col items-center gap-1.5 ${
+                    isActive ? "text-gem-gold scale-110" : "text-gem-mist/50 hover:text-gem-beige"
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full transition-all ${isActive ? "bg-gem-gold shadow-[0_0_8px_#C8A96A]" : "bg-white/20"}`} />
+                  {getTickLabel(t)}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Custom Mode Toggling Banner */}
+        {isCustomTime && (
+          <div className="bg-gem-gold/10 border border-gem-gold/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-[0_0_20px_rgba(200,169,106,0.05)] fade-in-up">
+            <div className="flex items-center gap-2.5">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gem-gold opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-gem-gold"></span>
+              </span>
+              <p className="text-sm text-gem-beige/90">
+                Viewing timezone shift pause at <strong className="text-gem-gold">{selectedHour === 0 ? "12 AM" : selectedHour === 12 ? "12 PM" : selectedHour > 12 ? `${selectedHour - 12} PM` : `${selectedHour} AM`}</strong> in <strong className="text-gem-gold">{baseCityName}</strong>.
+              </p>
+            </div>
+            <button
+              onClick={() => setIsCustomTime(false)}
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-gem-gold text-gem-forest hover:opacity-90 text-xs font-bold transition-all shadow-[0_0_10px_rgba(200,169,106,0.3)] active:scale-95 shrink-0"
             >
-              <Users className="w-4 h-4" />
-              {loadingOverlap ? "Finding overlap..." : "Find Meeting Overlap"}
-            </Button>
+              <RefreshCw className="w-3.5 h-3.5" /> Resume Live clocks
+            </button>
           </div>
         )}
       </div>
 
-      {/* Conversion Result */}
-      {conversionResult?.conversion_note && (
-        <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-gem-gold/30 p-5 shadow-xl fade-in-up" data-testid="conversion-result">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-heading font-semibold text-gem-beige">{conversionResult.conversion_note}</h3>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={shareTimeConversion}
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-gem-gold/20 text-gem-gold hover:bg-gem-gold/30 text-xs font-medium transition-all border border-gem-gold/30"
-                data-testid="share-time-btn"
-                title="Share this conversion"
-              >
-                <Share2 className="w-3 h-3" /> Share
-              </button>
+      {/* Automated Meeting Overlap Scheduler Card */}
+      {selectedCities.length >= 2 && (
+        <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-6 shadow-xl space-y-6 fade-in-up" data-testid="overlap-card">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="font-heading font-semibold text-gem-beige flex items-center gap-2 text-lg">
+                <Users className="w-5 h-5 text-gem-gold" /> Meeting Overlap & Scheduler Helper
+              </h3>
+              <p className="text-xs text-gem-mist mt-0.5">
+                Calculated overlapping business hours (9 AM - 5 PM) across all locations.
+              </p>
             </div>
+            
+            {loadingOverlap ? (
+              <span className="flex items-center gap-1.5 text-xs text-gem-gold bg-gem-gold/10 border border-gem-gold/20 rounded-full px-3 py-1.5 animate-pulse font-semibold">
+                Finding Overlaps...
+              </span>
+            ) : overlapResult?.has_overlap ? (
+              <span className="flex items-center gap-1.5 text-xs text-gem-sage bg-gem-sage/10 border border-gem-sage/20 rounded-full px-3 py-1.5 font-bold shadow-[0_0_15px_rgba(34,197,94,0.08)]">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                {overlapResult.overlap_duration_hours}h Overlap Found
+              </span>
+            ) : (
+              <span className="flex items-center gap-1.5 text-xs text-orange-300 bg-orange-500/10 border border-orange-500/20 rounded-full px-3 py-1.5 font-bold">
+                <AlertCircle className="w-3.5 h-3.5" />
+                No Working Overlap
+              </span>
+            )}
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {conversionResult.cities?.map(city => (
-              <div key={city.name} className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <div className="text-sm font-medium text-gem-sage mb-1">{city.name}</div>
-                <div className="font-heading text-2xl font-semibold text-gem-beige" data-testid={`converted-time-${city.name}`}>{city.current_time_12h}</div>
-                <div className="text-xs text-gem-mist mt-0.5">{city.date} · {city.timezone_abbr}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
-      {/* Overlap Result */}
-      {overlapResult && (
-        <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-gem-gold/30 p-5 shadow-xl fade-in-up" data-testid="overlap-result">
-          <div className="flex items-start justify-between mb-4">
-            <h3 className="font-heading font-semibold text-gem-beige flex items-center gap-2">
-              <Users className="w-5 h-5 text-gem-gold" /> Meeting Overlap
-            </h3>
-            <div className="flex items-center gap-2">
+          {overlapResult && (
+            <div className="space-y-6">
               {overlapResult.has_overlap ? (
-                <span className="flex items-center gap-1.5 text-xs text-gem-gold bg-gem-gold/10 border border-gem-gold/30 rounded-full px-3 py-1 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  {overlapResult.overlap_duration_hours}h window found
-                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="bg-white/5 rounded-2xl p-4 border border-white/5 flex flex-col justify-center">
+                    <div className="text-[10px] text-gem-sage/70 mb-1.5 font-bold uppercase tracking-wider">Universal Clock Window (UTC)</div>
+                    <div className="font-heading font-bold text-gem-beige text-lg" data-testid="overlap-window">
+                      {overlapResult.overlap_start_utc} – {overlapResult.overlap_end_utc}
+                    </div>
+                  </div>
+                  <div className="bg-gem-gold/10 rounded-2xl p-4 border border-gem-gold/20 col-span-1 sm:col-span-2">
+                    <div className="text-[10px] text-gem-gold mb-2 font-bold tracking-wider uppercase">Optimal Meeting Windows</div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1">
+                      {overlapResult.city_details?.filter(c => c.best_time_local).map(city => (
+                        <div key={city.name} className="text-sm text-gem-beige font-semibold">
+                          <span className="text-gem-gold font-bold">{city.name}:</span> {city.best_time_local}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               ) : (
-                <span className="flex items-center gap-1.5 text-xs text-orange-300 bg-orange-500/10 border border-orange-500/30 rounded-full px-3 py-1">
-                  <AlertCircle className="w-3.5 h-3.5" />
-                  No overlap
-                </span>
+                <div className="p-4 bg-orange-500/10 rounded-xl border border-orange-500/20 text-sm text-orange-300 font-medium">
+                  {overlapResult.message || "There are no overlapping business hours (9 AM - 5 PM) between these cities. You will need to schedule a call outside standard working hours."}
+                </div>
               )}
-              {overlapResult.has_overlap && (
-                <div className="flex items-center gap-1">
+
+              {/* Overlap timeline */}
+              <div className="bg-white/5 rounded-2xl p-5 border border-white/5">
+                <OverlapBar
+                  cityDetails={overlapResult.city_details || []}
+                  overlapStartDec={overlapResult.overlap_start_dec}
+                  overlapEndDec={overlapResult.overlap_end_dec}
+                />
+              </div>
+              
+              {/* Share / Copy actions */}
+              <div className="flex justify-end gap-3 pt-2">
+                {overlapResult.has_overlap && (
                   <button
                     onClick={copyOverlapResult}
-                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white/5 border border-white/10 text-gem-sage hover:text-gem-beige hover:bg-white/10 text-xs font-medium transition-all"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gem-sage hover:text-gem-beige hover:bg-white/10 text-xs font-bold transition-all cursor-pointer"
                     data-testid="copy-overlap-btn"
-                    title="Copy result"
+                    title="Copy details to clipboard"
                   >
-                    <Copy className="w-3 h-3" /> Copy
+                    <Copy className="w-3.5 h-3.5" /> Copy Schedule
                   </button>
-                  <button
-                    onClick={shareOverlap}
-                    className="flex items-center gap-1 px-2 py-1 rounded-lg bg-gem-gold/20 border border-gem-gold/30 text-gem-gold hover:bg-gem-gold/90/30 text-xs font-medium transition-all"
-                    data-testid="share-overlap-btn"
-                    title="Share this overlap"
-                  >
-                    <Share2 className="w-3 h-3" /> Share
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {overlapResult.has_overlap ? (
-            <>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-                <div className="bg-white/5 rounded-xl p-3 border border-white/10">
-                  <div className="text-xs text-gem-sage mb-1">Window (UTC)</div>
-                  <div className="font-heading font-semibold text-gem-beige text-sm" data-testid="overlap-window">
-                    {overlapResult.overlap_start_utc} – {overlapResult.overlap_end_utc}
-                  </div>
-                </div>
-                <div className="bg-gem-gold/10 rounded-xl p-3 border border-gem-gold/30 col-span-1 sm:col-span-2">
-                  <div className="text-xs text-gem-gold mb-1">Best Meeting Time</div>
-                  <div className="space-y-0.5">
-                    {overlapResult.city_details?.filter(c => c.best_time_local).map(city => (
-                      <div key={city.name} className="text-sm text-gem-beige font-medium">
-                        <span className="text-gem-gold">{city.name}:</span> {city.best_time_local}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                )}
+                <button
+                  onClick={shareOverlap}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gem-gold/20 border border-gem-gold/30 text-gem-gold hover:bg-gem-gold/30 text-xs font-bold transition-all shadow-[0_0_10px_rgba(200,169,106,0.15)] cursor-pointer"
+                  data-testid="share-overlap-btn"
+                  title="Share scheduler link"
+                >
+                  <Share2 className="w-3.5 h-3.5" /> Share Scheduler
+                </button>
               </div>
-              <OverlapBar
-                cityDetails={overlapResult.city_details || []}
-                overlapStartDec={overlapResult.overlap_start_dec}
-                overlapEndDec={overlapResult.overlap_end_dec}
-              />
-            </>
-          ) : (
-            <p className="text-sm text-gem-sage py-2">{overlapResult.message}</p>
+            </div>
           )}
         </div>
       )}
