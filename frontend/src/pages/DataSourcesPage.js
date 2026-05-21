@@ -7,8 +7,26 @@ import { getStaticPageSEO } from "@/lib/seo";
 export default function DataSourcesPage() {
   const seo = getStaticPageSEO("data-sources");
   return (
-    <div className="min-h-screen flex flex-col bg-gem-forest text-gem-beige">
+    <div className="min-h-screen flex flex-col bg-gem-forest text-gem-beige relative">
       <SEOHead {...seo} />
+
+      {/* LUXURY HERO BACKGROUND with World Map */}
+      <div className="hero-luxury-bg absolute top-0 left-0 right-0 h-[600px] pointer-events-none z-0 overflow-hidden">
+        {/* Subtle gradient overlay to soften */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gem-forest/20 via-transparent to-gem-forest z-10"></div>
+        {/* World Map Background */}
+        <div 
+          className="absolute inset-0 opacity-[0.12] mix-blend-screen" 
+          style={{
+            backgroundImage: "url('/world-map-bg.png')", 
+            backgroundSize: 'cover', 
+            backgroundPosition: 'center 30%',
+            maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)',
+            WebkitMaskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)'
+          }}
+        ></div>
+      </div>
+
       <SiteNav />
       <main className="flex-1 max-w-3xl mx-auto px-6 py-12 w-full">
         <h1 className="text-3xl font-bold mb-6 font-heading">Data Sources & Methodology</h1>
