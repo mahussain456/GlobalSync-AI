@@ -189,13 +189,13 @@ function FullDayConversionTable({ cityA, cityB }) {
 export default function CityPairPage() {
   const { pair } = useParams();
   
-  const [fromSlug, toSlug] = (pair || "").split("-to-");
+  const normalizedPair = (pair || "").toLowerCase();
+  const [fromSlug, toSlug] = normalizedPair.split("-to-");
   const cityA = CITIES[fromSlug];
   const cityB = CITIES[toSlug];
+  const pairData = getCityPair(normalizedPair);
 
-  if (!cityA || !cityB) return <Navigate to="/time-zone-converter" replace />;
-
-  const pairData = getCityPair(pair);
+  if (!cityA || !cityB || !pairData) return <Navigate to="/time-zone-converter" replace />;
   const title = `${cityA.name} to ${cityB.name} Time Converter`;
   const h1 = `${cityA.name} to ${cityB.name} Time Converter — Live World Clock`;
 
@@ -233,7 +233,7 @@ export default function CityPairPage() {
 
       <SiteNav />
 
-      <article className="max-w-4xl mx-auto px-6 py-8">
+      <article className="max-w-4xl mx-auto px-6 pt-36 pb-8">
         {/* Breadcrumb */}
         <nav className="text-xs text-zinc-400 mb-6 flex items-center gap-1.5">
           <Link to="/" className="hover:text-gem-mist">Home</Link>

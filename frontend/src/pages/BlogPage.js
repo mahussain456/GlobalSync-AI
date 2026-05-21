@@ -32,7 +32,7 @@ export default function BlogPage() {
 
       <SiteNav />
 
-      <div className="max-w-5xl mx-auto px-6 py-12">
+      <div className="max-w-5xl mx-auto px-6 pt-36 pb-12">
         {/* Header */}
         <header className="mb-12">
           <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-gem-gold rounded-full px-3 py-1 text-xs font-medium mb-4 border border-gem-gold/20">

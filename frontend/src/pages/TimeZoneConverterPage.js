@@ -54,7 +54,7 @@ export default function TimeZoneConverterPage() {
 
       <SiteNav />
 
-      <article className="max-w-4xl mx-auto px-6 py-8">
+      <article className="max-w-4xl mx-auto px-6 pt-36 pb-8">
         {/* H1 */}
         <header className="mb-10">
           <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-gem-gold rounded-full px-3 py-1 text-xs font-medium mb-4 border border-gem-gold/20 shadow-[0_0_15px_rgba(200,169,106,0.08)]">

@@ -265,7 +265,8 @@ function QuickConvertWidget({ rate, fromMeta, toMeta }) {
 export default function CurrencyPairPage() {
   const { pair } = useParams();
 
-  const [fromSlug, toSlug] = (pair || "").split("-to-");
+  const normalizedPair = (pair || "").toLowerCase();
+  const [fromSlug, toSlug] = normalizedPair.split("-to-");
   const fromMeta = CURRENCIES_META[fromSlug];
   const toMeta = CURRENCIES_META[toSlug];
 
@@ -275,7 +276,7 @@ export default function CurrencyPairPage() {
   const [refreshed,   setRefreshed]   = useState(new Date());
   const [isFallback,  setIsFallback]  = useState(false);
 
-  const pairData = getCurrencyPair(pair);
+  const pairData = getCurrencyPair(normalizedPair);
 
   const fetchRate = useCallback(async () => {
     if (!fromMeta || !toMeta) return;
@@ -376,7 +377,7 @@ export default function CurrencyPairPage() {
 
   useEffect(() => { fetchRate(); }, [fetchRate]);
 
-  if (!fromMeta || !toMeta) return <Navigate to="/currency-converter" replace />;
+  if (!fromMeta || !toMeta || !pairData) return <Navigate to="/currency-converter" replace />;
 
   const relatedPairs = (pairData?.related || [])
     .map(slug => ({ slug, pair: CURRENCY_PAIRS[slug] }))
@@ -408,7 +409,7 @@ export default function CurrencyPairPage() {
 
       <SiteNav />
 
-      <article className="max-w-4xl mx-auto px-6 py-8">
+      <article className="max-w-4xl mx-auto px-6 pt-36 pb-8">
         {/* Breadcrumb */}
         <nav className="text-xs text-zinc-400 mb-6 flex items-center gap-1.5">
           <Link to="/" className="hover:text-gem-mist">Home</Link>

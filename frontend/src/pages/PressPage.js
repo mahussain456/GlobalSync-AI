@@ -31,7 +31,7 @@ export default function PressPage() {
 
       <SiteNav />
 
-      <article className="max-w-4xl mx-auto px-6 py-8">
+      <article className="max-w-4xl mx-auto px-6 pt-36 pb-8">
         <header className="mb-10">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-4">
             Press & Media

@@ -33,7 +33,7 @@ export default function PrivacyPolicyPage() {
 
       <SiteNav />
 
-      <article className="max-w-3xl mx-auto px-6 py-8">
+      <article className="max-w-3xl mx-auto px-6 pt-36 pb-8">
         <header className="mb-8">
           <h1 className="font-heading text-4xl font-bold text-gem-beige mb-3">Privacy Policy</h1>
           <p className="text-sm text-gem-beige/40">Last updated: {LAST_UPDATED}</p>

@@ -70,7 +70,7 @@ export default function AuthorPage() {
 
       <SiteNav />
 
-      <article className="max-w-4xl mx-auto px-6 py-12">
+      <article className="max-w-4xl mx-auto px-6 pt-36 pb-12">
         <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-8 flex flex-col md:flex-row items-center md:items-start gap-8 mb-12">
           <div className="w-32 h-32 bg-gem-gold/20 text-gem-gold rounded-full flex items-center justify-center font-bold text-4xl shrink-0 border border-gem-gold/30">
             {author.avatar}

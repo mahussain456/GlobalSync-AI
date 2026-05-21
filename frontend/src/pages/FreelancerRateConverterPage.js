@@ -55,7 +55,7 @@ export default function FreelancerRateConverterPage() {
       </div>
 
       <SiteNav />
-      <main className="flex-1 max-w-4xl mx-auto px-6 py-12 w-full">
+      <main className="flex-1 max-w-4xl mx-auto px-6 pt-36 pb-12 w-full">
         <div className="mb-10 text-center">
           <h1 className="font-heading text-3xl md:text-5xl font-bold mb-4 text-gem-beige">
             Freelancer Rate Converter

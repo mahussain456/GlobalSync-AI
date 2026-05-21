@@ -28,7 +28,7 @@ export default function DataSourcesPage() {
       </div>
 
       <SiteNav />
-      <main className="flex-1 max-w-3xl mx-auto px-6 py-12 w-full">
+      <main className="flex-1 max-w-3xl mx-auto px-6 pt-36 pb-12 w-full">
         <h1 className="text-3xl font-bold mb-6 font-heading">Data Sources & Methodology</h1>
         <div className="prose prose-invert max-w-none">
           <p>GlobalSync AI is committed to transparency. This page explains where our time zone and currency data comes from, how often it is refreshed, and where accuracy limits apply.</p>

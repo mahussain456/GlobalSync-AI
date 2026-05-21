@@ -129,7 +129,7 @@ export default function BlogPostPage() {
 
       <SiteNav />
 
-      <article className="max-w-3xl mx-auto px-6 py-10" data-testid="blog-post-article">
+      <article className="max-w-3xl mx-auto px-6 pt-36 pb-12" data-testid="blog-post-article">
         {/* Category + meta */}
         <header className="mb-8">
           <div className="flex flex-wrap items-center gap-3 mb-5">

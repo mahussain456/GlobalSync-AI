@@ -100,7 +100,12 @@ export default function CurrencyConverter({ aiDispatch }) {
   const handleConvert = async (amt = amount, from = fromCurrency, to = toCurrency) => {
     const numAmt = parseFloat(amt);
     if (!numAmt || isNaN(numAmt)) { toast.warning("Enter a valid amount"); return; }
-    if (from === to) { toast.warning("Select different currencies"); return; }
+    
+    // Normalize codes to uppercase immediately
+    const fromUpper = (from || "USD").toUpperCase();
+    const toUpper = (to || "EUR").toUpperCase();
+    
+    if (fromUpper === toUpper) { toast.warning("Select different currencies"); return; }
     setLoading(true);
     setResult(null);
     setErrorMsg(null);
@@ -110,12 +115,12 @@ export default function CurrencyConverter({ aiDispatch }) {
     if (shouldTryBackend) {
       try {
         const res = await axios.get(`${API}/currency/convert`, {
-          params: { amount: numAmt, from_currency: from, to_currency: to },
+          params: { amount: numAmt, from_currency: fromUpper, to_currency: toUpper },
           timeout: 2500
         });
         if (res.data && !res.data.is_fallback) {
           setResult(res.data);
-          fetchTrend(from, to);
+          fetchTrend(fromUpper, toUpper);
           setLoading(false);
           return;
         } else {
@@ -135,11 +140,11 @@ export default function CurrencyConverter({ aiDispatch }) {
 
     // Try ExchangeRate-API first
     try {
-      const directRes = await axios.get(`https://open.exchangerate-api.com/v6/latest/${from}`, {
+      const directRes = await axios.get(`https://open.exchangerate-api.com/v6/latest/${fromUpper}`, {
         timeout: 3000
       });
       rates = directRes.data?.rates || {};
-      rate = rates[to];
+      rate = rates[toUpper];
       if (rate !== undefined && rate !== null) {
         lastUpdate = directRes.data?.time_last_update_utc
           ? directRes.data.time_last_update_utc.slice(0, 16)
@@ -153,14 +158,14 @@ export default function CurrencyConverter({ aiDispatch }) {
     // Try Frankfurter as secondary fallback
     if (!fetchSuccess) {
       try {
-        const frankRes = await axios.get(`https://api.frankfurter.app/latest?from=${from}`, {
+        const frankRes = await axios.get(`https://api.frankfurter.app/latest?from=${fromUpper}`, {
           timeout: 3000
         });
         rates = frankRes.data?.rates || {};
-        if (from === to) {
+        if (fromUpper === toUpper) {
           rate = 1.0;
         } else {
-          rate = rates[to];
+          rate = rates[toUpper];
         }
         if (rate !== undefined && rate !== null) {
           lastUpdate = frankRes.data?.date ? `Live rates (${frankRes.data.date})` : "Live rates";
@@ -174,16 +179,16 @@ export default function CurrencyConverter({ aiDispatch }) {
     if (fetchSuccess) {
       const converted = Number((numAmt * rate).toFixed(6));
       setResult({
-        from,
-        to,
+        from: fromUpper,
+        to: toUpper,
         amount: numAmt,
         rate: Number(rate.toFixed(6)),
         converted,
         date: lastUpdate,
-        formatted: `${numAmt.toLocaleString()} ${from} = ${converted.toLocaleString()} ${to}`,
+        formatted: `${numAmt.toLocaleString()} ${fromUpper} = ${converted.toLocaleString()} ${toUpper}`,
         is_fallback: false
       });
-      fetchTrend(from, to);
+      fetchTrend(fromUpper, toUpper);
       setLoading(false);
       return;
     }
@@ -200,19 +205,19 @@ export default function CurrencyConverter({ aiDispatch }) {
       TRY: 32.2, RUB: 91.0, UAH: 39.5, ISK: 138.0
     };
     
-    const rFrom = fallbackRates[from] || 1.0;
-    const rTo = fallbackRates[to] || 1.0;
+    const rFrom = fallbackRates[fromUpper] || 1.0;
+    const rTo = fallbackRates[toUpper] || 1.0;
     const calcRate = rTo / rFrom;
     const converted = Number((numAmt * calcRate).toFixed(6));
     
     setResult({
-      from,
-      to,
+      from: fromUpper,
+      to: toUpper,
       amount: numAmt,
       rate: Number(calcRate.toFixed(6)),
       converted,
       date: "Offline Cache (Approximate)",
-      formatted: `${numAmt.toLocaleString()} ${from} = ${converted.toLocaleString()} ${to}`,
+      formatted: `${numAmt.toLocaleString()} ${fromUpper} = ${converted.toLocaleString()} ${toUpper}`,
       is_fallback: true
     });
     toast.info("Offline mode active: Using approximate rates");
@@ -221,9 +226,11 @@ export default function CurrencyConverter({ aiDispatch }) {
 
   const fetchTrend = async (from = fromCurrency, to = toCurrency) => {
     setLoadingTrend(true);
+    const fromUpper = (from || "USD").toUpperCase();
+    const toUpper = (to || "EUR").toUpperCase();
     try {
       const res = await axios.get(`${API}/currency/trend`, {
-        params: { from_currency: from, to_currency: to },
+        params: { from_currency: fromUpper, to_currency: toUpper },
         timeout: 2500
       });
       setTrend(res.data);
@@ -235,36 +242,44 @@ export default function CurrencyConverter({ aiDispatch }) {
   };
 
   const handleSwap = () => {
-    setFromCurrency(toCurrency);
-    setToCurrency(fromCurrency);
+    const nextFrom = (toCurrency || "EUR").toUpperCase();
+    const nextTo = (fromCurrency || "USD").toUpperCase();
+    setFromCurrency(nextFrom);
+    setToCurrency(nextTo);
     setResult(null);
     setTrend(null);
   };
 
   const shareLink = () => {
-    const q = `Convert ${amount} ${fromCurrency} to ${toCurrency}`;
+    const fromUpper = (fromCurrency || "USD").toUpperCase();
+    const toUpper = (toCurrency || "EUR").toUpperCase();
+    const q = `Convert ${amount} ${fromUpper} to ${toUpper}`;
     const url = `${window.location.origin}/dashboard?q=${encodeURIComponent(q)}`;
     navigator.clipboard.writeText(url).then(() => toast.success("Share link copied!"));
   };
 
   const copyResult = () => {
     if (!result) return;
-    const text = `${result.amount.toLocaleString()} ${result.from} = ${result.converted >= 1 ? result.converted.toLocaleString("en-US", { maximumFractionDigits: 4 }) : result.converted.toFixed(6)} ${result.to} (Rate: 1 ${result.from} = ${result.rate} ${result.to})`;
+    const fromUpper = (result.from || "USD").toUpperCase();
+    const toUpper = (result.to || "EUR").toUpperCase();
+    const text = `${result.amount.toLocaleString()} ${fromUpper} = ${result.converted >= 1 ? result.converted.toLocaleString("en-US", { maximumFractionDigits: 4 }) : result.converted.toFixed(6)} ${toUpper} (Rate: 1 ${fromUpper} = ${result.rate} ${toUpper})`;
     navigator.clipboard.writeText(text).then(() => toast.success("Result copied!"));
   };
 
   useEffect(() => {
     if (!aiDispatch?.entities) return;
     const { amount: amt, from_currency, to_currency } = aiDispatch.entities;
-    if (from_currency) setFromCurrency(from_currency);
-    if (to_currency) setToCurrency(to_currency);
+    const cleanFrom = (from_currency || "USD").toUpperCase();
+    const cleanTo = (to_currency || "EUR").toUpperCase();
+    setFromCurrency(cleanFrom);
+    setToCurrency(cleanTo);
     if (amt) setAmount(String(amt));
-    setTimeout(() => handleConvert(String(amt || 1), from_currency || fromCurrency, to_currency || toCurrency), 100);
+    setTimeout(() => handleConvert(String(amt || 1), cleanFrom, cleanTo), 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aiDispatch]);
 
-  const fromMeta = CURRENCIES.find(c => c.code === fromCurrency);
-  const toMeta = CURRENCIES.find(c => c.code === toCurrency);
+  const fromMeta = CURRENCIES.find(c => c.code === (fromCurrency || "USD").toUpperCase()) || CURRENCIES[0];
+  const toMeta = CURRENCIES.find(c => c.code === (toCurrency || "EUR").toUpperCase()) || CURRENCIES[1];
   const isPositive = trend?.change_percent >= 0;
 
   return (

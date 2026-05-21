@@ -7,7 +7,7 @@ export default function CurrencySelect({ currencies, value, onChange, testId }) 
   const containerRef = useRef(null);
   const searchRef = useRef(null);
 
-  const selected = currencies.find(c => c.code === value);
+  const selected = currencies.find(c => c.code === value?.toUpperCase()) || currencies[0];
 
   const filtered = search.trim()
     ? currencies.filter(c =>
@@ -88,7 +88,7 @@ export default function CurrencySelect({ currencies, value, onChange, testId }) 
                   type="button"
                   onClick={() => handleSelect(c.code)}
                   className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors hover:bg-white/10 ${
-                    c.code === value ? "bg-gem-gold/20 text-gem-gold font-semibold" : "text-gem-beige"
+                    c.code === value?.toUpperCase() ? "bg-gem-gold/20 text-gem-gold font-semibold" : "text-gem-beige"
                   }`}
                   data-testid={`${testId}-option-${c.code}`}
                 >

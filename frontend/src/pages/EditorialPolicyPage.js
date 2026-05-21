@@ -44,7 +44,7 @@ export default function EditorialPolicyPage() {
 
       <SiteNav />
 
-      <article className="max-w-3xl mx-auto px-6 py-12">
+      <article className="max-w-3xl mx-auto px-6 pt-36 pb-12">
         {/* Breadcrumb */}
         <nav className="text-xs text-gem-beige/40 mb-8 flex items-center gap-1.5">
           <Link to="/" className="hover:text-gem-beige/80">Home</Link>
