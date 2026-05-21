@@ -10,6 +10,9 @@ import { getBlogPostSEO } from "@/lib/seo";
 
 // ─── Content block renderer ───────────────────────────────────────────────────
 function renderBlock(block, i) {
+  if (typeof block === "string") {
+    return <p key={i} className="text-gem-beige/70 leading-relaxed mb-4 text-base">{block}</p>;
+  }
   switch (block.type) {
     case "p":
       return <p key={i} className="text-gem-beige/70 leading-relaxed mb-4 text-base">{block.text}</p>;
