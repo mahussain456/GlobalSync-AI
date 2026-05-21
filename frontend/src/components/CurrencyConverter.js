@@ -280,7 +280,7 @@ export default function CurrencyConverter({ aiDispatch }) {
 
   const fromMeta = CURRENCIES.find(c => c.code === (fromCurrency || "USD").toUpperCase()) || CURRENCIES[0];
   const toMeta = CURRENCIES.find(c => c.code === (toCurrency || "EUR").toUpperCase()) || CURRENCIES[1];
-  const isPositive = trend?.change_percent >= 0;
+  const isPositive = trend?.available && (trend?.change_percent ?? 0) >= 0;
 
   return (
     <div className="space-y-5" data-testid="currency-converter">
@@ -383,10 +383,10 @@ export default function CurrencyConverter({ aiDispatch }) {
                 </div>
               </div>
               <div className="flex flex-col items-end gap-2">
-                {trend && (
+                {trend?.available && typeof trend.change_percent === 'number' && (
                   <div className={`flex items-center gap-1 text-sm font-semibold ${isPositive ? "text-gem-sage" : "text-orange-400"}`} data-testid="trend-change">
                     {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                    {isPositive ? "+" : ""}{trend.change_percent}%
+                    {isPositive ? "+" : ""}{trend.change_percent.toFixed(2)}%
                     <span className="text-xs font-normal text-gem-mist ml-0.5">7d</span>
                   </div>
                 )}
