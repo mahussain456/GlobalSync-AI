@@ -18,7 +18,6 @@ import { useEffect } from "react";
 const BASE_URL     = "https://www.globalsync-ai.com";
 const BRAND        = "GlobalSync AI";
 const DEFAULT_TITLE = `${BRAND} — Free Time Zone & Currency Converter for Remote Teams`;
-const OG_IMAGE     = `${BASE_URL}/globalsync-ai-logo-1600x400.png`;
 
 export default function SEOHead({
   rawTitle,          // complete title — no brand suffix appended
