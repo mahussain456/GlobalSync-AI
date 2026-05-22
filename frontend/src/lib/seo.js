@@ -13,7 +13,9 @@
 
 const BASE_URL  = "https://www.globalsync-ai.com";
 const BRAND     = "GlobalSync AI";
-const OG_IMAGE  = `${BASE_URL}/globalsync-ai-logo-1600x400.png`;
+// Default Article image — dynamic OG endpoint renders a properly proportioned
+// 1200x630 social card per page. Used by Article schema.
+const ARTICLE_OG_FALLBACK = `${BASE_URL}/api/og?title=GlobalSync%20AI&subtitle=Time%20Zone%20%26%20Currency%20Tools&type=article`;
 const LOGO_URL  = `${BASE_URL}/favicon-512.png`;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -125,7 +127,9 @@ export const buildArticleSchema = (post) => ({
   },
   "mainEntityOfPage": { "@type": "WebPage", "@id": `${BASE_URL}/blog/${post.slug}` },
   "url": `${BASE_URL}/blog/${post.slug}`,
-  "image": OG_IMAGE,
+  "image": post.title
+    ? `${BASE_URL}/api/og?title=${encodeURIComponent(post.title)}&subtitle=${encodeURIComponent(post.metaDescription || '')}&type=article`
+    : ARTICLE_OG_FALLBACK,
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -367,10 +371,10 @@ const STATIC_META = {
     keywords: "GlobalSync AI data sources, exchange rate sources, IANA time zone database, ECB exchange rates",
   },
   "freelancer-rate-converter": {
-    rawTitle: `Freelancer Rate Converter | ${BRAND}`,
-    description: `Convert freelancer hourly rates, project fees, and retainers with live exchange rates. Practical guidance for remote workers and global clients.`,
+    rawTitle: `Freelance Hourly Rate to Salary Calculator | ${BRAND}`,
+    description: `Convert freelance hourly rates to W-2 salary equivalents and across 160+ currencies. Factor in taxes, unbilled time, and overhead to set sustainable rates.`,
     canonical: "/freelancer-rate-converter",
-    keywords: "freelancer rate converter, hourly rate converter, project fee converter, international freelancer pricing",
+    keywords: "freelance hourly rate calculator, hourly to salary calculator, freelancer rate to W-2, freelance pricing, contractor hourly rate, international freelancer rate converter",
   },
   "author-ahmed-hussain": {
     rawTitle: `Ahmed Hussain — Founder & Developer | ${BRAND}`,

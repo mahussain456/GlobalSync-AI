@@ -12,7 +12,9 @@ const INFO_PATH = path.join(BUILD_DIR, 'BUILD_INFO.json');
 const APP_ROOT = path.join(__dirname, '..');
 const PUBLIC_ORIGIN = 'https://www.globalsync-ai.com';
 const BRAND = 'GlobalSync AI';
-const OG_IMAGE = `${PUBLIC_ORIGIN}/globalsync-ai-logo-1600x400.png`;
+// Fallback OG image — used only when react-snap fails to render a route.
+// React-snap's normal output uses the dynamic /api/og endpoint via SEOHead.
+const OG_IMAGE = `${PUBLIC_ORIGIN}/api/og?title=GlobalSync%20AI&subtitle=Time%20Zone%20%26%20Currency%20Tools&type=website`;
 const DEFAULT_DESCRIPTION = 'Free AI-powered time zone converter, meeting planner, world clock, and live currency rates for remote teams, freelancers, and digital nomads.';
 
 // Resolve git commit SHA
@@ -593,8 +595,8 @@ function getFallbackMeta(route) {
     meta.title = `Data Sources | Time Zones & Currencies | ${BRAND}`;
     meta.description = 'See the sources powering GlobalSync AI: IANA time zone rules, ECB and ExchangeRate-API currency data, and AI model information with limitations.';
   } else if (normalizedRoute === '/freelancer-rate-converter') {
-    meta.title = `Freelancer Rate Converter | ${BRAND}`;
-    meta.description = 'Convert freelancer hourly rates, project fees, and retainers with live exchange rates. Practical guidance for remote workers and global clients.';
+    meta.title = `Freelance Hourly Rate to Salary Calculator | ${BRAND}`;
+    meta.description = 'Convert freelance hourly rates to W-2 salary equivalents and across 160+ currencies. Factor in taxes, unbilled time, and overhead to set sustainable rates.';
   } else if (normalizedRoute === '/press') {
     meta.title = `Press & Media | ${BRAND}`;
     meta.description = 'Get the latest press releases, media kits, brand assets, and contact information for GlobalSync AI time zone and currency tools.';
@@ -1730,23 +1732,44 @@ function writeFallbackSnapshots() {
 
   const shell = fs.readFileSync(shellPath, 'utf8');
   let written = 0;
+  let skipped = 0;
   for (const route of routes) {
     const routePath = route === '/' ? shellPath : path.join(BUILD_DIR, route.replace(/^\//, ''), 'index.html');
+
+    // Preserve react-snap's rich output. Overwrite only if the file is missing
+    // or is essentially the empty CRA shell. Pages that are intentionally
+    // noindex (e.g. /404) don't ship JSON-LD, so we accept them when they have
+    // real body content.
+    if (fs.existsSync(routePath)) {
+      try {
+        const existing = fs.readFileSync(routePath, 'utf8');
+        const hasSchema = existing.includes('application/ld+json');
+        const isNoIndex = /<meta[^>]+name=["']robots["'][^>]*noindex/i.test(existing);
+        const hasH1 = /<h1[\s>]/i.test(existing);
+        if ((hasSchema || isNoIndex) && hasH1) {
+          skipped += 1;
+          continue;
+        }
+      } catch (_) {
+        // fall through to overwrite
+      }
+    }
+
     fs.mkdirSync(path.dirname(routePath), { recursive: true });
-    
+
     // Core SSG pre-render logic: inject both meta tags AND semantic HTML body text
     const fallbackMeta = getFallbackMeta(route);
     const fallbackBody = getFallbackBody(route);
-    
+
     let routeHtml = injectMeta(shell, fallbackMeta);
     // Replace <div id="root">...</div> with our pre-rendered semantic HTML body
     routeHtml = routeHtml.replace(/<div id="root">[\s\S]*?<\/div>(?=\s*<script)/i, `<div id="root">${fallbackBody}</div>`);
-    
+
     fs.writeFileSync(routePath, routeHtml);
     written += 1;
   }
 
-  console.log(`[build-info] Wrote ${written} browserless fallback SEO snapshots with fully pre-rendered HTML bodies`);
+  console.log(`[build-info] Fallback snapshots: ${written} written, ${skipped} skipped (react-snap output preserved)`);
   return written;
 }
 

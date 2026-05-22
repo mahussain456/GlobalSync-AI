@@ -1,11 +1,30 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const BUILD_DIR = path.join(__dirname, '../build');
 const PUBLIC_DIR = path.join(__dirname, '../public');
 const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8'));
 const routes = (pkg.reactSnap && pkg.reactSnap.include) || [];
+
+// Resolve a stable lastmod date. Priority:
+//   1. SITEMAP_LASTMOD env var (YYYY-MM-DD)
+//   2. The repo's latest git commit date — only changes when source actually changes
+//   3. Today's date (fallback)
+let lastmod = process.env.SITEMAP_LASTMOD;
+if (!lastmod) {
+  try {
+    lastmod = execSync('git log -1 --format=%cd --date=short', {
+      cwd: path.join(__dirname, '..', '..'),
+      encoding: 'utf8',
+      timeout: 5000,
+    }).trim();
+  } catch (_) {
+    lastmod = new Date().toISOString().split('T')[0];
+  }
+}
+console.log(`[generate-seo-assets] Using lastmod=${lastmod}`);
 
 console.log('Generating SEO assets...');
 
@@ -52,9 +71,12 @@ for (const route of routes) {
   else if (['/time-zone-converter', '/currency-converter', '/meeting-planner'].includes(route)) { priority = "0.9"; }
   else if (route === '/blog') { priority = "0.8"; changefreq = "weekly"; }
   
+  // Don't include /404 in the public sitemap
+  if (route === '/404') continue;
+
   sitemapXML += `  <url>\n`;
   sitemapXML += `    <loc>https://www.globalsync-ai.com${route}</loc>\n`;
-  sitemapXML += `    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>\n`;
+  sitemapXML += `    <lastmod>${lastmod}</lastmod>\n`;
   sitemapXML += `    <changefreq>${changefreq}</changefreq>\n`;
   sitemapXML += `    <priority>${priority}</priority>\n`;
   sitemapXML += `  </url>\n`;
