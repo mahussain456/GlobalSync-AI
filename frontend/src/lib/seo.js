@@ -230,7 +230,7 @@ export const getMeetingPlannerSEO = () => ({
  * @param {object} pairData — entry from CITY_PAIRS[pair] (has .faqs etc.)
  */
 export const getCityPairSEO = ({ cityA, cityB, pair, pairData }) => ({
-  rawTitle: `${cityA.name} to ${cityB.name} Time Difference | ${BRAND}`,
+  rawTitle: `${cityA.name} to ${cityB.name} Time | ${BRAND}`,
   description: `See the current time in ${cityA.name} and ${cityB.name}, find the best overlap window for meetings, and check the time difference.`,
   canonical: `/time/${pair}`,
   keywords: `${cityA.name} to ${cityB.name} time, ${cityA.abbr} to ${cityB.abbr}, time difference ${cityA.name} ${cityB.name}, ${cityA.name} time now, ${cityB.name} time now, meeting overlap ${cityA.name} ${cityB.name}`,

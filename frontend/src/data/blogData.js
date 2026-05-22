@@ -6,7 +6,7 @@ export const BLOG_POSTS = [
   {
     slug: "best-time-to-call-india-from-us-for-business",
     title: "Best Time to Call India from the US for Business (2026 Guide)",
-    excerpt: "Scheduling a business call between the US and India doesn't have to mean 3 AM meetings. Here is the exact overlap window you should use based on your US time zone.",
+    excerpt: "Scheduling a US-India business call doesn't mean 3 AM meetings. Here is the exact overlap window you should use based on your US time zone.",
     category: "Remote Work",
     categoryColor: "blue",
     publishDate: "May 2026",
@@ -60,7 +60,7 @@ export const BLOG_POSTS = [
   {
     slug: "how-to-schedule-meetings-across-multiple-time-zones-fairly",
     title: "How to Schedule Meetings Across 3+ Time Zones Fairly",
-    excerpt: "When your team spans San Francisco, London, and Tokyo, finding a meeting time is an exercise in compromise. Here is how to structure global meetings without burning out your team.",
+    excerpt: "When your team spans 3+ time zones, finding a meeting time is an exercise in compromise. Learn how to structure meetings without causing burnout.",
     category: "Remote Work",
     categoryColor: "blue",
     publishDate: "May 2026",
@@ -105,7 +105,7 @@ export const BLOG_POSTS = [
   {
     slug: "freelancer-rate-calculator-hourly-to-annual",
     title: "Freelancer Rate Calculator: Hourly to Annual Conversion Explained",
-    excerpt: "How much do you actually make as a freelancer? Earning $50/hour doesn't mean a $100k salary. Here is how to accurately convert your freelance hourly rate into an annual salary equivalent.",
+    excerpt: "Earning $50/hour doesn't mean a $100k salary. Here is how to accurately convert your freelance hourly rate into a true annual salary equivalent.",
     category: "Freelancing",
     categoryColor: "emerald",
     publishDate: "May 2026",

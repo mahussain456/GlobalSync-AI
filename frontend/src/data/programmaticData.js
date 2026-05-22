@@ -307,7 +307,10 @@ Object.keys(CITIES).forEach(cityA => {
             { q: `What is the time difference between ${CITIES[cityA].name} and ${CITIES[cityB].name}?`, a: `The time difference varies depending on daylight saving time. Use the live clock above to see the exact current time gap.` },
             { q: `How can I schedule a meeting for both cities?`, a: `Find a time window where both cities are between 9 AM and 5 PM local time using the conversion table or our Meeting Planner tool.` }
           ],
-          related: []
+          related: Object.keys(CITIES)
+            .filter(c => c !== cityA && c !== cityB)
+            .slice(0, 3)
+            .map(c => `${cityA}-to-${c}`)
         };
       }
     }
@@ -328,7 +331,10 @@ Object.keys(CURRENCIES_META).forEach(curA => {
             { q: `What is the current ${CURRENCIES_META[curA].code} to ${CURRENCIES_META[curB].code} exchange rate?`, a: `The rate fluctuates constantly. Check the live value at the top of this page.` },
             { q: `Why does the exchange rate change?`, a: `Exchange rates are driven by global supply and demand, inflation, and central bank interest rates for both the ${CURRENCIES_META[curA].name} and the ${CURRENCIES_META[curB].name}.` }
           ],
-          related: []
+          related: Object.keys(CURRENCIES_META)
+            .filter(c => c !== curA && c !== curB)
+            .slice(0, 3)
+            .map(c => `${curA}-to-${c}`)
         };
       }
     }

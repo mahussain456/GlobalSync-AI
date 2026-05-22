@@ -1292,6 +1292,43 @@ function getFallbackBody(route) {
               ${faqHtml}
             </div>
           ` : ''}
+          ${(function() {
+            let relatedHtml = '';
+            const ALL_CITIES = Object.keys(CITIES);
+            const related = [];
+            for (const c of ALL_CITIES) {
+              if (c !== pair[0] && c !== pair[1]) {
+                related.push(`${pair[0]}-to-${c}`);
+                related.push(`${c}-to-${pair[1]}`);
+              }
+            }
+            
+            if (related.length > 0) {
+              const links = related.map(slug => {
+                const parts = slug.split('-to-');
+                const cA = CITIES[parts[0]];
+                const cB = CITIES[parts[1]];
+                if (!cA || !cB) return '';
+                return `
+                  <a href="/time/${slug}" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 1.5rem; padding: 1rem; display: block; text-decoration: none;">
+                    <div style="font-weight: 600; color: #F5F5F0; font-size: 0.875rem;">Compare ${cA.name} to ${cB.name}</div>
+                    <div style="font-size: 0.75rem; color: #A5BCAE; margin-top: 0.25rem;">Live Time Converter</div>
+                  </a>
+                `;
+              }).filter(Boolean).join('');
+              if (links) {
+                relatedHtml = `
+                  <div style="margin-top: 2.5rem; margin-bottom: 2.5rem;">
+                    <h2 style="font-size: 1.25rem; color: #F5F5F0; margin-bottom: 1rem;">Related Time Zone Converters</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem;">
+                      ${links}
+                    </div>
+                  </div>
+                `;
+              }
+            }
+            return relatedHtml;
+          })()}
         </section>
       `;
     }
@@ -1356,6 +1393,43 @@ function getFallbackBody(route) {
               ${faqHtml}
             </div>
           ` : ''}
+          ${(function() {
+            let relatedHtml = '';
+            const ALL_CURS = Object.keys(CURRENCIES_META);
+            const related = [];
+            for (const c of ALL_CURS) {
+              if (c !== pair[0] && c !== pair[1]) {
+                related.push(`${pair[0]}-to-${c}`);
+                related.push(`${c}-to-${pair[1]}`);
+              }
+            }
+            
+            if (related.length > 0) {
+              const links = related.map(slug => {
+                const parts = slug.split('-to-');
+                const fMeta = CURRENCIES_META[parts[0]];
+                const tMeta = CURRENCIES_META[parts[1]];
+                if (!fMeta || !tMeta) return '';
+                return `
+                  <a href="/currency/${slug}" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 1.5rem; padding: 1rem; display: block; text-decoration: none;">
+                    <div style="font-weight: 600; color: #F5F5F0; font-size: 0.875rem;">Check ${fMeta.code} to ${tMeta.code} Exchange Rate</div>
+                    <div style="font-size: 0.75rem; color: #A5BCAE; margin-top: 0.25rem;">${fMeta.name} to ${tMeta.name}</div>
+                  </a>
+                `;
+              }).filter(Boolean).join('');
+              if (links) {
+                relatedHtml = `
+                  <div style="margin-top: 2.5rem; margin-bottom: 2.5rem;">
+                    <h2 style="font-size: 1.25rem; color: #F5F5F0; margin-bottom: 1rem;">Related Currency Pairs</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem;">
+                      ${links}
+                    </div>
+                  </div>
+                `;
+              }
+            }
+            return relatedHtml;
+          })()}
         </section>
       `;
     }

@@ -178,7 +178,7 @@ export default function FreelancerRateConverterPage() {
 
           <h3 className="text-xl font-semibold text-gem-beige mt-8">Related guides</h3>
           <ul className="list-disc pl-5 space-y-2">
-            <li><Link to="/blog/usd-to-inr-freelancers-live-currency-converter-2026" className="text-gem-gold hover:underline">Why freelancers need a live currency converter</Link></li>
+            <li><Link to="/blog/usd-to-pkr-freelancers-how-to-price" className="text-gem-gold hover:underline">Why freelancers need a live currency converter</Link></li>
             <li><Link to="/currency-converter" className="text-gem-gold hover:underline">Open the live currency converter</Link></li>
             <li><Link to="/methodology" className="text-gem-gold hover:underline">Review our rate and data methodology</Link></li>
           </ul>

@@ -196,11 +196,11 @@ export default function CityPairPage() {
   const pairData = getCityPair(normalizedPair);
 
   if (!cityA || !cityB || !pairData) return <Navigate to="/time-zone-converter" replace />;
-  const title = `${cityA.name} to ${cityB.name} Time Converter`;
+  const title = `${cityA.name} to ${cityB.name} Time`;
   const h1 = `${cityA.name} to ${cityB.name} Time Converter — Live World Clock`;
 
   const relatedPairs = (pairData?.related || [])
-    .map(slug => ({ slug, pair: CITY_PAIRS[slug] }))
+    .map(slug => ({ slug, pair: getCityPair(slug) }))
     .filter(r => r.pair)
     .map(r => ({ slug: r.slug, from: CITIES[r.pair.from], to: CITIES[r.pair.to] }));
 
@@ -360,10 +360,11 @@ export default function CityPairPage() {
             <p className="text-sm font-semibold text-gem-beige/90 mb-0.5">Want a deeper guide on working across time zones?</p>
             <p className="text-xs text-gem-sage">How to schedule meetings fairly, handle DST, and build async habits.</p>
           </div>
-          <Link to="/blog/schedule-meetings-across-time-zones-2026"
-            className="shrink-0 text-sm font-semibold text-gem-gold hover:text-gem-gold/80 transition-colors whitespace-nowrap flex items-center gap-1">
-            Read guide: How to schedule meetings across time zones <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          <div className="mt-6 flex flex-col sm:flex-row items-center gap-3 justify-center">
+            <Link to="/blog/how-to-schedule-meetings-across-multiple-time-zones-fairly" className="text-sm font-semibold text-gem-gold hover:text-gem-gold/80 transition-colors flex items-center gap-1">
+              Read: How to schedule global meetings <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </section>
 
         {/* Use full tool CTA */}
@@ -383,9 +384,11 @@ export default function CityPairPage() {
         <AdBanner slot="rectangle" className="mb-8" />
 
         {/* Related pairs */}
-        {relatedPairs.length > 0 && (
-          <section className="mb-8">
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-4">Related Time Zone Converters</h2>
+        <section className="mb-8">
+          <h2 className="font-heading text-xl font-bold text-gem-beige mb-4">
+            Related Time Zone Converters ({relatedPairs.length} found)
+          </h2>
+          {relatedPairs.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {relatedPairs.map(({ slug, from, to }) => (
                 <Link
@@ -400,8 +403,8 @@ export default function CityPairPage() {
                 </Link>
               ))}
             </div>
-          </section>
-        )}
+          )}
+        </section>
       </article>
 
       <SiteFooter />

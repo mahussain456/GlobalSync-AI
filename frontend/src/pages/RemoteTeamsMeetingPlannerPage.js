@@ -67,7 +67,7 @@ export default function RemoteTeamsMeetingPlannerPage() {
             <h3 className="text-xl font-semibold text-gem-beige mt-8 mb-3">Related resources</h3>
             <ul>
               <li><Link to="/us-india-meeting-time" className="text-gem-gold hover:text-gem-gold/80">Best time for US and India meetings</Link></li>
-              <li><Link to="/blog/schedule-meetings-across-time-zones-2026" className="text-gem-gold hover:text-gem-gold/80">How to schedule meetings across time zones</Link></li>
+              <li><Link to="/blog/how-to-schedule-meetings-across-multiple-time-zones-fairly" className="text-gem-gold hover:text-gem-gold/80">How to schedule meetings across time zones</Link></li>
               <li><Link to="/methodology" className="text-gem-gold hover:text-gem-gold/80">How our overlap recommendations work</Link></li>
             </ul>
           </div>
