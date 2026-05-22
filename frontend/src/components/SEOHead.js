@@ -13,7 +13,7 @@
  *   structuredData        — Single schema object OR array (rendered as @graph)
  *   noIndex     {bool}    — Emits noindex,nofollow robots tag when true (default: false)
  */
-import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 
 const BASE_URL     = "https://www.globalsync-ai.com";
 const BRAND        = "GlobalSync AI";
@@ -48,7 +48,7 @@ export default function SEOHead({
   const dynamicOgImage = `${BASE_URL}/api/og?title=${ogTitle}&subtitle=${ogSubtitle}&type=${ogType}`;
 
   return (
-    <Helmet>
+    <>
       {/* ── Primary ────────────────────────────────────────────────────────── */}
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
@@ -88,6 +88,6 @@ export default function SEOHead({
           {JSON.stringify(schemaOutput)}
         </script>
       )}
-    </Helmet>
+    </>
   );
 }

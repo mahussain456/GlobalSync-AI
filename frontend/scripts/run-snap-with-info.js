@@ -1625,21 +1625,21 @@ function injectMeta(html, meta) {
     .replace(/<meta[^>]+name=["']twitter:(card|title|description|image)["'][^>]*>/gi, '');
 
   const tags = [
-    `<title data-rh="true">${escapeHtml(meta.title)}</title>`,
-    `<meta data-rh="true" name="description" content="${escapeHtml(meta.description)}">`,
-    `<meta data-rh="true" name="robots" content="${escapeHtml(meta.robots)}">`,
-    `<link data-rh="true" rel="canonical" href="${escapeHtml(meta.canonical)}">`,
-    `<meta data-rh="true" property="og:title" content="${escapeHtml(meta.title)}">`,
-    `<meta data-rh="true" property="og:description" content="${escapeHtml(meta.description)}">`,
-    '<meta data-rh="true" property="og:type" content="website">',
-    `<meta data-rh="true" property="og:url" content="${escapeHtml(meta.canonical)}">`,
-    `<meta data-rh="true" property="og:site_name" content="${BRAND}">`,
-    `<meta data-rh="true" property="og:image" content="${OG_IMAGE}">`,
-    '<meta data-rh="true" property="og:locale" content="en_US">',
-    '<meta data-rh="true" name="twitter:card" content="summary_large_image">',
-    `<meta data-rh="true" name="twitter:title" content="${escapeHtml(meta.title)}">`,
-    `<meta data-rh="true" name="twitter:description" content="${escapeHtml(meta.description)}">`,
-    `<meta data-rh="true" name="twitter:image" content="${OG_IMAGE}">`,
+    `<title>${escapeHtml(meta.title)}</title>`,
+    `<meta name="description" content="${escapeHtml(meta.description)}">`,
+    `<meta name="robots" content="${escapeHtml(meta.robots)}">`,
+    `<link rel="canonical" href="${escapeHtml(meta.canonical)}">`,
+    `<meta property="og:title" content="${escapeHtml(meta.title)}">`,
+    `<meta property="og:description" content="${escapeHtml(meta.description)}">`,
+    '<meta property="og:type" content="website">',
+    `<meta property="og:url" content="${escapeHtml(meta.canonical)}">`,
+    `<meta property="og:site_name" content="${BRAND}">`,
+    `<meta property="og:image" content="${OG_IMAGE}">`,
+    '<meta property="og:locale" content="en_US">',
+    '<meta name="twitter:card" content="summary_large_image">',
+    `<meta name="twitter:title" content="${escapeHtml(meta.title)}">`,
+    `<meta name="twitter:description" content="${escapeHtml(meta.description)}">`,
+    `<meta name="twitter:image" content="${OG_IMAGE}">`,
   ].join('');
 
   return cleaned.replace('</head>', `${tags}</head>`);
