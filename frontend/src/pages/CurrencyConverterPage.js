@@ -266,6 +266,31 @@ export default function CurrencyConverterPage() {
             </Link>
           </div>
         </section>
+        {/* ── ALL CURRENCY PAIR GUIDES — static links for SEO crawlability ── */}
+        <section className="mb-8">
+          <h2 className="font-heading text-xl font-bold text-gem-beige mb-2">All Currency Pair Converter Guides</h2>
+          <p className="text-gem-beige/50 text-sm mb-5">Browse all {ALL_CURRENCY_PAIR_SLUGS.length} dedicated currency converter pages — live rates, 7-day trend charts, and freelancer invoicing tips for every pair.</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            {ALL_CURRENCY_PAIR_SLUGS.map(slug => {
+              const pair = CURRENCY_PAIRS[slug];
+              const from = CURRENCIES_META[pair.from];
+              const to   = CURRENCIES_META[pair.to];
+              if (!from || !to) return null;
+              return (
+                <Link
+                  key={slug}
+                  to={`/currency/${slug}`}
+                  className="bg-white/5 rounded-xl border border-white/10 p-3 hover:border-gem-gold/40 transition-all group"
+                >
+                  <div className="font-medium text-gem-beige/90 text-xs group-hover:text-gem-gold transition-colors leading-tight">
+                    {from.code} → {to.code}
+                  </div>
+                  <div className="text-[10px] text-gem-beige/35 mt-0.5">{from.name} to {to.name}</div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
       </article>
       <SiteFooter />
     </div>

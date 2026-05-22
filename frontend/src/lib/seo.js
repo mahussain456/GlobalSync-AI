@@ -139,7 +139,7 @@ export const buildArticleSchema = (post) => ({
  */
 export const getHomepageSEO = ({ faqs = [] } = {}) => ({
   rawTitle: `${BRAND} | Time Zone & Currency Converter`,
-  description: `Free AI time zone converter, meeting planner, and live currency rates. Built for remote teams and freelancers. No signup required.`,
+  description: `Free AI-powered time zone converter, meeting planner, and live exchange rates for 160+ currencies. Built for remote teams and freelancers. No signup required.`,
   canonical: "/",
   keywords: "AI time zone converter, free world clock, meeting planner remote teams, currency converter 160 currencies, live exchange rates, best meeting time multiple time zones",
   ogType: "website",
@@ -160,7 +160,7 @@ export const getHomepageSEO = ({ faqs = [] } = {}) => ({
  */
 export const getTimeZoneHubSEO = () => ({
   rawTitle: `Free Time Zone Converter | World Clock | ${BRAND}`,
-  description: `Compare live time across 25+ cities. Convert any time zone instantly, find overlaps, and plan meetings across continents. Free.`,
+  description: `Compare live time across 25+ cities instantly. Convert any time zone, find business-hour overlaps, and plan meetings across continents. Free, no account needed.`,
   canonical: "/time-zone-converter",
   keywords: "time zone converter, world clock, city time comparison, international time zones, business hour overlap, EST to IST, GMT to PST, free world clock online",
   ogType: "website",
@@ -182,7 +182,7 @@ export const getTimeZoneHubSEO = () => ({
  */
 export const getCurrencyHubSEO = () => ({
   rawTitle: `Free Live Currency Converter | 160+ Rates | ${BRAND}`,
-  description: `Convert 160+ currencies with live mid-market exchange rates. USD to INR, EUR to GBP, and hundreds more. Real-time and free.`,
+  description: `Convert 160+ currencies with live mid-market exchange rates. USD to INR, EUR to GBP, AED, PKR, NGN and hundreds more. Real-time, accurate, and completely free.`,
   canonical: "/currency-converter",
   keywords: "live currency converter, real-time exchange rates, USD to INR, EUR to GBP, free currency converter, 160 currencies, mid-market rate",
   ogType: "website",
@@ -205,7 +205,7 @@ export const getCurrencyHubSEO = () => ({
  */
 export const getMeetingPlannerSEO = () => ({
   rawTitle: `Free Meeting Planner | Global Time Zones | ${BRAND}`,
-  description: `Find the best meeting time across cities. Instantly see business-hour overlaps and schedule global team calls. Free, no account.`,
+  description: `Find the best meeting time across multiple cities. Instantly see business-hour overlaps and schedule global team calls without forcing anyone into off-hours. Free.`,
   canonical: "/meeting-planner",
   keywords: "meeting planner, best meeting time multiple time zones, business hour overlap calculator, global team scheduling, meeting overlap finder, remote team meeting tool",
   ogType: "website",
@@ -326,55 +326,55 @@ export const getBlogPostSEO = ({ post }) => ({
 const STATIC_META = {
   about: {
     rawTitle: `About ${BRAND} | Time Zone & Currency Tools`,
-    description: `Learn about ${BRAND} — a free, AI platform combining a world clock, time zone converter, meeting planner, and currency converter.`,
+    description: `Learn about ${BRAND} — a free, AI-powered platform combining a world clock, time zone converter, meeting planner, and live currency converter for remote teams.`,
     canonical: "/about",
     keywords: "about GlobalSync AI, free time zone tool, remote team tools, who we are",
   },
   contact: {
     rawTitle: `Contact ${BRAND} | Get in Touch`,
-    description: `Have a question, suggestion, or found a bug? Contact the ${BRAND} team. We read every message and typically respond within 2 business days.`,
+    description: `Have a question, suggestion, or found a bug? Contact the ${BRAND} team. We read every message and typically respond within 2 business days. No bots, no ticket queue.`,
     canonical: "/contact",
     keywords: "contact GlobalSync AI, feedback, support",
   },
   "privacy-policy": {
     rawTitle: `Privacy Policy | ${BRAND}`,
-    description: `Read the ${BRAND} privacy policy. Learn how we collect and protect your data when you use our time zone and currency tools.`,
+    description: `Read the ${BRAND} privacy policy. Learn how we handle data when you use our free time zone converter, currency converter, and meeting planner tools.`,
     canonical: "/privacy-policy",
     keywords: "GlobalSync AI privacy policy, data protection",
   },
   "terms-of-service": {
     rawTitle: `Terms of Service | ${BRAND}`,
-    description: `Read the ${BRAND} terms of service. By using our free time zone and currency tools, you agree to these terms and conditions.`,
+    description: `Read the ${BRAND} terms of service. By using our free time zone converter and currency tools, you agree to these straightforward terms and conditions.`,
     canonical: "/terms-of-service",
     keywords: "GlobalSync AI terms of service",
   },
   "editorial-policy": {
     rawTitle: `Editorial Policy | ${BRAND}`,
-    description: `Learn how ${BRAND} creates, reviews, and corrects content across our tools and blog. Our editorial standards are transparent and independent.`,
+    description: `Learn how ${BRAND} creates, reviews, and corrects content across our tools and blog. Our editorial standards are transparent, independent, and publicly documented.`,
     canonical: "/editorial-policy",
     keywords: "GlobalSync AI editorial policy, content standards",
   },
   methodology: {
     rawTitle: `Methodology | Data Sources & AI | ${BRAND}`,
-    description: `How ${BRAND} sources time zone rules, live exchange rates, and generates AI responses. Update frequencies and limitations explained.`,
+    description: `How ${BRAND} sources time zone rules, live exchange rates, and generates AI responses. Update frequencies, data providers, and known limitations explained.`,
     canonical: "/methodology",
     keywords: "GlobalSync AI methodology, IANA time zone database, ECB exchange rates, AI transparency",
   },
   "data-sources": {
     rawTitle: `Data Sources | Time Zones & Exchange Rates | ${BRAND}`,
-    description: `See the data sources behind ${BRAND}, including IANA time zone rules, ECB and ExchangeRate-API currency data, and our accuracy limitations.`,
+    description: `See the data sources powering ${BRAND}: IANA time zone rules, ECB and ExchangeRate-API currency data, and AI model details, including accuracy limitations.`,
     canonical: "/data-sources",
     keywords: "GlobalSync AI data sources, exchange rate sources, IANA time zone database, ECB exchange rates",
   },
   "freelancer-rate-converter": {
     rawTitle: `Freelancer Rate Converter | Hourly & Project | ${BRAND}`,
-    description: `Convert freelancer hourly rates, project fees, and retainers across major currencies with practical guidance for remote workers and clients.`,
+    description: `Convert freelancer hourly rates, project fees, and retainers across major currencies. Practical guidance and live exchange rates for remote workers and global clients.`,
     canonical: "/freelancer-rate-converter",
     keywords: "freelancer rate converter, hourly rate converter, project fee converter, international freelancer pricing",
   },
   "author-ahmed-hussain": {
     rawTitle: `Ahmed Hussain — Founder & Developer | ${BRAND}`,
-    description: `Ahmed Hussain is the founder and developer of GlobalSync AI, a free toolkit for remote teams and freelancers working across time zones and currencies. Based in Karachi, Pakistan.`,
+    description: `Ahmed Hussain is the founder and developer of ${BRAND}, a free toolkit for remote teams and freelancers working across time zones and currencies. Based in Karachi, Pakistan.`,
     canonical: "/authors/ahmed-hussain",
     keywords: "Ahmed Hussain, GlobalSync AI founder, remote work tools developer, Karachi Pakistan",
   },

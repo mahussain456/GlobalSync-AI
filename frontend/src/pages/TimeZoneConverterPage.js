@@ -5,7 +5,8 @@ import SEOHead from "@/components/SEOHead";
 import AdBanner from "@/components/AdBanner";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
-import { CITIES, CITY_PAIRS, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
+import { CITIES, CITY_PAIRS, getCityPair, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
+
 import { getTimeZoneHubSEO } from "@/lib/seo";
 import TimeConverter from "@/components/TimeConverter";
 
@@ -259,6 +260,31 @@ export default function TimeZoneConverterPage() {
                 <div className="text-xs text-gem-beige/50">Find the best meeting time across any cities</div>
               </div>
             </Link>
+          </div>
+        </section>
+        {/* ── ALL CITY PAIR GUIDES — static links for SEO crawlability ── */}
+        <section className="mb-8">
+          <h2 className="font-heading text-xl font-bold text-gem-beige mb-2">All City-to-City Time Zone Guides</h2>
+          <p className="text-gem-beige/50 text-sm mb-5">Browse all {ALL_CITY_PAIR_SLUGS.length} dedicated time zone converter guides — live clocks, meeting overlap windows, and tailored FAQs for each pair.</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            {ALL_CITY_PAIR_SLUGS.map(slug => {
+              const pair = CITY_PAIRS[slug];
+              const from = CITIES[pair.from];
+              const to   = CITIES[pair.to];
+              if (!from || !to) return null;
+              return (
+                <Link
+                  key={slug}
+                  to={`/time/${slug}`}
+                  className="bg-white/5 rounded-xl border border-white/10 p-3 hover:border-gem-gold/40 transition-all group"
+                >
+                  <div className="font-medium text-gem-beige/90 text-xs group-hover:text-gem-gold transition-colors leading-tight">
+                    {from.name} → {to.name}
+                  </div>
+                  <div className="text-[10px] text-gem-beige/35 mt-0.5">{from.abbr} to {to.abbr}</div>
+                </Link>
+              );
+            })}
           </div>
         </section>
       </article>

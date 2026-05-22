@@ -5,18 +5,6 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { getStaticPageSEO } from "@/lib/seo";
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "GlobalSync AI",
-  "url": "https://www.globalsync-ai.com",
-  "description": "Free AI-powered time zone converter, currency converter, and meeting planner for remote teams and global workers.",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://www.globalsync-ai.com/dashboard?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-};
 
 export default function AboutPage() {
   const seo = getStaticPageSEO("about");
