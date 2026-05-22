@@ -43,7 +43,7 @@ export default function Dashboard() {
   return (
     <>
       <SEOHead
-        title="GlobalSync AI — Time Zone & Currency Converter Dashboard"
+        rawTitle="GlobalSync AI Dashboard | Time Zone & Currency Converter"
         description="Convert time zones, plan meetings across cities, and check live currency rates for 160+ currencies. Free AI-powered dashboard — no signup required."
         canonical="/dashboard"
         keywords="time zone converter, currency converter, meeting planner, world clock, live exchange rates"

@@ -4,15 +4,13 @@ import { ArrowRight, Clock } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import { getStaticPageSEO } from "@/lib/seo";
 
 export default function USIndiaMeetingTimePage() {
+  const seo = getStaticPageSEO("us-india-meeting-time");
   return (
     <div className="min-h-screen flex flex-col bg-gem-forest text-gem-beige relative">
-      <SEOHead 
-        title="Best Time for US and India Meetings | EST/PST to IST"
-        description="Find the best meeting time window between the United States (EST, PST) and India (IST). Overlap charts, DST warnings, and remote team scheduling tips."
-        canonical="/us-india-meeting-time"
-      />
+      <SEOHead {...seo} />
 
       {/* LUXURY HERO BACKGROUND with World Map */}
       <div className="hero-luxury-bg absolute top-0 left-0 right-0 h-[600px] pointer-events-none z-0 overflow-hidden">

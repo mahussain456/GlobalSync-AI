@@ -6,7 +6,7 @@ export default function NotFoundPage() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "linear-gradient(160deg, #0A1E16 0%, #0E2A1F 60%, #050E0B 100%)" }}>
       <SEOHead
-        title="Page Not Found — 404 | GlobalSync AI"
+        rawTitle="Page Not Found | GlobalSync AI"
         description="The page you were looking for could not be found. Return to GlobalSync AI — free time zone converter, currency converter, and meeting planner."
         canonical="/404"
         noIndex={true}

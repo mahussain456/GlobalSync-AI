@@ -531,8 +531,8 @@ function getFallbackMeta(route) {
   const normalizedRoute = route === '/404.html' ? '/404' : route;
   const noIndexRoutes = new Set(['/dashboard', '/admin', '/news', '/404']);
   const meta = {
-    title: `${BRAND} | Time Zone Converter, Meeting Planner & Currency Converter`,
-    description: DEFAULT_DESCRIPTION,
+    title: `${BRAND} | Time Zone & Currency Converter`,
+    description: 'Free time zone converter, meeting planner, and live exchange rates for 160+ currencies. Built for remote teams and freelancers. No signup required.',
     canonical: `${PUBLIC_ORIGIN}${normalizedRoute === '/' ? '/' : normalizedRoute}`,
     robots: noIndexRoutes.has(normalizedRoute)
       ? 'noindex, nofollow'
@@ -540,17 +540,17 @@ function getFallbackMeta(route) {
   };
 
   if (normalizedRoute === '/time-zone-converter') {
-    meta.title = `Free Time Zone Converter | World Clock & City Time Comparison | ${BRAND}`;
-    meta.description = 'Compare live time across cities worldwide, convert time zones instantly, and find business-hour overlaps for global meetings.';
+    meta.title = `Free Time Zone Converter | World Clock | ${BRAND}`;
+    meta.description = 'Compare live time across 25+ cities instantly. Convert any time zone, find business hour overlaps, and plan meetings across continents. Free.';
   } else if (normalizedRoute === '/currency-converter') {
-    meta.title = `Free Live Currency Converter | 160+ Currencies & Real-Time Rates | ${BRAND}`;
-    meta.description = 'Convert 160+ currencies with live exchange rates, popular currency pairs, and simple tools for freelancers and global teams.';
+    meta.title = `Free Live Currency Converter | 160+ Rates | ${BRAND}`;
+    meta.description = 'Convert 160+ currencies with live mid-market exchange rates. USD to INR, EUR to GBP, PKR, NGN, and more. Real-time, accurate, and completely free.';
   } else if (normalizedRoute === '/meeting-planner') {
-    meta.title = `Meeting Planner | Find Best Overlap Time | ${BRAND}`;
-    meta.description = 'Find the best meeting time across multiple cities with business-hour overlap planning for remote teams.';
+    meta.title = `Free Meeting Planner | Global Time Zones | ${BRAND}`;
+    meta.description = 'Find the best meeting time across multiple cities. Instantly see business hour overlaps and schedule global team calls without off-hour conflicts. Free.';
   } else if (normalizedRoute === '/blog') {
-    meta.title = `Blog | Remote Work, Time Zones & Currency Guides | ${BRAND}`;
-    meta.description = 'Practical guides for remote teams, freelancers, and digital nomads working across time zones and currencies.';
+    meta.title = `Remote Work, Time Zones & Currency Blog | ${BRAND}`;
+    meta.description = 'Practical guides for remote teams, freelancers, and digital nomads. Learn to schedule meetings across time zones and manage multi-currency income.';
   } else if (normalizedRoute.startsWith('/blog/')) {
     const slug = normalizedRoute.split('/').pop();
     const post = BLOG_POSTS.find(p => p.slug === slug);
@@ -563,26 +563,47 @@ function getFallbackMeta(route) {
     const cityB = CITIES[pair[1]];
     const from = cityA ? cityA.name : titleFromSlug(pair[0] || 'City');
     const to = cityB ? cityB.name : titleFromSlug(pair[1] || 'City');
-    meta.title = `${from} to ${to} Time | Overlap Planner`;
-    meta.description = `Convert time between ${from} and ${to}, compare local times, and find meeting overlap windows.`;
+    meta.title = `${from} to ${to} Time Difference | ${BRAND}`;
+    meta.description = `See the current time in ${from} and ${to}, find the best overlap window for meetings, and check the time difference.`;
   } else if (normalizedRoute.startsWith('/currency/')) {
     const pair = normalizedRoute.replace('/currency/', '').split('-to-');
     const from = (pair[0] || 'usd').toUpperCase();
     const to = (pair[1] || 'eur').toUpperCase();
-    meta.title = `${from} to ${to} Exchange Rate | Live Converter`;
-    meta.description = `Live ${from} to ${to} exchange rate with a simple currency converter for global workers and freelancers.`;
+    meta.title = `${from} to ${to} Live Exchange Rate | ${BRAND}`;
+    meta.description = `Convert ${from} to ${to} live. Check real-time exchange rates, view the 7-day trend, and calculate costs for freelancers instantly.`;
   } else if (normalizedRoute === '/about') {
-    meta.title = `About ${BRAND} | Free World Clock & Currency Tools for Remote Teams`;
+    meta.title = `About ${BRAND} | Time Zone & Currency Tools`;
+    meta.description = 'Learn about GlobalSync AI, a free platform combining a world clock, time zone converter, meeting planner, and currency tools for global remote teams.';
   } else if (normalizedRoute === '/contact') {
     meta.title = `Contact ${BRAND} | Get in Touch`;
+    meta.description = 'Have questions, suggestions, or bug reports? Contact the GlobalSync AI team. We respond directly to every message, usually within 2 business days.';
   } else if (normalizedRoute === '/privacy-policy') {
     meta.title = `Privacy Policy | ${BRAND}`;
+    meta.description = 'Read the GlobalSync AI privacy policy. Learn how we handle data when you use our free time zone converter, currency converter, and meeting planner tools.';
   } else if (normalizedRoute === '/terms-of-service') {
     meta.title = `Terms of Service | ${BRAND}`;
+    meta.description = 'Read the GlobalSync AI terms of service. By using our free time zone converter, currency, and meeting tools, you agree to our terms and conditions.';
   } else if (normalizedRoute === '/editorial-policy') {
     meta.title = `Editorial Policy | ${BRAND}`;
+    meta.description = 'Learn how GlobalSync AI creates, reviews, and corrects content. Our editorial standards are transparent, independent, and publicly documented.';
   } else if (normalizedRoute === '/methodology') {
-    meta.title = `Methodology | Data Sources & AI Transparency | ${BRAND}`;
+    meta.title = `Methodology | Data Sources & AI | ${BRAND}`;
+    meta.description = 'How GlobalSync AI sources time zone rules, live exchange rates, and AI data. Update frequencies, data providers, and accuracy details explained.';
+  } else if (normalizedRoute === '/data-sources') {
+    meta.title = `Data Sources | Time Zones & Currencies | ${BRAND}`;
+    meta.description = 'See the sources powering GlobalSync AI: IANA time zone rules, ECB and ExchangeRate-API currency data, and AI model information with limitations.';
+  } else if (normalizedRoute === '/freelancer-rate-converter') {
+    meta.title = `Freelancer Rate Converter | ${BRAND}`;
+    meta.description = 'Convert freelancer hourly rates, project fees, and retainers with live exchange rates. Practical guidance for remote workers and global clients.';
+  } else if (normalizedRoute === '/press') {
+    meta.title = `Press & Media | ${BRAND}`;
+    meta.description = 'Get the latest press releases, media kits, brand assets, and contact information for GlobalSync AI time zone and currency tools.';
+  } else if (normalizedRoute === '/global-meeting-planner-for-remote-teams') {
+    meta.title = `Remote Teams Meeting Planner | ${BRAND}`;
+    meta.description = 'Plan and schedule meetings for international remote teams. Find optimal overlaps across EST, PST, GMT, IST, and multiple time zones.';
+  } else if (normalizedRoute === '/us-india-meeting-time') {
+    meta.title = `US & India Meeting Times | ${BRAND}`;
+    meta.description = 'Find the best meeting times between the United States and India. Convert EST and PST to IST, and check business hour overlaps.';
   } else if (normalizedRoute === '/dashboard') {
     meta.title = `${BRAND} Dashboard | Time Zone & Currency Converter`;
   } else if (normalizedRoute === '/news') {
@@ -1604,21 +1625,21 @@ function injectMeta(html, meta) {
     .replace(/<meta[^>]+name=["']twitter:(card|title|description|image)["'][^>]*>/gi, '');
 
   const tags = [
-    `<title>${escapeHtml(meta.title)}</title>`,
-    `<meta name="description" content="${escapeHtml(meta.description)}">`,
-    `<meta name="robots" content="${escapeHtml(meta.robots)}">`,
-    `<link rel="canonical" href="${escapeHtml(meta.canonical)}">`,
-    `<meta property="og:title" content="${escapeHtml(meta.title)}">`,
-    `<meta property="og:description" content="${escapeHtml(meta.description)}">`,
-    '<meta property="og:type" content="website">',
-    `<meta property="og:url" content="${escapeHtml(meta.canonical)}">`,
-    `<meta property="og:site_name" content="${BRAND}">`,
-    `<meta property="og:image" content="${OG_IMAGE}">`,
-    '<meta property="og:locale" content="en_US">',
-    '<meta name="twitter:card" content="summary_large_image">',
-    `<meta name="twitter:title" content="${escapeHtml(meta.title)}">`,
-    `<meta name="twitter:description" content="${escapeHtml(meta.description)}">`,
-    `<meta name="twitter:image" content="${OG_IMAGE}">`,
+    `<title data-rh="true">${escapeHtml(meta.title)}</title>`,
+    `<meta data-rh="true" name="description" content="${escapeHtml(meta.description)}">`,
+    `<meta data-rh="true" name="robots" content="${escapeHtml(meta.robots)}">`,
+    `<link data-rh="true" rel="canonical" href="${escapeHtml(meta.canonical)}">`,
+    `<meta data-rh="true" property="og:title" content="${escapeHtml(meta.title)}">`,
+    `<meta data-rh="true" property="og:description" content="${escapeHtml(meta.description)}">`,
+    '<meta data-rh="true" property="og:type" content="website">',
+    `<meta data-rh="true" property="og:url" content="${escapeHtml(meta.canonical)}">`,
+    `<meta data-rh="true" property="og:site_name" content="${BRAND}">`,
+    `<meta data-rh="true" property="og:image" content="${OG_IMAGE}">`,
+    '<meta data-rh="true" property="og:locale" content="en_US">',
+    '<meta data-rh="true" name="twitter:card" content="summary_large_image">',
+    `<meta data-rh="true" name="twitter:title" content="${escapeHtml(meta.title)}">`,
+    `<meta data-rh="true" name="twitter:description" content="${escapeHtml(meta.description)}">`,
+    `<meta data-rh="true" name="twitter:image" content="${OG_IMAGE}">`,
   ].join('');
 
   return cleaned.replace('</head>', `${tags}</head>`);

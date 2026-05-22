@@ -4,15 +4,13 @@ import { ArrowRight, Users, Clock } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import { getStaticPageSEO } from "@/lib/seo";
 
 export default function RemoteTeamsMeetingPlannerPage() {
+  const seo = getStaticPageSEO("global-meeting-planner-for-remote-teams");
   return (
     <div className="min-h-screen flex flex-col bg-gem-forest text-gem-beige relative">
-      <SEOHead 
-        title="Global Meeting Planner for Remote Teams | Time Zone Overlaps"
-        description="Schedule fair meetings for remote teams. Find business hour overlaps, check AI Meeting Scores, and avoid time zone burnout with GlobalSync AI."
-        canonical="/global-meeting-planner-for-remote-teams"
-      />
+      <SEOHead {...seo} />
 
       {/* LUXURY HERO BACKGROUND with World Map */}
       <div className="hero-luxury-bg absolute top-0 left-0 right-0 h-[600px] pointer-events-none z-0 overflow-hidden">
