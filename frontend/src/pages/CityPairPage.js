@@ -5,7 +5,7 @@ import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import AdBanner from "@/components/AdBanner";
-import { CITIES, CITY_PAIRS, getCityPair, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
+import { CITIES, CITY_PAIRS, getCityPair, getRelatedCityPairs, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
 import { getCityPairSEO } from "@/lib/seo";
 
 // ─── Live clock ───────────────────────────────────────────────────────────────
@@ -199,7 +199,7 @@ export default function CityPairPage() {
   const title = `${cityA.name} to ${cityB.name} Time`;
   const h1 = `${cityA.name} to ${cityB.name} Time Converter — Live World Clock`;
 
-  const relatedPairs = (pairData?.related || [])
+  const relatedPairs = getRelatedCityPairs(normalizedPair, 6)
     .map(slug => ({ slug, pair: getCityPair(slug) }))
     .filter(r => r.pair)
     .map(r => ({ slug: r.slug, from: CITIES[r.pair.from], to: CITIES[r.pair.to] }));
