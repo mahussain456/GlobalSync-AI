@@ -27,3 +27,13 @@ if (fs.existsSync(SOURCE)) {
 
 fs.copyFileSync(src, TARGET);
 console.log(`[generate-404] Wrote ${TARGET}`);
+
+// Remove CRA's 200.html shell from the deploy output. `serve` uses it as a
+// SPA fallback locally; on Vercel it's just a duplicate of /index.html with no
+// canonical and no metadata, which Ahrefs flags as an indexable page that
+// shouldn't be discoverable. vercel.json also redirects /200.html -> /.
+const SHELL = path.join(BUILD_DIR, '200.html');
+if (fs.existsSync(SHELL)) {
+  fs.unlinkSync(SHELL);
+  console.log(`[generate-404] Removed ${SHELL}`);
+}

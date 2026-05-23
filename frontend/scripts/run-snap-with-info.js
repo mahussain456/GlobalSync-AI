@@ -556,9 +556,21 @@ function getFallbackMeta(route) {
   } else if (normalizedRoute.startsWith('/blog/')) {
     const slug = normalizedRoute.split('/').pop();
     const post = BLOG_POSTS.find(p => p.slug === slug);
-    const title = post ? post.title : titleFromSlug(slug).replace(/\bUsd\b/g, 'USD').replace(/\bInr\b/g, 'INR').replace(/\bEur\b/g, 'EUR').replace(/\bGbp\b/g, 'GBP');
-    meta.title = `${title} | ${BRAND} Blog`;
-    meta.description = post ? post.excerpt : `Read ${title}, a practical ${BRAND} guide for remote workers, freelancers, and global teams.`;
+    const fallbackTitle = titleFromSlug(slug).replace(/\bUsd\b/g, 'USD').replace(/\bInr\b/g, 'INR').replace(/\bEur\b/g, 'EUR').replace(/\bGbp\b/g, 'GBP');
+    // Prefer the post's curated metaTitle/metaDescription (length-tuned for SERP).
+    // Fall back to derived versions only when missing. Trim title to 60 chars.
+    meta.title = post && post.metaTitle
+      ? post.metaTitle
+      : `${post ? post.title : fallbackTitle} | ${BRAND}`;
+    if (meta.title.length > 60) {
+      meta.title = meta.title.slice(0, 57).trimEnd() + '...';
+    }
+    meta.description = post && post.metaDescription
+      ? post.metaDescription
+      : (post ? post.excerpt : `Read ${fallbackTitle}, a practical ${BRAND} guide for remote workers, freelancers, and global teams.`);
+    if (meta.description.length > 160) {
+      meta.description = meta.description.slice(0, 157).trimEnd() + '...';
+    }
   } else if (normalizedRoute.startsWith('/time/')) {
     const pair = normalizedRoute.replace('/time/', '').split('-to-');
     const cityA = CITIES[pair[0]];
