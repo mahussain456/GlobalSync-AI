@@ -13,22 +13,19 @@ console.log('Generating SEO assets...');
 let llmsFullContent = `# GlobalSync AI - Full Content Snapshot\n\n`;
 
 for (const route of routes) {
-  const filePath = route === '/' 
-    ? path.join(BUILD_DIR, 'index.html') 
+  const filePath = route === '/'
+    ? path.join(BUILD_DIR, 'index.html')
     : path.join(BUILD_DIR, route, 'index.html');
-    
+
   if (fs.existsSync(filePath)) {
     const html = fs.readFileSync(filePath, 'utf8');
-    
+
     // Naive HTML text extraction for bots
-    // 1. Remove scripts and styles
     let text = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, ' ');
     text = text.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, ' ');
-    // 2. Remove tags
     text = text.replace(/<[^>]+>/g, ' ');
-    // 3. Clean up whitespace
     text = text.replace(/\s+/g, ' ').trim();
-    
+
     llmsFullContent += `\n\n==========================================\n`;
     llmsFullContent += `URL: https://www.globalsync-ai.com${route}\n`;
     llmsFullContent += `==========================================\n\n`;
@@ -40,13 +37,16 @@ fs.writeFileSync(path.join(BUILD_DIR, 'llms-full.txt'), llmsFullContent);
 console.log('Wrote build/llms-full.txt');
 
 // Generate sitemap.xml dynamically from reactSnap.include
+// FIX: Exclude noindex pages — /dashboard (app UI) and /404 (not found page).
+// Including a noindex page in the sitemap triggers an Ahrefs "Noindex page in sitemap" error.
+const SITEMAP_EXCLUDE = new Set(['/dashboard', '/404']);
+
 let sitemapXML = `<?xml version="1.0" encoding="UTF-8"?>\n`;
 sitemapXML += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
 for (const route of routes) {
-  // Skip /dashboard to avoid robots.txt conflict
-  if (route === '/dashboard') continue;
-  
+  if (SITEMAP_EXCLUDE.has(route)) continue;
+
   sitemapXML += `  <url>\n`;
   sitemapXML += `    <loc>https://www.globalsync-ai.com${route}</loc>\n`;
   sitemapXML += `    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>\n`;
@@ -55,7 +55,7 @@ for (const route of routes) {
 
 sitemapXML += `</urlset>\n`;
 
-// Write to both build/sitemap.xml (for serving) and public/sitemap.xml (for future commits if desired)
+// Write to both build/sitemap.xml (for serving) and public/sitemap.xml
 fs.writeFileSync(path.join(BUILD_DIR, 'sitemap.xml'), sitemapXML);
 fs.writeFileSync(path.join(PUBLIC_DIR, 'sitemap.xml'), sitemapXML);
 console.log('Wrote sitemap.xml to build/ and public/');
