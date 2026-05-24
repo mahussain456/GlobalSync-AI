@@ -348,3 +348,68 @@ export const getCurrencyPair = (slug) => CURRENCY_PAIRS[slug] || null;
 // ─── All pair slugs for sitemap / listing ─────────────────────────────────────
 export const ALL_CITY_PAIR_SLUGS = Object.keys(CITY_PAIRS);
 export const ALL_CURRENCY_PAIR_SLUGS = Object.keys(CURRENCY_PAIRS);
+
+// ─── Auto-generated related pairs (improves internal linking) ────────────────
+// Most pairs don't have a hand-curated `related` list. Without these, every
+// programmatic page is an orphan — linked only from the master "All pairs"
+// list. These helpers return 6 related pairs that share at least one city /
+// currency with the source pair, so each page gets multiple inbound links from
+// genuinely related pages and SEO crawlers don't flag thin internal linking.
+
+export const getRelatedCityPairs = (slug, limit = 6) => {
+  const pair = CITY_PAIRS[slug];
+  if (!pair) return [];
+  // Always merge curated + auto-derived so every page has enough inbound links.
+  // Prefer curated entries first (more likely to be high-quality matches).
+  const cities = new Set([pair.from, pair.to]);
+  const sameFrom = ALL_CITY_PAIR_SLUGS.filter(s => {
+    if (s === slug) return false;
+    const p = CITY_PAIRS[s];
+    return p && p.from === pair.from;
+  });
+  const sameTo = ALL_CITY_PAIR_SLUGS.filter(s => {
+    if (s === slug) return false;
+    const p = CITY_PAIRS[s];
+    return p && p.to === pair.to;
+  });
+  const sharedCity = ALL_CITY_PAIR_SLUGS.filter(s => {
+    if (s === slug) return false;
+    const p = CITY_PAIRS[s];
+    return p && (cities.has(p.from) || cities.has(p.to));
+  });
+  const merged = [
+    ...(pair.related || []),
+    ...sameFrom,
+    ...sameTo,
+    ...sharedCity,
+  ];
+  return Array.from(new Set(merged)).slice(0, limit);
+};
+
+export const getRelatedCurrencyPairs = (slug, limit = 6) => {
+  const pair = CURRENCY_PAIRS[slug];
+  if (!pair) return [];
+  const codes = new Set([pair.from, pair.to]);
+  const sameFrom = ALL_CURRENCY_PAIR_SLUGS.filter(s => {
+    if (s === slug) return false;
+    const p = CURRENCY_PAIRS[s];
+    return p && p.from === pair.from;
+  });
+  const sameTo = ALL_CURRENCY_PAIR_SLUGS.filter(s => {
+    if (s === slug) return false;
+    const p = CURRENCY_PAIRS[s];
+    return p && p.to === pair.to;
+  });
+  const sharedCode = ALL_CURRENCY_PAIR_SLUGS.filter(s => {
+    if (s === slug) return false;
+    const p = CURRENCY_PAIRS[s];
+    return p && (codes.has(p.from) || codes.has(p.to));
+  });
+  const merged = [
+    ...(pair.related || []),
+    ...sameFrom,
+    ...sameTo,
+    ...sharedCode,
+  ];
+  return Array.from(new Set(merged)).slice(0, limit);
+};

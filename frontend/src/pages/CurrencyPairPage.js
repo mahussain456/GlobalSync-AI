@@ -7,7 +7,7 @@ import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import AdBanner from "@/components/AdBanner";
-import { CURRENCIES_META, CURRENCY_PAIRS, getCurrencyPair, ALL_CURRENCY_PAIR_SLUGS } from "@/data/programmaticData";
+import { CURRENCIES_META, CURRENCY_PAIRS, getCurrencyPair, getRelatedCurrencyPairs, ALL_CURRENCY_PAIR_SLUGS } from "@/data/programmaticData";
 import { getCurrencyPairSEO } from "@/lib/seo";
 
 const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? process.env.REACT_APP_BACKEND_URL : "";
@@ -379,7 +379,7 @@ export default function CurrencyPairPage() {
 
   if (!fromMeta || !toMeta || !pairData) return <Navigate to="/currency-converter" replace />;
 
-  const relatedPairs = (pairData?.related || [])
+  const relatedPairs = getRelatedCurrencyPairs(normalizedPair, 6)
     .map(slug => ({ slug, pair: getCurrencyPair(slug) }))
     .filter(r => r.pair && CURRENCIES_META[r.pair.from] && CURRENCIES_META[r.pair.to])
     .map(r => ({ slug: r.slug, from: CURRENCIES_META[r.pair.from], to: CURRENCIES_META[r.pair.to] }));

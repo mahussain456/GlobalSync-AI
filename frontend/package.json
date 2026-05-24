@@ -62,7 +62,7 @@
     "start": "craco build && node static-server.js",
     "start:dev": "craco start",
     "build": "craco build",
-    "postbuild": "node scripts/run-snap-with-info.js && node scripts/generate-serve-config.js && node scripts/generate-seo-assets.js",
+    "postbuild": "node scripts/run-snap-with-info.js && node scripts/generate-serve-config.js && node scripts/generate-seo-assets.js && node scripts/generate-404.js",
     "test": "craco test"
   },
   "reactSnap": {
@@ -83,6 +83,7 @@
     },
     "include": [
       "/",
+      "/404",
       "/dashboard",
       "/time-zone-converter",
       "/currency-converter",
