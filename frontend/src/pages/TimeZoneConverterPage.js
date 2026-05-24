@@ -10,26 +10,27 @@ import { CITIES, CITY_PAIRS, getCityPair, ALL_CITY_PAIR_SLUGS } from "@/data/pro
 import { getTimeZoneHubSEO } from "@/lib/seo";
 import TimeConverter from "@/components/TimeConverter";
 
-const FAQ = [
-  { q: "Why is converting time zones so confusing?", a: "Honestly, because it involves a lot of mental math that most of us just aren't wired to do on the fly. You're dealing with 24 different standard zones, half-hour offsets (looking at you, India), and countries that spring forward or fall back on completely different weekends. That's exactly why we built this tool—so you can stop doing the math." },
-  { q: "How do I deal with the massive EST to IST time gap?", a: "The US East Coast to India gap is brutal. IST is 10 hours and 30 minutes ahead of EST. My best advice? Stop trying to calculate it in your head. Just type '9 AM NY in Mumbai' into our dashboard. For live meetings, you're usually looking at a narrow 8:00 AM to 9:30 AM window in New York before the Indian team signs off for the night." },
-  { q: "What's the deal with Daylight Saving Time?", a: "DST is the enemy of remote work. The US changes its clocks on the second Sunday of March, but the UK and Europe wait until the last Sunday of March. For three chaotic weeks, the time gap between New York and London shrinks from 5 hours to 4 hours. Our AI automatically tracks all these dates so your meetings don't get messed up." },
-  { q: "What is the difference between UTC and GMT?", a: "For everyday work purposes? Nothing. They both represent the exact same time at the Prime Meridian. UTC is the technical standard used by computers and aviation, while GMT is the actual time zone used by the UK during the winter. When you see UTC+0 or GMT, just treat them as the same baseline." },
-  { q: "How do I find a meeting time that works for everyone?", a: "If you're dealing with more than two time zones, don't try to guess. Head over to our Meeting Overlap tool, type in your three or four cities, and let it find the green zone where everyone is actually awake and at their desk. If there is no overlap, you'll know someone has to compromise and take an off-hours call." },
-];
 
 const CONVERSIONS = [
   { from: "New York", to: "London", fromTz: "EST", toTz: "GMT" },
   { from: "San Francisco", to: "Tokyo", fromTz: "PST", toTz: "JST" },
   { from: "London", to: "Dubai", fromTz: "GMT", toTz: "GST" },
   { from: "New York", to: "Mumbai", fromTz: "EST", toTz: "IST" },
-  { from: "Sydney", to: "Berlin", fromTz: "AEDT", toTz: "CET" },
-  { from: "Singapore", to: "New York", fromTz: "SGT", toTz: "EST" },
+  { from: "Dubai", to: "Mumbai", fromTz: "GST", toTz: "IST" },
+  { from: "Hong Kong", to: "New York", fromTz: "HKT", toTz: "EDT" }
+];
+
+const FAQ = [
+  { q: "How does GlobalSync AI handle Daylight Saving Time?", a: "We use the IANA time zone database, the same source used by Linux, macOS, and most server infrastructure. DST shifts are applied automatically based on each region's official rules." },
+  { q: "Is the time zone converter free?", a: "Yes. No signup, no ads on the tool itself, no rate limits, and no premium tier required for any feature." },
+  { q: "How many cities and time zones are supported?", a: "You can compare live time across 25+ pre-set major cities and 160+ countries. The full IANA database (~600 zones) is available via search." },
+  { q: "Can I find a meeting time that works for all my team members?", a: "Yes — use the Meeting Planner. It overlays each team member's local working hours (default 9 AM–5 PM) and highlights the fairest overlap windows." },
+  { q: "How accurate is the converter near DST transitions?", a: "The IANA database is updated multiple times per year. Our build picks up the latest release on every deploy, so transitions like the EU's last-Sunday-in-March rule are applied to the second." }
 ];
 
 export default function TimeZoneConverterPage() {
   const navigate = useNavigate();
-  const seo = getTimeZoneHubSEO();
+  const seo = getTimeZoneHubSEO({ faqs: FAQ });
   const [selectedPair, setSelectedPair] = useState("");
 
   return (
@@ -57,12 +58,13 @@ export default function TimeZoneConverterPage() {
 
       <article className="max-w-4xl mx-auto px-6 pt-36 pb-8">
         {/* H1 */}
-        <header className="mb-10">
+        <header className="mb-10 text-center md:text-left">
+          <p className="text-gem-gold text-sm font-semibold mb-2">Last updated: May 2026</p>
           <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-gem-gold rounded-full px-3 py-1 text-xs font-medium mb-4 border border-gem-gold/20 shadow-[0_0_15px_rgba(200,169,106,0.08)]">
             <Clock className="w-3.5 h-3.5 text-gem-gold" /> Live Clocks · 25+ Major Cities · 100% Free
           </div>
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-4">
-            Time Zone Converter — Live World Clock
+            Free Time Zone Converter & World Clock
           </h1>
           <p className="text-lg text-gem-beige/60 max-w-2xl leading-relaxed">
             Free AI-powered time zone converter for remote teams and global workers. Compare live time across major hubs, adjust base hours instantly, and map business-hour overlaps seamlessly.
@@ -239,6 +241,18 @@ export default function TimeZoneConverterPage() {
               <div className="font-semibold text-gem-beige text-sm mb-1 group-hover:text-gem-gold transition-colors">Editorial Policy</div>
               <div className="text-xs text-gem-beige/40">See how guides and pair pages are maintained</div>
             </Link>
+          </div>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="font-heading text-2xl font-bold text-gem-beige mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {FAQ.map(f => (
+              <div key={f.q} className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-5">
+                <h3 className="font-semibold text-gem-beige mb-2">{f.q}</h3>
+                <p className="text-sm text-gem-beige/60 leading-relaxed">{f.a}</p>
+              </div>
+            ))}
           </div>
         </section>
 

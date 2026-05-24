@@ -9,13 +9,7 @@ import { CURRENCIES_META, CURRENCY_PAIRS, ALL_CURRENCY_PAIR_SLUGS } from "@/data
 import { getCurrencyHubSEO } from "@/lib/seo";
 import CurrencyConverter from "@/components/CurrencyConverter";
 
-const FAQ = [
-  { q: "Why is the rate I see here different from what my bank gives me?", a: "Welcome to the world of hidden fees! The rate you see here is the 'mid-market' rate—the true, pure exchange rate that banks use to trade with each other. But when you go to your bank or PayPal to actually convert money, they shave off a percentage (usually 2-4%) as their profit margin. You're never going to get the exact mid-market rate in your bank account, but knowing it helps you realize exactly how much you're being overcharged." },
-  { q: "Should I invoice my international clients in my currency or theirs?", a: "This is the million-dollar question for freelancers. If you invoice in their currency (like USD), you are taking on all the 'currency risk'—if the dollar tanks before they pay you, you lose money. If you invoice in your local currency, the client takes the risk. Generally, clients prefer to pay in their native currency, so you'll usually have to eat the risk. My advice? Bake a 3-5% buffer into your pricing to cover sudden rate drops." },
-  { q: "What's the best time to convert my money?", a: "It's tempting to watch the charts like a Wall Street day trader, but honestly, you'll drive yourself crazy. If you have a massive invoice, check the 7-day trend chart. If your currency is on a clear downward slide, you might want to wait a few days to convert. Otherwise, just pick a day of the month to do all your conversions consistently." },
-  { q: "How accurate are the rates on GlobalSync?", a: "They are real-time and pulled directly from the European Central Bank and ExchangeRate-API. It's the same baseline data that the big financial institutions look at. Just remember, it's the interbank rate, not the retail rate your local bank teller will hand you." },
-  { q: "Which currencies do you support?", a: "Pretty much all of them! We track over 160 currencies globally. Whether you're getting paid in USD, Euros, Nigerian Naira, or Pakistani Rupees, you can check the exact conversion value right here." },
-];
+
 
 const PAIRS = [
   { from: "USD", to: "EUR", name: "US Dollar to Euro" },
@@ -25,13 +19,20 @@ const PAIRS = [
   { from: "USD", to: "AED", name: "US Dollar to UAE Dirham" },
   { from: "EUR", to: "GBP", name: "Euro to British Pound" },
   { from: "GBP", to: "INR", name: "British Pound to Indian Rupee" },
-  { from: "USD", to: "JPY", name: "US Dollar to Japanese Yen" },
-  { from: "USD", to: "SAR", name: "US Dollar to Saudi Riyal" },
+  { from: "USD", to: "PHP", name: "US Dollar to Philippine Peso" },
+  { from: "USD", to: "NGN", name: "US Dollar to Nigerian Naira" }
+];
+
+const FAQ = [
+  { q: "How often are the exchange rates updated?", a: "Our exchange rates are updated multiple times a day using data from the European Central Bank and Open Exchange Rates, ensuring you always see the latest mid-market rate." },
+  { q: "What is the mid-market exchange rate?", a: "The mid-market rate is the midpoint between the buy and sell prices of two currencies. It is the fairest exchange rate, without the 2-4% markup that retail banks often add." },
+  { q: "How many currencies do you support?", a: "We support over 160 global currencies, including USD, EUR, GBP, INR, PKR, and NGN, covering almost every circulating currency in the world." },
+  { q: "Are there any hidden fees for using the currency converter?", a: "No. GlobalSync AI's currency converter is 100% free. We don't take a cut, and we don't charge any subscription or conversion fees." }
 ];
 
 export default function CurrencyConverterPage() {
   const navigate = useNavigate();
-  const seo = getCurrencyHubSEO();
+  const seo = getCurrencyHubSEO({ faqs: FAQ });
   const [selectedPair, setSelectedPair] = useState("");
 
   return (
@@ -59,12 +60,13 @@ export default function CurrencyConverterPage() {
 
       <article className="max-w-4xl mx-auto px-6 pt-36 pb-8">
         {/* H1 */}
-        <header className="mb-10">
+        <header className="mb-10 text-center md:text-left">
+          <p className="text-gem-gold text-sm font-semibold mb-2">Last updated: May 2026</p>
           <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-gem-gold rounded-full px-3 py-1 text-xs font-medium mb-4 border border-gem-gold/20">
             <TrendingUp className="w-3.5 h-3.5" /> Live Rates · 160+ Currencies · Free
           </div>
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-4">
-            Free Currency Converter — Live Exchange Rates
+            Live Currency Converter
           </h1>
           <p className="text-lg text-gem-beige/60 max-w-2xl leading-relaxed">
             Convert between 160+ currencies with real-time exchange rates. USD to EUR, USD to INR, USD to PKR, AED, SAR, NGN and more — updated daily from global forex markets.
@@ -243,6 +245,18 @@ export default function CurrencyConverterPage() {
               <div className="font-semibold text-gem-beige text-sm mb-1 group-hover:text-gem-gold transition-colors">Methodology</div>
               <div className="text-xs text-gem-beige/40">Understand limitations, updates, and disclaimers</div>
             </Link>
+          </div>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="font-heading text-2xl font-bold text-gem-beige mb-6">Frequently Asked Questions</h2>
+          <div className="space-y-4">
+            {FAQ.map(f => (
+              <div key={f.q} className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-5">
+                <h3 className="font-semibold text-gem-beige mb-2">{f.q}</h3>
+                <p className="text-sm text-gem-beige/60 leading-relaxed">{f.a}</p>
+              </div>
+            ))}
           </div>
         </section>
 

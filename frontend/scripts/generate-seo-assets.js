@@ -44,19 +44,12 @@ let sitemapXML = `<?xml version="1.0" encoding="UTF-8"?>\n`;
 sitemapXML += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
 for (const route of routes) {
-  // Determine priority and frequency based on route depth/type
-  let priority = "0.7";
-  let changefreq = "monthly";
-  
-  if (route === '/') { priority = "1.0"; changefreq = "weekly"; }
-  else if (['/time-zone-converter', '/currency-converter', '/meeting-planner'].includes(route)) { priority = "0.9"; }
-  else if (route === '/blog') { priority = "0.8"; changefreq = "weekly"; }
+  // Skip /dashboard to avoid robots.txt conflict
+  if (route === '/dashboard') continue;
   
   sitemapXML += `  <url>\n`;
   sitemapXML += `    <loc>https://www.globalsync-ai.com${route}</loc>\n`;
   sitemapXML += `    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>\n`;
-  sitemapXML += `    <changefreq>${changefreq}</changefreq>\n`;
-  sitemapXML += `    <priority>${priority}</priority>\n`;
   sitemapXML += `  </url>\n`;
 }
 

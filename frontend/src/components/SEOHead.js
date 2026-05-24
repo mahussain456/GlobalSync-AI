@@ -29,6 +29,7 @@ export default function SEOHead({
   ogType = "website",
   structuredData,
   noIndex = false,
+  author,
 }) {
   // rawTitle wins → title with suffix → fallback default
   const fullTitle = rawTitle
@@ -53,6 +54,7 @@ export default function SEOHead({
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
+      {author && <meta name="author" content={author} />}
       <link rel="canonical" href={fullCanonical} />
 
       {/* ── Open Graph ─────────────────────────────────────────────────────── */}

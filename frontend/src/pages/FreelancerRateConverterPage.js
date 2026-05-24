@@ -10,7 +10,18 @@ export default function FreelancerRateConverterPage() {
   const [rateType, setRateType] = useState("hourly");
   const [baseCurrency, setBaseCurrency] = useState("USD");
   const [targetCurrency, setTargetCurrency] = useState("INR");
-  const seo = getStaticPageSEO("freelancer-rate-converter");
+  const faqs = [
+    {
+      q: "How do I calculate my freelance hourly rate?",
+      a: "To calculate your freelance hourly rate, take your target annual salary, add 30% for expenses and self-employment taxes, and divide by your billable hours (usually 1,000 to 1,500 hours per year, not 2,080)."
+    },
+    {
+      q: "Why shouldn't I just divide a W-2 salary by 2,080 hours?",
+      a: "Dividing a $100,000 salary by 2,080 hours gives you $48/hr. However, freelancers must pay for their own health insurance, self-employment tax (15.3% in the US), retirement, software, and hardware. Plus, you won't bill 40 hours every week. A true equivalent freelance rate for $100,000 is closer to $80-$100/hr."
+    }
+  ];
+
+  const seo = getStaticPageSEO("freelancer-rate-converter", { faqs });
 
   const EXCHANGE_RATES = {
     USD: 1,
@@ -57,8 +68,9 @@ export default function FreelancerRateConverterPage() {
       <SiteNav />
       <main className="flex-1 max-w-4xl mx-auto px-6 pt-36 pb-12 w-full">
         <div className="mb-10 text-center">
+          <p className="text-gem-gold text-sm font-semibold mb-2">Last updated: May 2026</p>
           <h1 className="font-heading text-3xl md:text-5xl font-bold mb-4 text-gem-beige">
-            Freelancer Rate Converter
+            Freelancer Rate Calculator: Hourly, Retainer & Project to W-2 Salary
           </h1>
           <p className="text-gem-beige/60 text-lg">
             Convert hourly rates, project fees, and monthly retainers across 160+ currencies.
@@ -168,13 +180,23 @@ export default function FreelancerRateConverterPage() {
             Third, <strong className="text-gem-beige">leverage a multi-currency digital wallet.</strong> When a client pays you in USD or EUR, do not immediately convert it to your local currency. Keep the money in a multi-currency account. You can use those stable funds to pay for your software subscriptions (like Adobe, Figma, or GitHub), purchase equipment, or pay international subcontractors directly without ever losing money on double-conversion fees.
           </p>
 
-          <h3 className="text-xl font-semibold text-gem-beige">Popular Freelancer Conversions</h3>
+          <h3 className="text-xl font-semibold text-gem-beige mt-8">Popular Freelancer Conversions</h3>
           <ul className="list-disc pl-5 space-y-2">
             <li><strong>USD to INR:</strong> Standard for Indian developers and designers working with US clients.</li>
             <li><strong>USD to PKR:</strong> Common for Pakistani tech talent and agencies.</li>
             <li><strong>EUR to GBP:</strong> Frequent for European and UK cross-border remote work.</li>
             <li><strong>USD to PHP:</strong> Standard for virtual assistants and customer support specialists in the Philippines.</li>
           </ul>
+
+          <h3 className="text-xl font-semibold text-gem-beige mt-12 mb-6">Frequently Asked Questions</h3>
+          <div className="space-y-6 mb-12">
+            {faqs.map((faq, index) => (
+              <div key={index} className="bg-white/5 rounded-xl p-6 border border-white/10">
+                <h4 className="text-lg font-semibold text-gem-beige mb-2">{faq.q}</h4>
+                <p className="text-gem-beige/70 text-sm leading-relaxed">{faq.a}</p>
+              </div>
+            ))}
+          </div>
 
           <h3 className="text-xl font-semibold text-gem-beige mt-8">Related guides</h3>
           <ul className="list-disc pl-5 space-y-2">

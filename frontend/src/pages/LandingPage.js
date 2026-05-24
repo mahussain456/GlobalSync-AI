@@ -235,13 +235,13 @@ export default function LandingPage() {
             </div>
 
             <h1 className="font-serif text-[clamp(2.8rem,5.5vw,5.5rem)] leading-[0.95] tracking-[-0.04em] font-semibold text-[#E9F1EC] mb-6">
-              One Platform.<br />
-              Every Time Zone.<br />
-              <span className="text-gem-gold italic">Total Alignment.</span>
+              Time Zone Converter, World Clock &<br />
+              <span className="text-gem-gold italic">Currency Tools</span><br />
+              for Remote Teams
             </h1>
 
             <p className="text-[17px] leading-[1.65] text-[#F4EFE6]/75 max-w-[480px] mb-8">
-              GlobalSync AI helps remote teams and freelancers coordinate across time zones, currencies, and cultures with AI-powered intelligence.
+              Free AI-powered world clock, meeting planner, and live currency converter for remote teams. Sync across 160+ currencies and any global time zone instantly. Time zones are hard. Let AI do the math so you can focus on the work.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-12">
@@ -546,13 +546,41 @@ export default function LandingPage() {
             </Link>
           </div>
           
-          <div className="bg-[#0E2A1F] rounded-[40px] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl">
+          
+          <div className="bg-[#0E2A1F] rounded-[40px] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl mb-24">
              <div className="absolute inset-0 opacity-10 mix-blend-overlay"></div>
              <h2 className="font-serif text-4xl md:text-5xl font-semibold text-white mb-6 relative z-10">Bring your global work into perfect sync.</h2>
              <p className="text-[19px] text-[#A7BFAE] max-w-2xl mx-auto mb-12 relative z-10 leading-relaxed">Plan meetings, convert currencies, compare time zones, and ask AI for global answers in one elegant workspace.</p>
              <Link to="/dashboard" className="inline-block btn-primary relative z-10 text-[17px] px-8 py-4">
                Start using GlobalSync AI
              </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-[#0E2A1F]/10 pt-16 mb-16">
+            <div>
+              <h3 className="text-2xl font-bold mb-6">Popular Time Conversions</h3>
+              <ul className="space-y-3">
+                <li><Link to="/time/new-york-to-london" className="text-[#1B4D3E] hover:text-[#C8A96A] transition-colors font-medium">New York to London</Link></li>
+                <li><Link to="/time/london-to-tokyo" className="text-[#1B4D3E] hover:text-[#C8A96A] transition-colors font-medium">London to Tokyo</Link></li>
+                <li><Link to="/time/san-francisco-to-sydney" className="text-[#1B4D3E] hover:text-[#C8A96A] transition-colors font-medium">San Francisco to Sydney</Link></li>
+                <li><Link to="/time/berlin-to-dubai" className="text-[#1B4D3E] hover:text-[#C8A96A] transition-colors font-medium">Berlin to Dubai</Link></li>
+              </ul>
+              <div className="mt-8 text-[13px] opacity-70">
+                Time zone rules powered by the <a href="https://www.iana.org/time-zones" target="_blank" rel="noopener noreferrer" className="underline hover:text-gem-gold">IANA Time Zone Database</a>.
+              </div>
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold mb-6">Popular Currency Conversions</h3>
+              <ul className="space-y-3">
+                <li><Link to="/currency/usd-to-inr" className="text-[#1B4D3E] hover:text-[#C8A96A] transition-colors font-medium">USD to INR</Link></li>
+                <li><Link to="/currency/eur-to-gbp" className="text-[#1B4D3E] hover:text-[#C8A96A] transition-colors font-medium">EUR to GBP</Link></li>
+                <li><Link to="/currency/usd-to-pkr" className="text-[#1B4D3E] hover:text-[#C8A96A] transition-colors font-medium">USD to PKR</Link></li>
+                <li><Link to="/currency/usd-to-eur" className="text-[#1B4D3E] hover:text-[#C8A96A] transition-colors font-medium">USD to EUR</Link></li>
+              </ul>
+              <div className="mt-8 text-[13px] opacity-70">
+                Live exchange rates powered by the <a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" target="_blank" rel="noopener noreferrer" className="underline hover:text-gem-gold">European Central Bank</a>.
+              </div>
+            </div>
           </div>
           
         </div>

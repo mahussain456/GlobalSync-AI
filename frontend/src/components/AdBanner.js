@@ -22,6 +22,16 @@ export default function AdBanner({ slot = "leaderboard", format = "auto", classN
 
   useEffect(() => {
     if (IS_PLACEHOLDER) return;
+
+    if (!document.getElementById("adsbygoogle-script")) {
+      const script = document.createElement("script");
+      script.id = "adsbygoogle-script";
+      script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${PUBLISHER_ID}`;
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      document.head.appendChild(script);
+    }
+
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (e) {

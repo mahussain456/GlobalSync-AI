@@ -1,35 +1,19 @@
 # GlobalSync AI
 
-> A free premium toolkit and resource center helping remote teams, digital nomads, and freelancers coordinate seamlessly across time zones, currencies, and global payroll equivalents.
+> Free time zone converter, meeting planner, world clock, and live currency exchange rates for remote teams and freelancers. No signup required.
 
 ## Tools
-- [Time Zone Converter](https://www.globalsync-ai.com/time-zone-converter) - Live world clocks and timezone offset comparisons for over 25 major hubs.
-- [Meeting Planner](https://www.globalsync-ai.com/meeting-planner) - Visual business hour overlap mapping for distributed team coordination.
-- [Currency Converter](https://www.globalsync-ai.com/currency-converter) - Real mid-market foreign exchange calculator covering 160+ world currencies.
-- [Freelancer Rate Converter](https://www.globalsync-ai.com/freelancer-rate-converter) - Standard hourly rate to W-2 corporate annual salary equivalence formulas.
-
-## Guides
-- [Best Time to Call India from US for Business](https://www.globalsync-ai.com/blog/best-time-to-call-india-from-us-for-business) - Practical coordination tables for engineering teams in the US and India.
-- [How to Schedule Meetings Across Multiple Time Zones Fairly](https://www.globalsync-ai.com/blog/how-to-schedule-meetings-across-multiple-time-zones-fairly) - Smart team rotation frameworks to reduce remote work fatigue.
-- [Freelancer Rate Calculator: Hourly to Annual](https://www.globalsync-ai.com/blog/freelancer-rate-calculator-hourly-to-annual) - W-2 salary comparisons including self-employment overhead buffers.
-- [USD to PKR Freelancers Guide](https://www.globalsync-ai.com/blog/usd-to-pkr-freelancers-how-to-price) - Pricing leverage strategies for South Asian remote agencies.
-- [Daylight Saving Time Changes 2026 for Remote Teams](https://www.globalsync-ai.com/blog/daylight-saving-time-changes-2026-remote-teams) - Critical DST transitions and calendars for distributed workforce coordination.
+- [Time Zone Converter](https://www.globalsync-ai.com/time-zone-converter): Compare live time across 25+ cities, with DST handling via the IANA database.
+- [Meeting Planner](https://www.globalsync-ai.com/meeting-planner): Find fair overlap hours for distributed teams.
+- [Currency Converter](https://www.globalsync-ai.com/currency-converter): 160+ currencies at live mid-market rates.
+- [Freelancer Rate Calculator](https://www.globalsync-ai.com/freelancer-rate-converter): Convert hourly/retainer/project rates to W-2 salary equivalent.
 
 ## Reference
-- [About GlobalSync AI](https://www.globalsync-ai.com/about) - Founder credentials, product launch journey, and brand-entity disambiguation disclosures.
-- [Methodology](https://www.globalsync-ai.com/methodology) - Source code algorithms, IANA database (tzdata 2026a), and ECB rate refresh frequencies.
-- [Data Sources](https://www.globalsync-ai.com/data-sources) - Detailed data providers, interbank wholesale feeds, and API transparency disclosures.
-- [New York to London Time Converter](https://www.globalsync-ai.com/time/new-york-to-london) - Live timezone clocks and scheduling overlap for New York and London.
-- [London to Tokyo Time Converter](https://www.globalsync-ai.com/time/london-to-tokyo) - Live timezone clocks and scheduling overlap for London and Tokyo.
-- [Dubai to Mumbai Time Converter](https://www.globalsync-ai.com/time/dubai-to-mumbai) - Live timezone clocks and scheduling overlap for Dubai and Mumbai.
-- [San Francisco to New York Time Converter](https://www.globalsync-ai.com/time/san-francisco-to-new-york) - Live timezone clocks and scheduling overlap for San Francisco and New York.
-- [Lisbon to New York Time Converter](https://www.globalsync-ai.com/time/lisbon-to-new-york) - Live timezone clocks and scheduling overlap for Lisbon and New York.
-- [Bali to London Time Converter](https://www.globalsync-ai.com/time/bali-to-london) - Live timezone clocks and scheduling overlap for Bali and London.
-- [Austin to Berlin Time Converter](https://www.globalsync-ai.com/time/austin-to-berlin) - Live timezone clocks and scheduling overlap for Austin and Berlin.
-- [New York to Dubai Time Converter](https://www.globalsync-ai.com/time/new-york-to-dubai) - Live timezone clocks and scheduling overlap for New York and Dubai.
-- [London to Dubai Time Converter](https://www.globalsync-ai.com/time/london-to-dubai) - Live timezone clocks and scheduling overlap for London and Dubai.
-- [New York to Tokyo Time Converter](https://www.globalsync-ai.com/time/new-york-to-tokyo) - Live timezone clocks and scheduling overlap for New York and Tokyo.
+- [Data Sources](https://www.globalsync-ai.com/data-sources)
+- [Methodology](https://www.globalsync-ai.com/methodology)
+- [Editorial Policy](https://www.globalsync-ai.com/editorial-policy)
 
-## Full Content Text Dump
-For a comprehensive plain-text dump of all pages across the site to seed LLM indices, view:
-https://www.globalsync-ai.com/llms-full.txt
+## Optional
+- [Blog](https://www.globalsync-ai.com/blog)
+- [About](https://www.globalsync-ai.com/about)
+- [Contact](https://www.globalsync-ai.com/contact)

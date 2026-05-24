@@ -97,15 +97,28 @@ export default function AboutPage() {
           <h2 className="font-heading text-2xl font-bold text-gem-beige mb-6">Meet the Creator</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="flex gap-4">
-              <div className="w-14 h-14 bg-gem-gold/20 text-gem-gold rounded-full flex items-center justify-center font-bold text-xl shrink-0">
+              <img 
+                src="/team/ahmed.jpg" 
+                alt="Ahmed Hussain" 
+                className="w-14 h-14 rounded-full object-cover shrink-0 border border-gem-gold/20"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              <div className="hidden w-14 h-14 bg-gem-gold/20 text-gem-gold rounded-full items-center justify-center font-bold text-xl shrink-0">
                 AH
               </div>
               <div>
                 <h3 className="font-semibold text-gem-beige">Ahmed Hussain</h3>
                 <div className="text-sm text-gem-gold mb-2">Founder & Developer</div>
-                <p className="text-sm text-gem-beige/60 leading-relaxed">
+                <p className="text-sm text-gem-beige/60 leading-relaxed mb-2">
                   I'm a developer and remote work advocate who got tired of the mental math required to manage global teams. I built GlobalSync AI to solve my own scheduling nightmares, and now I'm sharing it with you.
                 </p>
+                <div className="flex gap-3 mt-2">
+                  <a href="https://www.linkedin.com/in/REPLACE" target="_blank" rel="noopener noreferrer" className="text-sm text-gem-gold hover:underline">LinkedIn</a>
+                  <a href="https://x.com/REPLACE" target="_blank" rel="noopener noreferrer" className="text-sm text-gem-gold hover:underline">X (Twitter)</a>
+                </div>
               </div>
             </div>
             <div className="flex gap-4">

@@ -26,7 +26,7 @@ const OVERLAPS = [
 
 export default function MeetingPlannerPage() {
   const navigate = useNavigate();
-  const seo = getMeetingPlannerSEO();
+  const seo = getMeetingPlannerSEO({ faqs: FAQ });
 
   return (
     <div className="min-h-screen bg-gem-forest text-gem-beige relative">
@@ -53,12 +53,13 @@ export default function MeetingPlannerPage() {
 
       <article className="max-w-4xl mx-auto px-6 pt-36 pb-8">
         {/* H1 */}
-        <header className="mb-10">
+        <header className="mb-10 text-center md:text-left">
+          <p className="text-gem-gold text-sm font-semibold mb-2">Last updated: May 2026</p>
           <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-gem-gold rounded-full px-3 py-1 text-xs font-medium mb-4 border border-gem-gold/20">
             <Users className="w-3.5 h-3.5" /> AI-Powered · AI Overlap Score · Up to 5 Cities
           </div>
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-4">
-            Meeting Overlap Planner — Find the Best Time Across Time Zones
+            Meeting Planner for Distributed Teams — Find Fair Overlap Hours
           </h1>
           <p className="text-lg text-gem-beige/60 max-w-2xl leading-relaxed">
             Free remote team meeting planner and time zone overlap calculator. Discover your AI Meeting Overlap Score, highlight early morning/late night conflicts, and find the fairest meeting time in seconds.
