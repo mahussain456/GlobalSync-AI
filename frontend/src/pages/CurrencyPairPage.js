@@ -532,7 +532,7 @@ export default function CurrencyPairPage() {
             <p className="text-sm font-semibold text-gem-beige/90 mb-0.5">Which currency should you invoice in?</p>
             <p className="text-xs text-gem-sage">A practical guide for freelancers working internationally.</p>
           </div>
-          <Link to="/blog/usd-to-pkr-freelancers-how-to-price"
+          <Link to="/blog/mid-market-exchange-rate-freelancers"
             className="shrink-0 text-sm font-semibold text-gem-gold hover:text-gem-gold/80 transition-colors whitespace-nowrap flex items-center gap-1">
             Read guide: Freelancer Currency Pricing <ArrowRight className="w-3.5 h-3.5" />
           </Link>

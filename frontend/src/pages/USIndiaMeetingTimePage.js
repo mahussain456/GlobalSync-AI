@@ -71,7 +71,7 @@ export default function USIndiaMeetingTimePage() {
             <ul>
               <li><Link to="/meeting-planner" className="text-gem-gold hover:text-gem-gold/80">Use the live meeting planner</Link></li>
               <li><Link to="/time/new-york-to-london" className="text-gem-gold hover:text-gem-gold/80">Compare another major meeting overlap page</Link></li>
-              <li><Link to="/blog/best-time-to-call-india-from-us-for-business" className="text-gem-gold hover:text-gem-gold/80">Read the detailed guide for Asia-based freelancers</Link></li>
+              <li><Link to="/blog/time-zone-converter-guide-international-meetings" className="text-gem-gold hover:text-gem-gold/80">Read our time zone converter guide</Link></li>
             </ul>
           </div>
         </div>

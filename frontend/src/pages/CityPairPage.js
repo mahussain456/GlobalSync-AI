@@ -361,8 +361,8 @@ export default function CityPairPage() {
             <p className="text-xs text-gem-sage">How to schedule meetings fairly, handle DST, and build async habits.</p>
           </div>
           <div className="mt-6 flex flex-col sm:flex-row items-center gap-3 justify-center">
-            <Link to="/blog/how-to-schedule-meetings-across-multiple-time-zones-fairly" className="text-sm font-semibold text-gem-gold hover:text-gem-gold/80 transition-colors flex items-center gap-1">
-              Read: How to schedule global meetings <ArrowRight className="w-3.5 h-3.5" />
+            <Link to="/blog/remote-team-world-clock-best-practices" className="text-sm font-semibold text-gem-gold hover:text-gem-gold/80 transition-colors flex items-center gap-1">
+              Read: World Clock best practices <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </section>
