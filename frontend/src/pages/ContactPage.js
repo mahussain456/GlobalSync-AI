@@ -184,13 +184,15 @@ export default function ContactPage() {
         </div>
 
         <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-6 text-center">
-          <img
-            src="/logo-dark.png"
-            alt="GlobalSync AI"
-            loading="lazy"
-            className="w-auto mx-auto mb-3 transition-transform duration-300 hover:scale-105 logo-glowing-effect"
-            style={{ height: "68px" }}
-          />
+          <Link to="/" className="inline-block">
+            <img
+              src="/logo-dark.png"
+              alt="GlobalSync AI"
+              loading="lazy"
+              className="w-auto mx-auto mb-3 transition-transform duration-300 hover:scale-105 logo-glowing-effect"
+              style={{ height: "68px" }}
+            />
+          </Link>
           <p className="text-sm text-gem-beige/60">Free tools for remote teams worldwide.</p>
           <p className="text-xs text-gem-beige/40 mt-2">globalsync-ai.com</p>
         </div>

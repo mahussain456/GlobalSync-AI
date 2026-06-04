@@ -69,13 +69,15 @@ export default function Dashboard() {
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div className="flex items-center gap-2">
-                <img
-                  src="/logo-dark.png"
-                  alt="GlobalSync AI"
-                  loading="lazy"
-                  className="w-auto transition-transform duration-300 hover:scale-105 logo-glowing-effect"
-                  style={{ height: "70px" }}
-                />
+                <Link to="/" className="block">
+                  <img
+                    src="/logo-dark.png"
+                    alt="GlobalSync AI"
+                    loading="lazy"
+                    className="w-auto transition-transform duration-300 hover:scale-105 logo-glowing-effect"
+                    style={{ height: "70px" }}
+                  />
+                </Link>
               </div>
             </div>
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { Globe, Sparkles, Loader2, ArrowRight } from "lucide-react";
 
@@ -35,13 +36,15 @@ export default function OnboardingModal({ onComplete }) {
           <>
             {/* Logo */}
             <div className="flex justify-center mb-8">
-              <img
-                src="/logo-dark.png"
-                alt="GlobalSync AI"
-                loading="lazy"
-                className="w-auto transition-transform duration-300 hover:scale-105 logo-glowing-effect"
-                style={{ height: "72px" }}
-              />
+              <Link to="/">
+                <img
+                  src="/logo-dark.png"
+                  alt="GlobalSync AI"
+                  loading="lazy"
+                  className="w-auto transition-transform duration-300 hover:scale-105 logo-glowing-effect"
+                  style={{ height: "72px" }}
+                />
+              </Link>
             </div>
 
             {/* Headline */}
