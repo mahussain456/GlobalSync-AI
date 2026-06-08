@@ -244,17 +244,6 @@ export default function TimeZoneConverterPage() {
           </div>
         </section>
 
-        <section className="mb-12">
-          <h2 className="font-heading text-2xl font-bold text-gem-beige mb-6">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            {FAQ.map(f => (
-              <div key={f.q} className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-5">
-                <h3 className="font-semibold text-gem-beige mb-2">{f.q}</h3>
-                <p className="text-sm text-gem-beige/60 leading-relaxed">{f.a}</p>
-              </div>
-            ))}
-          </div>
-        </section>
 
         {/* Internal links */}
         <section className="bg-gem-pine/30 rounded-2xl border border-gem-gold/20 p-6">
