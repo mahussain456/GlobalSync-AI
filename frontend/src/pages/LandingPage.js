@@ -260,18 +260,6 @@ export default function LandingPage() {
                 Currency Converter <DollarSign className="w-4 h-4 text-gem-gold" />
               </Link>
             </div>
-
-            {/* Trusted Logos */}
-            <div>
-              <p className="text-[11px] font-bold text-[#A7BFAE]/60 uppercase tracking-widest mb-5">Trusted by global teams</p>
-              <div className="flex flex-wrap items-center gap-8 opacity-40 grayscale mix-blend-screen">
-                <span className="font-bold text-xl tracking-tighter">stripe</span>
-                <span className="font-bold text-xl flex items-center gap-1"><span className="text-2xl font-black">H</span> HubSpot</span>
-                <span className="font-semibold text-xl border border-white p-1 rounded">N</span>
-                <span className="font-bold text-xl tracking-tight">deel.</span>
-                <span className="font-bold text-xl italic font-serif">Canva</span>
-              </div>
-            </div>
           </div>
 
           {/* Right Column: Premium Asymmetrical Bento Grid */}
