@@ -147,20 +147,29 @@ async function checkPage(label, path, checks) {
 
   // --- Meta description ---
   if (checks.description !== false) {
-    const m = body.match(/<meta\s+name=["']description["'][^>]+content=["']([^"']+)["']/i)
-           || body.match(/<meta\s+content=["']([^"']+)["'][^>]+name=["']description["']/i);
-    if (m && m[1].trim().length > 20) {
-      pass(`meta description present (${m[1].trim().slice(0, 60)}…)`);
+    const m = body.match(/<meta[^>]*name=["']description["'][^>]*>/i);
+    if (m) {
+      const contentMatch = m[0].match(/content=["']([^"']+)["']/i);
+      if (contentMatch && contentMatch[1].trim().length > 20) {
+        pass(`meta description present (${contentMatch[1].trim().slice(0, 60)}…)`);
+      } else {
+        fail(`meta description content empty or too short`);
+      }
     } else {
-      fail(`meta description missing or too short`);
+      fail(`meta description missing`);
     }
   }
 
   // --- Canonical ---
   if (checks.canonical !== false) {
-    const m = body.match(/<link\s+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i);
+    const m = body.match(/<link[^>]*rel=["']canonical["'][^>]*>/i);
     if (m) {
-      pass(`canonical: ${m[1]}`);
+      const hrefMatch = m[0].match(/href=["']([^"']+)["']/i);
+      if (hrefMatch) {
+        pass(`canonical: ${hrefMatch[1]}`);
+      } else {
+        fail(`canonical link missing href attribute`);
+      }
     } else {
       fail(`canonical link missing`);
     }
@@ -197,9 +206,14 @@ async function checkPage(label, path, checks) {
 
   // --- OG title ---
   if (checks.ogTitle !== false) {
-    const m = body.match(/<meta\s+property=["']og:title["'][^>]+content=["']([^"']+)["']/i);
+    const m = body.match(/<meta[^>]*property=["']og:title["'][^>]*>/i);
     if (m) {
-      pass(`og:title: "${m[1].slice(0, 60)}…"`);
+      const contentMatch = m[0].match(/content=["']([^"']+)["']/i);
+      if (contentMatch) {
+        pass(`og:title: "${contentMatch[1].slice(0, 60)}…"`);
+      } else {
+        fail(`og:title missing content attribute`);
+      }
     } else {
       fail(`og:title missing`);
     }
@@ -207,9 +221,15 @@ async function checkPage(label, path, checks) {
 
   // --- No noindex ---
   if (checks.noNoIndex !== false) {
-    const noindex = /<meta\s+name=["']robots["'][^>]+content=["'][^"']*noindex[^"']*["']/i.test(body);
-    if (noindex) {
-      fail(`Page has noindex robots meta tag!`);
+    const noindexMatch = body.match(/<meta[^>]*name=["']robots["'][^>]*>/i);
+    if (noindexMatch) {
+      const contentMatch = noindexMatch[0].match(/content=["']([^"']+)["']/i);
+      const isNoIndex = contentMatch && /noindex/i.test(contentMatch[1]);
+      if (isNoIndex) {
+        fail(`Page has noindex robots meta tag!`);
+      } else {
+        pass(`No noindex robots tag`);
+      }
     } else {
       pass(`No noindex robots tag`);
     }
@@ -276,6 +296,10 @@ async function run() {
   await checkPage('City Pair: New York → London', '/time/new-york-to-london', {});
   await checkPage('Currency Pair: USD → INR', '/currency/usd-to-inr', {});
   await checkPage('Meeting Planner', '/meeting-planner', {});
+  await checkPage('Press', '/press', {});
+  await checkPage('Global Meeting Planner', '/global-meeting-planner-for-remote-teams', {});
+  await checkPage('US & India Meeting Time', '/us-india-meeting-time', {});
+  await checkPage('Dashboard', '/dashboard', { noNoIndex: false });
 
   await checkSitemap();
   await checkRobots();

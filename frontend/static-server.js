@@ -52,6 +52,12 @@ const ROUTES_TO_CHECK = [
   '/blog/best-currency-to-invoice-freelancers-usd-eur-gbp',
 ];
 
+// ── Mock /api/og edge function for local testing ────────────────────────────
+app.get('/api/og', (req, res) => {
+  res.setHeader('Content-Type', 'image/png');
+  res.send(Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'base64'));
+});
+
 // ── /build-info — BEFORE static handler so it's never shadowed ───────────────
 // Note: in production, /api/build-info is served by FastAPI (port 8001).
 // This endpoint is served by this Node process and accessible at /build-info.

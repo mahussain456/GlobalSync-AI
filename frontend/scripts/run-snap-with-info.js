@@ -891,6 +891,205 @@ function titleFromSlug(slug) {
     .join(' ');
 }
 
+const HOMEPAGE_FAQ = [
+  { q: "What is GlobalSync AI?", a: "GlobalSync AI is a free platform for remote teams and freelancers that combines a real-time world clock, time zone converter, AI-powered meeting planner, and live currency converter in one place. No signup or account required." },
+  { q: "How does the time zone converter work?", a: "Our time zone converter uses the IANA Time Zone Database — the same authoritative source used by Linux, macOS, and most servers worldwide — to give you accurate, DST-aware conversions for any city or time zone in real time." },
+  { q: "How many currencies does GlobalSync AI support?", a: "We support 160+ currencies with live mid-market exchange rates updated continuously. Major pairs like USD/EUR, USD/INR, GBP/PKR and many more are available with 7-day trend charts." },
+  { q: "Is GlobalSync AI free to use?", a: "Yes, completely free. There is no signup, no premium tier, and no rate limits on any tool — including the AI assistant, time zone converter, meeting planner, and currency converter." },
+  { q: "What is the best time to meet between the US and India?", a: "Your best window is 8:00–9:30 AM Eastern Time (EST/EDT), which is 6:30–8:00 PM India Standard Time (IST). Outside this window, one party will be outside normal business hours. Use our Meeting Planner to find the optimal slot for your specific team." }
+];
+
+function getFallbackSchema(route) {
+  const normalizedRoute = route === '/404.html' ? '/404' : route;
+  
+  if (normalizedRoute === '/' || normalizedRoute === '') {
+    return [
+      {
+        "@type": "Organization",
+        "@id": `${PUBLIC_ORIGIN}/#org`,
+        "name": BRAND,
+        "url": PUBLIC_ORIGIN,
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${PUBLIC_ORIGIN}/logo-dark.png`,
+          "width": 512,
+          "height": 512
+        },
+        "description": "Free AI-powered time zone, meeting planner, and currency tools for remote teams and freelancers.",
+        "sameAs": [
+          "https://www.linkedin.com/company/globalsync-ai",
+          "https://x.com/GlobalSyncAI"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${PUBLIC_ORIGIN}/#site`,
+        "url": PUBLIC_ORIGIN,
+        "name": BRAND,
+        "publisher": { "@id": `${PUBLIC_ORIGIN}/#org` },
+        "inLanguage": "en-US",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": { "@type": "EntryPoint", "urlTemplate": `${PUBLIC_ORIGIN}/dashboard?q={search_term_string}` },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "WebApplication",
+        "name": BRAND,
+        "url": `${PUBLIC_ORIGIN}/`,
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": HOMEPAGE_FAQ.map(({ q, a }) => ({
+          "@type": "Question",
+          "name": q,
+          "acceptedAnswer": { "@type": "Answer", "text": a }
+        }))
+      }
+    ];
+  }
+  
+  let crumbs = [];
+  if (normalizedRoute === '/time-zone-converter') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Time Zones', path: '/time-zone-converter' }];
+  } else if (normalizedRoute === '/currency-converter') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Currency', path: '/currency-converter' }];
+  } else if (normalizedRoute === '/meeting-planner') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Meeting Planner', path: '/meeting-planner' }];
+  } else if (normalizedRoute === '/freelancer-rate-converter') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Freelancer Rates', path: '/freelancer-rate-converter' }];
+  } else if (normalizedRoute === '/blog') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }];
+  } else if (normalizedRoute === '/about') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'About', path: '/about' }];
+  } else if (normalizedRoute === '/press') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Press & Media', path: '/press' }];
+  } else if (normalizedRoute === '/global-meeting-planner-for-remote-teams') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Remote Teams Meeting Planner', path: '/global-meeting-planner-for-remote-teams' }];
+  } else if (normalizedRoute === '/us-india-meeting-time') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'US & India Meeting Times', path: '/us-india-meeting-time' }];
+  } else if (normalizedRoute === '/dashboard') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Dashboard', path: '/dashboard' }];
+  } else if (normalizedRoute.startsWith('/time/')) {
+    const pair = normalizedRoute.replace('/time/', '').split('-to-');
+    const from = titleFromSlug(pair[0] || 'City');
+    const to = titleFromSlug(pair[1] || 'City');
+    crumbs = [
+      { name: 'Home', path: '/' },
+      { name: `${from} to ${to} Time Difference`, path: normalizedRoute }
+    ];
+  } else if (normalizedRoute.startsWith('/currency/')) {
+    const pair = normalizedRoute.replace('/currency/', '').split('-to-');
+    const from = (pair[0] || 'usd').toUpperCase();
+    const to = (pair[1] || 'eur').toUpperCase();
+    crumbs = [
+      { name: 'Home', path: '/' },
+      { name: `${from} to ${to} Live Exchange Rate`, path: normalizedRoute }
+    ];
+  } else if (normalizedRoute.startsWith('/blog/')) {
+    const slug = normalizedRoute.split('/').pop();
+    const post = BLOG_POSTS.find(p => p.slug === slug);
+    crumbs = [
+      { name: 'Home', path: '/' },
+      { name: 'Blog', path: '/blog' },
+      { name: post ? post.title : titleFromSlug(slug), path: normalizedRoute }
+    ];
+  }
+  
+  if (crumbs.length > 0) {
+    const schema = [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": crumbs.map(({ name, path }, i) => ({
+          "@type": "ListItem",
+          "position": i + 1,
+          "name": name,
+          "item": `${PUBLIC_ORIGIN}${path}`
+        }))
+      }
+    ];
+    
+    if (normalizedRoute === '/about') {
+      schema.push({
+        "@type": "Person",
+        "name": "Ahmed Hussain",
+        "url": `${PUBLIC_ORIGIN}/authors/ahmed-hussain`,
+        "sameAs": [
+          `${PUBLIC_ORIGIN}/about`,
+          "https://twitter.com/GlobalSyncAI"
+        ],
+        "jobTitle": "Founder & Developer",
+        "worksFor": {
+          "@type": "Organization",
+          "name": BRAND,
+          "url": PUBLIC_ORIGIN
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Karachi",
+          "addressCountry": "PK"
+        },
+        "description": "Ahmed Hussain is the founder and developer of GlobalSync AI, building free tools for remote teams and freelancers working across time zones and currencies."
+      });
+      schema.push({
+        "@type": "Organization",
+        "name": BRAND,
+        "url": PUBLIC_ORIGIN,
+        "logo": { "@type": "ImageObject", "url": `${PUBLIC_ORIGIN}/logo-dark.png` },
+        "sameAs": [
+          "https://twitter.com/GlobalSyncAI",
+          "https://www.linkedin.com/company/globalsync-ai"
+        ]
+      });
+    } else if (normalizedRoute.startsWith('/blog/')) {
+      const slug = normalizedRoute.split('/').pop();
+      const post = BLOG_POSTS.find(p => p.slug === slug);
+      if (post) {
+        schema.push({
+          "@type": "BlogPosting",
+          "headline": post.title,
+          "description": post.metaDescription,
+          "keywords": post.keywords,
+          "datePublished": post.datePublished || "2026-03-01",
+          "dateModified": post.dateModified || post.datePublished || "2026-03-01",
+          "author": { 
+            "@type": "Person", 
+            "name": post.authorName || "Ahmed Hussain", 
+            "url": `${PUBLIC_ORIGIN}/authors/ahmed-hussain` 
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": BRAND,
+            "url": PUBLIC_ORIGIN,
+            "logo": { "@type": "ImageObject", "url": `${PUBLIC_ORIGIN}/logo-dark.png` }
+          },
+          "mainEntityOfPage": { "@type": "WebPage", "@id": `${PUBLIC_ORIGIN}/blog/${post.slug}` },
+          "url": `${PUBLIC_ORIGIN}/blog/${post.slug}`,
+          "image": `${PUBLIC_ORIGIN}/globalsync-ai-logo-1600x400.png`
+        });
+      }
+    } else if (normalizedRoute === '/dashboard') {
+      schema.push({
+        "@type": "WebApplication",
+        "name": `${BRAND} Dashboard`,
+        "url": `${PUBLIC_ORIGIN}/dashboard`,
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "All",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      });
+    }
+    
+    return schema;
+  }
+  
+  return null;
+}
+
 function getFallbackMeta(route) {
   const normalizedRoute = route === '/404.html' ? '/404' : route;
   const noIndexRoutes = new Set(['/dashboard', '/admin', '/news', '/404']);
@@ -903,7 +1102,10 @@ function getFallbackMeta(route) {
       : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1',
   };
 
-  if (normalizedRoute === '/time-zone-converter') {
+  if (normalizedRoute === '/' || normalizedRoute === '') {
+    meta.title = 'GlobalSync AI — Free Time Zone Converter, World Clock & Currency Tools';
+    meta.description = 'Free time zone converter, world clock, and live currency converter for remote teams. Plan meetings across time zones, find business hour overlaps, and convert 160+ currencies instantly. No signup required.';
+  } else if (normalizedRoute === '/time-zone-converter') {
     meta.title = `Free Time Zone Converter | World Clock | ${BRAND}`;
     meta.description = 'Compare live time across 25+ cities instantly. Convert any time zone, find business hour overlaps, and plan meetings across continents. Free.';
   } else if (normalizedRoute === '/currency-converter') {
@@ -2110,10 +2312,6 @@ function writeFallbackSnapshots() {
   for (const route of routes) {
     const routePath = route === '/' ? shellPath : path.join(BUILD_DIR, route.replace(/^\//, ''), 'index.html');
 
-    // Preserve react-snap's rich output. Overwrite only if the file is missing
-    // or is essentially the empty CRA shell. Pages that are intentionally
-    // noindex (e.g. /404) don't ship JSON-LD, so we accept them when they have
-    // real body content.
     if (fs.existsSync(routePath)) {
       try {
         const existing = fs.readFileSync(routePath, 'utf8');
@@ -2138,6 +2336,14 @@ function writeFallbackSnapshots() {
     let routeHtml = injectMeta(shell, fallbackMeta);
     // Replace <div id="root">...</div> with our pre-rendered semantic HTML body
     routeHtml = routeHtml.replace(/<div id="root">[\s\S]*?<\/div>(?=\s*<script)/i, `<div id="root">${fallbackBody}</div>`);
+
+    // Generate and inject JSON-LD schema
+    const schemaOutput = getFallbackSchema(route);
+    if (schemaOutput) {
+      const wrappedSchema = { "@context": "https://schema.org", "@graph": schemaOutput };
+      const schemaScript = `\n<script type="application/ld+json">${JSON.stringify(wrappedSchema)}</script>`;
+      routeHtml = routeHtml.replace('</head>', `${schemaScript}</head>`);
+    }
 
     fs.writeFileSync(routePath, routeHtml);
     written += 1;
