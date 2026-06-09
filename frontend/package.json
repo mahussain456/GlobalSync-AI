@@ -63,7 +63,9 @@
     "start:dev": "craco start",
     "build": "craco build",
     "postbuild": "node scripts/run-snap-with-info.js && node scripts/generate-serve-config.js && node scripts/generate-seo-assets.js && node scripts/generate-404.js",
-    "test": "craco test"
+    "test": "craco test",
+    "seo:check": "node scripts/seo-check.js --base http://localhost:3000",
+    "seo:check:prod": "node scripts/seo-check.js"
   },
   "reactSnap": {
     "puppeteerArgs": [

@@ -156,14 +156,15 @@ export const buildArticleSchema = (post) => ({
  * Homepage — /
  */
 export const getHomepageSEO = ({ faqs = [] } = {}) => {
-  const title = "Free Time Zone Converter & World Clock for Remote Teams | GlobalSync AI";
+  const title = "GlobalSync AI — Free Time Zone Converter, World Clock & Currency Tools";
+  const desc  = "Free time zone converter, world clock, and live currency converter for remote teams. Plan meetings across time zones, find business hour overlaps, and convert 160+ currencies instantly. No signup required.";
   return {
     rawTitle: title,
-    description: `Free time zone converter, world clock, meeting planner, and live exchange rates for 160+ currencies. Built for remote teams and freelancers. No signup.`,
+    description: desc,
     canonical: "/",
-    keywords: "AI time zone converter, free world clock, meeting planner remote teams, currency converter 160 currencies, live exchange rates, best meeting time multiple time zones",
+    keywords: "time zone converter, world clock, currency converter, meeting planner, business hours overlap, remote team scheduling, free currency converter 160 currencies, city to city time conversion",
     ogType: "website",
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent("Time Zone & Currency Tools")}&type=tool`,
+    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent("Time Zone Converter, World Clock & Currency Tools")}&subtitle=${encodeURIComponent("Free tools for remote teams — No signup")}&type=default`,
     structuredData: [
       {
         "@type": "Organization",
@@ -188,7 +189,12 @@ export const getHomepageSEO = ({ faqs = [] } = {}) => {
         "url": BASE_URL,
         "name": BRAND,
         "publisher": { "@id": `${BASE_URL}/#org` },
-        "inLanguage": "en-US"
+        "inLanguage": "en-US",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": { "@type": "EntryPoint", "urlTemplate": `${BASE_URL}/dashboard?q={search_term_string}` },
+          "query-input": "required name=search_term_string"
+        }
       },
       buildWebApplicationSchema({
         name: BRAND,

@@ -6,6 +6,14 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { getHomepageSEO } from "@/lib/seo";
 
+const HOMEPAGE_FAQ = [
+  { q: "What is GlobalSync AI?", a: "GlobalSync AI is a free platform for remote teams and freelancers that combines a real-time world clock, time zone converter, AI-powered meeting planner, and live currency converter in one place. No signup or account required." },
+  { q: "How does the time zone converter work?", a: "Our time zone converter uses the IANA Time Zone Database — the same authoritative source used by Linux, macOS, and most servers worldwide — to give you accurate, DST-aware conversions for any city or time zone in real time." },
+  { q: "How many currencies does GlobalSync AI support?", a: "We support 160+ currencies with live mid-market exchange rates updated continuously. Major pairs like USD/EUR, USD/INR, GBP/PKR and many more are available with 7-day trend charts." },
+  { q: "Is GlobalSync AI free to use?", a: "Yes, completely free. There is no signup, no premium tier, and no rate limits on any tool — including the AI assistant, time zone converter, meeting planner, and currency converter." },
+  { q: "What is the best time to meet between the US and India?", a: "Your best window is 8:00–9:30 AM Eastern Time (EST/EDT), which is 6:30–8:00 PM India Standard Time (IST). Outside this window, one party will be outside normal business hours. Use our Meeting Planner to find the optimal slot for your specific team." },
+];
+
 const SUPPORTED_CURRENCIES = [
   // Popular / major currencies first for premium UX
   "USD", "EUR", "GBP", "INR", "AUD", "CAD", "SGD", "JPY",
@@ -198,7 +206,7 @@ export default function LandingPage() {
 
   const amt = parseFloat(currencyAmount);
   const receiveAmount = isNaN(amt) ? 0 : amt * currencyRate;
-  const seo = getHomepageSEO();
+  const seo = getHomepageSEO({ faqs: HOMEPAGE_FAQ });
 
   return (
     <div className="min-h-screen bg-gem-forest text-gem-beige font-sans relative">
