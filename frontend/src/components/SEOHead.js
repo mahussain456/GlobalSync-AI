@@ -53,7 +53,14 @@ export default function SEOHead({
   const dynamicOgImage = `${BASE_URL}/api/og?title=${ogTitle}&subtitle=${ogSubtitle}&type=${ogType}`;
 
   return (
-    <Helmet>
+    <Helmet
+      script={schemaOutput ? [
+        {
+          type: "application/ld+json",
+          innerHTML: JSON.stringify(schemaOutput),
+        }
+      ] : []}
+    >
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
@@ -83,12 +90,6 @@ export default function SEOHead({
         ? <meta name="robots" content="noindex, nofollow" />
         : <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
       }
-
-      {schemaOutput && (
-        <script type="application/ld+json">
-          {JSON.stringify(schemaOutput)}
-        </script>
-      )}
     </Helmet>
   );
 }

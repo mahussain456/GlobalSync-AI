@@ -975,6 +975,20 @@ function getFallbackSchema(route) {
     crumbs = [{ name: 'Home', path: '/' }, { name: 'US & India Meeting Times', path: '/us-india-meeting-time' }];
   } else if (normalizedRoute === '/dashboard') {
     crumbs = [{ name: 'Home', path: '/' }, { name: 'Dashboard', path: '/dashboard' }];
+  } else if (normalizedRoute === '/contact') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Contact Us', path: '/contact' }];
+  } else if (normalizedRoute === '/privacy-policy') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Privacy Policy', path: '/privacy-policy' }];
+  } else if (normalizedRoute === '/terms-of-service') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Terms of Service', path: '/terms-of-service' }];
+  } else if (normalizedRoute === '/editorial-policy') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Editorial Policy', path: '/editorial-policy' }];
+  } else if (normalizedRoute === '/methodology') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Methodology', path: '/methodology' }];
+  } else if (normalizedRoute === '/data-sources') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Data Sources', path: '/data-sources' }];
+  } else if (normalizedRoute === '/authors/ahmed-hussain') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Ahmed Hussain', path: '/authors/ahmed-hussain' }];
   } else if (normalizedRoute.startsWith('/time/')) {
     const pair = normalizedRoute.replace('/time/', '').split('-to-');
     const from = titleFromSlug(pair[0] || 'City');
@@ -1081,6 +1095,60 @@ function getFallbackSchema(route) {
         "applicationCategory": "UtilitiesApplication",
         "operatingSystem": "All",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      });
+    } else if (normalizedRoute === '/contact') {
+      schema.push({
+        "@type": "ContactPage",
+        "name": `Contact ${BRAND}`,
+        "url": `${PUBLIC_ORIGIN}/contact`,
+        "description": "Have questions, suggestions, or bug reports? Contact the GlobalSync AI team."
+      });
+      schema.push({
+        "@type": "Organization",
+        "name": BRAND,
+        "url": PUBLIC_ORIGIN,
+        "logo": { "@type": "ImageObject", "url": `${PUBLIC_ORIGIN}/logo-dark.png` }
+      });
+    } else if (normalizedRoute === '/press') {
+      schema.push({
+        "@type": "WebPage",
+        "name": `Press & Media | ${BRAND}`,
+        "url": `${PUBLIC_ORIGIN}/press`,
+        "description": "Get the latest press releases, media kits, brand assets, and contact information for GlobalSync AI."
+      });
+      schema.push({
+        "@type": "Organization",
+        "name": BRAND,
+        "url": PUBLIC_ORIGIN,
+        "logo": { "@type": "ImageObject", "url": `${PUBLIC_ORIGIN}/logo-dark.png` }
+      });
+    } else if (normalizedRoute === '/authors/ahmed-hussain') {
+      schema.push({
+        "@type": "Person",
+        "name": "Ahmed Hussain",
+        "url": `${PUBLIC_ORIGIN}/authors/ahmed-hussain`,
+        "sameAs": [
+          `${PUBLIC_ORIGIN}/about`,
+          "https://twitter.com/GlobalSyncAI"
+        ],
+        "jobTitle": "Founder & Developer",
+        "worksFor": {
+          "@type": "Organization",
+          "name": BRAND,
+          "url": PUBLIC_ORIGIN
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Karachi",
+          "addressCountry": "PK"
+        },
+        "description": "Ahmed Hussain is the founder and developer of GlobalSync AI, building free tools for remote teams and freelancers working across time zones and currencies."
+      });
+      schema.push({
+        "@type": "Organization",
+        "name": BRAND,
+        "url": PUBLIC_ORIGIN,
+        "logo": { "@type": "ImageObject", "url": `${PUBLIC_ORIGIN}/logo-dark.png` }
       });
     }
     
@@ -2151,8 +2219,8 @@ function getFallbackBody(route) {
         </div>
       </section>
     `;
-  } else if (['/data-sources', '/editorial-policy', '/contact', '/privacy-policy', '/terms-of-service'].includes(normalizedRoute)) {
-    // Generate real content for all footer links to prevent thin or broken stubs
+  } else if (['/data-sources', '/editorial-policy', '/contact', '/privacy-policy', '/terms-of-service', '/press', '/global-meeting-planner-for-remote-teams', '/us-india-meeting-time'].includes(normalizedRoute)) {
+    // Generate real content for all footer links and static pages to prevent thin or broken stubs
     let title = 'GlobalSync AI Page';
     let body = '';
     
@@ -2221,6 +2289,82 @@ function getFallbackBody(route) {
           Redistributing our database tables or scrapers without written permission is strictly prohibited. All rights are reserved by GlobalSync AI.
         </p>
       `;
+    } else if (normalizedRoute === '/press') {
+      title = 'Press & Media';
+      body = `
+        <p style="margin-bottom: 1.5rem;">
+          Get the latest press releases, media kits, brand assets, and contact information for GlobalSync AI time zone and currency tools.
+        </p>
+        <h2 style="font-size: 1.5rem; color: #C8A96A; margin-top: 2rem; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif;">About GlobalSync AI</h2>
+        <p style="margin-bottom: 1rem;">
+          GlobalSync AI is a free toolkit for remote teams, freelancers, and global workers. We provide AI-powered time zone conversion, meeting scheduling, and live currency rates to help distributed teams work together more effectively.
+        </p>
+        <p style="margin-bottom: 1.5rem;">
+          Our mission is to eliminate the friction of working globally by providing accurate, real-time data powered by the IANA timezone database and the European Central Bank.
+        </p>
+        <h2 style="font-size: 1.5rem; color: #C8A96A; margin-top: 2rem; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif;">Brand Assets</h2>
+        <p style="margin-bottom: 1rem;">
+          Download high-resolution logos and standalone icon marks:
+        </p>
+        <ul style="list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <li>High-Res Logo (Light): For dark backgrounds (PNG) - <a href="/globalsync-ai-logo-512x128.png" download style="color: #C8A96A; text-decoration: none;">Download Logo</a></li>
+          <li>Brand Icon: Standalone logomark (PNG) - <a href="/favicon-512.png" download style="color: #C8A96A; text-decoration: none;">Download Icon</a></li>
+        </ul>
+        <h2 style="font-size: 1.5rem; color: #C8A96A; margin-top: 2rem; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif;">Media Enquiries</h2>
+        <p style="margin-bottom: 1rem;">
+          For press enquiries, interview requests, or further information, please contact our team.
+        </p>
+        <a href="mailto:press@globalsync-ai.com" style="display: inline-block; padding: 0.5rem 1rem; border-radius: 0.375rem; background: #C8A96A; color: #020C06; font-weight: 700; text-decoration: none; font-size: 0.9rem;">Email Press Team</a>
+      `;
+    } else if (normalizedRoute === '/global-meeting-planner-for-remote-teams') {
+      title = 'Global Meeting Planner for Remote Teams';
+      body = `
+        <p style="margin-bottom: 1.5rem;">
+          Stop guessing and start scheduling fair meetings. Our AI-powered overlap calculator protects your team from time zone burnout.
+        </p>
+        <h2 style="font-size: 1.5rem; color: #C8A96A; margin-top: 2rem; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif;">How Remote Teams Schedule Fair Meetings</h2>
+        <p style="margin-bottom: 1rem;">
+          When a team is distributed across New York, London, and Tokyo, finding a meeting time isn't about convenience—it's about fairness. Over time, recurring late-night or early-morning meetings lead to burnout for team members in marginalized time zones.
+        </p>
+        <h3 style="font-size: 1.25rem; color: #F5F5F0; margin-top: 1.5rem; margin-bottom: 0.5rem;">1. Map the Overlap</h3>
+        <p style="margin-bottom: 1rem;">
+          Always start by identifying the "Golden Overlap"—the hours where standard business hours (usually 9 AM to 5 PM local time) overlap for all participants.
+        </p>
+        <h3 style="font-size: 1.25rem; color: #F5F5F0; margin-top: 1.5rem; margin-bottom: 0.5rem;">2. Rotate the Burden</h3>
+        <p style="margin-bottom: 1rem;">
+          When no clean overlap exists, implement a rotating meeting schedule. This ensures that no single region permanently bears the burden of taking 10 PM calls.
+        </p>
+        <h3 style="font-size: 1.25rem; color: #F5F5F0; margin-top: 1.5rem; margin-bottom: 0.5rem;">3. Use the AI Meeting Score</h3>
+        <p style="margin-bottom: 1.5rem;">
+          GlobalSync AI introduces the AI Meeting Overlap Score, which evaluates any proposed time slot from 0 to 100 based on local time fairness, weekend collisions, and lunch-hour disruptions.
+        </p>
+        <a href="/meeting-planner" style="display: inline-block; padding: 0.5rem 1rem; border-radius: 0.375rem; background: #C8A96A; color: #020C06; font-weight: 700; text-decoration: none; font-size: 0.9rem;">Go to Meeting Planner</a>
+      `;
+    } else if (normalizedRoute === '/us-india-meeting-time') {
+      title = 'US & India Meeting Times';
+      body = `
+        <p style="margin-bottom: 1.5rem;">
+          Scheduling meetings across a 9.5 to 12.5 hour time difference is difficult. Here is exactly when to schedule your calls.
+        </p>
+        <h2 style="font-size: 1.5rem; color: #C8A96A; margin-top: 2rem; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif;">The East Coast Overlap (EST/EDT to IST)</h2>
+        <p style="margin-bottom: 1rem;">
+          India Standard Time (IST) is 9 hours and 30 minutes ahead of Eastern Daylight Time (EDT) and 10 hours and 30 minutes ahead of Eastern Standard Time (EST).
+        </p>
+        <p style="margin-bottom: 1.5rem;">
+          <strong>The Best Window:</strong> 8:00 AM to 10:30 AM EST (which is 5:30 PM to 8:00 PM in India). This catches the US team at the start of their day and the India team at the end of their working hours.
+        </p>
+        <h2 style="font-size: 1.5rem; color: #C8A96A; margin-top: 2rem; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif;">The West Coast Challenge (PST/PDT to IST)</h2>
+        <p style="margin-bottom: 1rem;">
+          IST is 12 hours and 30 minutes ahead of Pacific Daylight Time (PDT) and 13 hours and 30 minutes ahead of Pacific Standard Time (PST). Finding a fair overlap here is notoriously difficult.
+        </p>
+        <p style="margin-bottom: 0.5rem;">
+          <strong>Option 1 (Morning PST):</strong> 7:30 AM to 9:00 AM PST (8:00 PM to 9:30 PM in India). Tough on India's evening.
+        </p>
+        <p style="margin-bottom: 1.5rem;">
+          <strong>Option 2 (Evening PST):</strong> 8:30 PM to 10:00 PM PST (9:00 AM to 10:30 AM next day in India). Tough on California's night.
+        </p>
+        <a href="/meeting-planner" style="display: inline-block; padding: 0.5rem 1rem; border-radius: 0.375rem; background: #C8A96A; color: #020C06; font-weight: 700; text-decoration: none; font-size: 0.9rem;">Open Live Meeting Planner</a>
+      `;
     }
     
     content = `
@@ -2277,21 +2421,21 @@ function injectMeta(html, meta) {
     .replace(/<meta[^>]+name=["']twitter:(card|title|description|image)["'][^>]*>/gi, '');
 
   const tags = [
-    `<title>${escapeHtml(meta.title)}</title>`,
-    `<meta name="description" content="${escapeHtml(meta.description)}">`,
-    `<meta name="robots" content="${escapeHtml(meta.robots)}">`,
-    `<link rel="canonical" href="${escapeHtml(meta.canonical)}">`,
-    `<meta property="og:title" content="${escapeHtml(meta.title)}">`,
-    `<meta property="og:description" content="${escapeHtml(meta.description)}">`,
-    '<meta property="og:type" content="website">',
-    `<meta property="og:url" content="${escapeHtml(meta.canonical)}">`,
-    `<meta property="og:site_name" content="${BRAND}">`,
-    `<meta property="og:image" content="${OG_IMAGE}">`,
-    '<meta property="og:locale" content="en_US">',
-    '<meta name="twitter:card" content="summary_large_image">',
-    `<meta name="twitter:title" content="${escapeHtml(meta.title)}">`,
-    `<meta name="twitter:description" content="${escapeHtml(meta.description)}">`,
-    `<meta name="twitter:image" content="${OG_IMAGE}">`,
+    `<title data-rh="true">${escapeHtml(meta.title)}</title>`,
+    `<meta data-rh="true" name="description" content="${escapeHtml(meta.description)}">`,
+    `<meta data-rh="true" name="robots" content="${escapeHtml(meta.robots)}">`,
+    `<link data-rh="true" rel="canonical" href="${escapeHtml(meta.canonical)}">`,
+    `<meta data-rh="true" property="og:title" content="${escapeHtml(meta.title)}">`,
+    `<meta data-rh="true" property="og:description" content="${escapeHtml(meta.description)}">`,
+    '<meta data-rh="true" property="og:type" content="website">',
+    `<meta data-rh="true" property="og:url" content="${escapeHtml(meta.canonical)}">`,
+    `<meta data-rh="true" property="og:site_name" content="${BRAND}">`,
+    `<meta data-rh="true" property="og:image" content="${OG_IMAGE}">`,
+    '<meta data-rh="true" property="og:locale" content="en_US">',
+    '<meta data-rh="true" name="twitter:card" content="summary_large_image">',
+    `<meta data-rh="true" name="twitter:title" content="${escapeHtml(meta.title)}">`,
+    `<meta data-rh="true" name="twitter:description" content="${escapeHtml(meta.description)}">`,
+    `<meta data-rh="true" name="twitter:image" content="${OG_IMAGE}">`,
   ].join('');
 
   return cleaned.replace('</head>', `${tags}</head>`);
@@ -2341,7 +2485,7 @@ function writeFallbackSnapshots() {
     const schemaOutput = getFallbackSchema(route);
     if (schemaOutput) {
       const wrappedSchema = { "@context": "https://schema.org", "@graph": schemaOutput };
-      const schemaScript = `\n<script type="application/ld+json">${JSON.stringify(wrappedSchema)}</script>`;
+      const schemaScript = `\n<script data-rh="true" type="application/ld+json">${JSON.stringify(wrappedSchema)}</script>`;
       routeHtml = routeHtml.replace('</head>', `${schemaScript}</head>`);
     }
 
