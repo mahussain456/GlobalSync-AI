@@ -57,9 +57,20 @@ export default function ContactPage() {
       <article className="max-w-3xl mx-auto px-6 pt-36 pb-8">
         <header className="mb-10">
           <h1 className="font-heading text-4xl font-bold text-gem-beige mb-4">Contact Us</h1>
-          <p className="text-lg text-gem-beige/60 leading-relaxed">
-            Have a question, found a bug, or want to partner with us? We'd love to hear from you. We typically respond within 48 hours.
+          <p className="text-lg text-gem-beige/60 leading-relaxed mb-6">
+            Have a question, suggestion, or technical request? We read every query and typically respond within 48 hours.
           </p>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-sm text-gem-beige/70 space-y-3">
+            <h3 className="font-bold text-gem-beige text-base">What You Can Contact Us About:</h3>
+            <ul className="list-disc list-inside space-y-1.5 ml-1">
+              <li><strong className="text-gem-gold">Bug Reports:</strong> Report website glitches, calculator logic errors, rendering bugs, or responsive display anomalies.</li>
+              <li><strong className="text-gem-gold">Data Corrections:</strong> Flag incorrect time offsets, outdated daylight saving changes, or currency rate provider delays.</li>
+              <li><strong className="text-gem-gold">Partnerships & Press Inquiries:</strong> Pitch content syndication ideas, advertising sponsorships, or schedule media interviews.</li>
+            </ul>
+            <p className="text-xs text-gem-beige/40 pt-2 border-t border-white/5">
+              🚀 Expected response time: We aim to acknowledge all technical and database corrections within <strong>2 business days (48 hours)</strong>.
+            </p>
+          </div>
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">

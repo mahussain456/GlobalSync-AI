@@ -1,6 +1,6 @@
 import "@/App.css";
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import CookieConsent from "@/components/CookieConsent";
 
@@ -97,6 +97,7 @@ function App() {
             <Route path="/methodology" element={<MethodologyPage />} />
             <Route path="/data-sources" element={<DataSourcesPage />} />
             <Route path="/freelancer-rate-converter" element={<FreelancerRateConverterPage />} />
+            <Route path="/freelancer-rate-calculator" element={<Navigate to="/freelancer-rate-converter" replace />} />
             <Route path="/global-meeting-planner-for-remote-teams" element={<RemoteTeamsMeetingPlannerPage />} />
             <Route path="/us-india-meeting-time" element={<USIndiaMeetingTimePage />} />
             <Route path="/admin" element={<AdminPage />} />

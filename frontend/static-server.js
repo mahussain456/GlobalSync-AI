@@ -97,6 +97,10 @@ app.use(express.static(BUILD_DIR, { index: false, redirect: false }));
 
 // ── HTML routing — serve pre-rendered file or SPA fallback ───────────────────
 app.get('*', (req, res) => {
+  if (req.path === '/freelancer-rate-calculator') {
+    return res.redirect(301, '/freelancer-rate-converter');
+  }
+
   const urlPath = req.path.replace(/\/+$/, '') || '/';
   const preRendered = urlPath === '/'
     ? path.join(BUILD_DIR, 'index.html')
@@ -105,7 +109,12 @@ app.get('*', (req, res) => {
   if (fs.existsSync(preRendered)) {
     res.sendFile(preRendered);
   } else {
-    res.sendFile(path.join(BUILD_DIR, 'index.html'));
+    const errorPage = path.join(BUILD_DIR, '404.html');
+    if (fs.existsSync(errorPage)) {
+      res.status(404).sendFile(errorPage);
+    } else {
+      res.status(404).sendFile(path.join(BUILD_DIR, 'index.html'));
+    }
   }
 });
 

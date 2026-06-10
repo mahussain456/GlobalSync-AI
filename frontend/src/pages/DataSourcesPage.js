@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
@@ -28,29 +29,45 @@ export default function DataSourcesPage() {
       </div>
 
       <SiteNav />
-      <main className="flex-1 max-w-3xl mx-auto px-6 pt-36 pb-12 w-full">
-        <h1 className="text-3xl font-bold mb-6 font-heading">Data Sources & Methodology</h1>
-        <div className="prose prose-invert max-w-none">
-          <p>GlobalSync AI is committed to transparency. This page explains where our time zone and currency data comes from, how often it is refreshed, and where accuracy limits apply.</p>
+      <main className="flex-1 max-w-3xl mx-auto px-6 pt-36 pb-12 w-full relative z-10">
+        <h1 className="text-3xl font-bold mb-6 font-heading text-gem-beige">GlobalSync AI Data Sources</h1>
+        <div className="prose prose-invert max-w-none text-gem-beige/70 text-sm leading-relaxed space-y-6">
+          <p>
+            GlobalSync AI is committed to transparency, reliability, and data integrity. This page outlines the specific time zone, exchange rate, and scheduling data sources used to power our utilities, along with details on update frequencies and methodology.
+          </p>
           
-          <h2 className="text-xl font-semibold mt-8 mb-4">Time Zone Data</h2>
-          <p>We use the official IANA Time Zone Database for all time zone, daylight saving time (DST), and offset calculations. This ensures that historical and future dates correctly account for local political changes to time zones.</p>
+          <h2 className="text-xl font-bold text-gem-beige mt-8 mb-3">Time Zone Data Sources</h2>
+          <p>
+            All time zone calculations, offsets, and daylight saving time (DST) transitions are computed using the official <strong className="text-gem-beige">IANA Time Zone Database (tzdata)</strong>. This database is the authoritative global standard used by major operating systems (including Linux, macOS, and Android), databases, and web browsers to maintain accurate, up-to-date regional clock offsets.
+          </p>
 
-          <h2 className="text-xl font-semibold mt-8 mb-4">Currency Exchange Rates</h2>
-          <p>Live currency rates are sourced primarily from the European Central Bank (ECB) and ExchangeRate-API. Rates are updated periodically to provide accurate mid-market exchange rates.</p>
+          <h2 className="text-xl font-bold text-gem-beige mt-8 mb-3">Currency Exchange Rate Sources</h2>
+          <p>
+            Real-time exchange rate conversions are processed via secure API integrations with the <strong className="text-gem-beige">European Central Bank (ECB)</strong> and supplementary market feed providers (such as ExchangeRate-API). We display the mid-market rate—the midpoint between the buy and sell rates on the global interbank market—providing a clean, margin-free baseline index.
+          </p>
 
-          <h2 className="text-xl font-semibold mt-8 mb-4">Update Frequency</h2>
-          <p>Time zone rules are based on the IANA time zone database used by modern operating systems and browsers. Currency rates are refreshed from live provider responses and reference data, but market conditions can move faster than any public display layer.</p>
+          <h2 className="text-xl font-bold text-gem-beige mt-8 mb-3">Update Frequency</h2>
+          <p>
+            Our currency conversion feeds are refreshed in real-time on every query to ensure accuracy. Time zone rules are updated automatically upon every new release of the IANA Time Zone Database, typically 3 to 6 times per year. Historical rate data for trend charts is updated once daily.
+          </p>
 
-          <h2 className="text-xl font-semibold mt-8 mb-4">Accuracy Disclaimer</h2>
-          <p>While we strive for 100% accuracy, currency markets fluctuate constantly. The rates displayed are for informational purposes and may not reflect the exact rate offered by your bank, payment processor, or remittance service.</p>
+          <h2 className="text-xl font-bold text-gem-beige mt-8 mb-3">Accuracy and Limitations</h2>
+          <p>
+            While we strive for absolute precision, financial markets fluctuate constantly, and local governments occasionally implement time zone or daylight saving changes with short notice. The exchange rates displayed are for informational purposes only; they do not include the markup or retail transaction fees that your bank or money transfer operator may charge. For high-value transactions or critical scheduling, we advise verifying data with official banking institutions or local government publications.
+          </p>
 
-          <h2 className="text-xl font-semibold mt-8 mb-4">Important Limitations</h2>
-          <ul className="list-disc pl-5 space-y-2">
-            <li>Displayed exchange rates are informational and may differ from the rate offered by your bank, card network, or remittance provider.</li>
-            <li>Government changes to daylight saving rules can occasionally outpace public database updates.</li>
-            <li>For legal, payroll, invoicing, or treasury decisions, verify data with the relevant official source before acting.</li>
-          </ul>
+          <h2 className="text-xl font-bold text-gem-beige mt-8 mb-3">How GlobalSync AI Calculates Meeting Overlap</h2>
+          <p>
+            Our Meeting Planner uses a standard, equitable overlap algorithm. By default, it defines "fair working hours" as 9:00 AM to 5:00 PM local time in each participant's zone. The algorithm maps all selected cities to Coordinated Universal Time (UTC), identifies overlapping hours, and generates a visual grid. It calculates a Meeting Overlap Score (from 0 to 100) based on how many participants are within standard working hours, flag-warning users of late-night or early-morning conflicts to promote respectful scheduling.
+          </p>
+
+          <h2 className="text-xl font-bold text-gem-beige mt-8 mb-3">Learn More & Support</h2>
+          <p>
+            For a deeper dive into our calculations, technology stack, and AI parameters, explore our detailed <Link to="/methodology" className="text-gem-gold hover:underline">Methodology Page</Link>.
+          </p>
+          <p>
+            If you have questions about our data feeds, identify a database inaccuracy, or want to suggest a new feature, please get in touch via the <Link to="/contact" className="text-gem-gold hover:underline">Contact Page</Link>.
+          </p>
         </div>
       </main>
       <SiteFooter />

@@ -1037,7 +1037,7 @@ function getFallbackSchema(route) {
           `${PUBLIC_ORIGIN}/about`,
           "https://twitter.com/GlobalSyncAI"
         ],
-        "jobTitle": "Founder & Developer",
+        "jobTitle": "Founder",
         "worksFor": {
           "@type": "Organization",
           "name": BRAND,
@@ -1131,7 +1131,7 @@ function getFallbackSchema(route) {
           `${PUBLIC_ORIGIN}/about`,
           "https://twitter.com/GlobalSyncAI"
         ],
-        "jobTitle": "Founder & Developer",
+        "jobTitle": "Founder",
         "worksFor": {
           "@type": "Organization",
           "name": BRAND,
@@ -1142,7 +1142,7 @@ function getFallbackSchema(route) {
           "addressLocality": "Karachi",
           "addressCountry": "PK"
         },
-        "description": "Ahmed Hussain is the founder and developer of GlobalSync AI, building free tools for remote teams and freelancers working across time zones and currencies."
+        "description": "Ahmed Hussain is the founder of GlobalSync AI, building free time zone, meeting planner, and currency tools for remote teams, freelancers, and global businesses."
       });
       schema.push({
         "@type": "Organization",
@@ -1236,8 +1236,11 @@ function getFallbackMeta(route) {
     meta.title = `Methodology | Data Sources & AI | ${BRAND}`;
     meta.description = 'How GlobalSync AI sources time zone rules, live exchange rates, and AI data. Update frequencies, data providers, and accuracy details explained.';
   } else if (normalizedRoute === '/data-sources') {
-    meta.title = `Data Sources | Time Zones & Currencies | ${BRAND}`;
-    meta.description = 'See the sources powering GlobalSync AI: IANA time zone rules, ECB and ExchangeRate-API currency data, and AI model information with limitations.';
+    meta.title = 'Data Sources | GlobalSync AI Time Zone & Currency Data';
+    meta.description = 'See the time zone, exchange rate, and scheduling data sources used by GlobalSync AI, including update frequency, accuracy notes, and methodology.';
+  } else if (normalizedRoute === '/authors/ahmed-hussain') {
+    meta.title = 'Ahmed Hussain, Founder of GlobalSync AI | Author Profile';
+    meta.description = 'Ahmed Hussain is the founder of GlobalSync AI, building free time zone, meeting planner, and currency tools for remote teams, freelancers, and global businesses.';
   } else if (normalizedRoute === '/freelancer-rate-converter') {
     meta.title = `Freelance Hourly Rate to Salary Calculator | ${BRAND}`;
     meta.description = 'Convert freelance hourly rates to W-2 salary equivalents and across 160+ currencies. Factor in taxes, unbilled time, and overhead to set sustainable rates.';
@@ -1341,10 +1344,10 @@ function getFallbackBody(route) {
     content = `
       <section style="max-width: 64rem; margin: 0 auto; padding: 4rem 1.5rem; font-family: 'Inter', sans-serif;">
         <h1 style="font-family: 'Outfit', sans-serif; font-size: 3rem; font-weight: 800; color: #F5F5F0; margin-bottom: 1.5rem; line-height: 1.2; text-align: center;">
-          One Control Center for <span style="color: #C8A96A; filter: drop-shadow(0 0 8px rgba(200,169,106,0.3));">Global Teams</span>
+          Time Zone Converter, World Clock & <span style="color: #C8A96A; filter: drop-shadow(0 0 8px rgba(200,169,106,0.3));">Currency Tools</span> for Remote Teams
         </h1>
         <p style="font-size: 1.25rem; color: #A5BCAE; max-width: 42rem; margin: 0 auto 2.5rem auto; line-height: 1.6; text-align: center;">
-          Free AI-powered time zone converter, meeting planner, world clock, and live currency rates for remote teams, freelancers, and digital nomads.
+          One Control Center for Global Teams. Free AI-powered time zone converter, meeting planner, world clock, and live currency rates.
         </p>
         <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 4rem;">
           <a href="/time-zone-converter" style="display: inline-block; padding: 0.875rem 2rem; border-radius: 0.75rem; background: #C8A96A; color: #020C06; font-weight: 700; text-decoration: none; font-size: 1.125rem;">Timezone Converter</a>
@@ -2197,15 +2200,36 @@ function getFallbackBody(route) {
           </div>
           <div>
             <h1 style="font-family: 'Outfit', sans-serif; font-size: 2.5rem; font-weight: 800; color: #F5F5F0; margin: 0 0 0.5rem 0;">Ahmed Hussain</h1>
-            <div style="color: #C8A96A; font-weight: 600; margin-bottom: 1rem;">Founder &amp; Developer, GlobalSync AI</div>
+            <div style="color: #C8A96A; font-weight: 600; margin-bottom: 1rem;">Founder, GlobalSync AI</div>
             <p style="font-size: 1rem; color: #A5BCAE; line-height: 1.6; margin: 0;">
-              Ahmed Hussain is a veteran IT professional and tech enthusiast who builds tools to simplify work for global remote teams. Having led engineering teams across three continents, Ahmed writes about time zone structures, asynchronous remote work cultural guidelines, and digital nomad finance hacks.
+              Ahmed Hussain is the founder of GlobalSync AI. With over a decade of experience in software engineering and managing distributed international teams, he designs free, data-driven tools that resolve the daily friction of working across multiple time zones and currencies.
             </p>
           </div>
         </div>
 
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 2.5rem; margin-bottom: 3rem; line-height: 1.7; color: #A5BCAE; font-size: 0.95rem; text-align: left; space-y: 1.5rem;">
+          <h2 style="font-size: 1.5rem; color: #C8A96A; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif;">Why I Built GlobalSync AI</h2>
+          <p style="margin-bottom: 1rem;">
+            Leading software engineering teams split across North America, Europe, and South Asia taught me that time zone math is a persistent tax on remote productivity. Missed meetings, calendar invite confusion, and late-night syncs are common pain points. I built GlobalSync AI to eliminate these friction points by providing a calm, elegant workspace where distributed teams can coordinate in seconds.
+          </p>
+          <p style="margin-bottom: 1rem;">
+            As a remote contractor, I also recognized how complex it is for freelancers to model international retainers and project rates. Padded bank margins, hidden currency transaction fees, and self-employment overhead make pricing opaque. GlobalSync AI bridges this gap with mid-market currency indices and robust calculator tools.
+          </p>
+          
+          <h2 style="font-size: 1.5rem; color: #C8A96A; margin-top: 1.5rem; margin-bottom: 0.75rem; font-family: 'Outfit', sans-serif;">My Background &amp; Expertise</h2>
+          <p style="margin-bottom: 1rem;">
+            My background combines hands-on systems architecture with agile remote management. I believe time zone awareness is the foundation of a healthy, asynchronous company culture. To ensure absolute data reliability, our timezone tools draw directly from the IANA Time Zone Database, and our exchange rate charts process institutional bank feeds daily.
+          </p>
+          <p style="margin-bottom: 1rem;">
+            Additionally, I have designed our AI helper consoles using structured backend verification, preventing conversational hallucinations and ensuring that natural-language queries resolve to verified geographical and financial outputs.
+          </p>
+          <p style="margin-bottom: 0;">
+            We maintain strict quality, research, and review standards across all our published guides. You can learn more about our commitment to editorial independence on our <a href="/editorial-policy" style="color: #C8A96A; text-decoration: none;">Editorial Policy</a> page, discover our brand background on the <a href="/about" style="color: #C8A96A; text-decoration: none;">About Us</a> page, or submit feedback and bug reports directly via our <a href="/contact" style="color: #C8A96A; text-decoration: none;">Contact Page</a>.
+          </p>
+        </div>
+
         <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.75rem; color: #F5F5F0; margin-bottom: 1.5rem;">Articles Published by Ahmed Hussain</h2>
-        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; text-align: left;">
           <article style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 1.25rem; padding: 1.5rem;">
             <span style="font-size: 0.75rem; color: #C8A96A; font-weight: 700; text-transform: uppercase;">Remote Work</span>
             <h3 style="font-size: 1.25rem; margin: 0.5rem 0; color: #F5F5F0;"><a href="/blog/best-time-to-call-india-from-us-for-business" style="color: #F5F5F0; text-decoration: none;">Best Time to Call India from the US for Business (2026 Guide)</a></h3>
@@ -2222,13 +2246,15 @@ function getFallbackBody(route) {
   } else if (['/data-sources', '/editorial-policy', '/contact', '/privacy-policy', '/terms-of-service', '/press', '/global-meeting-planner-for-remote-teams', '/us-india-meeting-time'].includes(normalizedRoute)) {
     // Generate real content for all footer links and static pages to prevent thin or broken stubs
     let title = 'GlobalSync AI Page';
+    let pageH1 = '';
     let body = '';
     
     if (normalizedRoute === '/data-sources') {
-      title = 'Data Sources & Accuracy Disclosures';
+      title = 'Data Sources | GlobalSync AI Time Zone & Currency Data';
+      pageH1 = 'GlobalSync AI Data Sources';
       body = `
         <p style="margin-bottom: 1.5rem;">
-          GlobalSync AI is committed to transparency. All time zones are compiled from the **IANA Time Zone Database (version 2026a)**. This repository tracks global geographical offsets and transitions for operating systems.
+          GlobalSync AI is committed to transparency. All time zones are compiled from the **IANA Time Zone Database**. This repository tracks global geographical offsets and transitions for operating systems.
         </p>
         <p style="margin-bottom: 1.5rem;">
           Currency exchange benchmarks pull from institutional feeds, including the **European Central Bank (ECB)**, and are processed hourly to guarantee mid-market accuracy without retail margins.
@@ -2370,7 +2396,7 @@ function getFallbackBody(route) {
     content = `
       <section style="max-width: 52rem; margin: 0 auto; padding: 4rem 1.5rem; font-family: 'Inter', sans-serif;">
         <h1 style="font-family: 'Outfit', sans-serif; font-size: 2.25rem; font-weight: 800; color: #F5F5F0; margin-bottom: 1.5rem;">
-          ${title}
+          ${pageH1 || title}
         </h1>
         <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 2.5rem; line-height: 1.7; color: #A5BCAE; font-size: 1.025rem;">
           ${body}
@@ -2418,7 +2444,8 @@ function injectMeta(html, meta) {
     .replace(/<meta[^>]+name=["']robots["'][^>]*>/gi, '')
     .replace(/<link[^>]+rel=["']canonical["'][^>]*>/gi, '')
     .replace(/<meta[^>]+property=["']og:(title|description|url|image|type|site_name|locale)["'][^>]*>/gi, '')
-    .replace(/<meta[^>]+name=["']twitter:(card|title|description|image)["'][^>]*>/gi, '');
+    .replace(/<meta[^>]+name=["']twitter:(card|title|description|image)["'][^>]*>/gi, '')
+    .replace(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi, '');
 
   const tags = [
     `<title data-rh="true">${escapeHtml(meta.title)}</title>`,

@@ -81,16 +81,17 @@
       "source": "/robots",
       "destination": "/robots.txt",
       "permanent": true
+    },
+    {
+      "source": "/freelancer-rate-calculator",
+      "destination": "/freelancer-rate-converter",
+      "permanent": true
     }
   ],
   "rewrites": [
     {
       "source": "/api/:path*",
       "destination": "/api/:path*"
-    },
-    {
-      "source": "/:path*",
-      "destination": "/index.html"
     }
   ]
 }

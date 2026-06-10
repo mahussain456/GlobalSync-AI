@@ -41,18 +41,34 @@ export default function PressPage() {
           </p>
         </header>
 
-        <section className="mb-10 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-7">
-          <h2 className="font-heading text-2xl font-bold text-gem-beige mb-4">About GlobalSync AI</h2>
-          <p className="text-gem-beige/70 leading-relaxed mb-4">
-            GlobalSync AI is a free toolkit for remote teams, freelancers, and global workers. We provide AI-powered time zone conversion, meeting scheduling, and live currency rates to help distributed teams work together more effectively.
-          </p>
-          <p className="text-gem-beige/70 leading-relaxed">
-            Our mission is to eliminate the friction of working globally by providing accurate, real-time data powered by the IANA timezone database and the European Central Bank.
-          </p>
+        <section className="mb-10 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-7 space-y-6">
+          <div>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">Product Description</h2>
+            <p className="text-gem-beige/70 leading-relaxed">
+              GlobalSync AI is a free, web-based utility toolkit designed for remote teams, freelancers, and global businesses. By combining high-performance world clocks, calendar overlap planners, live mid-market exchange rate indices, and deterministically verified AI search panels, GlobalSync AI acts as a calm control center that resolves the daily friction of cross-border operations.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">Company Boilerplate</h2>
+            <p className="text-gem-beige/70 leading-relaxed">
+              Founded in 2026, GlobalSync AI is an independent software project dedicated to promoting healthy asynchronous working practices. Unlike commercial enterprise software, the platform remains 100% free, requiring no signup, user registration, or rate limits. GlobalSync AI is designed to protect employee personal time, reduce timezone scheduling bias, and provide transparent financial metrics for remote contractors globally.
+            </p>
+          </div>
+
+          <div className="border-l-4 border-gem-gold pl-6 py-2 my-8 italic text-gem-beige/90">
+            <p className="text-base leading-relaxed mb-2">
+              "Managing time zones and currency fees shouldn't require mental gymnastics. We built GlobalSync AI to automate these calculations using authoritative public databases and clean interbank feeds, allowing distributed teams to collaborate respectfully and contract transparently."
+            </p>
+            <cite className="text-xs font-semibold text-gem-gold block not-italic">— Ahmed Hussain, Founder of GlobalSync AI</cite>
+          </div>
         </section>
 
         <section className="mb-10">
-          <h2 className="font-heading text-2xl font-bold text-gem-beige mb-6">Brand Assets</h2>
+          <h2 className="font-heading text-2xl font-bold text-gem-beige mb-4">Brand Assets & Guidance</h2>
+          <p className="text-sm text-gem-beige/60 mb-6 leading-relaxed">
+            Please use our logos and assets as provided. Do not modify the colors, alter the aspect ratios, or overlay busy background patterns behind the marks. A minimum clear space of 10% around all logo boundaries is recommended for optimal legibility.
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-5 flex items-center justify-between group">
               <div>
@@ -76,12 +92,12 @@ export default function PressPage() {
         </section>
 
         <section className="bg-gem-pine/30 rounded-2xl border border-gem-gold/20 p-7">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-2">Media Enquiries</h2>
+          <h2 className="font-heading text-xl font-bold text-gem-beige mb-2">Media & Press Enquiries</h2>
           <p className="text-gem-beige/60 text-sm mb-4">
-            For press enquiries, interview requests, or further information, please contact our team.
+            If you are writing about remote team operations, digital nomad scheduling, or currency tools, we'd love to chat. Reach out directly to our press inbox:
           </p>
           <a href="mailto:press@globalsync-ai.com" className="inline-flex items-center gap-2 bg-gem-gold text-gem-forest font-bold rounded-xl px-5 py-2.5 text-sm hover:opacity-90 transition-all">
-            <Mail className="w-4 h-4" /> Email Press Team
+            <Mail className="w-4 h-4" /> press@globalsync-ai.com
           </a>
         </section>
       </article>

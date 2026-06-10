@@ -6,65 +6,8 @@ Allow: /
 Disallow: /admin
 Disallow: /dashboard
 Disallow: /private
-Disallow: /*.json$
 Disallow: /.git/
 Disallow: /.env
 
-# Crawl delay (in seconds) - set reasonable delay for large crawls
-Crawl-delay: 1
-
-# Request-rate for specific user agents
-User-agent: Googlebot
-Allow: /
-Request-rate: 1/1
-
-User-agent: Bingbot
-Allow: /
-Request-rate: 1/1
-
-# Allow AI/LLM crawlers for training (SEO benefit)
-User-agent: GPTBot
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Perplexity-User
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: Applebot-Extended
-Allow: /
-
-User-agent: Bytespider
-Allow: /
-
-User-agent: CCBot
-Allow: /
-
-User-agent: Amazonbot
-Allow: /
-
-User-agent: Omgilibot
-Allow: /
-
 # Sitemap location for all crawlers
 Sitemap: https://www.globalsync-ai.com/sitemap.xml
-Sitemap: https://globalsync-ai.com/sitemap.xml

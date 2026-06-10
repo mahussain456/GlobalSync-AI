@@ -58,9 +58,10 @@ export default function NotFoundPage() {
         {/* Quick links */}
         <div className="mt-12 flex flex-wrap justify-center gap-3">
           {[
+            { label: "Home",                to: "/" },
             { label: "Time Zone Converter", to: "/time-zone-converter" },
-            { label: "Currency Converter",  to: "/currency-converter"  },
             { label: "Meeting Planner",     to: "/meeting-planner"     },
+            { label: "Currency Converter",  to: "/currency-converter"  },
             { label: "Blog",               to: "/blog"                },
           ].map(({ label, to }) => (
             <Link

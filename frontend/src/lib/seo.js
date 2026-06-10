@@ -29,7 +29,7 @@ export const buildPersonSchema = () => ({
     `${BASE_URL}/about`,
     "https://twitter.com/GlobalSyncAI"
   ],
-  "jobTitle": "Founder & Developer",
+  "jobTitle": "Founder",
   "worksFor": {
     "@type": "Organization",
     "name": BRAND,
@@ -40,7 +40,7 @@ export const buildPersonSchema = () => ({
     "addressLocality": "Karachi",
     "addressCountry": "PK"
   },
-  "description": "Ahmed Hussain is the founder and developer of GlobalSync AI, building free tools for remote teams and freelancers working across time zones and currencies."
+  "description": "Ahmed Hussain is the founder of GlobalSync AI, building free time zone, meeting planner, and currency tools for remote teams, freelancers, and global businesses."
 });
 
 export const buildOrganizationSchema = () => ({
@@ -447,8 +447,8 @@ const STATIC_META = {
     keywords: "GlobalSync AI methodology, IANA time zone database, ECB exchange rates, AI transparency",
   },
   "data-sources": {
-    rawTitle: `Data Sources | Time Zones & Currencies | ${BRAND}`,
-    description: `See the sources powering GlobalSync AI: IANA time zone rules, ECB and ExchangeRate-API currency data, and AI model information with limitations.`,
+    rawTitle: "Data Sources | GlobalSync AI Time Zone & Currency Data",
+    description: "See the time zone, exchange rate, and scheduling data sources used by GlobalSync AI, including update frequency, accuracy notes, and methodology.",
     canonical: "/data-sources",
     keywords: "GlobalSync AI data sources, exchange rate sources, IANA time zone database, ECB exchange rates",
   },
@@ -459,8 +459,8 @@ const STATIC_META = {
     keywords: "freelancer rate converter, hourly rate converter, project fee converter, international freelancer pricing",
   },
   "author-ahmed-hussain": {
-    rawTitle: `Ahmed Hussain — Founder & Developer | ${BRAND}`,
-    description: `Ahmed Hussain is the founder of GlobalSync AI, a free toolkit for remote teams and freelancers working across time zones and currencies.`,
+    rawTitle: "Ahmed Hussain, Founder of GlobalSync AI | Author Profile",
+    description: "Ahmed Hussain is the founder of GlobalSync AI, building free time zone, meeting planner, and currency tools for remote teams, freelancers, and global businesses.",
     canonical: "/authors/ahmed-hussain",
     keywords: "Ahmed Hussain, GlobalSync AI founder, remote work tools developer, Karachi Pakistan",
   },

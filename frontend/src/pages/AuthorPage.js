@@ -9,8 +9,8 @@ import { BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
 const AUTHORS = {
   "ahmed-hussain": {
     name: "Ahmed Hussain",
-    role: "Founder & Developer",
-    bio: "Ahmed Hussain is a technology enthusiast and experienced IT professional building tools for global remote teams. With a background in managing distributed engineering teams, Ahmed writes about time zone management, asynchronous workflows, and building a more equitable global workforce.",
+    role: "Founder",
+    bio: "Ahmed Hussain is the founder of GlobalSync AI. With over a decade of experience in software engineering and managing distributed international teams, he designs free, data-driven tools that resolve the daily friction of working across multiple time zones and currencies.",
     avatar: "AH"
   }
 };
@@ -84,6 +84,28 @@ export default function AuthorPage() {
               {author.bio}
             </p>
           </div>
+        </div>
+
+        {/* Extended Bio and Experience Context Sections */}
+        <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-8 md:p-10 text-gem-beige/80 text-sm leading-relaxed mb-12 space-y-6">
+          <h2 className="font-heading text-2xl font-bold text-gem-gold">Why I Built GlobalSync AI</h2>
+          <p>
+            Leading software engineering teams split across North America, Europe, and South Asia taught me that time zone math is a persistent tax on remote productivity. Missed meetings, calendar invite confusion, and late-night syncs are common pain points. I built GlobalSync AI to eliminate these friction points by providing a calm, elegant workspace where distributed teams can coordinate in seconds.
+          </p>
+          <p>
+            As a remote contractor, I also recognized how complex it is for freelancers to model international retainers and project rates. Padded bank margins, hidden currency transaction fees, and self-employment overhead make pricing opaque. GlobalSync AI bridges this gap with mid-market currency indices and robust calculator tools.
+          </p>
+
+          <h2 className="font-heading text-2xl font-bold text-gem-gold pt-4">My Background & Expertise</h2>
+          <p>
+            My background combines hands-on systems architecture with agile remote management. I believe time zone awareness is the foundation of a healthy, asynchronous company culture. To ensure absolute data reliability, our timezone tools draw directly from the IANA Time Zone Database, and our exchange rate charts process institutional bank feeds daily.
+          </p>
+          <p>
+            Additionally, I have designed our AI helper consoles using structured backend verification, preventing conversational hallucinations and ensuring that natural-language queries resolve to verified geographical and financial outputs.
+          </p>
+          <p>
+            We maintain strict quality, research, and review standards across all our published guides. You can learn more about our commitment to editorial independence on our <Link to="/editorial-policy" className="text-gem-gold hover:underline">Editorial Policy</Link> page, discover our brand background on the <Link to="/about" className="text-gem-gold hover:underline">About Us</Link> page, or submit feedback and bug reports directly via our <Link to="/contact" className="text-gem-gold hover:underline">Contact Page</Link>.
+          </p>
         </div>
 
         <h2 className="font-heading text-2xl font-bold text-gem-beige mb-6 flex items-center gap-2">
