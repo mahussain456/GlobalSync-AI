@@ -157,7 +157,7 @@ export const buildArticleSchema = (post) => ({
  */
 export const getHomepageSEO = ({ faqs = [] } = {}) => {
   const title = "GlobalSync AI — Free Time Zone Converter, World Clock & Currency Tools";
-  const desc  = "Free time zone converter, world clock, and live currency converter for remote teams. Plan meetings across time zones, find business hour overlaps, and convert 160+ currencies instantly. No signup required.";
+  const desc  = "Free time zone converter, world clock, and live currency converter for remote teams. Plan meetings, find overlap hours, and convert 160+ currencies.";
   return {
     rawTitle: title,
     description: desc,
@@ -460,7 +460,7 @@ const STATIC_META = {
   },
   "author-ahmed-hussain": {
     rawTitle: "Ahmed Hussain, Founder of GlobalSync AI | Author Profile",
-    description: "Ahmed Hussain is the founder of GlobalSync AI, building free time zone, meeting planner, and currency tools for remote teams, freelancers, and global businesses.",
+    description: "Ahmed Hussain is the founder of GlobalSync AI, building free time zone, meeting planner, and currency tools for remote teams and freelancers.",
     canonical: "/authors/ahmed-hussain",
     keywords: "Ahmed Hussain, GlobalSync AI founder, remote work tools developer, Karachi Pakistan",
   },

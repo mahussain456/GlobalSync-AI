@@ -56,23 +56,32 @@ const snapBin = path.join(
 );
 console.log('[build-info] Starting react-snap...');
 
-const chromeCandidates = process.platform === 'win32'
-  ? [
-      'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-      'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-      'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
-      'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-    ]
-  : [
-      '/usr/bin/google-chrome',
-      '/usr/bin/google-chrome-stable',
-      '/usr/bin/chromium',
-      '/usr/bin/chromium-browser',
-    ];
+// Resolve the chrome path for react-snap in a cross-platform, environment-aware way
+let chromePath = process.env.PUPPETEER_EXECUTABLE_PATH || '';
 
-const chromePath = chromeCandidates.find((candidate) => fs.existsSync(candidate));
+if (!chromePath) {
+  // Search for Chrome/Edge candidates on Windows and Linux to avoid old bundled Chromium syntax errors
+  const chromeCandidates = process.platform === 'win32'
+    ? [
+        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+        'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+      ]
+    : [
+        '/usr/bin/google-chrome',
+        '/usr/bin/google-chrome-stable',
+        '/usr/bin/chromium',
+        '/usr/bin/chromium-browser',
+      ];
+
+  chromePath = chromeCandidates.find((candidate) => fs.existsSync(candidate)) || '';
+}
+
 if (chromePath) {
-  console.log(`[build-info] Using browser for react-snap: ${chromePath}`);
+  console.log(`[build-info] Using browser path for react-snap: ${chromePath}`);
+} else {
+  console.log('[build-info] No browser candidates found. Letting Puppeteer use its bundled/default browser.');
 }
 
 const result = spawnSync(snapBin, [], {

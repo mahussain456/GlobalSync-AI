@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import CookieConsent from "@/components/CookieConsent";
+import SEOSingletonHeadGuard from "@/components/SEOSingletonHeadGuard";
 
 // Global error boundary — prevents any render crash from leaving a blank screen
 class ErrorBoundary extends React.Component {
@@ -77,6 +78,7 @@ function App() {
     <ErrorBoundary>
       <div className="App">
         <BrowserRouter>
+          <SEOSingletonHeadGuard />
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
