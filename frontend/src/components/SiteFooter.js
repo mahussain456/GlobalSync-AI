@@ -10,9 +10,11 @@ export default function SiteFooter() {
         <div className="md:col-span-1">
           <Link to="/" className="flex items-center mb-4 transition-transform duration-300 hover:scale-105">
             <img
-              src="/logo-dark.png"
+              src="/logo-dark.webp"
               alt="GlobalSync AI"
               loading="lazy"
+              width={174}
+              height={58}
               className="w-auto logo-glowing-effect"
               style={{ height: "58px" }}
             />

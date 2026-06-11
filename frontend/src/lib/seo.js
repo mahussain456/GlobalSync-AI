@@ -13,7 +13,7 @@
 
 const BASE_URL  = "https://www.globalsync-ai.com";
 const BRAND     = "GlobalSync AI";
-const LOGO_URL  = `${BASE_URL}/logo-dark.png`;
+const LOGO_URL  = `${BASE_URL}/logo-dark.webp`;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Schema Builders

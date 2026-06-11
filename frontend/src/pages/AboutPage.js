@@ -20,7 +20,7 @@ export default function AboutPage() {
         <div 
           className="absolute inset-0 opacity-[0.12] mix-blend-screen" 
           style={{
-            backgroundImage: "url('/world-map-bg.png')", 
+            backgroundImage: "url('/world-map-bg.webp')", 
             backgroundSize: 'cover', 
             backgroundPosition: 'center 30%',
             maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)',
@@ -100,6 +100,9 @@ export default function AboutPage() {
               <img 
                 src="/team/ahmed.jpg" 
                 alt="Ahmed Hussain" 
+                width={56}
+                height={56}
+                loading="lazy"
                 className="w-14 h-14 rounded-full object-cover shrink-0 border border-gem-gold/20"
                 onError={(e) => {
                   e.target.style.display = 'none';

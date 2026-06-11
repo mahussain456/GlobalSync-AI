@@ -47,7 +47,7 @@ export default function CurrencyConverterPage() {
         <div 
           className="absolute inset-0 opacity-[0.12] mix-blend-screen" 
           style={{
-            backgroundImage: "url('/world-map-bg.png')", 
+            backgroundImage: "url('/world-map-bg.webp')", 
             backgroundSize: 'cover', 
             backgroundPosition: 'center 30%',
             maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)',

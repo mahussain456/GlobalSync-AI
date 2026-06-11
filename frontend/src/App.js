@@ -47,31 +47,36 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// Static imports for pre-rendering (react-snap)
+// Static import for instant above-the-fold homepage rendering
 import LandingPage from "@/pages/LandingPage";
-import Dashboard from "@/pages/Dashboard";
-import TimeZoneConverterPage from "@/pages/TimeZoneConverterPage";
-import CurrencyConverterPage from "@/pages/CurrencyConverterPage";
-import MeetingPlannerPage from "@/pages/MeetingPlannerPage";
-import AdminPage from "@/pages/AdminPage";
-import AboutPage from "@/pages/AboutPage";
-import ContactPage from "@/pages/ContactPage";
-import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
-import TermsOfServicePage from "@/pages/TermsOfServicePage";
-import EditorialPolicyPage from "@/pages/EditorialPolicyPage";
-import MethodologyPage from "@/pages/MethodologyPage";
-import BlogPage from "@/pages/BlogPage";
-import BlogPostPage from "@/pages/BlogPostPage";
-import CityPairPage from "@/pages/CityPairPage";
-import CurrencyPairPage from "@/pages/CurrencyPairPage";
-import DataSourcesPage from "@/pages/DataSourcesPage";
-import FreelancerRateConverterPage from "@/pages/FreelancerRateConverterPage";
-import RemoteTeamsMeetingPlannerPage from "@/pages/RemoteTeamsMeetingPlannerPage";
-import USIndiaMeetingTimePage from "@/pages/USIndiaMeetingTimePage";
-import NotFoundPage from "@/pages/NotFoundPage";
 
-import PressPage from "@/pages/PressPage";
-import AuthorPage from "@/pages/AuthorPage";
+// Lazy imports for all other pages to split JS bundles
+const Dashboard = React.lazy(() => import("@/pages/Dashboard"));
+const TimeZoneConverterPage = React.lazy(() => import("@/pages/TimeZoneConverterPage"));
+const CurrencyConverterPage = React.lazy(() => import("@/pages/CurrencyConverterPage"));
+const MeetingPlannerPage = React.lazy(() => import("@/pages/MeetingPlannerPage"));
+const AdminPage = React.lazy(() => import("@/pages/AdminPage"));
+const AboutPage = React.lazy(() => import("@/pages/AboutPage"));
+const ContactPage = React.lazy(() => import("@/pages/ContactPage"));
+const PrivacyPolicyPage = React.lazy(() => import("@/pages/PrivacyPolicyPage"));
+const TermsOfServicePage = React.lazy(() => import("@/pages/TermsOfServicePage"));
+const EditorialPolicyPage = React.lazy(() => import("@/pages/EditorialPolicyPage"));
+const MethodologyPage = React.lazy(() => import("@/pages/MethodologyPage"));
+const BlogPage = React.lazy(() => import("@/pages/BlogPage"));
+const BlogPostPage = React.lazy(() => import("@/pages/BlogPostPage"));
+const CityPairPage = React.lazy(() => import("@/pages/CityPairPage"));
+const CurrencyPairPage = React.lazy(() => import("@/pages/CurrencyPairPage"));
+const DataSourcesPage = React.lazy(() => import("@/pages/DataSourcesPage"));
+const FreelancerRateConverterPage = React.lazy(() => import("@/pages/FreelancerRateConverterPage"));
+const RemoteTeamsMeetingPlannerPage = React.lazy(() => import("@/pages/RemoteTeamsMeetingPlannerPage"));
+const USIndiaMeetingTimePage = React.lazy(() => import("@/pages/USIndiaMeetingTimePage"));
+const NotFoundPage = React.lazy(() => import("@/pages/NotFoundPage"));
+const PressPage = React.lazy(() => import("@/pages/PressPage"));
+const AuthorPage = React.lazy(() => import("@/pages/AuthorPage"));
+
+const SuspenseFallback = () => (
+  <div style={{ minHeight: "100vh", backgroundColor: "#071a0e" }} />
+);
 
 function App() {
   return (
@@ -79,32 +84,34 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <SEOSingletonHeadGuard />
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/time-zone-converter" element={<TimeZoneConverterPage />} />
-            <Route path="/currency-converter" element={<CurrencyConverterPage />} />
-            <Route path="/meeting-planner" element={<MeetingPlannerPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:slug" element={<BlogPostPage />} />
-            <Route path="/time/:pair" element={<CityPairPage />} />
-            <Route path="/currency/:pair" element={<CurrencyPairPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/press" element={<PressPage />} />
-            <Route path="/authors/:slug" element={<AuthorPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-            <Route path="/editorial-policy" element={<EditorialPolicyPage />} />
-            <Route path="/methodology" element={<MethodologyPage />} />
-            <Route path="/data-sources" element={<DataSourcesPage />} />
-            <Route path="/freelancer-rate-converter" element={<FreelancerRateConverterPage />} />
-            <Route path="/freelancer-rate-calculator" element={<Navigate to="/freelancer-rate-converter" replace />} />
-            <Route path="/global-meeting-planner-for-remote-teams" element={<RemoteTeamsMeetingPlannerPage />} />
-            <Route path="/us-india-meeting-time" element={<USIndiaMeetingTimePage />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+          <React.Suspense fallback={<SuspenseFallback />}>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/time-zone-converter" element={<TimeZoneConverterPage />} />
+              <Route path="/currency-converter" element={<CurrencyConverterPage />} />
+              <Route path="/meeting-planner" element={<MeetingPlannerPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
+              <Route path="/time/:pair" element={<CityPairPage />} />
+              <Route path="/currency/:pair" element={<CurrencyPairPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/press" element={<PressPage />} />
+              <Route path="/authors/:slug" element={<AuthorPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+              <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+              <Route path="/editorial-policy" element={<EditorialPolicyPage />} />
+              <Route path="/methodology" element={<MethodologyPage />} />
+              <Route path="/data-sources" element={<DataSourcesPage />} />
+              <Route path="/freelancer-rate-converter" element={<FreelancerRateConverterPage />} />
+              <Route path="/freelancer-rate-calculator" element={<Navigate to="/freelancer-rate-converter" replace />} />
+              <Route path="/global-meeting-planner-for-remote-teams" element={<RemoteTeamsMeetingPlannerPage />} />
+              <Route path="/us-india-meeting-time" element={<USIndiaMeetingTimePage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </React.Suspense>
           <Toaster position="top-right" richColors />
           <CookieConsent />
         </BrowserRouter>

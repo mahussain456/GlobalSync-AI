@@ -43,7 +43,7 @@ export default function ContactPage() {
         <div 
           className="absolute inset-0 opacity-[0.12] mix-blend-screen" 
           style={{
-            backgroundImage: "url('/world-map-bg.png')", 
+            backgroundImage: "url('/world-map-bg.webp')", 
             backgroundSize: 'cover', 
             backgroundPosition: 'center 30%',
             maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)',
@@ -197,9 +197,11 @@ export default function ContactPage() {
         <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-6 text-center">
           <Link to="/" className="inline-block">
             <img
-              src="/logo-dark.png"
+              src="/logo-dark.webp"
               alt="GlobalSync AI"
               loading="lazy"
+              width={204}
+              height={68}
               className="w-auto mx-auto mb-3 transition-transform duration-300 hover:scale-105 logo-glowing-effect"
               style={{ height: "68px" }}
             />
