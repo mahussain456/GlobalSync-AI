@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Globe, ArrowRight, Play, Sun, Moon, CheckCircle2, DollarSign, Clock, Users, Sparkles, Map, TrendingUp } from "lucide-react";
+import { Globe, ArrowRight, Sun, Moon, CheckCircle2, DollarSign, Clock, Users, Sparkles, Map, TrendingUp } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
@@ -8,10 +8,10 @@ import { getHomepageSEO } from "@/lib/seo";
 
 const HOMEPAGE_FAQ = [
   { q: "What is GlobalSync AI?", a: "GlobalSync AI is a free platform for remote teams and freelancers that combines a real-time world clock, time zone converter, AI-powered meeting planner, and live currency converter in one place. No signup or account required." },
-  { q: "How does the time zone converter work?", a: "Our time zone converter uses the IANA Time Zone Database — the same authoritative source used by Linux, macOS, and most servers worldwide — to give you accurate, DST-aware conversions for any city or time zone in real time." },
+  { q: "How does the time zone converter work?", a: "Our time zone converter uses the IANA Time Zone Database - the same authoritative source used by Linux, macOS, and most servers worldwide - to give you accurate, DST-aware conversions for any city or time zone in real time." },
   { q: "How many currencies does GlobalSync AI support?", a: "We support 160+ currencies with live mid-market exchange rates updated continuously. Major pairs like USD/EUR, USD/INR, GBP/PKR and many more are available with 7-day trend charts." },
-  { q: "Is GlobalSync AI free to use?", a: "Yes, completely free. There is no signup, no premium tier, and no rate limits on any tool — including the AI assistant, time zone converter, meeting planner, and currency converter." },
-  { q: "What is the best time to meet between the US and India?", a: "Your best window is 8:00–9:30 AM Eastern Time (EST/EDT), which is 6:30–8:00 PM India Standard Time (IST). Outside this window, one party will be outside normal business hours. Use our Meeting Planner to find the optimal slot for your specific team." },
+  { q: "Is GlobalSync AI free to use?", a: "Yes, completely free. There is no signup, no premium tier, and no rate limits on any tool - including the AI assistant, time zone converter, meeting planner, and currency converter." },
+  { q: "What is the best time to meet between the US and India?", a: "Your best window is 8:00-9:30 AM Eastern Time (EST/EDT), which is 6:30-8:00 PM India Standard Time (IST). Outside this window, one party will be outside normal business hours. Use our Meeting Planner to find the optimal slot for your specific team." },
 ];
 
 const SUPPORTED_CURRENCIES = [
@@ -38,18 +38,163 @@ const SUPPORTED_CURRENCIES = [
   "ZWL"
 ];
 
+const createHeroCity = (id, city, zone, x, y) => ({
+  id,
+  city,
+  zone,
+  time: "12:00",
+  ampm: "PM",
+  date: "Jun 23 - Tue",
+  tz: "UTC",
+  isNight: false,
+  x,
+  y,
+});
+
+const HERO_CITY_OPTIONS = [
+  createHeroCity("sfo", "San Francisco", "America/Los_Angeles", "14%", "47%"),
+  createHeroCity("nyc", "New York", "America/New_York", "30%", "39%"),
+  createHeroCity("lon", "London", "Europe/London", "51%", "34%"),
+  createHeroCity("sgp", "Singapore", "Asia/Singapore", "78%", "58%"),
+  createHeroCity("tok", "Tokyo", "Asia/Tokyo", "85%", "43%"),
+  createHeroCity("dub", "Dubai", "Asia/Dubai", "61%", "50%"),
+  createHeroCity("mum", "Mumbai", "Asia/Kolkata", "68%", "56%"),
+  createHeroCity("syd", "Sydney", "Australia/Sydney", "88%", "76%"),
+  createHeroCity("ber", "Berlin", "Europe/Berlin", "54%", "35%"),
+  createHeroCity("sao", "Sao Paulo", "America/Sao_Paulo", "38%", "70%"),
+  createHeroCity("lax", "Los Angeles", "America/Los_Angeles", "11%", "49%"),
+  createHeroCity("sea", "Seattle", "America/Los_Angeles", "12%", "41%"),
+  createHeroCity("chi", "Chicago", "America/Chicago", "24%", "40%"),
+  createHeroCity("tor", "Toronto", "America/Toronto", "28%", "38%"),
+  createHeroCity("van", "Vancouver", "America/Vancouver", "11%", "39%"),
+  createHeroCity("mex", "Mexico City", "America/Mexico_City", "20%", "55%"),
+  createHeroCity("mia", "Miami", "America/New_York", "27%", "50%"),
+  createHeroCity("bos", "Boston", "America/New_York", "31%", "36%"),
+  createHeroCity("bue", "Buenos Aires", "America/Argentina/Buenos_Aires", "33%", "76%"),
+  createHeroCity("san", "Santiago", "America/Santiago", "29%", "79%"),
+  createHeroCity("lis", "Lisbon", "Europe/Lisbon", "48%", "38%"),
+  createHeroCity("par", "Paris", "Europe/Paris", "52%", "36%"),
+  createHeroCity("ams", "Amsterdam", "Europe/Amsterdam", "52%", "33%"),
+  createHeroCity("mad", "Madrid", "Europe/Madrid", "50%", "40%"),
+  createHeroCity("rom", "Rome", "Europe/Rome", "54%", "40%"),
+  createHeroCity("zur", "Zurich", "Europe/Zurich", "53%", "37%"),
+  createHeroCity("sto", "Stockholm", "Europe/Stockholm", "55%", "27%"),
+  createHeroCity("ist", "Istanbul", "Europe/Istanbul", "58%", "41%"),
+  createHeroCity("jhb", "Johannesburg", "Africa/Johannesburg", "56%", "76%"),
+  createHeroCity("cai", "Cairo", "Africa/Cairo", "58%", "48%"),
+  createHeroCity("nai", "Nairobi", "Africa/Nairobi", "61%", "62%"),
+  createHeroCity("riy", "Riyadh", "Asia/Riyadh", "61%", "53%"),
+  createHeroCity("del", "Delhi", "Asia/Kolkata", "69%", "48%"),
+  createHeroCity("ban", "Bangkok", "Asia/Bangkok", "75%", "56%"),
+  createHeroCity("hkg", "Hong Kong", "Asia/Hong_Kong", "80%", "49%"),
+  createHeroCity("sel", "Seoul", "Asia/Seoul", "84%", "42%"),
+  createHeroCity("sha", "Shanghai", "Asia/Shanghai", "81%", "45%"),
+  createHeroCity("jkt", "Jakarta", "Asia/Jakarta", "77%", "63%"),
+  createHeroCity("mel", "Melbourne", "Australia/Melbourne", "89%", "80%"),
+  createHeroCity("akl", "Auckland", "Pacific/Auckland", "96%", "74%"),
+];
+
+const INITIAL_HERO_CITIES = HERO_CITY_OPTIONS.slice(0, 4);
+const HERO_CITY_LIMIT = 4;
+
+function getHeroBoardCityTime(city) {
+  try {
+    const now = new Date();
+    const timeParts = new Intl.DateTimeFormat("en-US", { timeZone: city.zone, hour: "2-digit", minute: "2-digit", hour12: true }).formatToParts(now);
+    const dateParts = new Intl.DateTimeFormat("en-US", { timeZone: city.zone, month: "short", day: "numeric", weekday: "short" }).formatToParts(now);
+    const tzParts = new Intl.DateTimeFormat("en-US", { timeZone: city.zone, timeZoneName: "short" }).formatToParts(now);
+    const hour24 = Number(new Intl.DateTimeFormat("en-US", { timeZone: city.zone, hour: "numeric", hour12: false }).format(now));
+    const pick = (parts, type) => parts.find(part => part.type === type)?.value || "";
+
+    return {
+      ...city,
+      time: `${pick(timeParts, "hour")}:${pick(timeParts, "minute")}`,
+      ampm: pick(timeParts, "dayPeriod"),
+      date: `${pick(dateParts, "month")} ${pick(dateParts, "day")} - ${pick(dateParts, "weekday")}`,
+      tz: pick(tzParts, "timeZoneName"),
+      isNight: hour24 >= 18 || hour24 < 6,
+    };
+  } catch {
+    return city;
+  }
+}
+
+function HeroWorldBoard() {
+  const [boardCities, setBoardCities] = useState(() => INITIAL_HERO_CITIES.map(getHeroBoardCityTime));
+  const availableCities = HERO_CITY_OPTIONS.filter(option => !boardCities.some(city => city.id === option.id));
+  const atLimit = boardCities.length >= HERO_CITY_LIMIT;
+
+  useEffect(() => {
+    if (typeof navigator !== "undefined" && navigator.userAgent === "ReactSnap") return;
+    const updateCities = () => setBoardCities(previous => previous.map(getHeroBoardCityTime));
+    updateCities();
+    const interval = setInterval(updateCities, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const addCity = event => {
+    const nextCity = HERO_CITY_OPTIONS.find(option => option.id === event.target.value);
+    if (!nextCity || atLimit) return;
+    setBoardCities(previous => [...previous, getHeroBoardCityTime(nextCity)]);
+    event.target.value = "";
+  };
+
+  const removeCity = id => {
+    setBoardCities(previous => previous.length <= 2 ? previous : previous.filter(city => city.id !== id));
+  };
+
+  return (
+    <div className="hero-board-card col-span-1 md:col-span-2">
+      <div className="hero-board-top">
+        <div className="flex items-center gap-2.5 text-[#E9F1EC] text-sm font-semibold tracking-wide">
+          <Globe className="w-4 h-4 text-gem-gold animate-pulse" /> Live Hero Board
+        </div>
+        <div className="hero-board-controls">
+          <span>{boardCities.length}/4 cities</span>
+          <select onChange={addCity} defaultValue="" disabled={atLimit || availableCities.length === 0} aria-label="Add city to hero board" className="hero-board-select">
+            <option value="">{atLimit ? "Remove one to add" : "Add city"}</option>
+            {availableCities.map(city => <option key={city.id} value={city.id}>{city.city}</option>)}
+          </select>
+        </div>
+      </div>
+
+      <div className="hero-board-map">
+        <div className="hero-board-grid" />
+        <div className="hero-board-route hero-board-route-one" />
+        <div className="hero-board-route hero-board-route-two" />
+        {boardCities.map(city => (
+          <div key={city.id} className="hero-board-pin" style={{ left: city.x, top: city.y }}>
+            <span />
+            <strong>{city.city}</strong>
+            <small>{city.time} {city.ampm}</small>
+            <button type="button" onClick={() => removeCity(city.id)} disabled={boardCities.length <= 2} className="hero-board-remove" aria-label={"Remove " + city.city + " from hero board"}>Remove</button>
+          </div>
+        ))}
+      </div>
+
+      <div className="hero-board-clock-grid">
+        {boardCities.map(city => {
+          const Icon = city.isNight ? Moon : Sun;
+          return (
+            <div key={city.id} className="hero-board-clock">
+              <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75">
+                <Icon className="w-3 h-3 text-[#0E2A1F]" /> {city.tz}
+              </div>
+              <div className="text-xs font-bold tracking-tight">{city.city}</div>
+              <div className="text-2xl font-extrabold mt-1 tracking-tight">
+                {city.time} <span className="text-xs font-normal opacity-75">{city.ampm}</span>
+              </div>
+              <div className="text-[10px] opacity-75 mt-1">{city.date}</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 export default function LandingPage() {
   const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
-
-  // Real-time ticking world clocks state
-  const [clocks, setClocks] = useState({
-    sfo: { time: "08:42", ampm: "AM", date: "May 20 · Tue", tz: "PDT", isNight: false },
-    nyc: { time: "11:42", ampm: "AM", date: "May 20 · Tue", tz: "EDT", isNight: false },
-    lon: { time: "04:42", ampm: "PM", date: "May 20 · Tue", tz: "BST", isNight: false },
-    sgp: { time: "11:42", ampm: "PM", date: "May 20 · Tue", tz: "SGT", isNight: true }
-  });
-
 
   // Currency converter state
   const [currencyAmount, setCurrencyAmount] = useState("1250.00");
@@ -94,115 +239,10 @@ export default function LandingPage() {
     fetchRate();
     return () => { isMounted = false; };
   }, [currencyFrom, currencyTo, mounted]);
-
   useEffect(() => {
-    // Avoid running ticking updates during react-snap static pre-rendering
-    if (typeof navigator !== "undefined" && navigator.userAgent === "ReactSnap") {
-      return;
-    }
-
+    if (typeof navigator !== "undefined" && navigator.userAgent === "ReactSnap") return;
     setMounted(true);
-
-    const getCityTime = (timeZone) => {
-      try {
-        const now = new Date();
-        const formatterTime = new Intl.DateTimeFormat("en-US", {
-          timeZone,
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true
-        });
-        const formatterDate = new Intl.DateTimeFormat("en-US", {
-          timeZone,
-          month: "short",
-          day: "numeric",
-          weekday: "short"
-        });
-        const formatterTZ = new Intl.DateTimeFormat("en-US", {
-          timeZone,
-          timeZoneName: "short"
-        });
-
-        // Time parts
-        const timeParts = formatterTime.formatToParts(now);
-        let hour = "";
-        let minute = "";
-        let dayPeriod = "";
-        for (const part of timeParts) {
-          if (part.type === "hour") hour = part.value;
-          if (part.type === "minute") minute = part.value;
-          if (part.type === "dayPeriod") dayPeriod = part.value;
-        }
-
-        // Date parts
-        const dateParts = formatterDate.formatToParts(now);
-        let month = "";
-        let day = "";
-        let weekday = "";
-        for (const part of dateParts) {
-          if (part.type === "month") month = part.value;
-          if (part.type === "day") day = part.value;
-          if (part.type === "weekday") weekday = part.value;
-        }
-
-        // Timezone code
-        const tzParts = formatterTZ.formatToParts(now);
-        let tzName = "";
-        for (const part of tzParts) {
-          if (part.type === "timeZoneName") tzName = part.value;
-        }
-
-        // Determine if local hour is night (6pm to 6am)
-        const hour24Str = new Intl.DateTimeFormat("en-US", {
-          timeZone,
-          hour: "numeric",
-          hour12: false
-        }).format(now);
-        const localHour24 = parseInt(hour24Str, 10);
-        const isNight = localHour24 >= 18 || localHour24 < 6;
-
-        return {
-          time: `${hour}:${minute}`,
-          ampm: dayPeriod,
-          date: `${month} ${day} · ${weekday}`,
-          tz: tzName,
-          isNight
-        };
-      } catch (e) {
-        console.error("Error calculating city time for timezone:", timeZone, e);
-        return null;
-      }
-    };
-
-    const updateClocks = () => {
-      const sfoTime = getCityTime("America/Los_Angeles");
-      const nycTime = getCityTime("America/New_York");
-      const lonTime = getCityTime("Europe/London");
-      const sgpTime = getCityTime("Asia/Singapore");
-
-      setClocks(prev => ({
-        sfo: sfoTime || prev.sfo,
-        nyc: nycTime || prev.nyc,
-        lon: lonTime || prev.lon,
-        sgp: sgpTime || prev.sgp
-      }));
-    };
-
-    // Update immediately and then every second
-    updateClocks();
-    const interval = setInterval(updateClocks, 1000);
-    return () => clearInterval(interval);
   }, []);
-
-  const fallbackClocks = {
-    sfo: { time: "08:42", ampm: "AM", date: "May 20 · Tue", tz: "PDT", isNight: false },
-    nyc: { time: "11:42", ampm: "AM", date: "May 20 · Tue", tz: "EDT", isNight: false },
-    lon: { time: "04:42", ampm: "PM", date: "May 20 · Tue", tz: "BST", isNight: false },
-    sgp: { time: "11:42", ampm: "PM", date: "May 20 · Tue", tz: "SGT", isNight: true }
-  };
-
-  const displayClocks = mounted ? clocks : fallbackClocks;
-
 
   const amt = parseFloat(currencyAmount);
   const receiveAmount = isNaN(amt) ? 0 : amt * currencyRate;
@@ -231,7 +271,7 @@ export default function LandingPage() {
 
       <SiteNav />
 
-      {/* HERO SECTION — reduced padding so content is above the fold */}
+      {/* HERO SECTION - reduced padding so content is above the fold */}
       <main className="relative z-10 pt-8 lg:pt-12 pb-20 px-5 md:px-12 max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
           
@@ -262,65 +302,10 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Right Column: Premium Asymmetrical Bento Grid */}
+          {/* Right Column: Live Hero Board + Existing Tools */}
           <div className="lg:col-span-7 w-full hidden lg:block z-20">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-              
-              {/* Bento Card 1: World Clocks (Spans 2 columns) */}
-              <div className="col-span-1 md:col-span-2 card-dark p-6 hover:-translate-y-1.5 transition-all duration-300 shadow-[0_12px_40px_rgba(0,0,0,0.25)] hover:shadow-[0_20px_50px_rgba(200,169,106,0.15)] border border-white/10 rounded-[28px] overflow-hidden">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2.5 text-[#E9F1EC] text-sm font-semibold tracking-wide">
-                    <Globe className="w-4 h-4 text-gem-gold animate-pulse" /> Real-Time World Clocks
-                  </div>
-                  <span className="text-xs text-gem-gold font-bold uppercase tracking-wider cursor-pointer hover:underline">Live sync</span>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  {/* San Francisco */}
-                  <div className="bg-gradient-to-br from-[#E6C687] to-[#C8A96A] border border-[#C8A96A]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02] shadow-[0_4px_12px_rgba(200,169,106,0.15)]">
-                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75">
-                      {displayClocks.sfo.isNight ? <Moon className="w-3 h-3 text-[#0E2A1F]" /> : <Sun className="w-3 h-3 text-[#0E2A1F]" />} {displayClocks.sfo.tz}
-                    </div>
-                    <div className="text-xs font-bold tracking-tight">San Francisco</div>
-                    <div className="text-2xl font-extrabold mt-1 tracking-tight">
-                      {displayClocks.sfo.time} <span className="text-xs font-normal opacity-75">{displayClocks.sfo.ampm}</span>
-                    </div>
-                    <div className="text-[10px] opacity-75 mt-1">{displayClocks.sfo.date}</div>
-                  </div>
-                  {/* New York */}
-                  <div className="bg-gradient-to-br from-[#C3D8CB] to-[#A7BFAE] border border-[#A7BFAE]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02] shadow-[0_4px_12px_rgba(167,191,174,0.15)]">
-                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75">
-                      {displayClocks.nyc.isNight ? <Moon className="w-3 h-3 text-[#0E2A1F]" /> : <Sun className="w-3 h-3 text-[#0E2A1F]" />} {displayClocks.nyc.tz}
-                    </div>
-                    <div className="text-xs font-bold tracking-tight">New York</div>
-                    <div className="text-2xl font-extrabold mt-1 tracking-tight">
-                      {displayClocks.nyc.time} <span className="text-xs font-normal opacity-75">{displayClocks.nyc.ampm}</span>
-                    </div>
-                    <div className="text-[10px] opacity-75 mt-1">{displayClocks.nyc.date}</div>
-                  </div>
-                  {/* London */}
-                  <div className="bg-gradient-to-br from-[#FAF8F5] to-[#F4EFE6] border border-[#F4EFE6]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02] shadow-[0_4px_12px_rgba(244,239,230,0.1)]">
-                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75">
-                      {displayClocks.lon.isNight ? <Moon className="w-3 h-3 text-[#0E2A1F]" /> : <Sun className="w-3 h-3 text-[#0E2A1F]" />} {displayClocks.lon.tz}
-                    </div>
-                    <div className="text-xs font-bold tracking-tight">London</div>
-                    <div className="text-2xl font-extrabold mt-1 tracking-tight">
-                      {displayClocks.lon.time} <span className="text-xs font-normal opacity-75">{displayClocks.lon.ampm}</span>
-                    </div>
-                    <div className="text-[10px] opacity-75 mt-1">{displayClocks.lon.date}</div>
-                  </div>
-                  {/* Singapore */}
-                  <div className="bg-gradient-to-br from-[#F5F8F6] to-[#E9F1EC] border border-[#E9F1EC]/20 rounded-2xl p-4 text-[#0E2A1F] transition-all duration-300 hover:scale-[1.02] shadow-[0_4px_12px_rgba(233,241,236,0.1)]">
-                    <div className="text-[10px] flex items-center gap-1 mb-2 font-bold tracking-wider opacity-75">
-                      {displayClocks.sgp.isNight ? <Moon className="w-3 h-3 text-[#0E2A1F]" /> : <Sun className="w-3 h-3 text-[#0E2A1F]" />} {displayClocks.sgp.tz}
-                    </div>
-                    <div className="text-xs font-bold tracking-tight">Singapore</div>
-                    <div className="text-2xl font-extrabold mt-1 tracking-tight">
-                      {displayClocks.sgp.time} <span className="text-xs font-normal opacity-75">{displayClocks.sgp.ampm}</span>
-                    </div>
-                    <div className="text-[10px] opacity-75 mt-1">{displayClocks.sgp.date}</div>
-                  </div>
-                </div>
-              </div>
+              <HeroWorldBoard />
 
               {/* Bento Card 2: Currency Exchange (Left column) */}
               <div className="card-light p-6 hover:-translate-y-1.5 transition-all duration-300 shadow-[0_12px_30px_rgba(0,0,0,0.1)] border border-gem-sage/20 rounded-[28px] text-[#0E2A1F] flex flex-col justify-between h-full">
@@ -588,3 +573,7 @@ export default function LandingPage() {
     </div>
   );
 }
+
+
+
+
