@@ -1149,7 +1149,15 @@
     <lastmod>2026-06-23</lastmod>
   </url>
   <url>
-    <loc>https://www.globalsync-ai.com/invoice-intelligence</loc>
+    <loc>https://www.globalsync-ai.com/invoice</loc>
+    <lastmod>2026-06-23</lastmod>
+  </url>
+  <url>
+    <loc>https://www.globalsync-ai.com/stripe-checkout</loc>
+    <lastmod>2026-06-23</lastmod>
+  </url>
+  <url>
+    <loc>https://www.globalsync-ai.com/upgrade-success</loc>
     <lastmod>2026-06-23</lastmod>
   </url>
 </urlset>

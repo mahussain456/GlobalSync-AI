@@ -334,3 +334,40 @@
   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   transform: translateY(-1px);
 }
+
+/* ===== GLOBALSYNC PREMIUM HOMEPAGE ===== */
+.sync-arc {
+  position: absolute;
+  right: clamp(-140px, -4vw, 40px);
+  top: 18px;
+  width: min(680px, 62vw);
+  aspect-ratio: 1.9 / 1;
+  border-top: 1px solid rgba(217, 188, 114, 0.42);
+  border-radius: 100% 100% 0 0;
+  pointer-events: none;
+  opacity: 0.58;
+  transform: rotate(-8deg);
+  filter: drop-shadow(0 0 12px rgba(217, 188, 114, 0.22));
+}
+.sync-arc::before,
+.sync-arc::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #D9BC72;
+  box-shadow: 0 0 18px rgba(217, 188, 114, 0.8);
+}
+.sync-arc::before { left: 4%; top: -4px; }
+.sync-arc::after { right: 18%; top: -4px; }
+.sync-arc-two {
+  top: 58px;
+  right: clamp(-180px, -8vw, -10px);
+  width: min(760px, 70vw);
+  opacity: 0.28;
+  transform: rotate(-3deg);
+}
+@media (max-width: 900px) {
+  .sync-arc { width: 460px; right: -260px; opacity: 0.28; }
+}

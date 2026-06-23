@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { ArrowRight, Menu, X, Globe } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import SavedTeamsPanel from "./SavedTeamsPanel";
 
@@ -24,17 +24,17 @@ export default function SiteNav() {
   }, []);
 
   return (
-    <header className={`bg-gem-forest border-b border-white/10 sticky top-0 z-50 transition-all duration-300 ${scrolled ? "backdrop-blur-md bg-gem-forest/80" : ""}`}>
-      <nav className="max-w-7xl mx-auto px-6 h-28 flex items-center justify-between gap-4">
+    <header className={`sticky top-0 z-50 border-b border-[#D9BC72]/10 bg-[#071611]/88 backdrop-blur-xl transition-all duration-300 ${scrolled ? "shadow-[0_10px_40px_rgba(0,0,0,0.22)]" : ""}`}>
+      <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between gap-4 px-5 md:px-8">
         <Link to="/" className="shrink-0 flex items-center gap-2 group">
           <img
             src="/logo-dark.webp"
             alt="GlobalSync AI"
             decoding="async"
-            width={255}
-            height={85}
+            width={198}
+            height={66}
             className="w-auto transition-all duration-300 hover:scale-105"
-            style={{ height: "85px", filter: "drop-shadow(0px 0px 12px rgba(200, 169, 106, 0.4))" }}
+            style={{ height: "66px", filter: "drop-shadow(0px 0px 10px rgba(217, 188, 114, 0.32))" }}
           />
         </Link>
 
@@ -44,10 +44,10 @@ export default function SiteNav() {
             <Link
               key={to}
               to={to}
-              className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
+              className={`rounded-xl px-3 py-2 text-sm transition-colors ${
                 pathname === to
-                  ? "text-gem-gold bg-white/5 font-semibold"
-                  : "font-medium text-gem-beige/70 hover:text-gem-beige hover:bg-white/5"
+                  ? "bg-[#D9BC72]/12 text-[#D9BC72] font-semibold"
+                  : "font-medium text-[#C9D1C2] hover:bg-white/5 hover:text-[#F3EFE4]"
               }`}
             >
               {label}
@@ -60,9 +60,9 @@ export default function SiteNav() {
           <SavedTeamsPanel />
           <Link
             to="/dashboard"
-            className="hidden sm:flex items-center gap-1.5 px-5 py-2 rounded-xl bg-gem-gold text-gem-forest text-sm font-bold hover:opacity-90 shadow-[0_4px_14px_rgba(200,169,106,0.15)] hover:shadow-[0_6px_20px_rgba(200,169,106,0.25)] transition-all"
+            className="hidden sm:flex items-center gap-1.5 rounded-xl bg-[#D9BC72] px-5 py-2.5 text-[#071611] text-sm font-bold hover:opacity-90 shadow-[0_4px_14px_rgba(200,169,106,0.15)] hover:shadow-[0_6px_20px_rgba(200,169,106,0.25)] transition-all"
           >
-            Open App <ArrowRight className="w-3.5 h-3.5" />
+            Open <ArrowRight className="w-3.5 h-3.5" />
           </Link>
           <button
             className="md:hidden p-2 rounded-lg text-gem-beige/60 hover:bg-white/10 transition-colors"
@@ -76,7 +76,7 @@ export default function SiteNav() {
 
       {/* Mobile drawer */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-white/10 bg-gem-forest px-6 py-4 flex flex-col gap-2 shadow-2xl">
+        <div className="md:hidden border-t border-white/10 bg-[#071611] px-6 py-4 flex flex-col gap-2 shadow-2xl">
           {NAV_LINKS.map(({ label, to }) => (
             <Link
               key={to}
@@ -95,7 +95,7 @@ export default function SiteNav() {
             onClick={() => setMobileOpen(false)}
             className="mt-2 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gem-gold text-gem-forest text-sm font-bold hover:opacity-90 transition-all"
           >
-            Open App <ArrowRight className="w-3.5 h-3.5" />
+            Open <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       )}

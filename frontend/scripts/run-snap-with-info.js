@@ -1022,6 +1022,12 @@ function getFallbackSchema(route) {
       { name: 'Blog', path: '/blog' },
       { name: post ? post.title : titleFromSlug(slug), path: normalizedRoute }
     ];
+  } else if (normalizedRoute === '/invoice') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Invoice Builder', path: '/invoice' }];
+  } else if (normalizedRoute === '/stripe-checkout') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Stripe Simulator', path: '/stripe-checkout' }];
+  } else if (normalizedRoute === '/upgrade-success') {
+    crumbs = [{ name: 'Home', path: '/' }, { name: 'Upgrade Success', path: '/upgrade-success' }];
   }
   
   if (crumbs.length > 0) {
@@ -1169,7 +1175,7 @@ function getFallbackSchema(route) {
 
 function getFallbackMeta(route) {
   const normalizedRoute = route === '/404.html' ? '/404' : route;
-  const noIndexRoutes = new Set(['/dashboard', '/admin', '/news', '/404']);
+  const noIndexRoutes = new Set(['/dashboard', '/admin', '/news', '/404', '/stripe-checkout', '/upgrade-success']);
   const meta = {
     title: `${BRAND} | Time Zone & Currency Converter`,
     description: 'Free time zone converter, meeting planner, and live exchange rates for 160+ currencies. Built for remote teams and freelancers. No signup required.',
@@ -1189,7 +1195,7 @@ function getFallbackMeta(route) {
     meta.title = `Free Live Currency Converter | 160+ Rates | ${BRAND}`;
     meta.description = 'Convert 160+ currencies with live mid-market exchange rates. USD to INR, EUR to GBP, PKR, NGN, and more. Real-time, accurate, and completely free.';
   } else if (normalizedRoute === '/meeting-planner') {
-    meta.title = `Free Meeting Planner | Global Time Zones | ${BRAND}`;
+    meta.title = `Free Meeting Time Planner | Global Time Zones | ${BRAND}`;
     meta.description = 'Find the best meeting time across multiple cities. Instantly see business hour overlaps and schedule global team calls without off-hour conflicts. Free.';
   } else if (normalizedRoute === '/blog') {
     meta.title = `Remote Work, Time Zones & Currency Blog | ${BRAND}`;
@@ -1251,7 +1257,7 @@ function getFallbackMeta(route) {
     meta.title = 'Ahmed Hussain, Founder of GlobalSync AI | Author Profile';
     meta.description = 'Ahmed Hussain is the founder of GlobalSync AI, building free time zone, meeting planner, and currency tools for remote teams, freelancers, and global businesses.';
   } else if (normalizedRoute === '/freelancer-rate-converter') {
-    meta.title = `Freelance Hourly Rate to Salary Calculator | ${BRAND}`;
+    meta.title = `Freelancer Rate Calculator | Hourly Rate to Salary | ${BRAND}`;
     meta.description = 'Convert freelance hourly rates to W-2 salary equivalents and across 160+ currencies. Factor in taxes, unbilled time, and overhead to set sustainable rates.';
   } else if (normalizedRoute === '/press') {
     meta.title = `Press & Media | ${BRAND}`;
@@ -1268,6 +1274,15 @@ function getFallbackMeta(route) {
     meta.title = `Daily Feed | ${BRAND}`;
   } else if (normalizedRoute === '/404') {
     meta.title = `Page Not Found | ${BRAND}`;
+  } else if (normalizedRoute === '/invoice') {
+    meta.title = `Interactive Invoice Builder | ${BRAND}`;
+    meta.description = 'Create professional multi-currency invoices with self-employment tax pre-calculations. Factor in live exchange rates and download PDF invoices instantly. Free.';
+  } else if (normalizedRoute === '/stripe-checkout') {
+    meta.title = `Upgrade to GlobalSync Pro`;
+    meta.description = 'Secure checkout simulation to unlock unlimited saved teams, custom slugs, and premium invoice features on GlobalSync Pro.';
+  } else if (normalizedRoute === '/upgrade-success') {
+    meta.title = `Upgrade Completed | ${BRAND}`;
+    meta.description = 'Your GlobalSync Pro account has been successfully activated. Enjoy unlimited saved teams, custom slugs, and advanced invoice tools.';
   }
 
   return meta;
@@ -2200,6 +2215,21 @@ function getFallbackBody(route) {
         </div>
       </section>
     `;
+  } else if (normalizedRoute === '/dashboard') {
+    content = `
+      <section style="max-width: 52rem; margin: 0 auto; padding: 4rem 1.5rem; text-align: center; font-family: 'Inter', sans-serif;">
+        <h1 style="font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 700; color: #F5F5F0; margin-bottom: 1rem;">
+          GlobalSync AI Dashboard
+        </h1>
+        <p style="font-size: 1rem; color: #A5BCAE; line-height: 1.6; margin-bottom: 2rem;">
+          Your control center for global scheduling, timezone conversions, and currency calculations.
+        </p>
+        <p style="font-size: 0.9rem; color: #C8A96A; margin-bottom: 2rem;">
+          System status: <strong>live rates active</strong>.
+        </p>
+        <a href="/" style="display: inline-block; padding: 0.75rem 1.5rem; border-radius: 0.5rem; background: #C8A96A; color: #020C06; font-weight: 700; text-decoration: none;">Return Home</a>
+      </section>
+    `;
   } else if (normalizedRoute === '/authors/ahmed-hussain') {
     content = `
       <section style="max-width: 52rem; margin: 0 auto; padding: 3rem 1.5rem; font-family: 'Inter', sans-serif;">
@@ -2252,7 +2282,7 @@ function getFallbackBody(route) {
         </div>
       </section>
     `;
-  } else if (['/data-sources', '/editorial-policy', '/contact', '/privacy-policy', '/terms-of-service', '/press', '/global-meeting-planner-for-remote-teams', '/us-india-meeting-time'].includes(normalizedRoute)) {
+  } else if (['/data-sources', '/editorial-policy', '/contact', '/privacy-policy', '/terms-of-service', '/press', '/global-meeting-planner-for-remote-teams', '/us-india-meeting-time', '/invoice', '/stripe-checkout', '/upgrade-success'].includes(normalizedRoute)) {
     // Generate real content for all footer links and static pages to prevent thin or broken stubs
     let title = 'GlobalSync AI Page';
     let pageH1 = '';
@@ -2298,6 +2328,48 @@ function getFallbackBody(route) {
           Office coordinates: Karachi, Pakistan (GMT+5).
         </p>
       `;
+    } else if (normalizedRoute === '/invoice') {
+      title = 'Interactive Invoice Builder | GlobalSync AI';
+      pageH1 = 'Interactive Invoice Builder';
+      body = `
+        <p style="margin-bottom: 1.5rem;">
+          Create professional, multi-currency invoices with self-employment tax pre-calculated. Factor in live exchange rates, customize with your logo, and generate clean PDF files.
+        </p>
+        <p style="margin-bottom: 1.5rem;">
+          <strong>Live Preview</strong> is active. Customize your billing hours, hourly rates, sender info, and recipient details to compile invoice summaries instantly.
+        </p>
+        <p>
+          Need to invoice in foreign currencies? Our invoice builder integrates live mid-market exchange rates to convert billable amounts transparently.
+        </p>
+      `;
+    } else if (normalizedRoute === '/stripe-checkout') {
+      title = 'GlobalSync Pro Upgrade Checkout';
+      pageH1 = 'Upgrade to GlobalSync Pro';
+      body = `
+        <p style="margin-bottom: 1.5rem;">
+          Secure payment simulator powered by Stripe Checkout test mode.
+        </p>
+        <p style="margin-bottom: 1.5rem;">
+          Unlock unlimited saved teams, custom workspaces, calendar invite downloads, and premium invoice features. Pay safely with your test <strong>card</strong>.
+        </p>
+        <p>
+          Simulate a secure transaction to activate your GlobalSync Pro membership instantly.
+        </p>
+      `;
+    } else if (normalizedRoute === '/upgrade-success') {
+      title = 'Upgrade Completed | GlobalSync Pro Activation';
+      pageH1 = 'GlobalSync Pro Activated!';
+      body = `
+        <p style="margin-bottom: 1.5rem;">
+          Thank you for upgrading! Your GlobalSync Pro account has been successfully <strong>activated</strong>.
+        </p>
+        <p style="margin-bottom: 1.5rem;">
+          You now have access to unlimited saved teams, custom workspace slugs, .ics calendar exports, and premium invoice capabilities.
+        </p>
+        <p>
+          Return to the dashboard or start managing your global timezone workspaces immediately.
+        </p>
+      `;
     } else if (normalizedRoute === '/privacy-policy') {
       title = 'Privacy Policy & Data Protection';
       body = `
@@ -2315,7 +2387,7 @@ function getFallbackBody(route) {
       title = 'Terms of Service & Application Disclaimers';
       body = `
         <p style="margin-bottom: 1.5rem;">
-          By accessing GlobalSync AI, you agree to these Terms of Service. All utilities and calculators are offered free of charge on an 'as-is' and 'as-available' basis.
+          By accessing GlobalSync AI, you agree to this Terms of Service Agreement. All utilities and calculators are offered free of charge on an 'as-is' and 'as-available' basis.
         </p>
         <p style="margin-bottom: 1.5rem;">
           We assume no liability or responsibility for financial losses incurred due to currency shifts, remittance costs, or missed meetings from timezone transitions.
@@ -2480,9 +2552,12 @@ function injectMeta(html, meta) {
 function writeFallbackSnapshots() {
   const pkg = JSON.parse(fs.readFileSync(path.join(APP_ROOT, 'package.json'), 'utf8'));
   const routes = (pkg.reactSnap && pkg.reactSnap.include) || ['/'];
-  const shellPath = path.join(BUILD_DIR, 'index.html');
+  let shellPath = path.join(BUILD_DIR, 'index.html');
   if (!fs.existsSync(shellPath)) {
-    console.error('[build-info] Cannot create fallback snapshots: build/index.html missing');
+    shellPath = path.join(BUILD_DIR, '200.html');
+  }
+  if (!fs.existsSync(shellPath)) {
+    console.error('[build-info] Cannot create fallback snapshots: build/index.html and build/200.html missing');
     return 0;
   }
 
@@ -2498,7 +2573,8 @@ function writeFallbackSnapshots() {
         const hasSchema = existing.includes('application/ld+json');
         const isNoIndex = /<meta[^>]+name=["']robots["'][^>]*noindex/i.test(existing);
         const hasH1 = /<h1[\s>]/i.test(existing);
-        if ((hasSchema || isNoIndex) && hasH1) {
+        const isErrorPage = existing.includes('<title>Error</title>') || existing.includes('Cannot GET');
+        if (!isErrorPage && (hasSchema || isNoIndex) && hasH1) {
           skipped += 1;
           continue;
         }
