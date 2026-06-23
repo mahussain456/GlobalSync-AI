@@ -70,6 +70,8 @@ const DataSourcesPage = React.lazy(() => import("@/pages/DataSourcesPage"));
 const FreelancerRateConverterPage = React.lazy(() => import("@/pages/FreelancerRateConverterPage"));
 const RemoteTeamsMeetingPlannerPage = React.lazy(() => import("@/pages/RemoteTeamsMeetingPlannerPage"));
 const USIndiaMeetingTimePage = React.lazy(() => import("@/pages/USIndiaMeetingTimePage"));
+const TeamWorkspacePage = React.lazy(() => import("@/pages/TeamWorkspacePage"));
+const InvoiceIntelligencePage = React.lazy(() => import("@/pages/InvoiceIntelligencePage"));
 const NotFoundPage = React.lazy(() => import("@/pages/NotFoundPage"));
 const PressPage = React.lazy(() => import("@/pages/PressPage"));
 const AuthorPage = React.lazy(() => import("@/pages/AuthorPage"));
@@ -108,6 +110,8 @@ function App() {
               <Route path="/freelancer-rate-calculator" element={<Navigate to="/freelancer-rate-converter" replace />} />
               <Route path="/global-meeting-planner-for-remote-teams" element={<RemoteTeamsMeetingPlannerPage />} />
               <Route path="/us-india-meeting-time" element={<USIndiaMeetingTimePage />} />
+              <Route path="/team/:slug" element={<TeamWorkspacePage />} />
+              <Route path="/invoice-intelligence" element={<InvoiceIntelligencePage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>

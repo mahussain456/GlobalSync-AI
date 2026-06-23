@@ -9,6 +9,7 @@ import CurrencyConverter from "@/components/CurrencyConverter";
 import HistoryPanel from "@/components/HistoryPanel";
 import OnboardingModal from "@/components/OnboardingModal";
 import SEOHead from "@/components/SEOHead";
+import SavedTeamsPanel from "@/components/SavedTeamsPanel";
 
 export default function Dashboard() {
   const [searchParams] = useSearchParams();
@@ -84,6 +85,7 @@ export default function Dashboard() {
             </div>
 
             <div className="flex items-center gap-3">
+              <SavedTeamsPanel />
               <div className="hidden sm:flex items-center gap-1.5 bg-white/5 text-gem-gold rounded-full px-3 py-1 text-xs font-medium border border-gem-gold/30">
                 <span className="w-1.5 h-1.5 bg-white/50 rounded-full animate-pulse" />
                 Live rates active

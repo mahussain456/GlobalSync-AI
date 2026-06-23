@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight, Menu, X, Globe } from "lucide-react";
 import { useState, useEffect } from "react";
+import SavedTeamsPanel from "./SavedTeamsPanel";
 
 const NAV_LINKS = [
   { label: "Time Zones",       to: "/time-zone-converter" },
@@ -55,6 +56,7 @@ export default function SiteNav() {
 
         {/* Right: CTAs */}
         <div className="flex items-center gap-3 shrink-0">
+          <SavedTeamsPanel />
           <Link
             to="/dashboard"
             className="hidden sm:flex items-center gap-1.5 px-5 py-2 rounded-xl bg-gem-gold text-gem-forest text-sm font-bold hover:opacity-90 shadow-[0_4px_14px_rgba(200,169,106,0.15)] hover:shadow-[0_6px_20px_rgba(200,169,106,0.25)] transition-all"
