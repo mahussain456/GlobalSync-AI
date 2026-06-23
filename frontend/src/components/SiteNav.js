@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: "Meeting Planner",  to: "/meeting-planner"     },
   { label: "Currency",         to: "/currency-converter"  },
   { label: "Freelancer Rates", to: "/freelancer-rate-converter" },
+  { label: "Invoice Builder",  to: "/invoice"             },
   { label: "Blog",             to: "/blog"                },
 ];
 

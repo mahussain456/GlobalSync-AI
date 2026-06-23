@@ -71,7 +71,9 @@ const FreelancerRateConverterPage = React.lazy(() => import("@/pages/FreelancerR
 const RemoteTeamsMeetingPlannerPage = React.lazy(() => import("@/pages/RemoteTeamsMeetingPlannerPage"));
 const USIndiaMeetingTimePage = React.lazy(() => import("@/pages/USIndiaMeetingTimePage"));
 const TeamWorkspacePage = React.lazy(() => import("@/pages/TeamWorkspacePage"));
-const InvoiceIntelligencePage = React.lazy(() => import("@/pages/InvoiceIntelligencePage"));
+const InvoicePage = React.lazy(() => import("@/pages/InvoicePage"));
+const StripeCheckoutSimulatorPage = React.lazy(() => import("@/pages/StripeCheckoutSimulatorPage"));
+const UpgradeSuccessPage = React.lazy(() => import("@/pages/UpgradeSuccessPage"));
 const NotFoundPage = React.lazy(() => import("@/pages/NotFoundPage"));
 const PressPage = React.lazy(() => import("@/pages/PressPage"));
 const AuthorPage = React.lazy(() => import("@/pages/AuthorPage"));
@@ -111,7 +113,9 @@ function App() {
               <Route path="/global-meeting-planner-for-remote-teams" element={<RemoteTeamsMeetingPlannerPage />} />
               <Route path="/us-india-meeting-time" element={<USIndiaMeetingTimePage />} />
               <Route path="/team/:slug" element={<TeamWorkspacePage />} />
-              <Route path="/invoice-intelligence" element={<InvoiceIntelligencePage />} />
+              <Route path="/invoice" element={<InvoicePage />} />
+              <Route path="/stripe-checkout" element={<StripeCheckoutSimulatorPage />} />
+              <Route path="/upgrade-success" element={<UpgradeSuccessPage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>

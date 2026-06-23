@@ -161,6 +161,22 @@ class TeamCreateRequest(BaseModel):
     custom_slug: Optional[str] = None
     is_paid: bool = False
 
+class InvoiceSendRequest(BaseModel):
+    sender_email: str
+    client_email: str
+    client_name: str
+    invoice_number: str
+    pdf_base64: str
+
+class UpgradeCheckoutRequest(BaseModel):
+    email: str
+    plan_type: str
+    origin: Optional[str] = None
+
+class UpgradeWebhookSimulateRequest(BaseModel):
+    email: str
+    plan: str
+
 # ============= AI Parsing =============
 AI_SYSTEM_PROMPT = """You are an intent classification assistant for a time zone and currency app.
 Parse the user's query and return ONLY valid JSON with no markdown, no code blocks, no explanation.
@@ -738,9 +754,17 @@ async def save_or_update_team(req: TeamCreateRequest):
 
     if existing_team:
         if existing_team.get("email", "").lower() != req.email.lower():
+            sug1 = f"{slug}-1"
+            sug2 = f"{slug}-{uuid.uuid4().hex[:4]}"
+            if db is not None:
+                if await db.teams.find_one({"slug": sug1}):
+                    sug1 = f"{slug}-{uuid.uuid4().hex[:4]}"
+            else:
+                if sug1 in local_teams:
+                    sug1 = f"{slug}-{uuid.uuid4().hex[:4]}"
             raise HTTPException(
                 status_code=400,
-                detail=f"The slug '{slug}' is already taken by another team."
+                detail=f"The slug '{slug}' is already taken by another team. Try '{sug1}' or '{sug2}'."
             )
     
     team_data = {
@@ -843,6 +867,169 @@ async def get_user_teams(email: str):
         teams_list = [t for t in local_teams.values() if t.get("email", "").lower() == email_clean]
         
     return {"teams": teams_list}
+
+# ============= Local File Fallback Storage for Invoices & Webhooks =============
+LOCAL_INVOICES_SEQ_FILE = ROOT_DIR / "local_invoices_seq.json"
+
+def load_local_invoices_seq() -> dict:
+    if not LOCAL_INVOICES_SEQ_FILE.exists():
+        return {}
+    try:
+        with open(LOCAL_INVOICES_SEQ_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        logger.error(f"Error loading local invoice sequences: {e}")
+        return {}
+
+def save_local_invoices_seq(seqs: dict):
+    try:
+        with open(LOCAL_INVOICES_SEQ_FILE, "w", encoding="utf-8") as f:
+            json.dump(seqs, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        logger.error(f"Error saving local invoice sequences: {e}")
+
+def save_local_team_all(teams: dict):
+    try:
+        with open(LOCAL_TEAMS_FILE, "w", encoding="utf-8") as f:
+            json.dump(teams, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        logger.error(f"Error saving all local teams: {e}")
+
+# ============= Invoice & Upgrade Endpoints =============
+@api_router.get("/invoices/next-number")
+async def get_next_invoice_number(email: str = Query(...)):
+    email_clean = email.strip().lower()
+    current_year = datetime.now(timezone.utc).year
+    
+    seq = 1
+    if db is not None:
+        doc_id = f"{email_clean}-{current_year}"
+        doc = await db.invoices_seq.find_one({"_id": doc_id})
+        if doc:
+            seq = doc["seq"] + 1
+            await db.invoices_seq.update_one({"_id": doc_id}, {"$set": {"seq": seq}})
+        else:
+            await db.invoices_seq.insert_one({"_id": doc_id, "email": email_clean, "year": current_year, "seq": 1})
+    else:
+        seqs = load_local_invoices_seq()
+        key = f"{email_clean}-{current_year}"
+        if key in seqs:
+            seq = seqs[key] + 1
+        seqs[key] = seq
+        save_local_invoices_seq(seqs)
+        
+    invoice_number = f"INV-{current_year}-{seq:04d}"
+    return {"invoice_number": invoice_number, "seq": seq}
+
+@api_router.post("/invoices/send")
+async def send_invoice(req: InvoiceSendRequest):
+    if resend.api_key:
+        try:
+            attachments = [
+                {
+                    "content": req.pdf_base64,
+                    "filename": f"{req.invoice_number}.pdf",
+                }
+            ]
+            
+            html = f"""
+            <div style="font-family:'Inter', sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#f9fafb;color:#1A1A1A;border-radius:24px;border:1px solid #e5e7eb;">
+              <h2 style="font-size:22px;font-weight:700;color:#0E2A1F;margin-top:0;">Invoice {req.invoice_number}</h2>
+              <p style="font-size:15px;line-height:1.6;color:#4A4A4A;">
+                Hello {req.client_name},
+              </p>
+              <p style="font-size:15px;line-height:1.6;color:#4A4A4A;">
+                Please find attached invoice <strong>{req.invoice_number}</strong> sent from <strong>{req.sender_email}</strong>.
+              </p>
+              <p style="font-size:15px;line-height:1.6;color:#4A4A4A;">
+                If you have any questions, you can reply directly to this email to contact the sender.
+              </p>
+              
+              <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;">
+              
+              <p style="font-size:11px;color:#9CA3AF;text-align:center;margin-bottom:0;">
+                Delivered securely via GlobalSync AI Invoice Builder
+              </p>
+            </div>
+            """
+            
+            params = {
+                "from": "GlobalSync AI <onboarding@resend.dev>",
+                "to": [req.client_email.strip()],
+                "reply_to": req.sender_email.strip(),
+                "subject": f"Invoice {req.invoice_number} from {req.sender_email}",
+                "html": html,
+                "attachments": attachments
+            }
+            
+            await asyncio.to_thread(resend.Emails.send, params)
+            return {"success": True, "message": f"Invoice email dispatched to {req.client_email}."}
+        except Exception as e:
+            logger.error(f"Resend error in send_invoice: {e}")
+            raise HTTPException(status_code=500, detail=f"Resend dispatch failed: {str(e)}")
+    else:
+        logger.info(f"Resend not configured. Simulated sending invoice {req.invoice_number} to {req.client_email}")
+        return {"success": True, "message": f"Simulated invoice dispatch (Resend API key missing)."}
+
+@api_router.post("/upgrade/checkout")
+async def upgrade_checkout(req: UpgradeCheckoutRequest):
+    stripe_key = os.environ.get('STRIPE_SECRET_KEY', '')
+    if stripe_key:
+        try:
+            import stripe
+            stripe.api_key = stripe_key
+            session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[{
+                    'price_data': {
+                        'currency': 'usd',
+                        'product_data': {
+                            'name': 'GlobalSync Pro',
+                            'description': 'Unlimited team workspaces & invoice intelligence builder',
+                        },
+                        'unit_amount': 700 if req.plan_type == "monthly" else 5900,
+                        'recurring': {
+                            'interval': 'month' if req.plan_type == "monthly" else 'year',
+                        },
+                    },
+                    'quantity': 1,
+                }],
+                mode='subscription',
+                success_url=f"{req.origin or 'http://localhost:3000'}/upgrade-success?session_id={{CHECKOUT_SESSION_ID}}&email={req.email}",
+                cancel_url=f"{req.origin or 'http://localhost:3000'}/dashboard",
+                metadata={'email': req.email, 'plan': req.plan_type}
+            )
+            return {"url": session.url}
+        except Exception as e:
+            logger.warning(f"Failed to create Stripe Checkout session: {e}")
+            pass
+            
+    # Mock checkout URL fallback
+    mock_session_id = f"mock_sess_{uuid.uuid4().hex[:12]}"
+    mock_url = f"/stripe-checkout?session_id={mock_session_id}&email={req.email}&plan={req.plan_type}"
+    return {"url": mock_url}
+
+@api_router.post("/upgrade/simulate-webhook")
+async def upgrade_simulate_webhook(req: UpgradeWebhookSimulateRequest):
+    email_lower = req.email.strip().lower()
+    if db is not None:
+        await db.users.update_one(
+            {"email": email_lower},
+            {"$set": {"is_paid": True, "plan": req.plan, "updated_at": datetime.now(timezone.utc).isoformat()}},
+            upsert=True
+        )
+        await db.teams.update_many(
+            {"email": email_lower},
+            {"$set": {"is_paid": True}}
+        )
+    else:
+        local_teams = load_local_teams()
+        for t in local_teams.values():
+            if t.get("email", "").lower() == email_lower:
+                t["is_paid"] = True
+        save_local_team_all(local_teams)
+        
+    return {"success": True, "message": "Email successfully upgraded to Pro Tier."}
 
 # ============= Simplified News Feed Proxy =============
 RSS_FEEDS = {

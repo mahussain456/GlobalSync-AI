@@ -12,6 +12,7 @@ import {
   getLocalTime, getShiftedTime, getCardTheme, parseOffset, clientSideMeetingOverlap 
 } from "@/components/TimeConverter";
 import { generateIcsFile } from "@/lib/ics";
+import { fireAnalyticsEvent } from "@/lib/analytics";
 
 const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
@@ -189,6 +190,7 @@ export default function TeamWorkspacePage() {
   const handleShareWorkspace = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
       toast.success("Workspace link copied to clipboard!");
+      fireAnalyticsEvent("team_link_shared", { team_slug: slug, team_name: team.name });
     });
   };
 

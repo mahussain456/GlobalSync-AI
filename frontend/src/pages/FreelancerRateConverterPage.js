@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
@@ -10,6 +10,12 @@ export default function FreelancerRateConverterPage() {
   const [rateType, setRateType] = useState("hourly");
   const [baseCurrency, setBaseCurrency] = useState("USD");
   const [targetCurrency, setTargetCurrency] = useState("INR");
+
+  useEffect(() => {
+    localStorage.setItem("gs_rate_amount", String(amount));
+    localStorage.setItem("gs_rate_type", rateType);
+    localStorage.setItem("gs_rate_currency", baseCurrency);
+  }, [amount, rateType, baseCurrency]);
   const faqs = [
     {
       q: "How do I calculate my freelance hourly rate?",

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { getLocalCityTimezone, getNormalizedUtcOffset } from "./TimeConverter";
+import { fireAnalyticsEvent } from "@/lib/analytics";
 
 const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
@@ -56,14 +57,35 @@ export default function SavedTeamsPanel() {
     setIsPaid(paidStatus);
   }, []);
 
-  const toggleUpgrade = () => {
-    const nextVal = !isPaid;
-    setIsPaid(nextVal);
-    localStorage.setItem("gs_is_paid", String(nextVal));
-    if (nextVal) {
-      toast.success("Upgraded to Premium Tier! Unlocked custom slugs, unlimited teams & calendar exports.");
-    } else {
+  const toggleUpgrade = async () => {
+    if (isPaid) {
+      setIsPaid(false);
+      localStorage.setItem("gs_is_paid", "false");
       toast.info("Switched to Free Tier (1 team limit, auto-slugs, branding active).");
+      return;
+    }
+
+    let email = "";
+    const storedUser = localStorage.getItem("gs_user");
+    if (storedUser) {
+      try {
+        const u = JSON.parse(storedUser);
+        if (u.email) email = u.email;
+      } catch {}
+    }
+    if (!email) {
+      email = syncEmail.trim() || creatorEmail.trim() || "upgrade@globalsync-pro.com";
+    }
+
+    try {
+      const res = await axios.post(`${API}/upgrade/checkout`, {
+        email: email,
+        plan_type: "monthly",
+        origin: window.location.origin
+      });
+      window.location.href = res.url;
+    } catch {
+      toast.error("Failed to redirect to simulated upgrade portal.");
     }
   };
 
@@ -71,6 +93,7 @@ export default function SavedTeamsPanel() {
     const url = `${window.location.origin}/team/${slug}`;
     navigator.clipboard.writeText(url).then(() => {
       toast.success("Workspace link copied to clipboard!");
+      fireAnalyticsEvent("team_link_shared", { team_slug: slug });
     });
   };
 
@@ -254,6 +277,11 @@ export default function SavedTeamsPanel() {
       localStorage.setItem("gs_user", JSON.stringify({ name: teamName.trim() + " Owner", email: creatorEmail.trim() }));
       
       toast.success("Workspace saved! Welcome email with link dispatched.");
+      fireAnalyticsEvent("team_created", {
+        team_name: teamName.trim(),
+        members_count: members.length,
+        is_paid: isPaid
+      });
       
       // Reset Form and close
       setTeamName("");
