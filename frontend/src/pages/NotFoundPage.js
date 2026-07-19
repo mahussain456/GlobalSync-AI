@@ -78,7 +78,8 @@ export default function NotFoundPage() {
       </div>
 
       {/* Bottom footnote */}
-      <p className="text-center text-gem-beige/15 text-xs pb-8 relative z-10">
+      {/* suppressHydrationWarning: year computed at prerender vs. client-mount may differ near year-end */}
+      <p className="text-center text-gem-beige/15 text-xs pb-8 relative z-10" suppressHydrationWarning>
         © {new Date().getFullYear()} GlobalSync AI · <Link to="/privacy-policy" className="hover:text-gem-beige/40 transition-colors">Privacy Policy</Link>
       </p>
     </div>

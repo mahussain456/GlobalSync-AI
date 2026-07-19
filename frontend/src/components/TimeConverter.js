@@ -387,7 +387,8 @@ export function getShiftedTime(targetTimezoneId, targetUtcOffset, baseUtcOffset,
 
 // Live ticking time format helper
 export function getLocalTime(timezoneId, liveTime = new Date()) {
-  if (!timezoneId) return { time12: "--:--", date: "", hour: 0, isBusinessHours: false };
+  // liveTime is null during SSR prerender (when useState(null) is used to avoid #418 hydration mismatch)
+  if (!timezoneId || !liveTime) return { time12: "--:--", date: "", hour: 0, isBusinessHours: false };
   try {
     const time12 = liveTime.toLocaleTimeString("en-US", { timeZone: timezoneId, hour: "2-digit", minute: "2-digit", hour12: true });
     const date = liveTime.toLocaleDateString("en-US", { timeZone: timezoneId, weekday: "short", month: "short", day: "numeric" });
@@ -528,8 +529,10 @@ export default function TimeConverter({ aiDispatch }) {
   const [baseCityName, setBaseCityName] = useState("New York");
   const [selectedHour, setSelectedHour] = useState(12);
   const [isCustomTime, setIsCustomTime] = useState(false);
-  const [liveTime, setLiveTime] = useState(new Date());
-  
+  // ⚠️ Do NOT initialise with new Date() — causes React #418 SSR hydration mismatch.
+  // Seeded to null; a useEffect sets it client-side after mount.
+  const [liveTime, setLiveTime] = useState(null);
+
   const [citySearch, setCitySearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [overlapResult, setOverlapResult] = useState(null);
@@ -537,6 +540,8 @@ export default function TimeConverter({ aiDispatch }) {
 
   // Maintain real-world clock updates
   useEffect(() => {
+    // Set initial time immediately on mount (client-only)
+    setLiveTime(new Date());
     const timer = setInterval(() => {
       setLiveTime(new Date());
     }, 1000);
@@ -545,7 +550,7 @@ export default function TimeConverter({ aiDispatch }) {
 
   // Update selected slider hour dynamically in live ticking mode
   useEffect(() => {
-    if (!isCustomTime) {
+    if (!isCustomTime && liveTime) {  // liveTime is null during SSR prerender
       const baseCity = selectedCities.find(c => c.name === baseCityName) || selectedCities[0];
       if (baseCity?.timezone_id) {
         try {

@@ -122,7 +122,9 @@ export default function TeamWorkspacePage() {
 
   const [selectedHour, setSelectedHour] = useState(12);
   const [isCustomTime, setIsCustomTime] = useState(false);
-  const [liveTime, setLiveTime] = useState(new Date());
+  // ⚠️ Do NOT initialise with new Date() — causes React #418 SSR hydration mismatch.
+  // Seeded to null; the clock useEffect below sets it client-side after mount.
+  const [liveTime, setLiveTime] = useState(null);
   const [overlapResult, setOverlapResult] = useState(null);
   const [baseCityName, setBaseCityName] = useState("");
 
@@ -147,6 +149,8 @@ export default function TeamWorkspacePage() {
 
   // Clock tick timer
   useEffect(() => {
+    // Set initial time immediately on mount (client-only), avoiding SSR #418 mismatch
+    setLiveTime(new Date());
     const timer = setInterval(() => {
       setLiveTime(new Date());
     }, 1000);
@@ -155,7 +159,7 @@ export default function TeamWorkspacePage() {
 
   // Sync clock hour to base member's location unless custom time slider active
   useEffect(() => {
-    if (!isCustomTime && team?.members?.length > 0) {
+    if (!isCustomTime && liveTime && team?.members?.length > 0) {  // liveTime is null during SSR prerender
       const baseMember = team.members.find(m => m.name === baseCityName) || team.members[0];
       if (baseMember?.timezone_id) {
         try {

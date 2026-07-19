@@ -228,14 +228,34 @@ export default function SavedTeamsPanel() {
     e.preventDefault();
     if (!teamName.trim()) {
       toast.error("Please enter a workspace name.");
-      return;
-    }
-    if (members.length === 0) {
-      toast.error("Please add at least one member to the workspace.");
+      const nameInput = document.getElementById("team-name-input");
+      if (nameInput) {
+        nameInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        nameInput.focus();
+      }
       return;
     }
     if (!creatorEmail.trim()) {
       toast.error("Email address is required to generate workspace links.");
+      const emailInput = document.getElementById("creator-email-input");
+      if (emailInput) {
+        emailInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        emailInput.focus();
+      }
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(creatorEmail.trim())) {
+      toast.error("Please enter a valid email address.");
+      const emailInput = document.getElementById("creator-email-input");
+      if (emailInput) {
+        emailInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        emailInput.focus();
+      }
+      return;
+    }
+    if (members.length === 0) {
+      toast.error("Please add at least one member to the workspace.");
       return;
     }
 
@@ -479,11 +499,11 @@ export default function SavedTeamsPanel() {
               <div>
                 <label className="text-gem-beige/60 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Team / Client Name</label>
                 <input
+                  id="team-name-input"
                   value={teamName}
                   onChange={(e) => setTeamName(e.target.value)}
                   placeholder="e.g. Design Studio, Austin-Berlin Sync"
                   className="onboarding-input"
-                  required
                 />
               </div>
 
@@ -492,12 +512,12 @@ export default function SavedTeamsPanel() {
                 <div>
                   <label className="text-gem-beige/60 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Creator Email (To Receive Link)</label>
                   <input
-                    type="email"
+                    id="creator-email-input"
+                    type="text"
                     value={creatorEmail}
                     onChange={(e) => setCreatorEmail(e.target.value)}
                     placeholder="you@company.com"
                     className="onboarding-input"
-                    required
                   />
                 </div>
                 <div>

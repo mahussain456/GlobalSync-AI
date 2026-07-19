@@ -69,7 +69,8 @@ export default function SiteFooter() {
       </div>
       
       <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-white/5 text-xs text-gem-sage flex flex-col md:flex-row items-center justify-between">
-        <p>© {new Date().getFullYear()} GlobalSync AI. All rights reserved.</p>
+        {/* suppressHydrationWarning: year computed at prerender vs. client-mount may differ near year-end */}
+        <p suppressHydrationWarning>© {new Date().getFullYear()} GlobalSync AI. All rights reserved.</p>
         <p className="mt-2 md:mt-0">Designed for global operators.</p>
       </div>
     </footer>

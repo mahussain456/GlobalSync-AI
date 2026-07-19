@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
 import { TrendingUp, ArrowRight, RefreshCw, TrendingDown } from "lucide-react";
 import axios from "axios";
@@ -38,7 +38,10 @@ function LiveRateWidget({ from, to, fromMeta, toMeta, rate, loading, refreshed, 
           ) : (
             <div className="text-gem-sage text-sm">Rate unavailable — try the full converter</div>
           )}
-          <div className="text-xs text-zinc-400 mt-1">Updated: {refreshed.toLocaleTimeString()}</div>
+          {/* suppressHydrationWarning: time is client-only — avoids React #418 mismatch */}
+          <div className="text-xs text-zinc-400 mt-1" suppressHydrationWarning>
+            {refreshed ? `Updated: ${refreshed.toLocaleTimeString()}` : "Loading rate…"}
+          </div>
         </div>
         <button
           onClick={onRefresh}
@@ -273,8 +276,21 @@ export default function CurrencyPairPage() {
   // Rate state — hoisted so both widgets share one fetch
   const [rate,        setRate]        = useState(null);
   const [rateLoading, setRateLoading] = useState(true);
-  const [refreshed,   setRefreshed]   = useState(new Date());
+  // ⚠️ Do NOT initialise with new Date() — that causes React #418 hydration mismatch
+  // because the server-render timestamp differs from client mount time.
+  // We set it to null and only assign after mount (client-only).
+  const [refreshed,   setRefreshed]   = useState(null);
   const [isFallback,  setIsFallback]  = useState(false);
+  const hasMounted = useRef(false);
+
+  // Set the initial refreshed time client-side only (after first paint) to avoid
+  // React hydration error #418 from SSR/react-snap prerender time mismatch.
+  useEffect(() => {
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      setRefreshed(new Date());
+    }
+  }, []);
 
   const pairData = getCurrencyPair(normalizedPair);
 

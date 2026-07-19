@@ -27,8 +27,9 @@ function LiveClock({ timezone, city, country, abbr }) {
   return (
     <div className="flex-1 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6 text-center">
       <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">{abbr}</div>
-      <div className="font-heading text-4xl font-bold text-gem-beige tabular-nums mb-1">{time}</div>
-      <div className="text-sm text-gem-sage mb-3">{date}</div>
+      {/* suppressHydrationWarning: empty string during SSR prerender, real time after mount */}
+      <div className="font-heading text-4xl font-bold text-gem-beige tabular-nums mb-1" suppressHydrationWarning>{time || " "}</div>
+      <div className="text-sm text-gem-sage mb-3" suppressHydrationWarning>{date || " "}</div>
       <div className="font-semibold text-gem-beige/90">{city}</div>
       <div className="text-xs text-zinc-400">{country}</div>
     </div>
