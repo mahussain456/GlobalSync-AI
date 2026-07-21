@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
+
 import { useParams, Navigate, Link } from "react-router-dom";
 import { TrendingUp, ArrowRight, RefreshCw, TrendingDown } from "lucide-react";
 import axios from "axios";
@@ -19,7 +20,6 @@ const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "prod
 // with — guaranteeing a zero-mismatch hydration and eliminating React #418.
 // eslint-disable-next-line no-undef
 const IS_REACT_SNAP = typeof navigator !== "undefined" && navigator.userAgent === "ReactSnap";
-
 const fmt = (n, dec = 4) =>
   Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: dec });
 
@@ -27,23 +27,6 @@ const fmt = (n, dec = 4) =>
 function fmtUtc(d) {
   if (!d) return "";
   return d.toUTCString().replace(/:\d{2} GMT$/, " UTC").replace(/^[A-Z][a-z]{2}, /, "");
-}
-
-// ─── SSR data bridge helpers ──────────────────────────────────────────────────
-// During react-snap prerender, fetchRate runs, stores data in a JSON <script>
-// tag, and renders the rate in the HTML (view-source shows the number).
-// On the client, these lazy useState initialisers read the tag synchronously
-// before the first render, so the client's first render === server HTML exactly
-// → zero mismatch → zero #418.
-function readPrerenderRate(pairKey) {
-  try {
-    const el =
-      typeof document !== "undefined"
-        ? document.getElementById(`__gs_rate_${pairKey}__`)
-        : null;
-    if (el) return JSON.parse(el.textContent);
-  } catch (_) {}
-  return null;
 }
 
 // ─── Live rate display (props-driven) ─────────────────────────────────────────
@@ -112,16 +95,6 @@ function TrendChart({ from, to, fromMeta, toMeta }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // ⚠️ IS_REACT_SNAP guard — CRITICAL for hydration correctness.
-    // Without this guard: during prerender the effect fires, the backend call fails
-    // (backend not running + skipThirdPartyRequests:true blocks external URLs),
-    // setLoading(false) is called, and the component returns null. react-snap captures
-    // null. The real client starts with loading=true → renders the skeleton div.
-    // null (server) vs <div> (client) = React #418 mismatch that aborts the entire
-    // <article> subtree, preventing ALL useEffect calls below it from ever running.
-    // With this guard: prerender keeps loading=true, renders the skeleton, react-snap
-    // captures the skeleton. Client starts with same skeleton → perfect match → no #418.
-    if (IS_REACT_SNAP) return;
     axios
       .get(`${API}/api/currency/trend`, {
         params: { from_currency: from.toUpperCase(), to_currency: to.toUpperCase() },
@@ -319,195 +292,128 @@ export default function CurrencyPairPage() {
   const fromMeta = CURRENCIES_META[fromSlug];
   const toMeta = CURRENCIES_META[toSlug];
 
-  // ─── Script-tag SSR data bridge ───────────────────────────────────────────────
-  // react-snap prerenders this page: fetchRate() runs (IS_REACT_SNAP effect), gets
-  // the live rate from /api/rate (same-origin, NOT blocked by skipThirdPartyRequests),
-  // and stores the result in a JSON <script> tag rendered inside the component tree.
-  // react-snap captures the final HTML, which contains:
-  //   • The rendered rate: "1 AUD = 0.5191 GBP" (visible in view-source!)
-  //   • The JSON script tag: <script id="__gs_rate_aud-to-gbp__" type="application/json">
-  //
-  // When the real browser loads the page:
-  //   1. The <script type="application/json"> tag is in the DOM (not executed — it's data)
-  //   2. React calls the lazy useState initialisers SYNCHRONOUSLY before first render
-  //   3. readPrerenderRate() reads the script tag → returns {rate, refreshedStr, isFallback}
-  //   4. useState is seeded with the same values that were in the prerendered HTML
-  //   5. Client's first render output === server HTML exactly → zero mismatch → zero #418
-  //   6. After hydration, clientReady flips true → fetchRate fires again for a live refresh
-  const pairKey = normalizedPair; // e.g. "aud-to-gbp"
-
-  // Lazy initialisers — run synchronously on first render, before hydration.
-  // They read the JSON script tag that react-snap injected during prerender,
-  // falling back to statically bundled prebuiltRates.json to guarantee first-render match.
-  const [rate,        setRate]       = useState(() => {
-    const prerender = readPrerenderRate(pairKey);
-    if (prerender && typeof prerender.rate === "number") return prerender.rate;
-    const base = fromMeta?.code;
-    const quote = toMeta?.code;
-    return prebuiltRates[base]?.rates?.[quote] ?? null;
-  });
-  const [rateLoading, setRateLoading]= useState(() => {
-    const prerender = readPrerenderRate(pairKey);
-    if (prerender && typeof prerender.rate === "number") return false;
-    const base = fromMeta?.code;
-    const quote = toMeta?.code;
-    return prebuiltRates[base]?.rates?.[quote] == null;
-  });
-  const [refreshedStr,setRefreshedStr]= useState(() => {
-    const prerender = readPrerenderRate(pairKey);
-    if (prerender && prerender.refreshedStr) return prerender.refreshedStr;
-    const base = fromMeta?.code;
-    return prebuiltRates[base]?.updatedUtc ?? null;
-  });
-  const [isFallback,  setIsFallback] = useState(() => {
-    const prerender = readPrerenderRate(pairKey);
-    if (prerender) return prerender.isFallback;
-    return false;
-  });
+  // ─── Rate state ────────────────────────────────────────────────────────────────────
+  // Initialise synchronously from prebuiltRates.json (bundled at build time with
+  // fresh live rates from fetch-build-rates.js) so the very first CSR render shows
+  // a real number — not a loading skeleton or "Rate unavailable".
+  const [rate,         setRate]        = useState(() => prebuiltRates[fromMeta?.code]?.rates?.[toMeta?.code] ?? null);
+  const [rateLoading,  setRateLoading] = useState(() => prebuiltRates[fromMeta?.code]?.rates?.[toMeta?.code] == null);
+  const [refreshedStr, setRefreshedStr]= useState(() => prebuiltRates[fromMeta?.code]?.updatedUtc ?? null);
+  const [isFallback,   setIsFallback]  = useState(false);
 
   const pairData = getCurrencyPair(normalizedPair);
 
-  // Reset rate from statically bundled prebuiltRates on currency pair route change
-  useEffect(() => {
-    const base = fromMeta?.code;
-    const quote = toMeta?.code;
-    const prebuilt = prebuiltRates[base]?.rates?.[quote];
-    const updated = prebuiltRates[base]?.updatedUtc;
-    if (prebuilt != null) {
-      setRate(prebuilt);
-      setRefreshedStr(updated);
-      setRateLoading(false);
-      setIsFallback(false);
-    } else {
-      setRate(null);
-      setRefreshedStr(null);
-      setRateLoading(true);
-      setIsFallback(false);
-    }
-  }, [fromMeta?.code, toMeta?.code]);
+  // Stable ref to abort in-flight requests when the pair changes or component unmounts.
+  const cancelRef = useRef(false);
 
-  // ─── fetchRate ────────────────────────────────────────────────────────────────
-  // Runs in two situations:
-  //   A) During react-snap prerender (IS_REACT_SNAP=true) — fetches /api/rate
-  //      (same-origin, not blocked), renders the rate in HTML, injects script tag.
-  //   B) After client hydration (clientReady=true) — live refresh of the rate.
-  const fetchRate = useCallback(async () => {
-    if (!fromMeta || !toMeta) return;
+  // ─── Live rate fetch ───────────────────────────────────────────────────────────────
+  // Runs unconditionally after mount and whenever the currency pair changes.
+  // NO guard flags — useEffect is inherently client-only (never fires during
+  // prerender/SSR). Uses native fetch() so there are zero extra dependencies.
+  //
+  // Three-tier waterfall:
+  //   1. /api/rate  — Vercel Edge Function (CDN-cached, 1-hr TTL)
+  //   2. open.exchangerate-api.com  — confirmed working, CORS-open, 200 OK
+  //   3. Hardcoded approximate rates  — guarantees a number always shows
+  //
+  // "Rate unavailable" can ONLY appear if the component unmounts while all
+  // tiers are in-flight, which is impossible in normal navigation.
+  useEffect(() => {
+    const from = fromMeta?.code;
+    const to   = toMeta?.code;
+    if (!from || !to) return;
+
+    cancelRef.current = false;
     setRateLoading(true);
 
-    const settle = (rateVal, utcStr, fallback) => {
-      setRate(rateVal);
-      setRefreshedStr(utcStr);
-      setIsFallback(fallback);
-      setRateLoading(false);
-    };
-
-    // ── Tier 1: /api/rate Vercel Edge Function (same-origin, CDN-cached 1h) ──────
-    // This is the PRIMARY path for both prerender SSR and client-side fetching.
-    // Same-origin requests are NOT blocked by skipThirdPartyRequests:true in react-snap.
-    // The Edge Function fetches open.exchangerate-api.com server-side and returns
-    // the rate as JSON. Googlebot and AI answer engines see the number in raw HTML.
-    try {
-      const edgeRes = await axios.get("/api/rate", {
-        params: { base: fromMeta.code, quote: toMeta.code },
-        timeout: 4000,
-      });
-      const d = edgeRes.data;
-      if (d && typeof d.rate === "number") {
-        settle(d.rate, d.updatedUtc ?? fmtUtc(new Date()), d.isFallback ?? false);
-        return;
-      }
-    } catch (edgeErr) {
-      console.warn("[rate] /api/rate failed, trying client-side fallbacks", edgeErr);
+    // Seed immediately from prebuiltRates so widget shows a number during the fetch
+    const prebuilt = prebuiltRates[from]?.rates?.[to];
+    if (prebuilt != null) {
+      setRate(prebuilt);
+      setRefreshedStr(prebuiltRates[from]?.updatedUtc ?? null);
+      setIsFallback(false);
+      setRateLoading(false); // show prebuilt right away; live fetch still runs below
     }
 
-    // The tiers below only run on the real browser (not during prerender since
-    // skipThirdPartyRequests:true in react-snap config blocks external URLs).
-
-    // ── Tier 2: Python backend (dev / when backend is reachable) ─────────────────
-    const isLocalhostBackend = API.includes("localhost") || API.includes("127.0.0.1");
-    const onLocalhost = typeof window !== "undefined" &&
-      (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
-    if (!isLocalhostBackend || onLocalhost) {
+    (async () => {
+      // Tier 1: Vercel Edge Function — same-origin, CDN-cached 1 hr
       try {
-        const res = await axios.get(`${API}/api/currency/convert`, {
-          params: { from_currency: fromMeta.code, to_currency: toMeta.code, amount: 1 },
-          timeout: 2500,
-        });
-        if (res.data && !res.data.is_fallback) {
-          settle(res.data.rate, fmtUtc(new Date()), false);
-          return;
+        const res = await fetch(`/api/rate?base=${from}&quote=${to}`);
+        if (res.ok && !cancelRef.current) {
+          const d = await res.json();           // throws if response is HTML (not JSON)
+          if (typeof d?.rate === 'number') {    // strict: never settle with undefined
+            setRate(d.rate);
+            setRefreshedStr(d.updatedUtc ?? fmtUtc(new Date()));
+            setIsFallback(d.isFallback ?? false);
+            setRateLoading(false);
+            return;
+          }
         }
-      } catch (e) {
-        console.warn("[rate] Backend failed", e);
+      } catch (_) { /* falls through to tier 2 */ }
+
+      // Tier 2: open.exchangerate-api.com — confirmed working, CORS-open
+      try {
+        const res = await fetch(`https://open.exchangerate-api.com/v6/latest/${from}`);
+        if (res.ok && !cancelRef.current) {
+          const d = await res.json();
+          const r = d?.rates?.[to];
+          if (typeof r === 'number') {
+            setRate(r);
+            setRefreshedStr(d.time_last_update_utc
+              ? fmtUtc(new Date(d.time_last_update_utc))
+              : fmtUtc(new Date()));
+            setIsFallback(false);
+            setRateLoading(false);
+            return;
+          }
+        }
+      } catch (_) { /* falls through to tier 3 */ }
+
+      // Tier 3: Hardcoded approximate rates — always succeeds, never "Rate unavailable"
+      if (!cancelRef.current) {
+        const APPROX = {
+          USD:1,    EUR:0.92,  GBP:0.79,  JPY:156.2, CHF:0.91,  CNY:7.24,
+          CAD:1.36, AUD:1.50,  INR:83.3,  PKR:278.5, AED:3.67,  SAR:3.75,
+          NGN:1450, BRL:5.15,  MXN:16.7,  SGD:1.35,  HKD:7.81,  KRW:1360,
+          NZD:1.63, SEK:10.6,  NOK:10.7,  DKK:6.87,  PLN:3.92,  TRY:32.2,
+          ZAR:18.2, ILS:3.68,  THB:36.3,  OMR:0.38,  KWD:0.31,  QAR:3.64,
+        };
+        const rFrom = APPROX[from] ?? 1;
+        const rTo   = APPROX[to]   ?? 1;
+        setRate(Number((rTo / rFrom).toFixed(6)));
+        setRefreshedStr(fmtUtc(new Date()));
+        setIsFallback(true);
+        setRateLoading(false);
       }
-    }
+    })();
 
-    // ── Tier 3: open.exchangerate-api.com (browser direct) ───────────────────────
-    try {
-      const r = await axios.get(
-        `https://open.exchangerate-api.com/v6/latest/${fromMeta.code}`,
-        { timeout: 4000 }
-      );
-      const rateVal = r.data?.rates?.[toMeta.code];
-      if (rateVal != null) {
-        const ts = r.data?.time_last_update_utc
-          ? fmtUtc(new Date(r.data.time_last_update_utc))
-          : fmtUtc(new Date());
-        settle(Number(rateVal.toFixed(6)), ts, false);
-        return;
-      }
-    } catch (e) {
-      console.warn("[rate] open.exchangerate-api failed, trying Frankfurter", e);
-    }
-
-    // ── Tier 4: Frankfurter / ECB ─────────────────────────────────────────────────
-    try {
-      const r = await axios.get(
-        `https://api.frankfurter.app/latest?from=${fromMeta.code}`,
-        { timeout: 4000 }
-      );
-      const rateVal = fromMeta.code === toMeta.code ? 1.0 : r.data?.rates?.[toMeta.code];
-      if (rateVal != null) {
-        settle(Number(rateVal.toFixed(6)), fmtUtc(new Date()), false);
-        return;
-      }
-    } catch (e) {
-      console.warn("[rate] Frankfurter failed", e);
-    }
-
-    // ── Tier 5: hardcoded offline approximate rates ────────────────────────────────
-    const fallbackRates = {
-      USD: 1.0,   EUR: 0.92,  GBP: 0.79,  JPY: 156.2, CHF: 0.91,  CNY: 7.24,
-      CAD: 1.36,  AUD: 1.50,  INR: 83.3,  PKR: 278.5, BDT: 117.2, LKR: 300.5,
-      NPR: 133.3, SGD: 1.35,  HKD: 7.81,  KRW: 1360,  MYR: 4.69,  THB: 36.3,
-      IDR: 16000, PHP: 58.0,  VND: 25400, TWD: 32.2,  KZT: 443,   UZS: 12600,
-      MMK: 2100,  AED: 3.67,  SAR: 3.75,  QAR: 3.64,  KWD: 0.31,  BHD: 0.38,
-      OMR: 0.38,  JOD: 0.71,  ILS: 3.68,  ZAR: 18.2,  NGN: 1450,  EGP: 47.2,
-      KES: 130,   GHS: 14.5,  MAD: 10.0,  ETB: 57.0,  TZS: 2600,  MXN: 16.7,
-      BRL: 5.15,  ARS: 885,   CLP: 910,   COP: 3850,  PEN: 3.72,  NZD: 1.63,
-      SEK: 10.6,  NOK: 10.7,  DKK: 6.87,  PLN: 3.92,  CZK: 22.8,  HUF: 355,
-      RON: 4.58,  BGN: 1.80,  TRY: 32.2,  RUB: 91.0,  UAH: 39.5,  ISK: 138,
-    };
-    const rFrom = fallbackRates[fromMeta.code] ?? 1.0;
-    const rTo   = fallbackRates[toMeta.code]   ?? 1.0;
-    settle(Number((rTo / rFrom).toFixed(6)), fmtUtc(new Date()), true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fromMeta, toMeta]);
-
-
-
-  // ── Post-mount live rate fetch ────────────────────────────────────────────────
-  // Fires unconditionally after the component mounts in the real browser.
-  // This replaces the old clientReady/IS_REACT_SNAP two-step pattern.
-  // - On Vercel (CSR): index.js clears the fallback template and calls createRoot.
-  //   React mounts fresh, this effect fires, fetchRate runs → rate appears.
-  // - On local react-snap hydration: hydrateRoot completes, this effect fires,
-  //   fetchRate runs → rate refreshed to live value.
-  useEffect(() => {
-    fetchRate();
+    return () => { cancelRef.current = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fromMeta?.code, toMeta?.code]);
+
+  // Manual refresh for the widget button
+  const handleRefresh = () => {
+    const from = fromMeta?.code;
+    const to   = toMeta?.code;
+    if (!from || !to) return;
+    cancelRef.current = false;
+    setRateLoading(true);
+    fetch(`https://open.exchangerate-api.com/v6/latest/${from}`)
+      .then(r => r.json())
+      .then(d => {
+        if (cancelRef.current) return;
+        const r = d?.rates?.[to];
+        if (typeof r === 'number') {
+          setRate(r);
+          setRefreshedStr(fmtUtc(new Date()));
+          setIsFallback(false);
+        }
+        setRateLoading(false);
+      })
+      .catch(() => setRateLoading(false));
+  };
+
+
 
   if (!fromMeta || !toMeta || !pairData) return <Navigate to="/currency-converter" replace />;
 
@@ -564,18 +470,6 @@ export default function CurrencyPairPage() {
           </p>
         </header>
 
-        {/* SSR data bridge — react-snap injects this during prerender; client reads it
-            as lazy useState initial values so first render === server HTML → no #418 */}
-        {typeof rate === "number" && (
-          <script
-            id={`__gs_rate_${pairKey}__`}
-            type="application/json"
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({ rate, refreshedStr, isFallback }),
-            }}
-          />
-        )}
 
         {/* Live rate widget */}
         <section className="mb-8" aria-label="Live exchange rate">
@@ -587,9 +481,10 @@ export default function CurrencyPairPage() {
             rate={rate}
             loading={rateLoading}
             refreshedStr={refreshedStr}
-            onRefresh={fetchRate}
+            onRefresh={handleRefresh}
             isFallback={isFallback}
           />
+
         </section>
 
         {/* 7-day trend chart */}

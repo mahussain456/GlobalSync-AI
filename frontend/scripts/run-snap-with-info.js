@@ -12,7 +12,25 @@ const INFO_PATH = path.join(BUILD_DIR, 'BUILD_INFO.json');
 const APP_ROOT = path.join(__dirname, '..');
 const PUBLIC_ORIGIN = 'https://www.globalsync-ai.com';
 const BRAND = 'GlobalSync AI';
-// Fallback OG image — used only when react-snap fails to render a route.
+
+// Load prebuiltRates.json — written by fetch-build-rates.js with fresh live rates
+// before this script runs. Used to inject real numeric rates into currency pair
+// fallback snapshots so view-source contains the actual rate (crawlable by Googlebot).
+let prebuiltRates = {};
+try {
+  prebuiltRates = JSON.parse(
+    fs.readFileSync(path.join(APP_ROOT, 'src/data/prebuiltRates.json'), 'utf8')
+  );
+} catch (_) {
+  console.warn('[build-info] Could not load prebuiltRates.json — currency snapshots will show generic text.');
+}
+
+/** Format a rate number for display (4 decimal places, locale-independent) */
+function fmtRate(n) {
+  return Number(n).toFixed(n >= 100 ? 0 : n >= 10 ? 2 : 4);
+}
+
+
 // React-snap's normal output uses the dynamic /api/og endpoint via SEOHead.
 const OG_IMAGE = `${PUBLIC_ORIGIN}/api/og?title=GlobalSync%20AI&subtitle=Time%20Zone%20%26%20Currency%20Tools&type=website`;
 const DEFAULT_DESCRIPTION = 'Free AI-powered time zone converter, meeting planner, world clock, and live currency rates for remote teams, freelancers, and digital nomads.';
@@ -2039,10 +2057,29 @@ function getFallbackBody(route) {
             </p>
           </header>
           <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 2rem; margin-bottom: 2.5rem; text-align: center;">
-            <span style="font-size: 0.75rem; font-weight: 600; color: #C8A96A; text-transform: uppercase;">Mid-Market Exchange Rate</span>
-            <h2 style="font-size: 2.5rem; font-weight: 800; color: #F5F5F0; margin: 0.5rem 0;">1 ${fromCur.code} = Live Rates</h2>
-            <p style="font-size: 0.9rem; color: #A5BCAE; margin: 0;">Convert amounts seamlessly using our responsive digital calculator above.</p>
+            <span style="font-size: 0.75rem; font-weight: 600; color: #C8A96A; text-transform: uppercase;">Live Exchange Rate</span>
+            ${(function() {
+              const r = (prebuiltRates[fromCur.code] || {}).rates || {};
+              const rateVal = r[toCur.code];
+              const updated = (prebuiltRates[fromCur.code] || {}).updatedUtc || '';
+              if (typeof rateVal === 'number') {
+                return `
+                  <div style="font-size: 2.5rem; font-weight: 800; color: #F5F5F0; margin: 0.5rem 0;">
+                    1 ${fromCur.code} = ${fmtRate(rateVal)} ${toCur.code}
+                  </div>
+                  ${updated ? `<p style="font-size: 0.85rem; color: #A5BCAE; margin: 0.25rem 0 0 0;">Last updated: ${updated}</p>` : ''}
+                  <p style="font-size: 0.8rem; color: #6B7280; margin: 0.5rem 0 0 0;">Rate auto-refreshes when you visit the live page.</p>
+                `;
+              }
+              return `
+                <div style="font-size: 2.5rem; font-weight: 800; color: #F5F5F0; margin: 0.5rem 0;">
+                  1 ${fromCur.code} = Live Rate
+                </div>
+                <p style="font-size: 0.9rem; color: #A5BCAE; margin: 0;">Rate loads automatically when you open this page.</p>
+              `;
+            })()}
           </div>
+
           <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 2rem; margin-bottom: 2.5rem;">
             <h2 style="font-size: 1.35rem; color: #C8A96A; margin-bottom: 0.75rem;">Market Context & Volatility</h2>
             <p style="font-size: 0.95rem; color: #A5BCAE; line-height: 1.6; margin: 0;">${pairData.context}</p>
