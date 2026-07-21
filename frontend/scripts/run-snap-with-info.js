@@ -2500,7 +2500,7 @@ function getFallbackBody(route) {
   }
 
   return `
-    <div class="App" style="background: #020C06; color: #F5F5F0; font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; display: flex; flex-direction: column;">
+    <div class="App" data-gs-fallback="1" style="background: #020C06; color: #F5F5F0; font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; display: flex; flex-direction: column;">
       ${header}
       <main style="flex: 1; padding: 2rem 0;">
         ${content}
@@ -2508,6 +2508,7 @@ function getFallbackBody(route) {
       ${footer}
     </div>
   `;
+
 }
 
 function escapeHtml(value) {

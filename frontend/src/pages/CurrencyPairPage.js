@@ -497,15 +497,17 @@ export default function CurrencyPairPage() {
 
 
 
-  // ── Post-hydration live refresh (runs on real browser, never during prerender) ─
-  const [clientReady, setClientReady] = useState(false);
+  // ── Post-mount live rate fetch ────────────────────────────────────────────────
+  // Fires unconditionally after the component mounts in the real browser.
+  // This replaces the old clientReady/IS_REACT_SNAP two-step pattern.
+  // - On Vercel (CSR): index.js clears the fallback template and calls createRoot.
+  //   React mounts fresh, this effect fires, fetchRate runs → rate appears.
+  // - On local react-snap hydration: hydrateRoot completes, this effect fires,
+  //   fetchRate runs → rate refreshed to live value.
   useEffect(() => {
-    if (IS_REACT_SNAP) return;
-    setClientReady(true);
-  }, []);
-  useEffect(() => {
-    if (clientReady) fetchRate();
-  }, [clientReady, fetchRate]);
+    fetchRate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fromMeta?.code, toMeta?.code]);
 
   if (!fromMeta || !toMeta || !pairData) return <Navigate to="/currency-converter" replace />;
 
