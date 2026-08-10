@@ -77,6 +77,9 @@ const UpgradeSuccessPage = React.lazy(() => import("@/pages/UpgradeSuccessPage")
 const NotFoundPage = React.lazy(() => import("@/pages/NotFoundPage"));
 const PressPage = React.lazy(() => import("@/pages/PressPage"));
 const AuthorPage = React.lazy(() => import("@/pages/AuthorPage"));
+const ConvertHubPage = React.lazy(() => import("@/pages/ConvertHubPage"));
+const ZonePairPage = React.lazy(() => import("@/pages/ZonePairPage"));
+
 
 const SuspenseFallback = () => (
   <div style={{ minHeight: "100vh", backgroundColor: "#071a0e" }} />
@@ -117,7 +120,11 @@ function App() {
               <Route path="/stripe-checkout" element={<StripeCheckoutSimulatorPage />} />
               <Route path="/upgrade-success" element={<UpgradeSuccessPage />} />
               <Route path="/admin" element={<AdminPage />} />
+              {/* Timezone abbreviation pair converters (PR 2) */}
+              <Route path="/convert" element={<ConvertHubPage />} />
+              <Route path="/convert/:pair" element={<ZonePairPage />} />
               <Route path="*" element={<NotFoundPage />} />
+
             </Routes>
           </React.Suspense>
           <Toaster position="top-right" richColors />

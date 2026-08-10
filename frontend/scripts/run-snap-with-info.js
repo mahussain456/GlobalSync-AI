@@ -2023,7 +2023,273 @@ function getFallbackBody(route) {
         </section>
       `;
     }
+  } else if (normalizedRoute === '/convert') {
+    // Hub page — list all 40 pairs grouped by priority
+    const ZONE_PAIRS_DATA = [
+      // Priority 1
+      { slug:'est-to-ist',from:'EST',to:'IST',p:1 },{ slug:'ist-to-est',from:'IST',to:'EST',p:1 },
+      { slug:'pst-to-ist',from:'PST',to:'IST',p:1 },{ slug:'ist-to-pst',from:'IST',to:'PST',p:1 },
+      { slug:'est-to-pst',from:'EST',to:'PST',p:1 },{ slug:'pst-to-est',from:'PST',to:'EST',p:1 },
+      { slug:'utc-to-est',from:'UTC',to:'EST',p:1 },{ slug:'utc-to-pst',from:'UTC',to:'PST',p:1 },
+      { slug:'gmt-to-est',from:'GMT',to:'EST',p:1 },{ slug:'cst-to-est',from:'CST',to:'EST',p:1 },
+      // Priority 2
+      { slug:'est-to-cst',from:'EST',to:'CST',p:2 },{ slug:'cst-to-pst',from:'CST',to:'PST',p:2 },
+      { slug:'mst-to-est',from:'MST',to:'EST',p:2 },{ slug:'est-to-gmt',from:'EST',to:'GMT',p:2 },
+      { slug:'pst-to-gmt',from:'PST',to:'GMT',p:2 },{ slug:'gmt-to-pst',from:'GMT',to:'PST',p:2 },
+      { slug:'cet-to-est',from:'CET',to:'EST',p:2 },{ slug:'est-to-cet',from:'EST',to:'CET',p:2 },
+      { slug:'cet-to-ist',from:'CET',to:'IST',p:2 },{ slug:'ist-to-cet',from:'IST',to:'CET',p:2 },
+      { slug:'gmt-to-ist',from:'GMT',to:'IST',p:2 },{ slug:'ist-to-gmt',from:'IST',to:'GMT',p:2 },
+      { slug:'aest-to-est',from:'AEST',to:'EST',p:2 },{ slug:'est-to-aest',from:'EST',to:'AEST',p:2 },
+      { slug:'aest-to-pst',from:'AEST',to:'PST',p:2 },
+      // Priority 3
+      { slug:'jst-to-est',from:'JST',to:'EST',p:3 },{ slug:'est-to-jst',from:'EST',to:'JST',p:3 },
+      { slug:'jst-to-pst',from:'JST',to:'PST',p:3 },{ slug:'sgt-to-est',from:'SGT',to:'EST',p:3 },
+      { slug:'sgt-to-pst',from:'SGT',to:'PST',p:3 },{ slug:'pht-to-est',from:'PHT',to:'EST',p:3 },
+      { slug:'pht-to-pst',from:'PHT',to:'PST',p:3 },{ slug:'pkt-to-est',from:'PKT',to:'EST',p:3 },
+      { slug:'pkt-to-pst',from:'PKT',to:'PST',p:3 },{ slug:'gst-to-est',from:'GST',to:'EST',p:3 },
+      { slug:'brt-to-est',from:'BRT',to:'EST',p:3 },{ slug:'cest-to-est',from:'CEST',to:'EST',p:3 },
+      { slug:'bst-to-est',from:'BST',to:'EST',p:3 },{ slug:'nzst-to-pst',from:'NZST',to:'PST',p:3 },
+      { slug:'utc-to-ist',from:'UTC',to:'IST',p:3 },
+    ];
+    const pairLinks = (priority, label) => {
+      const items = ZONE_PAIRS_DATA.filter(p => p.p === priority).map(p =>
+        `<a href="/convert/${p.slug}" style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:0.75rem;padding:0.75rem 1rem;text-decoration:none;color:#F5F5F0;font-size:0.875rem;font-weight:500;">
+          <span>${p.from} to ${p.to}</span><span style="color:#C8A96A;font-size:0.75rem;">→</span>
+        </a>`
+      ).join('');
+      return `<h2 style="font-size:1.125rem;font-weight:700;color:#F5F5F0;margin:0 0 1rem 0;font-family:'Outfit',sans-serif;">${label}</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:0.75rem;margin-bottom:2.5rem;">${items}</div>`;
+    };
+    content = `
+      <section style="max-width:64rem;margin:0 auto;padding:3rem 1.5rem;font-family:'Inter',sans-serif;">
+        <nav style="font-size:0.75rem;color:#A5BCAE;margin-bottom:1.5rem;">
+          <a href="/" style="color:#A5BCAE;text-decoration:none;">Home</a> /
+          <span style="color:#C8A96A;">Time Zone Converters</span>
+        </nav>
+        <h1 style="font-family:'Outfit',sans-serif;font-size:2.5rem;font-weight:800;color:#F5F5F0;margin-bottom:1rem;">Time Zone Converters</h1>
+        <p style="color:#A5BCAE;font-size:1.1rem;line-height:1.6;max-width:42rem;margin-bottom:3rem;">
+          Instant converters for 40 timezone abbreviation pairs. Each page shows the current offset, a full 24-hour conversion table, business-hours overlap window, and DST dates for both zones.
+        </p>
+        ${pairLinks(1, 'Most-searched pairs')}
+        ${pairLinks(2, 'US–Europe and Asia corridors')}
+        ${pairLinks(3, 'APAC, Middle East, and Americas')}
+        <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap;">
+          <a href="/time-zone-converter" style="display:inline-block;padding:0.75rem 1.5rem;background:#C8A96A;color:#020C06;border-radius:0.75rem;font-weight:700;text-decoration:none;font-size:0.875rem;">Time Zone Converter Tool</a>
+          <a href="/meeting-planner" style="display:inline-block;padding:0.75rem 1.5rem;border:1px solid rgba(255,255,255,0.2);color:#F5F5F0;border-radius:0.75rem;font-weight:600;text-decoration:none;font-size:0.875rem;">Meeting Planner</a>
+        </div>
+      </section>
+    `;
+  } else if (normalizedRoute.startsWith('/convert/')) {
+    // Individual zone-pair converter page
+    // Data table — mirrors src/data/zonePairs.js ZONE_META
+    const ZONE_META_SNAP = {
+      'America/New_York':   { abbr:'EST', stdOff:-5, dstOff:-4, dst:true,  dstStart:'Second Sunday in March',   dstStartDate:'2026-03-08', dstEndDate:'2026-11-01', full:'Eastern Time' },
+      'America/Los_Angeles':{ abbr:'PST', stdOff:-8, dstOff:-7, dst:true,  dstStart:'Second Sunday in March',   dstStartDate:'2026-03-08', dstEndDate:'2026-11-01', full:'Pacific Time' },
+      'America/Chicago':    { abbr:'CST', stdOff:-6, dstOff:-5, dst:true,  dstStart:'Second Sunday in March',   dstStartDate:'2026-03-08', dstEndDate:'2026-11-01', full:'Central Time' },
+      'America/Denver':     { abbr:'MST', stdOff:-7, dstOff:-6, dst:true,  dstStart:'Second Sunday in March',   dstStartDate:'2026-03-08', dstEndDate:'2026-11-01', full:'Mountain Time' },
+      'Europe/London':      { abbr:'GMT', stdOff:0,  dstOff:1,  dst:true,  dstStart:'Last Sunday in March',     dstStartDate:'2026-03-29', dstEndDate:'2026-10-25', full:'Greenwich Mean Time / BST' },
+      'Europe/Berlin':      { abbr:'CET', stdOff:1,  dstOff:2,  dst:true,  dstStart:'Last Sunday in March',     dstStartDate:'2026-03-29', dstEndDate:'2026-10-25', full:'Central European Time' },
+      'Asia/Kolkata':       { abbr:'IST', stdOff:5.5,dstOff:5.5,dst:false, full:'India Standard Time' },
+      'Asia/Karachi':       { abbr:'PKT', stdOff:5,  dstOff:5,  dst:false, full:'Pakistan Standard Time' },
+      'Asia/Tokyo':         { abbr:'JST', stdOff:9,  dstOff:9,  dst:false, full:'Japan Standard Time' },
+      'Asia/Singapore':     { abbr:'SGT', stdOff:8,  dstOff:8,  dst:false, full:'Singapore Standard Time' },
+      'Asia/Manila':        { abbr:'PHT', stdOff:8,  dstOff:8,  dst:false, full:'Philippine Standard Time' },
+      'Asia/Dubai':         { abbr:'GST', stdOff:4,  dstOff:4,  dst:false, full:'Gulf Standard Time' },
+      'America/Sao_Paulo':  { abbr:'BRT', stdOff:-3, dstOff:-3, dst:false, full:'Brasília Time' },
+      'Australia/Sydney':   { abbr:'AEST',stdOff:10, dstOff:11, dst:true,  dstStart:'First Sunday in October',  dstStartDate:'2026-10-04', dstEndDate:'2026-04-05', full:'Australian Eastern Time' },
+      'Pacific/Auckland':   { abbr:'NZST',stdOff:12, dstOff:13, dst:true,  dstStart:'Last Sunday in September', dstStartDate:'2026-09-27', dstEndDate:'2026-04-05', full:'New Zealand Standard Time' },
+      'UTC':                { abbr:'UTC', stdOff:0,  dstOff:0,  dst:false, full:'Coordinated Universal Time' },
+    };
+    const PAIRS_SNAP = {
+      'est-to-ist': { from:'EST',to:'IST',fromIANA:'America/New_York',toIANA:'Asia/Kolkata' },
+      'ist-to-est': { from:'IST',to:'EST',fromIANA:'Asia/Kolkata',toIANA:'America/New_York' },
+      'pst-to-ist': { from:'PST',to:'IST',fromIANA:'America/Los_Angeles',toIANA:'Asia/Kolkata' },
+      'ist-to-pst': { from:'IST',to:'PST',fromIANA:'Asia/Kolkata',toIANA:'America/Los_Angeles' },
+      'est-to-pst': { from:'EST',to:'PST',fromIANA:'America/New_York',toIANA:'America/Los_Angeles' },
+      'pst-to-est': { from:'PST',to:'EST',fromIANA:'America/Los_Angeles',toIANA:'America/New_York' },
+      'utc-to-est': { from:'UTC',to:'EST',fromIANA:'UTC',toIANA:'America/New_York' },
+      'utc-to-pst': { from:'UTC',to:'PST',fromIANA:'UTC',toIANA:'America/Los_Angeles' },
+      'gmt-to-est': { from:'GMT',to:'EST',fromIANA:'Europe/London',toIANA:'America/New_York' },
+      'cst-to-est': { from:'CST',to:'EST',fromIANA:'America/Chicago',toIANA:'America/New_York' },
+      'est-to-cst': { from:'EST',to:'CST',fromIANA:'America/New_York',toIANA:'America/Chicago' },
+      'cst-to-pst': { from:'CST',to:'PST',fromIANA:'America/Chicago',toIANA:'America/Los_Angeles' },
+      'mst-to-est': { from:'MST',to:'EST',fromIANA:'America/Denver',toIANA:'America/New_York' },
+      'est-to-gmt': { from:'EST',to:'GMT',fromIANA:'America/New_York',toIANA:'Europe/London' },
+      'pst-to-gmt': { from:'PST',to:'GMT',fromIANA:'America/Los_Angeles',toIANA:'Europe/London' },
+      'gmt-to-pst': { from:'GMT',to:'PST',fromIANA:'Europe/London',toIANA:'America/Los_Angeles' },
+      'cet-to-est': { from:'CET',to:'EST',fromIANA:'Europe/Berlin',toIANA:'America/New_York' },
+      'est-to-cet': { from:'EST',to:'CET',fromIANA:'America/New_York',toIANA:'Europe/Berlin' },
+      'cet-to-ist': { from:'CET',to:'IST',fromIANA:'Europe/Berlin',toIANA:'Asia/Kolkata' },
+      'ist-to-cet': { from:'IST',to:'CET',fromIANA:'Asia/Kolkata',toIANA:'Europe/Berlin' },
+      'gmt-to-ist': { from:'GMT',to:'IST',fromIANA:'Europe/London',toIANA:'Asia/Kolkata' },
+      'ist-to-gmt': { from:'IST',to:'GMT',fromIANA:'Asia/Kolkata',toIANA:'Europe/London' },
+      'aest-to-est':{ from:'AEST',to:'EST',fromIANA:'Australia/Sydney',toIANA:'America/New_York' },
+      'est-to-aest':{ from:'EST',to:'AEST',fromIANA:'America/New_York',toIANA:'Australia/Sydney' },
+      'aest-to-pst':{ from:'AEST',to:'PST',fromIANA:'Australia/Sydney',toIANA:'America/Los_Angeles' },
+      'jst-to-est': { from:'JST',to:'EST',fromIANA:'Asia/Tokyo',toIANA:'America/New_York' },
+      'est-to-jst': { from:'EST',to:'JST',fromIANA:'America/New_York',toIANA:'Asia/Tokyo' },
+      'jst-to-pst': { from:'JST',to:'PST',fromIANA:'Asia/Tokyo',toIANA:'America/Los_Angeles' },
+      'sgt-to-est': { from:'SGT',to:'EST',fromIANA:'Asia/Singapore',toIANA:'America/New_York' },
+      'sgt-to-pst': { from:'SGT',to:'PST',fromIANA:'Asia/Singapore',toIANA:'America/Los_Angeles' },
+      'pht-to-est': { from:'PHT',to:'EST',fromIANA:'Asia/Manila',toIANA:'America/New_York' },
+      'pht-to-pst': { from:'PHT',to:'PST',fromIANA:'Asia/Manila',toIANA:'America/Los_Angeles' },
+      'pkt-to-est': { from:'PKT',to:'EST',fromIANA:'Asia/Karachi',toIANA:'America/New_York' },
+      'pkt-to-pst': { from:'PKT',to:'PST',fromIANA:'Asia/Karachi',toIANA:'America/Los_Angeles' },
+      'gst-to-est': { from:'GST',to:'EST',fromIANA:'Asia/Dubai',toIANA:'America/New_York' },
+      'brt-to-est': { from:'BRT',to:'EST',fromIANA:'America/Sao_Paulo',toIANA:'America/New_York' },
+      'cest-to-est':{ from:'CEST',to:'EST',fromIANA:'Europe/Berlin',toIANA:'America/New_York' },
+      'bst-to-est': { from:'BST',to:'EST',fromIANA:'Europe/London',toIANA:'America/New_York' },
+      'nzst-to-pst':{ from:'NZST',to:'PST',fromIANA:'Pacific/Auckland',toIANA:'America/Los_Angeles' },
+      'utc-to-ist': { from:'UTC',to:'IST',fromIANA:'UTC',toIANA:'Asia/Kolkata' },
+    };
+
+    // Compute UTC offset using sv-SE trick (same as timezoneUtils.js)
+    function snapGetOffsetMinutes(ianaZone, date) {
+      try {
+        if (ianaZone === 'UTC') return 0;
+        const str = new Intl.DateTimeFormat('sv-SE', {
+          timeZone: ianaZone, year:'numeric', month:'2-digit', day:'2-digit',
+          hour:'2-digit', minute:'2-digit', second:'2-digit',
+        }).format(date);
+        return Math.round((new Date(str.replace(' ','T')+'Z').getTime() - date.getTime()) / 60000);
+      } catch(_) { return 0; }
+    }
+    function snapFmtOffset(mins) {
+      const sign = mins >= 0 ? '+' : '−';
+      const abs = Math.abs(mins), h = Math.floor(abs/60), m = abs%60;
+      return `UTC${sign}${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    }
+
+    const pairSlug  = normalizedRoute.replace('/convert/', '');
+    const pairDef   = PAIRS_SNAP[pairSlug];
+
+    if (pairDef) {
+      const now        = new Date();
+      const fromMeta   = ZONE_META_SNAP[pairDef.fromIANA] || {};
+      const toMeta     = ZONE_META_SNAP[pairDef.toIANA]   || {};
+      const fromOff    = snapGetOffsetMinutes(pairDef.fromIANA, now);
+      const toOff      = snapGetOffsetMinutes(pairDef.toIANA, now);
+      const diffMin    = toOff - fromOff;
+      const absMin     = Math.abs(diffMin);
+      const diffH      = Math.floor(absMin / 60);
+      const diffM      = absMin % 60;
+      const dir        = diffMin > 0 ? 'ahead of' : diffMin < 0 ? 'behind' : 'the same as';
+      const diffStr    = diffH > 0 && diffM > 0 ? `${diffH} hours and ${diffM} minutes`
+                       : diffH > 0 ? `${diffH} hour${diffH!==1?'s':''}`
+                       : `${diffM} minutes`;
+      const offsetSentence = diffMin === 0
+        ? `${pairDef.to} and ${pairDef.from} are currently in the same time zone.`
+        : `${pairDef.to} is currently ${diffStr} ${dir} ${pairDef.from}.`;
+
+      // 24h conversion table using standard (non-DST) offsets
+      const stdFromOff = (fromMeta.stdOff || 0) * 60; // minutes
+      const stdToOff   = (toMeta.stdOff   || 0) * 60;
+      let tableRows = '';
+      for (let h = 0; h < 24; h++) {
+        const utcMs = Date.UTC(2026,0,12,h) - stdFromOff * 60000;
+        const toDate = new Date(utcMs);
+        const toTimeStr = new Intl.DateTimeFormat('en-US', {
+          timeZone: pairDef.toIANA, hour:'2-digit', minute:'2-digit', hour12:false
+        }).format(toDate).replace(/^24:/,'00:');
+        const fromTimeStr = `${String(h).padStart(2,'0')}:00`;
+        const isBizFrom = h >= 9 && h < 17;
+        const toH = parseInt(toTimeStr.split(':')[0],10);
+        const isBizTo = toH >= 9 && toH < 17;
+        const isOvlp = isBizFrom && isBizTo;
+        tableRows += `<tr style="border-top:1px solid rgba(255,255,255,0.05);${isOvlp?'background:rgba(16,185,129,0.05);':''}">
+          <td style="padding:0.5rem 1rem;font-family:monospace;color:#F5F5F0;">${fromTimeStr}</td>
+          <td style="padding:0.5rem 1rem;font-family:monospace;font-weight:600;color:${isOvlp?'#34d399':'#F5F5F0'};">${toTimeStr}${isOvlp?' <small style="color:#6ee7b7;font-family:sans-serif;font-weight:400;">overlap</small>':''}</td>
+        </tr>`;
+      }
+
+      // DST cards
+      const dstCard = (abbr, meta) => {
+        if (!meta || !abbr) return '';
+        if (meta.dst) {
+          return `<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:1.25rem;">
+            <div style="font-weight:700;color:#F5F5F0;margin-bottom:0.5rem;">${abbr} — ${meta.full||abbr}</div>
+            <div style="display:inline-block;background:rgba(251,191,36,0.1);color:#fbbf24;border-radius:9999px;padding:0.125rem 0.75rem;font-size:0.75rem;margin-bottom:0.75rem;">Observes DST</div>
+            <div style="font-size:0.85rem;color:#A5BCAE;line-height:1.6;">
+              Standard: <strong style="color:#F5F5F0;">${snapFmtOffset((meta.stdOff||0)*60)}</strong><br>
+              DST: <strong style="color:#F5F5F0;">${snapFmtOffset((meta.dstOff||0)*60)}</strong><br>
+              ${meta.dstStartDate ? `<span style="font-size:0.75rem;">2026: forward ${meta.dstStartDate} · back ${meta.dstEndDate}</span>` : ''}
+            </div>
+          </div>`;
+        }
+        return `<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:1.25rem;">
+          <div style="font-weight:700;color:#F5F5F0;margin-bottom:0.5rem;">${abbr} — ${meta.full||abbr}</div>
+          <div style="display:inline-block;background:rgba(165,188,174,0.1);color:#A5BCAE;border-radius:9999px;padding:0.125rem 0.75rem;font-size:0.75rem;margin-bottom:0.75rem;">No DST — fixed offset</div>
+          <div style="font-size:0.85rem;color:#A5BCAE;">Year-round: <strong style="color:#F5F5F0;">${snapFmtOffset((meta.stdOff||0)*60)}</strong></div>
+        </div>`;
+      };
+
+      content = `
+        <article style="max-width:52rem;margin:0 auto;padding:3rem 1.5rem;font-family:'Inter',sans-serif;">
+          <nav style="font-size:0.75rem;color:#A5BCAE;margin-bottom:1.5rem;">
+            <a href="/" style="color:#A5BCAE;text-decoration:none;">Home</a> /
+            <a href="/convert" style="color:#A5BCAE;text-decoration:none;">Time Zone Converters</a> /
+            <span style="color:#C8A96A;">${pairDef.from} to ${pairDef.to}</span>
+          </nav>
+
+          <h1 style="font-family:'Outfit',sans-serif;font-size:2.25rem;font-weight:800;color:#F5F5F0;margin-bottom:1rem;">
+            ${pairDef.from} to ${pairDef.to} Time Zone Converter
+          </h1>
+
+          <!-- AEO above-fold answer: present in raw HTML, cited by LLMs and AI engines -->
+          <div style="background:rgba(200,169,106,0.08);border:1px solid rgba(200,169,106,0.2);border-radius:1.25rem;padding:1.5rem;margin-bottom:2rem;">
+            <p style="font-size:1.125rem;font-weight:600;color:#F5F5F0;margin:0 0 0.75rem 0;">${offsetSentence}</p>
+            <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:0.875rem;color:#A5BCAE;">
+              <span><strong style="color:#C8A96A;">${pairDef.from}</strong> (${fromMeta.full||pairDef.from}, ${snapFmtOffset((fromMeta.stdOff||0)*60)} standard)</span>
+              <span style="color:#C8A96A;">→</span>
+              <span><strong style="color:#C8A96A;">${pairDef.to}</strong> (${toMeta.full||pairDef.to}, ${snapFmtOffset((toMeta.stdOff||0)*60)} standard)</span>
+            </div>
+          </div>
+
+          <!-- 24-hour conversion table (server-rendered, no JS required) -->
+          <section style="margin-bottom:2.5rem;">
+            <h2 style="font-size:1.35rem;font-weight:700;color:#F5F5F0;margin-bottom:0.75rem;font-family:'Outfit',sans-serif;">
+              ${pairDef.from} to ${pairDef.to} — 24-Hour Conversion Table
+            </h2>
+            <p style="font-size:0.875rem;color:#A5BCAE;margin-bottom:1rem;">
+              Shows standard (non-DST) offsets. Green rows = shared 09:00–17:00 business hours.
+            </p>
+            <div style="overflow-x:auto;border:1px solid rgba(255,255,255,0.08);border-radius:1rem;">
+              <table style="width:100%;border-collapse:collapse;font-size:0.875rem;">
+                <thead>
+                  <tr style="background:rgba(255,255,255,0.04);color:#A5BCAE;">
+                    <th style="text-align:left;padding:0.75rem 1rem;font-weight:600;">Time in ${pairDef.from}</th>
+                    <th style="text-align:left;padding:0.75rem 1rem;font-weight:600;">Time in ${pairDef.to}</th>
+                  </tr>
+                </thead>
+                <tbody>${tableRows}</tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- DST section -->
+          <section style="margin-bottom:2.5rem;">
+            <h2 style="font-size:1.35rem;font-weight:700;color:#F5F5F0;margin-bottom:1rem;font-family:'Outfit',sans-serif;">
+              Daylight Saving Time: ${pairDef.from} and ${pairDef.to}
+            </h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem;">
+              ${dstCard(pairDef.from, fromMeta)}
+              ${dstCard(pairDef.to, toMeta)}
+            </div>
+          </section>
+
+          <!-- Internal links -->
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;">
+            <a href="/convert" style="color:#C8A96A;font-size:0.875rem;text-decoration:none;">← All time zone converters</a>
+            <span style="color:#A5BCAE;">·</span>
+            <a href="/time-zone-converter" style="color:#C8A96A;font-size:0.875rem;text-decoration:none;">Time Zone Converter tool</a>
+            <span style="color:#A5BCAE;">·</span>
+            <a href="/meeting-planner" style="color:#C8A96A;font-size:0.875rem;text-decoration:none;">Meeting Planner</a>
+          </div>
+        </article>
+      `;
+    }
   } else if (normalizedRoute.startsWith('/currency/')) {
+
     const pairSlug = normalizedRoute.replace('/currency/', '');
     const pair = pairSlug.split('-to-');
     const fromCur = CURRENCIES_META[pair[0]];
