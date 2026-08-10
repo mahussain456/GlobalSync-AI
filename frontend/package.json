@@ -430,7 +430,16 @@
       "/freelance-rate/usd-to-cad",
       "/freelance-rate/eur-to-inr",
       "/freelance-rate/gbp-to-inr",
-      "/freelance-rate/usd-to-vnd"
+      "/freelance-rate/usd-to-vnd",
+      "/meeting-overlap",
+      "/meeting-overlap/us-india",
+      "/meeting-overlap/us-philippines",
+      "/meeting-overlap/us-europe",
+      "/meeting-overlap/us-australia",
+      "/meeting-overlap/us-brazil",
+      "/meeting-overlap/uk-india",
+      "/meeting-overlap/europe-asia",
+      "/meeting-overlap/us-pakistan"
     ]
   },
   "browserslist": {

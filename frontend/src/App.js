@@ -81,6 +81,9 @@ const ConvertHubPage = React.lazy(() => import("@/pages/ConvertHubPage"));
 const ZonePairPage = React.lazy(() => import("@/pages/ZonePairPage"));
 const FreelanceRateHubPage = React.lazy(() => import("@/pages/FreelanceRateHubPage"));
 const FreelanceRatePage = React.lazy(() => import("@/pages/FreelanceRatePage"));
+const MeetingOverlapHubPage = React.lazy(() => import("@/pages/MeetingOverlapHubPage"));
+const MeetingOverlapPage = React.lazy(() => import("@/pages/MeetingOverlapPage"));
+
 
 
 
@@ -129,6 +132,9 @@ function App() {
               {/* Freelance Rate Currency Corridors (PR 4) */}
               <Route path="/freelance-rate" element={<FreelanceRateHubPage />} />
               <Route path="/freelance-rate/:corridor" element={<FreelanceRatePage />} />
+              {/* Meeting Overlap Guides (PR 5) */}
+              <Route path="/meeting-overlap" element={<MeetingOverlapHubPage />} />
+              <Route path="/meeting-overlap/:corridor" element={<MeetingOverlapPage />} />
               <Route path="*" element={<NotFoundPage />} />
 
             </Routes>

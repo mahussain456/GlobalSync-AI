@@ -2345,6 +2345,52 @@ function getFallbackBody(route) {
         </div>
       </article>
     `;
+  } else if (normalizedRoute === '/meeting-overlap') {
+    content = `
+      <section style="max-width:64rem;margin:0 auto;padding:3rem 1.5rem;font-family:'Inter',sans-serif;">
+        <nav style="font-size:0.75rem;color:#A5BCAE;margin-bottom:1.5rem;">
+          <a href="/" style="color:#A5BCAE;text-decoration:none;">Home</a> /
+          <span style="color:#C8A96A;">Meeting Overlap Guides</span>
+        </nav>
+        <h1 style="font-family:'Outfit',sans-serif;font-size:2.5rem;font-weight:800;color:#F5F5F0;margin-bottom:1rem;">Best Meeting Times & Overlap Guides</h1>
+        <p style="color:#A5BCAE;font-size:1.1rem;line-height:1.6;max-width:42rem;margin-bottom:3rem;">
+          Find optimal meeting times across 8 major global region corridors (US, India, UK, Europe, Philippines, Australia, Pakistan, Brazil). View 24-hour schedule alignment heat maps.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:1rem;margin-bottom:3rem;">
+          <a href="/meeting-overlap/us-india" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:1.25rem;text-decoration:none;color:#F5F5F0;">
+            <div style="font-weight:700;font-size:1.1rem;color:#C8A96A;margin-bottom:0.5rem;">US & India</div>
+            <div style="font-size:0.8rem;color:#A5BCAE;">Best meeting times between US East/West Coasts and India</div>
+          </a>
+          <a href="/meeting-overlap/us-europe" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:1.25rem;text-decoration:none;color:#F5F5F0;">
+            <div style="font-weight:700;font-size:1.1rem;color:#C8A96A;margin-bottom:0.5rem;">US & Europe</div>
+            <div style="font-size:0.8rem;color:#A5BCAE;">Transatlantic business hours overlap guide</div>
+          </a>
+        </div>
+      </section>
+    `;
+  } else if (normalizedRoute.startsWith('/meeting-overlap/')) {
+    const corridorSlug = normalizedRoute.replace('/meeting-overlap/', '');
+    content = `
+      <article style="max-width:52rem;margin:0 auto;padding:3rem 1.5rem;font-family:'Inter',sans-serif;">
+        <nav style="font-size:0.75rem;color:#A5BCAE;margin-bottom:1.5rem;">
+          <a href="/" style="color:#A5BCAE;text-decoration:none;">Home</a> /
+          <a href="/meeting-overlap" style="color:#A5BCAE;text-decoration:none;">Meeting Overlap Guides</a> /
+          <span style="color:#C8A96A;">${corridorSlug.toUpperCase()}</span>
+        </nav>
+        <h1 style="font-family:'Outfit',sans-serif;font-size:2.25rem;font-weight:800;color:#F5F5F0;margin-bottom:1rem;">
+          Best Meeting Times Between Global Regions (${corridorSlug.toUpperCase()})
+        </h1>
+        <div style="background:rgba(200,169,106,0.08);border:1px solid rgba(200,169,106,0.2);border-radius:1.25rem;padding:1.5rem;margin-bottom:2rem;">
+          <p style="font-size:1.125rem;font-weight:600;color:#F5F5F0;margin:0 0 0.5rem 0;">Optimal Meeting Window & Rotation Fairness</p>
+          <p style="font-size:0.875rem;color:#A5BCAE;margin:0;">24-hour schedule alignment heat map and guidelines for remote teams.</p>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;">
+          <a href="/meeting-overlap" style="color:#C8A96A;font-size:0.875rem;text-decoration:none;">← All meeting overlap guides</a>
+          <span style="color:#A5BCAE;">·</span>
+          <a href="/meeting-planner" style="color:#C8A96A;font-size:0.875rem;text-decoration:none;">Meeting Planner</a>
+        </div>
+      </article>
+    `;
   } else if (normalizedRoute.startsWith('/currency/')) {
 
     const pairSlug = normalizedRoute.replace('/currency/', '');
