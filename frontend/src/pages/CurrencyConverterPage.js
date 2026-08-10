@@ -82,23 +82,26 @@ export default function CurrencyConverterPage() {
         {/* Popular pairs */}
         <section className="mb-12">
           <h2 className="font-heading text-2xl font-bold text-gem-beige mb-2">Popular Currency Pairs</h2>
-          <p className="text-gem-beige/60 mb-5 text-sm">Click any pair to open it instantly with live rates.</p>
+          <p className="text-gem-beige/60 mb-5 text-sm">Click any pair to open its live rate guide and trend chart.</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {PAIRS.map(p => (
-              <button
-                key={`${p.from}-${p.to}`}
-                onClick={() => navigate(`/dashboard?q=Convert 1 ${p.from} to ${p.to}`)}
-                className="text-left bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-4 hover:border-gem-gold/50 transition-all group"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-semibold text-gem-beige text-sm">{p.from} → {p.to}</div>
-                    <div className="text-xs text-gem-beige/40 mt-0.5">{p.name}</div>
+            {PAIRS.map(p => {
+              const slug = `${p.from.toLowerCase()}-to-${p.to.toLowerCase()}`;
+              return (
+                <Link
+                  key={slug}
+                  to={`/currency/${slug}`}
+                  className="text-left bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-4 hover:border-gem-gold/50 transition-all group block"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-semibold text-gem-beige text-sm">{p.from} → {p.to}</div>
+                      <div className="text-xs text-gem-beige/40 mt-0.5">{p.name}</div>
+                    </div>
+                    <ArrowRight className="w-3.5 h-3.5 text-gem-beige/20 group-hover:text-gem-gold transition-colors" />
                   </div>
-                  <ArrowRight className="w-3.5 h-3.5 text-gem-beige/20 group-hover:text-gem-gold transition-colors" />
-                </div>
-              </button>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </section>
 
