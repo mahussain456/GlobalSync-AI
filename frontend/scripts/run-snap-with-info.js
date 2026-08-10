@@ -2391,6 +2391,28 @@ function getFallbackBody(route) {
         </div>
       </article>
     `;
+  } else if (normalizedRoute.startsWith('/compare/')) {
+    const slug = normalizedRoute.replace('/compare/', '');
+    content = `
+      <article style="max-width:52rem;margin:0 auto;padding:3rem 1.5rem;font-family:'Inter',sans-serif;">
+        <nav style="font-size:0.75rem;color:#A5BCAE;margin-bottom:1.5rem;">
+          <a href="/" style="color:#A5BCAE;text-decoration:none;">Home</a> /
+          <span style="color:#C8A96A;">Tool Comparisons</span>
+        </nav>
+        <h1 style="font-family:'Outfit',sans-serif;font-size:2.25rem;font-weight:800;color:#F5F5F0;margin-bottom:1rem;">
+          Tool Comparison: GlobalSync AI vs ${slug.replace(/-/g, ' ').toUpperCase()}
+        </h1>
+        <div style="background:rgba(200,169,106,0.08);border:1px solid rgba(200,169,106,0.2);border-radius:1.25rem;padding:1.5rem;margin-bottom:2rem;">
+          <p style="font-size:1.125rem;font-weight:600;color:#F5F5F0;margin:0 0 0.5rem 0;">Transparent & Honest Feature Comparison</p>
+          <p style="font-size:0.875rem;color:#A5BCAE;margin:0;">Comparing workflow features, AI natural language parsing, and currency rate integrations.</p>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;">
+          <a href="/time-zone-converter" style="color:#C8A96A;font-size:0.875rem;text-decoration:none;">Time Zone Converter</a>
+          <span style="color:#A5BCAE;">·</span>
+          <a href="/meeting-planner" style="color:#C8A96A;font-size:0.875rem;text-decoration:none;">Meeting Planner</a>
+        </div>
+      </article>
+    `;
   } else if (normalizedRoute.startsWith('/currency/')) {
 
     const pairSlug = normalizedRoute.replace('/currency/', '');

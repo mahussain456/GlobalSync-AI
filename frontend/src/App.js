@@ -83,6 +83,8 @@ const FreelanceRateHubPage = React.lazy(() => import("@/pages/FreelanceRateHubPa
 const FreelanceRatePage = React.lazy(() => import("@/pages/FreelanceRatePage"));
 const MeetingOverlapHubPage = React.lazy(() => import("@/pages/MeetingOverlapHubPage"));
 const MeetingOverlapPage = React.lazy(() => import("@/pages/MeetingOverlapPage"));
+const ComparisonPage = React.lazy(() => import("@/pages/ComparisonPage"));
+
 
 
 
@@ -135,6 +137,8 @@ function App() {
               {/* Meeting Overlap Guides (PR 5) */}
               <Route path="/meeting-overlap" element={<MeetingOverlapHubPage />} />
               <Route path="/meeting-overlap/:corridor" element={<MeetingOverlapPage />} />
+              {/* Tool Comparisons (PR 6) */}
+              <Route path="/compare/:slug" element={<ComparisonPage />} />
               <Route path="*" element={<NotFoundPage />} />
 
             </Routes>

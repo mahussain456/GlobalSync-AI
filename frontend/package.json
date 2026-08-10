@@ -439,7 +439,11 @@
       "/meeting-overlap/us-brazil",
       "/meeting-overlap/uk-india",
       "/meeting-overlap/europe-asia",
-      "/meeting-overlap/us-pakistan"
+      "/meeting-overlap/us-pakistan",
+      "/compare/world-time-buddy-alternative",
+      "/compare/timeanddate-alternative",
+      "/compare/every-time-zone-alternative",
+      "/compare/best-time-zone-converter-remote-teams"
     ]
   },
   "browserslist": {
