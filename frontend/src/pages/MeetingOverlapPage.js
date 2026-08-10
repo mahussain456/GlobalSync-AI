@@ -35,11 +35,14 @@ export default function MeetingOverlapPage() {
   const { corridor } = useParams();
   const corridorData = getMeetingCorridor(corridor);
 
-  if (!corridorData) return <Navigate to="/meeting-overlap" replace />;
-
-  const { h1, regionA, regionB, ianaA, ianaB, citiesA, citiesB, recommendedWindow, overlapType, fairnessAdvice, contextCopy } = corridorData;
+  const ianaA = corridorData?.ianaA ?? "America/New_York";
+  const ianaB = corridorData?.ianaB ?? "Asia/Kolkata";
 
   const table24h = useMemo(() => generate24hTable(ianaA, ianaB), [ianaA, ianaB]);
+
+  if (!corridorData) return <Navigate to="/meeting-overlap" replace />;
+
+  const { h1, regionA, regionB, citiesA, citiesB, recommendedWindow, overlapType, fairnessAdvice, contextCopy } = corridorData;
 
   const siblingCorridors = MEETING_CORRIDORS.filter(c => c.slug !== corridor).slice(0, 4);
 

@@ -34,19 +34,16 @@ export default function FreelanceRatePage() {
   const { corridor } = useParams();
   const corridorData = getCorridor(corridor);
 
-  if (!corridorData) return <Navigate to="/freelance-rate" replace />;
-
-  const { from, to, fromSymbol, toSymbol, title, marketContext, defaultHourly, purchasingPowerContext } = corridorData;
-
+  const defaultHourly = corridorData?.defaultHourly ?? 40;
   const rate = CORRIDOR_APPROX_RATES[corridor] || 1;
 
-  // Interactive State
+  // Interactive State (unconditional)
   const [hourlyRate, setHourlyRate] = useState(defaultHourly);
   const [hoursPerWeek, setHoursPerWeek] = useState(35);
   const [weeksPerYear, setWeeksPerYear] = useState(48);
   const [annualExpensesUSD, setAnnualExpensesUSD] = useState(2400);
 
-  // Calculations
+  // Calculations (unconditional)
   const calculations = useMemo(() => {
     const grossAnnualSource = hourlyRate * hoursPerWeek * weeksPerYear;
     const netAnnualSource = Math.max(0, grossAnnualSource - annualExpensesUSD);
@@ -54,7 +51,6 @@ export default function FreelanceRatePage() {
     const netAnnualTarget = netAnnualSource * rate;
     const monthlyTarget = netAnnualTarget / 12;
 
-    // W-2 equivalent approximation (deducting 15.3% self-employment tax + health insurance allowance ~20%)
     const w2EquivalentSource = netAnnualSource * 0.78;
 
     return {
@@ -66,6 +62,10 @@ export default function FreelanceRatePage() {
       w2EquivalentSource,
     };
   }, [hourlyRate, hoursPerWeek, weeksPerYear, annualExpensesUSD, rate]);
+
+  if (!corridorData) return <Navigate to="/freelance-rate" replace />;
+
+  const { from, to, fromSymbol, toSymbol, title, marketContext, purchasingPowerContext } = corridorData;
 
   // Worked example numbers (fixed for SSR rendering)
   const exampleRate = defaultHourly;
