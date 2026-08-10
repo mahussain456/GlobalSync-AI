@@ -417,7 +417,20 @@
       "/convert/cest-to-est",
       "/convert/bst-to-est",
       "/convert/nzst-to-pst",
-      "/convert/utc-to-ist"
+      "/convert/utc-to-ist",
+      "/freelance-rate",
+      "/freelance-rate/usd-to-inr",
+      "/freelance-rate/usd-to-php",
+      "/freelance-rate/usd-to-pkr",
+      "/freelance-rate/usd-to-eur",
+      "/freelance-rate/usd-to-gbp",
+      "/freelance-rate/usd-to-brl",
+      "/freelance-rate/usd-to-mxn",
+      "/freelance-rate/usd-to-ngn",
+      "/freelance-rate/usd-to-cad",
+      "/freelance-rate/eur-to-inr",
+      "/freelance-rate/gbp-to-inr",
+      "/freelance-rate/usd-to-vnd"
     ]
   },
   "browserslist": {

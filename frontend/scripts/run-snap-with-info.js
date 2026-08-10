@@ -2288,6 +2288,63 @@ function getFallbackBody(route) {
         </article>
       `;
     }
+  } else if (normalizedRoute === '/freelance-rate') {
+    content = `
+      <section style="max-width:64rem;margin:0 auto;padding:3rem 1.5rem;font-family:'Inter',sans-serif;">
+        <nav style="font-size:0.75rem;color:#A5BCAE;margin-bottom:1.5rem;">
+          <a href="/" style="color:#A5BCAE;text-decoration:none;">Home</a> /
+          <span style="color:#C8A96A;">Freelance Rate Calculators</span>
+        </nav>
+        <h1 style="font-family:'Outfit',sans-serif;font-size:2.5rem;font-weight:800;color:#F5F5F0;margin-bottom:1rem;">Freelance Rate & Currency Corridor Calculators</h1>
+        <p style="color:#A5BCAE;font-size:1.1rem;line-height:1.6;max-width:42rem;margin-bottom:3rem;">
+          Calculate take-home income across 12 major currency corridors when billing cross-border. Compare payment rail fees (Wise vs PayPal vs Bank Wire) and W-2 salary equivalents.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:1rem;margin-bottom:3rem;">
+          <a href="/freelance-rate/usd-to-inr" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:1.25rem;text-decoration:none;color:#F5F5F0;">
+            <div style="font-weight:700;font-size:1.1rem;color:#C8A96A;margin-bottom:0.5rem;">USD to INR</div>
+            <div style="font-size:0.8rem;color:#A5BCAE;">India freelance software & IT billing calculator</div>
+          </a>
+          <a href="/freelance-rate/usd-to-php" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:1.25rem;text-decoration:none;color:#F5F5F0;">
+            <div style="font-weight:700;font-size:1.1rem;color:#C8A96A;margin-bottom:0.5rem;">USD to PHP</div>
+            <div style="font-size:0.8rem;color:#A5BCAE;">Philippines virtual assistant & developer rate calculator</div>
+          </a>
+          <a href="/freelance-rate/usd-to-pkr" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:1.25rem;text-decoration:none;color:#F5F5F0;">
+            <div style="font-weight:700;font-size:1.1rem;color:#C8A96A;margin-bottom:0.5rem;">USD to PKR</div>
+            <div style="font-size:0.8rem;color:#A5BCAE;">Pakistan tech contractor & freelance calculator</div>
+          </a>
+          <a href="/freelance-rate/usd-to-eur" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:1rem;padding:1.25rem;text-decoration:none;color:#F5F5F0;">
+            <div style="font-weight:700;font-size:1.1rem;color:#C8A96A;margin-bottom:0.5rem;">USD to EUR</div>
+            <div style="font-size:0.8rem;color:#A5BCAE;">European contractor billing US client rate calculator</div>
+          </a>
+        </div>
+      </section>
+    `;
+  } else if (normalizedRoute.startsWith('/freelance-rate/')) {
+    const corridorSlug = normalizedRoute.replace('/freelance-rate/', '');
+    const parts = corridorSlug.split('-to-');
+    const fromCode = (parts[0] || 'USD').toUpperCase();
+    const toCode = (parts[1] || 'INR').toUpperCase();
+    content = `
+      <article style="max-width:52rem;margin:0 auto;padding:3rem 1.5rem;font-family:'Inter',sans-serif;">
+        <nav style="font-size:0.75rem;color:#A5BCAE;margin-bottom:1.5rem;">
+          <a href="/" style="color:#A5BCAE;text-decoration:none;">Home</a> /
+          <a href="/freelance-rate" style="color:#A5BCAE;text-decoration:none;">Freelance Rate Calculators</a> /
+          <span style="color:#C8A96A;">${fromCode} to ${toCode}</span>
+        </nav>
+        <h1 style="font-family:'Outfit',sans-serif;font-size:2.25rem;font-weight:800;color:#F5F5F0;margin-bottom:1rem;">
+          Freelance Rate Calculator: ${fromCode} to ${toCode}
+        </h1>
+        <div style="background:rgba(200,169,106,0.08);border:1px solid rgba(200,169,106,0.2);border-radius:1.25rem;padding:1.5rem;margin-bottom:2rem;">
+          <p style="font-size:1.125rem;font-weight:600;color:#F5F5F0;margin:0 0 0.5rem 0;">Calculate Net Take-Home Pay & Payment Rail FX Margins</p>
+          <p style="font-size:0.875rem;color:#A5BCAE;margin:0;">Evaluate hourly rate billing in ${fromCode} converted into ${toCode} local income with W-2 salary equivalent metrics.</p>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;">
+          <a href="/freelance-rate" style="color:#C8A96A;font-size:0.875rem;text-decoration:none;">← All freelance rate calculators</a>
+          <span style="color:#A5BCAE;">·</span>
+          <a href="/freelancer-rate-converter" style="color:#C8A96A;font-size:0.875rem;text-decoration:none;">Freelancer Rate Tool</a>
+        </div>
+      </article>
+    `;
   } else if (normalizedRoute.startsWith('/currency/')) {
 
     const pairSlug = normalizedRoute.replace('/currency/', '');

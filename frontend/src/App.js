@@ -79,6 +79,9 @@ const PressPage = React.lazy(() => import("@/pages/PressPage"));
 const AuthorPage = React.lazy(() => import("@/pages/AuthorPage"));
 const ConvertHubPage = React.lazy(() => import("@/pages/ConvertHubPage"));
 const ZonePairPage = React.lazy(() => import("@/pages/ZonePairPage"));
+const FreelanceRateHubPage = React.lazy(() => import("@/pages/FreelanceRateHubPage"));
+const FreelanceRatePage = React.lazy(() => import("@/pages/FreelanceRatePage"));
+
 
 
 const SuspenseFallback = () => (
@@ -123,6 +126,9 @@ function App() {
               {/* Timezone abbreviation pair converters (PR 2) */}
               <Route path="/convert" element={<ConvertHubPage />} />
               <Route path="/convert/:pair" element={<ZonePairPage />} />
+              {/* Freelance Rate Currency Corridors (PR 4) */}
+              <Route path="/freelance-rate" element={<FreelanceRateHubPage />} />
+              <Route path="/freelance-rate/:corridor" element={<FreelanceRatePage />} />
               <Route path="*" element={<NotFoundPage />} />
 
             </Routes>
