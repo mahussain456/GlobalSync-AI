@@ -58,6 +58,15 @@ export const BLOG_POSTS = [
       ]},
       { type: "p", text: "This one change reduces anxiety because people stop guessing. A designer in Lisbon can finish work without worrying that a Slack message from San Francisco at 7 PM needs an immediate answer. A developer in Pakistan can sleep without waking up to ten \"quick question\" pings that were never quick." },
       { type: "p", text: "Async does not mean slow. It means the speed is explicit." },
+      {
+        type: "cta",
+        title: "Plan Distributed Team Overlaps Easily",
+        description: "Calculate optimal working hours and schedule meetings across time zones without burnout.",
+        primaryLink: "/meeting-planner",
+        primaryText: "Open Meeting Planner",
+        secondaryLink: "/meeting-overlap",
+        secondaryText: "Meeting Overlap Guides"
+      },
       { type: "h2", text: "Every Project Needs a Written Home" },
       { type: "p", text: "If project knowledge lives in chat, it disappears." },
       { type: "p", text: "A distributed team needs one written home for every active project. It can be Notion, Linear, Jira, GitHub Issues, Google Docs, Basecamp, or something else. The tool matters less than the habit." },
@@ -172,6 +181,15 @@ export const BLOG_POSTS = [
       ]},
       { type: "p", text: "The goal is not to obsess over rates every day. That gets unhealthy fast. The goal is to know whether your pricing still works after fees, conversion, and local expenses." },
       { type: "p", text: "If you earn in USD, spend in EUR for three months, then move to a country where your costs are in AED, THB, PKR, MXN, or IDR, your income story changes. Same client. Same invoice. Different margin." },
+      {
+        type: "cta",
+        title: "Calculate Currency Rates & Timezone Differences",
+        description: "Explore 12 freelance currency rate corridors and 40 timezone abbreviation pair converters.",
+        primaryLink: "/freelance-rate",
+        primaryText: "Freelance Rate Calculators",
+        secondaryLink: "/convert",
+        secondaryText: "Time Zone Pair Converters"
+      },
       { type: "h2", text: "Price for the Life You Actually Live" },
       { type: "p", text: "Many digital nomads underprice because they compare their rate to the cheapest place they have lived. That is a trap." },
       { type: "p", text: "Your rate should not be based only on this month's rent. It should cover:" },
@@ -270,6 +288,15 @@ export const BLOG_POSTS = [
       ]},
       { type: "p", text: "Most freelancers focus on the transaction fee because it is obvious. A platform says it charges 2%, 3%, or a flat amount. You can see it. You can complain about it. The exchange rate spread is easier to miss." },
       { type: "p", text: "Example: A live mid-market rate says 1 USD equals 280 PKR. Your provider pays you at 271 PKR. On a $1,000 invoice, that difference is 9,000 PKR before any visible fee. If the platform also charges a receiving fee, you are paying twice: once in the visible fee and again in the rate. That is why a \"small\" exchange rate difference can matter more than the line-item charge." },
+      {
+        type: "cta",
+        title: "Calculate Your True Net Take-Home Pay",
+        description: "Compare payment rail fees against live mid-market rates across 160+ currencies.",
+        primaryLink: "/freelance-rate/usd-to-inr",
+        primaryText: "USD to INR Rate Calculator",
+        secondaryLink: "/currency-converter",
+        secondaryText: "Live Currency Converter"
+      },
       { type: "h2", text: "Why Freelancers Should Price Using the Real Rate" },
       { type: "p", text: "When you quote international clients, use the mid-market rate as your baseline. Then add your own buffer for conversion costs, volatility, tax, and transfer delays." },
       { type: "p", text: "Do not price from the rate your bank gave you last week. That rate may include a margin. It may also be stale." },
@@ -374,6 +401,15 @@ export const BLOG_POSTS = [
       { type: "p", text: "Many freelancers price retainers like this: \"I think they need 20 hours a month. My rate is $50/hour. So the retainer is $1,000.\"" },
       { type: "p", text: "That is a starting point, not a pricing strategy." },
       { type: "p", text: "A retainer should account for:" },
+      {
+        type: "cta",
+        title: "Calculate Your Baseline Retainer & Hourly Target",
+        description: "Use our Freelancer Rate Converter to establish your minimum annual target, billable capacity, and FX buffers.",
+        primaryLink: "/freelancer-rate-converter",
+        primaryText: "Freelancer Rate Converter",
+        secondaryLink: "/freelance-rate",
+        secondaryText: "Currency Corridor Calculators"
+      },
       { type: "ul", items: [
         "Reserved capacity.",
         "Context switching.",
@@ -475,6 +511,15 @@ export const BLOG_POSTS = [
       ]},
       { type: "p", text: "Then use those hours when comparing overlap. A generic 9 to 5 grid is a starting point, not a law." },
       { type: "p", text: "GlobalSync AI's meeting planner uses standard business hours to reveal overlap. Your team can go one level deeper by adding personal preferences to the scheduling policy." },
+      {
+        type: "cta",
+        title: "Find Optimal Region Meeting Overlaps",
+        description: "Explore region-specific meeting guides (like US & India) and visualize multi-city team availability.",
+        primaryLink: "/meeting-overlap/us-india",
+        primaryText: "US–India Meeting Guide",
+        secondaryLink: "/meeting-planner",
+        secondaryText: "Global Meeting Planner"
+      },
       { type: "h2", text: "Always Write the Timezone" },
       { type: "p", text: "This rule sounds too basic until it saves a launch." },
       { type: "p", text: "Never write: \"Can we meet at 3?\"" },
@@ -574,6 +619,15 @@ export const BLOG_POSTS = [
         "Distributed incident response."
       ]},
       { type: "p", text: "A proper time zone converter uses timezone database rules, not a static offset." },
+      {
+        type: "cta",
+        title: "Convert 40+ Time Zone Pairs Instantly",
+        description: "Explore 40 timezone abbreviation pair converters (EST to IST, PST to GMT, etc.) or use our live converter tool.",
+        primaryLink: "/convert",
+        primaryText: "Zone Pair Converters Hub",
+        secondaryLink: "/time-zone-converter",
+        secondaryText: "Time Zone Converter Tool"
+      },
       { type: "h2", text: "Use UTC for Technical Coordination" },
       { type: "p", text: "UTC is the clean reference point for technical teams." },
       { type: "p", text: "If you run infrastructure, support rotations, incident response, release windows, or data pipelines, include UTC in the schedule." },

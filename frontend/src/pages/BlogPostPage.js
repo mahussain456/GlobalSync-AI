@@ -7,6 +7,7 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { getBlogPost, BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
 import { getBlogPostSEO } from "@/lib/seo";
+import ToolCTA from "@/components/ToolCTA";
 
 // ─── Content block renderer ───────────────────────────────────────────────────
 function renderBlock(block, i) {
@@ -61,6 +62,19 @@ function renderBlock(block, i) {
             </li>
           ))}
         </ol>
+      );
+
+    case "cta":
+      return (
+        <ToolCTA
+          key={i}
+          title={block.title}
+          description={block.description}
+          primaryLink={block.primaryLink}
+          primaryText={block.primaryText}
+          secondaryLink={block.secondaryLink}
+          secondaryText={block.secondaryText}
+        />
       );
 
     default:

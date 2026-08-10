@@ -36,6 +36,9 @@ export default function SiteFooter() {
             <li><Link to="/time-zone-converter" className="text-sm hover:text-gem-gold transition-colors">Time Zone Converter</Link></li>
             <li><Link to="/meeting-planner" className="text-sm hover:text-gem-gold transition-colors">Meeting Planner</Link></li>
             <li><Link to="/currency-converter" className="text-sm hover:text-gem-gold transition-colors">Currency Converter</Link></li>
+            <li><Link to="/convert" className="text-sm text-gem-gold font-medium hover:underline transition-colors">Zone Pair Converters Hub</Link></li>
+            <li><Link to="/freelance-rate" className="text-sm text-gem-gold font-medium hover:underline transition-colors">Freelance Rate Hub</Link></li>
+            <li><Link to="/meeting-overlap" className="text-sm text-gem-gold font-medium hover:underline transition-colors">Meeting Overlap Hub</Link></li>
             <li><Link to="/dashboard" className="text-sm hover:text-gem-gold transition-colors">AI Answer Console</Link></li>
           </ul>
         </div>
