@@ -526,6 +526,9 @@ export default function CurrencyPairPage() {
             <p>
               <strong className="text-gem-beige/90">Timing your conversions.</strong> The 7-day trend chart above shows recent momentum in the {fromMeta.code}/{toMeta.code} pair. A rising chart means {fromMeta.code} is buying more {toMeta.code} than last week. A falling chart means the opposite. For large or predictable conversions, monitoring this trend can meaningfully improve your outcome — though short-term trends do not predict future movements. Convert when rates are favorable rather than on a rigid fixed schedule.
             </p>
+            <p className="pt-2 border-t border-white/5">
+              <strong className="text-gem-beige/90">Popular Global Corridors:</strong> Compare live rates for major freelance corridors including <Link to="/currency/usd-to-pkr" className="text-gem-gold hover:underline">USD to PKR</Link>, <Link to="/currency/usd-to-inr" className="text-gem-gold hover:underline">USD to INR</Link>, <Link to="/currency/usd-to-php" className="text-gem-gold hover:underline">USD to PHP</Link>, <Link to="/currency/usd-to-cad" className="text-gem-gold hover:underline">USD to CAD</Link>, and <Link to="/currency/eur-to-gbp" className="text-gem-gold hover:underline">EUR to GBP</Link>.
+            </p>
           </div>
         </section>
 

@@ -7,6 +7,8 @@ import { fireAnalyticsEvent } from "@/lib/analytics";
 
 const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
+import SEOHead from "@/components/SEOHead";
+
 export default function StripeCheckoutSimulatorPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -28,13 +30,11 @@ export default function StripeCheckoutSimulatorPage() {
     setLoading(true);
 
     try {
-      // Simulate webhook upgrade on backend
       await axios.post(`${API}/upgrade/simulate-webhook`, {
         email: email.trim(),
         plan: plan
       });
 
-      // Dispatch analytics upgrade completed event via helper
       fireAnalyticsEvent("upgrade_completed", {
         plan: plan
       });
@@ -52,6 +52,11 @@ export default function StripeCheckoutSimulatorPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col md:flex-row font-sans">
+      <SEOHead
+        rawTitle="GlobalSync Pro Subscription Checkout | GlobalSync AI"
+        description="Upgrade to GlobalSync Pro for unlimited named team workspaces, calendar exports, custom URL slugs, and invoice calculations."
+        canonical="/stripe-checkout"
+      />
       
       {/* Left Column: Product Summary */}
       <div className="md:w-1/2 bg-slate-100 p-8 md:p-16 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-200">
@@ -64,7 +69,7 @@ export default function StripeCheckoutSimulatorPage() {
           </button>
 
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Subscribe to</span>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 mb-1">Unlock Advanced Features with GlobalSync Pro</h2>
             <h1 className="text-3xl font-extrabold text-slate-900 mt-1">GlobalSync Pro Workspace Subscription</h1>
             <p className="text-sm text-slate-500 mt-2">Unlimited named team workspaces, calendar exports, custom URL slugs, and invoice builder capabilities with unlimited invoice generations.</p>
           </div>

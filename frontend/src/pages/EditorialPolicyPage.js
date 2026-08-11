@@ -58,7 +58,7 @@ export default function EditorialPolicyPage() {
             <FileText className="w-3.5 h-3.5" /> Editorial Standards
           </div>
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-gem-beige mb-4">
-            Editorial Policy
+            GlobalSync AI: Our Editorial Standards and Accuracy Policy
           </h1>
           <p className="text-gem-beige/60 text-lg leading-relaxed">
             GlobalSync AI is committed to producing accurate, useful, and transparent content about time zones, currency conversion, and remote work. This page explains how we create and maintain that content.

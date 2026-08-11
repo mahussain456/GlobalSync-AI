@@ -74,7 +74,7 @@ export default function MethodologyPage() {
             <Cpu className="w-3.5 h-3.5" /> Data & AI Transparency
           </div>
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-gem-beige mb-4">
-            Calculation Methodology & Algorithmic Design
+            GlobalSync AI: Our Data Sources and Methodology
           </h1>
           <p className="text-gem-beige/60 text-lg leading-relaxed">
             Transparency matters. This page explains exactly where GlobalSync AI gets its data, how our AI assistant generates answers, what our update frequencies are, and what limitations users should understand.

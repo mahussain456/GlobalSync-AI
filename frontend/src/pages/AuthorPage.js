@@ -77,7 +77,7 @@ export default function AuthorPage() {
           </div>
           <div className="text-center md:text-left">
             <h1 className="font-heading text-4xl font-bold text-gem-beige mb-2">
-              {author.name} — Founder & Lead Author
+              About {author.name}: Founder of GlobalSync AI
             </h1>
             <div className="text-gem-gold font-medium mb-4">{author.role}</div>
             <p className="text-gem-beige/70 leading-relaxed max-w-2xl">

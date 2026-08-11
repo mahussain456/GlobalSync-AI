@@ -156,15 +156,18 @@ export const buildArticleSchema = (post) => ({
  * Homepage — /
  */
 export const getHomepageSEO = ({ faqs = [] } = {}) => {
-  const title = "GlobalSync AI — Free Time Zone Converter, World Clock & Currency Tools";
-  const desc  = "Free time zone converter, world clock, and live currency converter for remote teams. Plan meetings, find overlap hours, and convert 160+ currencies.";
+  const title = "Sync Global Teams: Free Time Zone & Currency Tools";
+  const desc  = "GlobalSync AI: Free AI tools for remote teams. Synchronize time zones, convert currencies, and plan meetings. Enhance global productivity.";
   return {
     rawTitle: title,
     description: desc,
     canonical: "/",
     keywords: "time zone converter, world clock, currency converter, meeting planner, business hours overlap, remote team scheduling, free currency converter 160 currencies, city to city time conversion",
     ogType: "website",
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent("Time Zone Converter, World Clock & Currency Tools")}&subtitle=${encodeURIComponent("Free tools for remote teams — No signup")}&type=default`,
+    ogTitle: "Sync Global Teams: Free Time Zone & Currency Tools",
+    ogDescription: "Sync your global team effortlessly! Free AI-powered time zone, meeting, and currency tools. Plan smarter, work faster.",
+    twitterTitle: "GlobalSync: Free Time Zone & Currency Tools for Teams!",
+    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent("Sync Global Teams: Free Time Zone & Currency Tools")}&subtitle=${encodeURIComponent("Free tools for remote teams — No signup")}&type=default`,
     structuredData: [
       {
         "@type": "Organization",
@@ -178,6 +181,18 @@ export const getHomepageSEO = ({ faqs = [] } = {}) => {
           "height": 512
         },
         "description": "Free AI-powered time zone, meeting planner, and currency tools for remote teams and freelancers.",
+        "sameAs": [
+          "https://www.linkedin.com/company/globalsync-ai",
+          "https://x.com/GlobalSyncAI"
+        ]
+      },
+      {
+        "@type": "OnlineBusiness",
+        "@id": `${BASE_URL}/#business`,
+        "name": BRAND,
+        "url": BASE_URL,
+        "logo": LOGO_URL,
+        "description": "GlobalSync AI provides free online tools for time zone conversion, currency exchange calculations, and remote team meeting planning.",
         "sameAs": [
           "https://www.linkedin.com/company/globalsync-ai",
           "https://x.com/GlobalSyncAI"
@@ -319,6 +334,12 @@ export const getCityPairSEO = ({ cityA, cityB, pair, pairData }) => {
           { name: `${cityA.name} to ${cityB.name}`, path: `/time/${pair}` },
         ]
       }),
+      buildSoftwareApplicationSchema({
+        name: `${cityA.name} to ${cityB.name} Time Converter`,
+        path: `/time/${pair}`,
+        description: desc,
+        category: "UtilitiesApplication"
+      }),
       ...(pairData?.faqs?.length ? [buildFAQSchema(pairData.faqs)] : []),
     ],
   };
@@ -332,19 +353,20 @@ export const getCityPairSEO = ({ cityA, cityB, pair, pairData }) => {
  * @param {object} pairData — entry from CURRENCY_PAIRS[pair] (has .faqs etc.)
  */
 export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData }) => {
-  const title = `${fromMeta.code} to ${toMeta.code} Live Exchange Rate`;
-  const desc = `Convert ${fromMeta.code} to ${toMeta.code} live. Check real-time exchange rates, view the 7-day trend, and calculate costs for freelancers instantly.`;
+  const title = `${fromMeta.code} to ${toMeta.code} Live Exchange Rates | ${BRAND}`;
+  const desc = `Convert ${fromMeta.code} to ${toMeta.code} live with GlobalSync AI. Get real-time exchange rates across 160+ currencies. Free, fast, and no account signup required.`;
   return {
-    rawTitle: `${title} | ${BRAND}`,
+    rawTitle: title,
     description: desc,
     canonical: `/currency/${pair}`,
     keywords: `${fromMeta.code} to ${toMeta.code}, ${fromMeta.name} to ${toMeta.name}, live exchange rate, ${fromMeta.code} ${toMeta.code} converter, ${fromMeta.code} rate today, real-time currency converter`,
     ogType: "website",
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent("Live Currency Exchange Rate")}&type=tool`,
+    twitterTitle: `${fromMeta.code} to ${toMeta.code}: Live Rates & Smart Currency Conversion!`,
+    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent(`${fromMeta.code} to ${toMeta.code} Live Exchange Rate`)}&subtitle=${encodeURIComponent("Live Currency Exchange Rate")}&type=tool`,
     noIndex: !pairData,
     structuredData: [
       buildWebPageSchema({
-        name: title,
+        name: `${fromMeta.code} to ${toMeta.code} Live Exchange Rate`,
         path: `/currency/${pair}`,
         description: desc,
         crumbs: [
@@ -352,6 +374,12 @@ export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData }) => {
           { name: "Currency Converter", path: "/currency-converter" },
           { name: `${fromMeta.code} to ${toMeta.code}`, path: `/currency/${pair}` },
         ]
+      }),
+      buildSoftwareApplicationSchema({
+        name: `${fromMeta.code} to ${toMeta.code} Currency Converter`,
+        path: `/currency/${pair}`,
+        description: desc,
+        category: "FinanceApplication"
       }),
       buildExchangeRateSchema(fromMeta.code, toMeta.code),
       ...(pairData?.faqs?.length ? [buildFAQSchema(pairData.faqs)] : []),
@@ -363,7 +391,7 @@ export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData }) => {
  * Blog index page — /blog
  */
 export const getBlogIndexSEO = () => {
-  const title = `Remote Work, Time Zones & Currency Blog | ${BRAND}`;
+  const title = `GlobalSync AI: Expert Guides for Global Remote Work`;
   return {
     rawTitle: title,
     description: `Practical guides for remote teams, freelancers, and digital nomads. Learn to schedule meetings across time zones and manage multi-currency income.`,
@@ -410,38 +438,38 @@ export const getBlogPostSEO = ({ post }) => {
 
 const STATIC_META = {
   about: {
-    rawTitle: `About ${BRAND} | Time Zone & Currency Tools`,
+    rawTitle: `About GlobalSync AI: Free Tools for Remote Teams`,
     description: `Learn about GlobalSync AI, a free platform combining a world clock, time zone converter, meeting planner, and currency tools for global remote teams.`,
     canonical: "/about",
     keywords: "about GlobalSync AI, free time zone tool, remote team tools, who we are",
     author: "Ahmed Hussain",
   },
   contact: {
-    rawTitle: `Contact ${BRAND} | Get in Touch`,
+    rawTitle: `Contact GlobalSync AI | Customer & Editorial Support`,
     description: `Have questions, suggestions, or bug reports? Contact the GlobalSync AI team. We respond directly to every message, usually within 2 business days.`,
     canonical: "/contact",
     keywords: "contact GlobalSync AI, feedback, support",
   },
   "privacy-policy": {
-    rawTitle: `Privacy Policy | ${BRAND}`,
+    rawTitle: `Privacy Policy & Security Terms | ${BRAND}`,
     description: `Read the GlobalSync AI privacy policy. Learn how we handle data when you use our free time zone converter, currency converter, and meeting planner tools.`,
     canonical: "/privacy-policy",
     keywords: "GlobalSync AI privacy policy, data protection",
   },
   "terms-of-service": {
-    rawTitle: `Terms of Service | ${BRAND}`,
+    rawTitle: `Terms of Service Agreement | ${BRAND}`,
     description: `Read the GlobalSync AI terms of service. By using our free time zone converter, currency, and meeting tools, you agree to our terms and conditions.`,
     canonical: "/terms-of-service",
     keywords: "GlobalSync AI terms of service",
   },
   "editorial-policy": {
-    rawTitle: `Editorial Policy | ${BRAND}`,
+    rawTitle: `GlobalSync AI: Our Editorial Standards and Accuracy Policy`,
     description: `Learn how GlobalSync AI creates, reviews, and corrects content. Our editorial standards are transparent, independent, and publicly documented.`,
     canonical: "/editorial-policy",
     keywords: "GlobalSync AI editorial policy, content standards",
   },
   methodology: {
-    rawTitle: `Methodology | Data Sources & AI | ${BRAND}`,
+    rawTitle: `GlobalSync AI: Our Data Sources and Methodology`,
     description: `How GlobalSync AI sources time zone rules, live exchange rates, and AI data. Update frequencies, data providers, and accuracy details explained.`,
     canonical: "/methodology",
     keywords: "GlobalSync AI methodology, IANA time zone database, ECB exchange rates, AI transparency",
@@ -459,25 +487,25 @@ const STATIC_META = {
     keywords: "freelancer rate converter, hourly rate converter, project fee converter, international freelancer pricing",
   },
   "author-ahmed-hussain": {
-    rawTitle: "Ahmed Hussain, Founder of GlobalSync AI | Author Profile",
-    description: "Ahmed Hussain is the founder of GlobalSync AI, building free time zone, meeting planner, and currency tools for remote teams and freelancers.",
+    rawTitle: "About Ahmed Hussain: Founder of GlobalSync AI",
+    description: "Ahmed Hussain, founder of GlobalSync AI, built free AI tools for remote teams. Discover his work on time zone, currency, and productivity tools.",
     canonical: "/authors/ahmed-hussain",
     keywords: "Ahmed Hussain, GlobalSync AI founder, remote work tools developer, Karachi Pakistan",
   },
   press: {
-    rawTitle: `Press & Media | ${BRAND}`,
-    description: `Get the latest press releases, media kits, brand assets, and contact information for GlobalSync AI time zone and currency tools.`,
+    rawTitle: `Press & Media Resources | GlobalSync AI`,
+    description: `Get the latest press releases, media kits, brand assets, and media contact information for GlobalSync AI time zone, currency, and meeting tools.`,
     canonical: "/press",
     keywords: "GlobalSync AI press, media kit, press release, brand assets",
   },
   "global-meeting-planner-for-remote-teams": {
-    rawTitle: `Remote Teams Meeting Planner | ${BRAND}`,
+    rawTitle: `Remote Team Meeting Planner | GlobalSync AI`,
     description: `Plan and schedule meetings for international remote teams. Find optimal overlaps across EST, PST, GMT, IST, and multiple time zones.`,
     canonical: "/global-meeting-planner-for-remote-teams",
     keywords: "remote teams meeting planner, group meeting time finder, multi zone meeting scheduler",
   },
   "us-india-meeting-time": {
-    rawTitle: `US & India Meeting Times | ${BRAND}`,
+    rawTitle: `US & India Meeting Times Guide | GlobalSync AI`,
     description: `Find the best meeting times between the United States and India. Convert EST and PST to IST, and check business hour overlaps.`,
     canonical: "/us-india-meeting-time",
     keywords: "EST to IST meeting time, PST to IST, US India time converter, US India meeting planner",

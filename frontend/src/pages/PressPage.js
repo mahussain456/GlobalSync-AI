@@ -34,7 +34,7 @@ export default function PressPage() {
       <article className="max-w-4xl mx-auto px-6 pt-36 pb-8">
         <header className="mb-10">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-4">
-            GlobalSync AI Press & Media Resources
+            GlobalSync AI: Press and Media Resources
           </h1>
           <p className="text-lg text-gem-beige/60 max-w-2xl leading-relaxed">
             Resources, brand assets, and information for journalists and media professionals.

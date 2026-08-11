@@ -37,7 +37,7 @@ export default function AboutPage() {
             <Globe className="w-3.5 h-3.5" /> Free · AI-Powered · No Signup
           </div>
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-4">
-            About GlobalSync AI — Time Zone & Currency Tools
+            About GlobalSync AI: Free Tools for Remote Teams
           </h1>
           <p className="text-lg text-gem-beige/60 max-w-2xl leading-relaxed">
             A free, AI-powered toolkit built for remote teams, freelancers, and global workers who work across time zones every day.
