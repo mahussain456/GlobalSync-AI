@@ -427,6 +427,7 @@ export default function InvoicePage() {
         rawTitle="Interactive Invoice Builder | GlobalSync AI"
         description="Create, preview, and download multi-currency invoices with built-in self-employment tax calculations. Free clean PDF export."
         canonical="/invoice"
+        keywords="invoice builder, free invoice generator, multi-currency invoice, create invoice online, professional invoice, tax deduction calculator"
       />
 
       {/* Luxury Background Map */}

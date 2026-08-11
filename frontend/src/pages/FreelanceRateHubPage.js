@@ -18,9 +18,10 @@ export default function FreelanceRateHubPage() {
   return (
     <div className="min-h-screen bg-gem-forest text-gem-beige relative">
       <SEOHead
-        title="Freelance Rate & Currency Corridor Calculators — GlobalSync AI"
+        rawTitle="Freelance Rate & Currency Corridor Calculators | GlobalSync AI"
         description="Calculate net freelance earnings across major currency corridors (USD to INR, PHP, PKR, EUR, GBP). Compare payment fees and W-2 salary equivalents."
-        canonical="https://www.globalsync-ai.com/freelance-rate"
+        canonical="/freelance-rate"
+        keywords="freelance rate calculator, international freelance rates, currency corridor calculator, global sync ai, remote work income"
         schema={[breadcrumbSchema]}
       />
 

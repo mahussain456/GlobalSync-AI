@@ -58,7 +58,7 @@ export default function AboutPage() {
         </section>
 
         <section className="mb-10">
-          <h2 className="font-heading text-2xl font-bold text-gem-beige mb-6">Our Core Time Zone & Currency Tools</h2>
+          <h2 className="font-heading text-2xl font-bold text-gem-beige mb-6">Our Suite of Free AI-Powered Productivity Tools</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               { icon: Clock, color: "blue", title: "Time Zone Converter", desc: "See live local clocks for 25+ cities worldwide. Compare time zones side by side and identify who is in the office right now.", link: "/time-zone-converter" },

@@ -5,7 +5,7 @@ export const BLOG_POSTS = [
   // ─── Post 1: Async-First Remote Team Operating System ─────────────────────
   {
     slug: "async-first-remote-team-operating-system",
-    title: "Async-First Remote Team Operating System: How Global Teams Stop Drowning in Meetings",
+    title: "Mastering Async Work: How Remote Teams Reduce Meeting Fatigue",
     excerpt: "If your remote team needs a meeting to find out what happened yesterday, the system is already leaking. Learn how to design a highly effective async-first operating system.",
     category: "Remote Work",
     categoryColor: "blue",

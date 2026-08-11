@@ -84,7 +84,7 @@ export default function MethodologyPage() {
 
         {/* Quick reference */}
         <div className="mb-12 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-6">
-          <h2 className="font-heading text-base font-bold text-gem-beige mb-4">Summary of Core Calculation Methodologies</h2>
+          <h2 className="font-heading text-base font-bold text-gem-beige mb-4">Data Sources and Methodology Overview</h2>
           <div className="space-y-3">
             <InfoCard label="Time Zones" value="IANA Time Zone Database (TZDB) — the global standard used by all major operating systems" />
             <InfoCard label="Exchange Rates" value="Live market rates via European Central Bank (ECB) and supplementary providers, fetched in real time" />

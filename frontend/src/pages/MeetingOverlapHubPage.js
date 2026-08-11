@@ -18,9 +18,10 @@ export default function MeetingOverlapHubPage() {
   return (
     <div className="min-h-screen bg-gem-forest text-gem-beige relative">
       <SEOHead
-        title="Best Meeting Times & Timezone Overlap Guides — GlobalSync AI"
+        rawTitle="Best Meeting Times & Timezone Overlap Guides | GlobalSync AI"
         description="Find the best meeting times between global regions (US, India, UK, Europe, Philippines, Australia). 24-hour overlap heatmaps & team fairness guides."
-        canonical="https://www.globalsync-ai.com/meeting-overlap"
+        canonical="/meeting-overlap"
+        keywords="global meeting times, distributed team scheduling, time zone overlap, remote work collaboration, international meeting planner"
         schema={[breadcrumbSchema]}
       />
 

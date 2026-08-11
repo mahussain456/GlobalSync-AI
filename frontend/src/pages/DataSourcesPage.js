@@ -46,7 +46,7 @@ export default function DataSourcesPage() {
             Real-time exchange rate conversions are processed via secure API integrations with the <strong className="text-gem-beige">European Central Bank (ECB)</strong> and supplementary market feed providers (such as ExchangeRate-API). We display the mid-market rate—the midpoint between the buy and sell rates on the global interbank market—providing a clean, margin-free baseline index.
           </p>
 
-          <h2 className="text-xl font-bold text-gem-beige mt-8 mb-3">Update Frequency</h2>
+          <h2 className="text-xl font-bold text-gem-beige mt-8 mb-3">Data Refresh Rates and Update Schedules</h2>
           <p>
             Our currency conversion feeds are refreshed in real-time on every query to ensure accuracy. Time zone rules are updated automatically upon every new release of the IANA Time Zone Database, typically 3 to 6 times per year. Historical rate data for trend charts is updated once daily.
           </p>

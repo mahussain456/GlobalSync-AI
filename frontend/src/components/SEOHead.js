@@ -58,6 +58,10 @@ export default function SEOHead({
   canonical,
   keywords,
   ogType = "website",
+  ogTitle,
+  ogDescription,
+  twitterTitle,
+  twitterDescription,
   structuredData,
   noIndex = false,
   author,
@@ -66,9 +70,10 @@ export default function SEOHead({
     ?? (title ? `${title} | ${BRAND}` : DEFAULT_TITLE);
 
   const normalizedDescription = normalizeMetaDescription(description);
-  const ogTitleText = formatCharLength(fullTitle, 60);
-  const twitterTitleText = formatCharLength(fullTitle, 55);
-  const twitterDescriptionText = formatCharLength(normalizedDescription, 125);
+  const ogTitleText = formatCharLength(ogTitle || fullTitle, 60);
+  const ogDescText = formatCharLength(ogDescription || normalizedDescription, 158);
+  const twitterTitleText = formatCharLength(twitterTitle || fullTitle, 55);
+  const twitterDescriptionText = formatCharLength(twitterDescription || normalizedDescription, 125);
   const fullCanonical = canonical ? `${BASE_URL}${canonical}` : BASE_URL;
 
   const schemaOutput = structuredData
@@ -77,9 +82,9 @@ export default function SEOHead({
       : structuredData
     : null;
 
-  const ogTitle    = encodeURIComponent(fullTitle);
-  const ogSubtitle = encodeURIComponent(normalizedDescription);
-  const dynamicOgImage = `${BASE_URL}/api/og?title=${ogTitle}&subtitle=${ogSubtitle}&type=${ogType}`;
+  const ogTitleImageParam  = encodeURIComponent(fullTitle);
+  const ogSubtitleImageParam = encodeURIComponent(normalizedDescription);
+  const dynamicOgImage = `${BASE_URL}/api/og?title=${ogTitleImageParam}&subtitle=${ogSubtitleImageParam}&type=${ogType}`;
 
   return (
     <Helmet
@@ -97,7 +102,7 @@ export default function SEOHead({
       <link rel="canonical" href={fullCanonical} />
 
       <meta property="og:title"        content={ogTitleText}           />
-      <meta property="og:description"  content={normalizedDescription} />
+      <meta property="og:description"  content={ogDescText}            />
       <meta property="og:type"         content={ogType}          />
       <meta property="og:url"          content={fullCanonical}   />
       <meta property="og:site_name"    content={BRAND}           />

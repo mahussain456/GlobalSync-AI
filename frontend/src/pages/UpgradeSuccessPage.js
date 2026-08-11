@@ -71,7 +71,7 @@ export default function UpgradeSuccessPage() {
           <Sparkles className="w-10 h-10 text-gem-gold" />
         </div>
 
-        <h2 className="text-xs font-bold uppercase tracking-wider text-gem-gold">
+        <h2 data-otto-pixel="dynamic-seo" className="text-xs font-bold uppercase tracking-wider text-gem-gold">
           Unlock the Full Potential of GlobalSync Pro
         </h2>
         <h1 className="font-heading font-extrabold text-3xl text-gem-beige">

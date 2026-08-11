@@ -69,7 +69,7 @@ export default function StripeCheckoutSimulatorPage() {
           </button>
 
           <div>
-            <h2 className="text-xs font-bold uppercase tracking-wider text-indigo-600 mb-1">Unlock Advanced Features with GlobalSync Pro</h2>
+            <h3 data-otto-pixel="dynamic-seo" className="text-xs font-bold uppercase tracking-wider text-indigo-600 mb-1">Unlock Advanced Features with GlobalSync Pro</h3>
             <h1 className="text-3xl font-extrabold text-slate-900 mt-1">GlobalSync Pro Workspace Subscription</h1>
             <p className="text-sm text-slate-500 mt-2">Unlimited named team workspaces, calendar exports, custom URL slugs, and invoice builder capabilities with unlimited invoice generations.</p>
           </div>

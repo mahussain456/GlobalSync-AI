@@ -157,7 +157,7 @@ export const buildArticleSchema = (post) => ({
  */
 export const getHomepageSEO = ({ faqs = [] } = {}) => {
   const title = "Sync Global Teams: Free Time Zone & Currency Tools";
-  const desc  = "GlobalSync AI: Free AI tools for remote teams. Synchronize time zones, convert currencies, and plan meetings. Enhance global productivity.";
+  const desc  = "GlobalSync AI: Free AI tools for remote teams. Synchronize time zones, convert currencies, and plan meetings. Enhance global collaboration with live tools.";
   return {
     rawTitle: title,
     description: desc,
@@ -165,8 +165,9 @@ export const getHomepageSEO = ({ faqs = [] } = {}) => {
     keywords: "time zone converter, world clock, currency converter, meeting planner, business hours overlap, remote team scheduling, free currency converter 160 currencies, city to city time conversion",
     ogType: "website",
     ogTitle: "Sync Global Teams: Free Time Zone & Currency Tools",
-    ogDescription: "Sync your global team effortlessly! Free AI-powered time zone, meeting, and currency tools. Plan smarter, work faster.",
+    ogDescription: "Sync your global team effortlessly! Free AI-powered time zone, meeting, and currency tools.",
     twitterTitle: "GlobalSync: Free Time Zone & Currency Tools for Teams!",
+    twitterDescription: "Sync global teams easily! Free time zone, world clock, & currency converter. No signup needed.",
     ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent("Sync Global Teams: Free Time Zone & Currency Tools")}&subtitle=${encodeURIComponent("Free tools for remote teams — No signup")}&type=default`,
     structuredData: [
       {
@@ -286,7 +287,7 @@ export const getMeetingPlannerSEO = ({ faqs = [] } = {}) => {
     rawTitle: title,
     description: `Find the perfect meeting time across distributed teams. Visual overlap planner shows fair business hours for every member. Free, no signup.`,
     canonical: "/meeting-planner",
-    keywords: "meeting planner, best meeting time multiple time zones, business hour overlap calculator, global team scheduling, meeting overlap finder, remote team meeting tool",
+    keywords: "global meeting times, distributed team scheduling, time zone overlap, remote work collaboration, international meeting planner",
     ogType: "website",
     ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent("Meeting Time Planner")}&subtitle=${encodeURIComponent("Find Overlap Hours")}&type=tool`,
     structuredData: [
@@ -354,13 +355,16 @@ export const getCityPairSEO = ({ cityA, cityB, pair, pairData }) => {
  */
 export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData }) => {
   const title = `${fromMeta.code} to ${toMeta.code} Live Exchange Rates | ${BRAND}`;
-  const desc = `Convert ${fromMeta.code} to ${toMeta.code} live with GlobalSync AI. Get real-time exchange rates across 160+ currencies. Free, fast, and no account signup required.`;
+  const desc = (fromMeta.code === "USD" && toMeta.code === "PHP")
+    ? `Convert USD to PHP live with GlobalSync AI. Get real-time exchange rates for 160+ currencies. Free and no signup required.`
+    : `Convert ${fromMeta.code} to ${toMeta.code} live with GlobalSync AI. Get real-time exchange rates across 160+ currencies. Free, fast, and no account signup required.`;
   return {
     rawTitle: title,
     description: desc,
     canonical: `/currency/${pair}`,
     keywords: `${fromMeta.code} to ${toMeta.code}, ${fromMeta.name} to ${toMeta.name}, live exchange rate, ${fromMeta.code} ${toMeta.code} converter, ${fromMeta.code} rate today, real-time currency converter`,
     ogType: "website",
+    ogTitle: `${fromMeta.code} to ${toMeta.code}: Live Exchange Rate Converter | ${BRAND}`,
     twitterTitle: `${fromMeta.code} to ${toMeta.code}: Live Rates & Smart Currency Conversion!`,
     ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent(`${fromMeta.code} to ${toMeta.code} Live Exchange Rate`)}&subtitle=${encodeURIComponent("Live Currency Exchange Rate")}&type=tool`,
     noIndex: !pairData,
@@ -445,19 +449,19 @@ const STATIC_META = {
     author: "Ahmed Hussain",
   },
   contact: {
-    rawTitle: `Contact GlobalSync AI | Customer & Editorial Support`,
+    rawTitle: `Contact GlobalSync AI: Support, Feedback & Partnerships`,
     description: `Have questions, suggestions, or bug reports? Contact the GlobalSync AI team. We respond directly to every message, usually within 2 business days.`,
     canonical: "/contact",
     keywords: "contact GlobalSync AI, feedback, support",
   },
   "privacy-policy": {
-    rawTitle: `Privacy Policy & Security Terms | ${BRAND}`,
+    rawTitle: `GlobalSync AI: Privacy Policy and Data Practices`,
     description: `Read the GlobalSync AI privacy policy. Learn how we handle data when you use our free time zone converter, currency converter, and meeting planner tools.`,
     canonical: "/privacy-policy",
     keywords: "GlobalSync AI privacy policy, data protection",
   },
   "terms-of-service": {
-    rawTitle: `Terms of Service Agreement | ${BRAND}`,
+    rawTitle: `GlobalSync AI: Terms of Service and Usage Policies`,
     description: `Read the GlobalSync AI terms of service. By using our free time zone converter, currency, and meeting tools, you agree to our terms and conditions.`,
     canonical: "/terms-of-service",
     keywords: "GlobalSync AI terms of service",
