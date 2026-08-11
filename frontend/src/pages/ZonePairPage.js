@@ -167,7 +167,7 @@ export default function ZonePairPage() {
     : `${absDiffHours} hour${absDiffHours !== 1 ? "s" : ""}`;
 
   const seoTitle = `${from} to ${to} Converter — Current Time Difference`;
-  const seoDesc  = `Convert ${from} to ${to} instantly. ${offsetSentence} See the full 24-hour table, business-hours overlap, and DST changes for ${fromMeta.fullName ?? from} and ${toMeta.fullName ?? to}.`;
+  const seoDesc  = `Convert ${from} to ${to} instantly. ${offsetSentence} View 24-hour schedule alignment, business hour overlap, and seasonal DST transition rules.`;
 
   // JSON-LD schemas
   const breadcrumbSchema = {

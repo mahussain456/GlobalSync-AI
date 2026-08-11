@@ -65,7 +65,7 @@ export default function ConvertHubPage() {
     <div className="min-h-screen bg-gem-forest text-gem-beige relative">
       <SEOHead
         title="Time Zone Converters — EST, IST, PST, GMT, CET and More"
-        description="Free instant converters for 40 timezone abbreviation pairs. Convert EST to IST, PST to GMT, CET to EST, JST to EST and more. See current offsets, 24-hour tables, DST dates, and best meeting windows."
+        description="Free instant converters for 40 timezone abbreviation pairs (EST to IST, PST to GMT, CET to EST). Compare 24-hour tables, DST shifts & meeting windows."
         canonical="https://www.globalsync-ai.com/convert"
         schema={[breadcrumbSchema]}
       />

@@ -57,6 +57,26 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 @layer base {
   * { @apply border-border; }
   body { @apply bg-background text-foreground; }
+  
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"],
+  a {
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:active:not(:disabled),
+  [role="button"]:active:not(:disabled),
+  .btn-primary:active,
+  .btn-secondary:active,
+  .btn-gradient:active {
+    transform: scale(0.97) translateY(0) !important;
+    opacity: 0.88 !important;
+    transition: transform 0.05s ease-out, opacity 0.05s ease-out !important;
+  }
 }
 
 @layer base {

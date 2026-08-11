@@ -1,5 +1,5 @@
 # GlobalSync AI robots.txt
-# Allow all search engines and bots by default
+# Allow all search engines and AI agents by default
 
 User-agent: *
 Allow: /
@@ -8,6 +8,49 @@ Disallow: /dashboard
 Disallow: /private
 Disallow: /.git/
 Disallow: /.env
+
+# AI Agent Specific Rules (Explicit Permission & Crawl Access)
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /private
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /private
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /private
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /private
+
+User-agent: Bytespider
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /private
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /private
+
+User-agent: Amazonbot
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /private
 
 # Sitemap location for all crawlers
 Sitemap: https://www.globalsync-ai.com/sitemap.xml

@@ -33,7 +33,7 @@ export default function TermsOfServicePage() {
 
       <article className="max-w-3xl mx-auto px-6 pt-36 pb-8">
         <header className="mb-8">
-          <h1 className="font-heading text-4xl font-bold text-gem-beige mb-3">Terms of Service</h1>
+          <h1 className="font-heading text-4xl font-bold text-gem-beige mb-3">GlobalSync AI Terms of Service Agreement</h1>
           <p className="text-sm text-gem-beige/40">Last updated: {LAST_UPDATED}</p>
         </header>
 
@@ -71,7 +71,7 @@ export default function TermsOfServicePage() {
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">4. Acceptable Use</h2>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">4. Acceptable Use & System Rules</h2>
             <p>You agree not to:</p>
             <ul className="list-disc pl-5 space-y-1 text-sm mt-2">
               <li>Use the Service for any unlawful purpose or in violation of any regulations</li>
@@ -104,7 +104,7 @@ export default function TermsOfServicePage() {
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">9. Rate Limiting</h2>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">9. Rate Limiting & Usage Policies</h2>
             <p>To ensure fair access for all users, the Service implements automated rate limiting on its APIs. Excessive automated use may result in temporary access restrictions. Commercial use of the API requires prior written agreement.</p>
           </section>
 
@@ -114,7 +114,7 @@ export default function TermsOfServicePage() {
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">11. Contact</h2>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">11. Contact Information & Legal Notices</h2>
             <p>If you have questions about these Terms, please contact us at <a href="mailto:hello@globalsync-ai.com" className="text-gem-gold hover:underline">hello@globalsync-ai.com</a>.</p>
           </section>
         </div>

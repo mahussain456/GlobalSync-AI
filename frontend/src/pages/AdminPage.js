@@ -46,7 +46,7 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 p-6">
-      <SEOHead title="Admin" description="Admin panel." canonical="/admin" noIndex={true} />
+      <SEOHead title="Admin" description="GlobalSync AI internal administration panel and telemetry management console." canonical="/admin" noIndex={true} />
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">

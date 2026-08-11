@@ -74,7 +74,7 @@ export default function MethodologyPage() {
             <Cpu className="w-3.5 h-3.5" /> Data & AI Transparency
           </div>
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-gem-beige mb-4">
-            Our Methodology
+            Calculation Methodology & Algorithmic Design
           </h1>
           <p className="text-gem-beige/60 text-lg leading-relaxed">
             Transparency matters. This page explains exactly where GlobalSync AI gets its data, how our AI assistant generates answers, what our update frequencies are, and what limitations users should understand.
@@ -84,7 +84,7 @@ export default function MethodologyPage() {
 
         {/* Quick reference */}
         <div className="mb-12 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-6">
-          <h2 className="font-heading text-base font-bold text-gem-beige mb-4">Quick Reference</h2>
+          <h2 className="font-heading text-base font-bold text-gem-beige mb-4">Summary of Core Calculation Methodologies</h2>
           <div className="space-y-3">
             <InfoCard label="Time Zones" value="IANA Time Zone Database (TZDB) — the global standard used by all major operating systems" />
             <InfoCard label="Exchange Rates" value="Live market rates via European Central Bank (ECB) and supplementary providers, fetched in real time" />

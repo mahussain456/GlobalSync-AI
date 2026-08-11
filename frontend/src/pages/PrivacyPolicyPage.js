@@ -35,7 +35,7 @@ export default function PrivacyPolicyPage() {
 
       <article className="max-w-3xl mx-auto px-6 pt-36 pb-8">
         <header className="mb-8">
-          <h1 className="font-heading text-4xl font-bold text-gem-beige mb-3">Privacy Policy</h1>
+          <h1 className="font-heading text-4xl font-bold text-gem-beige mb-3">GlobalSync AI Privacy Policy & Security</h1>
           <p className="text-sm text-gem-beige/40">Last updated: {LAST_UPDATED}</p>
         </header>
 
@@ -45,7 +45,7 @@ export default function PrivacyPolicyPage() {
 
         <div className="space-y-8 text-gem-beige/70 leading-relaxed">
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">1. Who We Are</h2>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">1. Who We Are & How to Reach Us</h2>
             <p>GlobalSync AI (<strong className="text-gem-beige">globalsync-ai.com</strong>) is a free online toolkit providing time zone conversion, currency conversion, and meeting planning tools for remote teams and global workers. When we say "we", "our", or "us" in this policy, we mean GlobalSync AI.</p>
           </section>
 
@@ -102,17 +102,17 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">5. Advertising</h2>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">5. Advertising & Analytics Cookies</h2>
             <p>GlobalSync AI may display advertisements served by Google AdSense. Google uses cookies to serve ads based on your prior visits to our website and other sites. You may opt out of personalised advertising by visiting <a href="https://www.google.com/settings/ads" className="text-gem-gold hover:underline" target="_blank" rel="noopener noreferrer">Google Ad Settings</a>.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">6. Data Retention</h2>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">6. Data Retention & Privacy Protection</h2>
             <p>We retain voluntarily submitted email addresses until you request deletion. Analytics data is retained as per Google Analytics default retention settings (26 months). You may request deletion of your data at any time by emailing us.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">7. Your Rights</h2>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">7. User Rights & Data Control Options</h2>
             <p>You have the right to:</p>
             <ul className="list-disc pl-5 space-y-1 text-sm mt-2">
               <li>Access the personal data we hold about you</li>
@@ -135,7 +135,7 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">10. Contact Us</h2>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">10. Privacy Contact & Data Inquiries</h2>
             <p>If you have any questions about this Privacy Policy, please contact us at:</p>
             <div className="bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 p-4 mt-3 text-sm">
               <p className="font-medium text-gem-beige">GlobalSync AI</p>

@@ -264,11 +264,14 @@ async function checkPage(browser, label, path, checks = {}) {
     });
 
     // Verify metadata matches raw
-    if (dom.title === rawTitle) pass(`[Hydrated] title matches raw`);
-    else fail(`[Hydrated] title mismatch: got "${dom.title}", expected "${rawTitle}"`);
+    const decodedRawTitle = rawTitle.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&#x27;/g, "'");
+    const decodedRawDesc = rawDesc.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&#x27;/g, "'");
 
-    if (dom.description === rawDesc) pass(`[Hydrated] description matches raw`);
-    else fail(`[Hydrated] description mismatch: got "${dom.description}", expected "${rawDesc}"`);
+    if (dom.title === decodedRawTitle) pass(`[Hydrated] title matches raw`);
+    else fail(`[Hydrated] title mismatch: got "${dom.title}", expected "${decodedRawTitle}"`);
+
+    if (dom.description === decodedRawDesc) pass(`[Hydrated] description matches raw`);
+    else fail(`[Hydrated] description mismatch: got "${dom.description}", expected "${decodedRawDesc}"`);
 
     if (dom.canonical === expectedCanonical) pass(`[Hydrated] canonical matches expected`);
     else fail(`[Hydrated] canonical mismatch: got "${dom.canonical}", expected "${expectedCanonical}"`);

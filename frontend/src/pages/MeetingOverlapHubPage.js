@@ -19,7 +19,7 @@ export default function MeetingOverlapHubPage() {
     <div className="min-h-screen bg-gem-forest text-gem-beige relative">
       <SEOHead
         title="Best Meeting Times & Timezone Overlap Guides — GlobalSync AI"
-        description="Find the best meeting times between major global regions (US, India, UK, Europe, Philippines, Australia, Pakistan, Brazil). 24-hour overlap heatmaps and team rotation fairness guides."
+        description="Find the best meeting times between global regions (US, India, UK, Europe, Philippines, Australia). 24-hour overlap heatmaps & team fairness guides."
         canonical="https://www.globalsync-ai.com/meeting-overlap"
         schema={[breadcrumbSchema]}
       />

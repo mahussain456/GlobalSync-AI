@@ -19,7 +19,7 @@ export default function FreelanceRateHubPage() {
     <div className="min-h-screen bg-gem-forest text-gem-beige relative">
       <SEOHead
         title="Freelance Rate & Currency Corridor Calculators — GlobalSync AI"
-        description="Calculate net freelance earnings across major currency corridors (USD to INR, PHP, PKR, EUR, GBP, BRL, MXN, NGN, CAD & more). Compare payment processing fees and W-2 salary equivalents."
+        description="Calculate net freelance earnings across major currency corridors (USD to INR, PHP, PKR, EUR, GBP). Compare payment fees and W-2 salary equivalents."
         canonical="https://www.globalsync-ai.com/freelance-rate"
         schema={[breadcrumbSchema]}
       />

@@ -260,7 +260,7 @@ export default function TeamWorkspacePage() {
           <div className="w-16 h-16 bg-red-500/10 border border-red-500/20 text-red-400 rounded-3xl flex items-center justify-center mx-auto">
             <AlertCircle className="w-8 h-8" />
           </div>
-          <h1 className="font-heading font-bold text-2xl text-gem-beige">Workspace Not Found</h1>
+          <h1 className="font-heading font-bold text-2xl text-gem-beige">Team Workspace Not Found or Expired</h1>
           <p className="text-sm text-gem-sage leading-relaxed">{error || "This shared workspace does not exist or has expired."}</p>
           <Link to="/dashboard" className="inline-block btn-gradient rounded-xl px-6 py-3 font-semibold text-sm">
             Go to Main Dashboard
@@ -312,7 +312,7 @@ export default function TeamWorkspacePage() {
               <Users className="w-3.5 h-3.5" /> Distributed Workspace
             </div>
             <h1 className="font-heading font-extrabold text-3xl md:text-5xl text-gem-beige leading-tight">
-              {team.name}
+              {team.name.length < 15 ? `${team.name} — Shared Workspace` : team.name}
             </h1>
             <p className="text-xs text-gem-sage mt-2">
               Workspace created by: <span className="text-gem-beige font-semibold">{team.email}</span>
@@ -350,7 +350,7 @@ export default function TeamWorkspacePage() {
         <section className="bg-white/5 border border-white/10 rounded-[28px] p-6 shadow-xl space-y-5">
           <div className="flex items-center justify-between border-b border-white/5 pb-4">
             <h2 className="font-heading font-semibold text-lg text-gem-beige flex items-center gap-2">
-              <Clock className="w-5 h-5 text-gem-gold" /> Member Time Zones
+              <Clock className="w-5 h-5 text-gem-gold" /> Team Member Time Zones & Availability
             </h2>
             <span className="text-xs font-bold text-gem-sage bg-white/5 px-2.5 py-1 rounded border border-white/15">
               Reference Base: {baseCityName}

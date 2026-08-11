@@ -26,6 +26,31 @@ const BASE_URL      = "https://www.globalsync-ai.com";
 const BRAND         = "GlobalSync AI";
 const DEFAULT_TITLE = `${BRAND} — Free Time Zone & Currency Converter for Remote Teams`;
 
+function normalizeMetaDescription(desc) {
+  if (!desc || typeof desc !== "string") {
+    return "Free time zone converter, world clock, and live currency converter for remote teams. Plan meetings and convert 160+ currencies.";
+  }
+  let cleaned = desc.trim().replace(/\s+/g, " ");
+  if (cleaned.length < 50) {
+    cleaned = `${cleaned} — Powered by GlobalSync AI free time zone & currency tools.`;
+  }
+  if (cleaned.length > 158) {
+    const truncated = cleaned.slice(0, 155);
+    const lastSpace = truncated.lastIndexOf(" ");
+    cleaned = (lastSpace > 110 ? truncated.slice(0, lastSpace) : truncated) + "...";
+  }
+  return cleaned;
+}
+
+function formatCharLength(str, maxLen) {
+  if (!str || typeof str !== "string") return "";
+  const cleaned = str.trim().replace(/\s+/g, " ");
+  if (cleaned.length <= maxLen) return cleaned;
+  const truncated = cleaned.slice(0, maxLen - 3);
+  const lastSpace = truncated.lastIndexOf(" ");
+  return (lastSpace > (maxLen * 0.6) ? truncated.slice(0, lastSpace) : truncated) + "...";
+}
+
 export default function SEOHead({
   rawTitle,
   title,
@@ -40,6 +65,10 @@ export default function SEOHead({
   const fullTitle = rawTitle
     ?? (title ? `${title} | ${BRAND}` : DEFAULT_TITLE);
 
+  const normalizedDescription = normalizeMetaDescription(description);
+  const ogTitleText = formatCharLength(fullTitle, 60);
+  const twitterTitleText = formatCharLength(fullTitle, 55);
+  const twitterDescriptionText = formatCharLength(normalizedDescription, 125);
   const fullCanonical = canonical ? `${BASE_URL}${canonical}` : BASE_URL;
 
   const schemaOutput = structuredData
@@ -49,7 +78,7 @@ export default function SEOHead({
     : null;
 
   const ogTitle    = encodeURIComponent(fullTitle);
-  const ogSubtitle = encodeURIComponent(description || "One Platform. Every Time Zone. Total Alignment.");
+  const ogSubtitle = encodeURIComponent(normalizedDescription);
   const dynamicOgImage = `${BASE_URL}/api/og?title=${ogTitle}&subtitle=${ogSubtitle}&type=${ogType}`;
 
   return (
@@ -62,13 +91,13 @@ export default function SEOHead({
       ] : []}
     >
       <title>{fullTitle}</title>
-      <meta name="description" content={description} />
+      <meta name="description" content={normalizedDescription} />
       {keywords && <meta name="keywords" content={keywords} />}
       {author  && <meta name="author"   content={author}   />}
       <link rel="canonical" href={fullCanonical} />
 
-      <meta property="og:title"        content={fullTitle}       />
-      <meta property="og:description"  content={description}     />
+      <meta property="og:title"        content={ogTitleText}           />
+      <meta property="og:description"  content={normalizedDescription} />
       <meta property="og:type"         content={ogType}          />
       <meta property="og:url"          content={fullCanonical}   />
       <meta property="og:site_name"    content={BRAND}           />
@@ -81,8 +110,10 @@ export default function SEOHead({
       <meta name="twitter:card"        content="summary_large_image" />
       <meta name="twitter:site"        content="@GlobalSyncAI"       />
       <meta name="twitter:creator"     content="@GlobalSyncAI"       />
-      <meta name="twitter:title"       content={fullTitle}            />
-      <meta name="twitter:description" content={description}          />
+      <meta name="twitter:title"       content={twitterTitleText}     />
+      <meta name="twitter:description" content={twitterDescriptionText} />
+      <meta name="twitter:image"       content={dynamicOgImage}       />
+      <meta name="twitter:image:alt"   content={`${BRAND} — Free Time Zone & Currency Converter`} />
       <meta name="twitter:image"       content={dynamicOgImage}       />
       <meta name="twitter:image:alt"   content={`${BRAND} — Free Time Zone & Currency Converter`} />
 

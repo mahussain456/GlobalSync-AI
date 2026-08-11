@@ -23,7 +23,7 @@ export default function AuthorPage() {
 
   const seo = getStaticPageSEO(`author-${slug}`) || {
     rawTitle: `${author.name} | Author at GlobalSync AI`,
-    description: `Read articles by ${author.name}, ${author.role} at GlobalSync AI.`,
+    description: `Read expert articles and remote work guides written by ${author.name}, ${author.role} at GlobalSync AI.`,
     canonical: `/authors/${slug}`,
     keywords: `${author.name}, author GlobalSync AI, remote work articles`,
     ogType: "profile",
@@ -77,7 +77,7 @@ export default function AuthorPage() {
           </div>
           <div className="text-center md:text-left">
             <h1 className="font-heading text-4xl font-bold text-gem-beige mb-2">
-              {author.name}
+              {author.name} — Founder & Lead Author
             </h1>
             <div className="text-gem-gold font-medium mb-4">{author.role}</div>
             <p className="text-gem-beige/70 leading-relaxed max-w-2xl">

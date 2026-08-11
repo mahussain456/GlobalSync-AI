@@ -67,7 +67,7 @@ export default function USIndiaMeetingTimePage() {
               India does not observe Daylight Saving Time. The United States changes its clocks twice a year. This means your perfectly scheduled 9:00 AM EST meeting will suddenly shift for your team in India when the clocks "spring forward" or "fall back." Always use an automated tool like GlobalSync AI's Meeting Planner to prevent DST mixups.
             </p>
 
-            <h2 className="text-2xl font-bold text-gem-beige mt-8 mb-4">Helpful next steps</h2>
+            <h2 className="text-2xl font-bold text-gem-beige mt-8 mb-4">Recommended Next Steps for Distributed Teams</h2>
             <ul>
               <li><Link to="/meeting-planner" className="text-gem-gold hover:text-gem-gold/80">Use the live meeting planner</Link></li>
               <li><Link to="/time/new-york-to-london" className="text-gem-gold hover:text-gem-gold/80">Compare another major meeting overlap page</Link></li>

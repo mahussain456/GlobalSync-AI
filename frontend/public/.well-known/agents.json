@@ -1,0 +1,24 @@
+{
+  "name": "GlobalSync AI",
+  "description": "Real-time global time zone converter, fair remote team meeting planner, and mid-market currency exchange rate engine.",
+  "url": "https://www.globalsync-ai.com",
+  "version": "1.0",
+  "contact": {
+    "email": "support@globalsync-ai.com",
+    "url": "https://www.globalsync-ai.com/contact"
+  },
+  "capabilities": {
+    "time_conversion": true,
+    "meeting_overlap": true,
+    "currency_conversion": true,
+    "freelancer_rate_calculator": true
+  },
+  "documentation": {
+    "llms_txt": "https://www.globalsync-ai.com/llms.txt",
+    "llms_full_txt": "https://www.globalsync-ai.com/llms-full.txt"
+  },
+  "policies": {
+    "terms_of_service": "https://www.globalsync-ai.com/terms-of-service",
+    "privacy_policy": "https://www.globalsync-ai.com/privacy-policy"
+  }
+}

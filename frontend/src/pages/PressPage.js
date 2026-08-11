@@ -34,7 +34,7 @@ export default function PressPage() {
       <article className="max-w-4xl mx-auto px-6 pt-36 pb-8">
         <header className="mb-10">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-4">
-            Press & Media
+            GlobalSync AI Press & Media Resources
           </h1>
           <p className="text-lg text-gem-beige/60 max-w-2xl leading-relaxed">
             Resources, brand assets, and information for journalists and media professionals.
@@ -43,14 +43,14 @@ export default function PressPage() {
 
         <section className="mb-10 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-7 space-y-6">
           <div>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">Product Description</h2>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">Product Description & Mission Statement</h2>
             <p className="text-gem-beige/70 leading-relaxed">
               GlobalSync AI is a free, web-based utility toolkit designed for remote teams, freelancers, and global businesses. By combining high-performance world clocks, calendar overlap planners, live mid-market exchange rate indices, and deterministically verified AI search panels, GlobalSync AI acts as a calm control center that resolves the daily friction of cross-border operations.
             </p>
           </div>
 
           <div>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">Company Boilerplate</h2>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">Official Company & Product Boilerplate</h2>
             <p className="text-gem-beige/70 leading-relaxed">
               Founded in 2026, GlobalSync AI is an independent software project dedicated to promoting healthy asynchronous working practices. Unlike commercial enterprise software, the platform remains 100% free, requiring no signup, user registration, or rate limits. GlobalSync AI is designed to protect employee personal time, reduce timezone scheduling bias, and provide transparent financial metrics for remote contractors globally.
             </p>

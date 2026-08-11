@@ -161,7 +161,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
     if (autoSubmit && initialQuery && !autoSubmittedRef.current) {
       autoSubmittedRef.current = true;
       setQuery(initialQuery);
-      setTimeout(() => handleSubmit(initialQuery), 400);
+      handleSubmit(initialQuery);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoSubmit, initialQuery]);

@@ -85,7 +85,8 @@ export default function TimeZoneConverterPage() {
               <button
                 key={`${c.from}-${c.to}`}
                 onClick={() => navigate(`/dashboard?q=time in ${c.to} when it is 9 AM in ${c.from}`)}
-                className="text-left bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-4 hover:border-gem-gold/50 transition-all group"
+                onMouseEnter={() => import("@/pages/Dashboard")}
+                className="text-left bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-4 hover:border-gem-gold/50 cursor-pointer active:scale-[0.98] transition-all duration-100 group"
               >
                 <div className="flex items-center justify-between">
                   <div>

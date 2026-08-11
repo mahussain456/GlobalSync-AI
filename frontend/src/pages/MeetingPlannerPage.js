@@ -66,7 +66,8 @@ export default function MeetingPlannerPage() {
           </p>
           <button
             onClick={() => navigate("/dashboard?q=Best meeting time for New York, London, Dubai")}
-            className="mt-6 btn-gradient rounded-xl px-6 py-3 text-sm font-semibold flex items-center gap-2 inline-flex"
+            onMouseEnter={() => import("@/pages/Dashboard")}
+            className="mt-6 btn-gradient rounded-xl px-6 py-3 text-sm font-semibold flex items-center gap-2 inline-flex cursor-pointer active:scale-[0.97] transition-all duration-100"
             data-testid="meeting-cta-btn"
           >
             <Users className="w-4 h-4" /> Find Meeting Overlap Now <ArrowRight className="w-4 h-4" />
@@ -84,7 +85,8 @@ export default function MeetingPlannerPage() {
               <button
                 key={o.cities.join("-")}
                 onClick={() => navigate(`/dashboard?q=Best meeting time for ${o.cities.join(", ")}`)}
-                className="text-left bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-4 hover:border-gem-gold/50 transition-all group"
+                onMouseEnter={() => import("@/pages/Dashboard")}
+                className="text-left bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-4 hover:border-gem-gold/50 cursor-pointer active:scale-[0.98] transition-all duration-100 group"
               >
                 <div className="flex items-center justify-between">
                   <div>

@@ -56,7 +56,7 @@ export default function ContactPage() {
 
       <article className="max-w-3xl mx-auto px-6 pt-36 pb-8">
         <header className="mb-10">
-          <h1 className="font-heading text-4xl font-bold text-gem-beige mb-4">Contact Us</h1>
+          <h1 className="font-heading text-4xl font-bold text-gem-beige mb-4">Contact Our Editorial & Technical Team</h1>
           <p className="text-lg text-gem-beige/60 leading-relaxed mb-6">
             Have a question, suggestion, or technical request? We read every query and typically respond within 48 hours.
           </p>
@@ -78,7 +78,7 @@ export default function ContactPage() {
             <div className="w-10 h-10 bg-gem-gold/20 rounded-xl flex items-center justify-center mb-4">
               <Mail className="w-5 h-5 text-gem-gold" />
             </div>
-            <h2 className="font-semibold text-gem-beige mb-1">General Support</h2>
+            <h2 className="font-semibold text-gem-beige mb-1">General Technical & User Support</h2>
             <p className="text-sm text-gem-beige/60 mb-3">Questions, feedback, bug reports, or requests for help using the site.</p>
             <a href="mailto:hello@globalsync-ai.com" className="text-gem-gold hover:text-gem-gold/80 text-sm font-medium transition-colors">
               hello@globalsync-ai.com
@@ -100,7 +100,7 @@ export default function ContactPage() {
             <div className="w-10 h-10 bg-gem-gold/20 rounded-xl flex items-center justify-center mb-4">
               <Globe className="w-5 h-5 text-gem-gold" />
             </div>
-            <h2 className="font-semibold text-gem-beige mb-2">About This Site</h2>
+            <h2 className="font-semibold text-gem-beige mb-2">About GlobalSync AI & Support</h2>
             <p className="text-sm text-gem-beige/60 mb-3">
               GlobalSync AI is an independent project built by Ahmed Hussain for remote teams, freelancers, and international workers who need clearer time zone and currency tools.
             </p>

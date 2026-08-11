@@ -65,7 +65,7 @@ export default function StripeCheckoutSimulatorPage() {
 
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Subscribe to</span>
-            <h1 className="text-3xl font-extrabold text-slate-900 mt-1">GlobalSync Pro</h1>
+            <h1 className="text-3xl font-extrabold text-slate-900 mt-1">GlobalSync Pro Workspace Subscription</h1>
             <p className="text-sm text-slate-500 mt-2">Unlimited named team workspaces, calendar exports, custom URL slugs, and invoice builder capabilities with unlimited invoice generations.</p>
           </div>
 
@@ -85,7 +85,7 @@ export default function StripeCheckoutSimulatorPage() {
 
       {/* Right Column: Checkout Form */}
       <div className="md:w-1/2 bg-white p-8 md:p-16 flex flex-col justify-center max-w-lg mx-auto w-full">
-        <h2 className="text-xl font-bold text-slate-900 mb-6">Pay with card</h2>
+        <h2 className="text-xl font-bold text-slate-900 mb-6">Secure Credit Card Payment Information</h2>
 
         <form onSubmit={handlePaymentSubmit} className="space-y-5">
           {/* Email */}

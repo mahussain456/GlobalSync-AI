@@ -94,6 +94,20 @@ const SuspenseFallback = () => (
 );
 
 function App() {
+  React.useEffect(() => {
+    // Preload main route chunks after 1s idle time so single-click button navigation responds instantly
+    const timer = setTimeout(() => {
+      import("@/pages/Dashboard");
+      import("@/pages/TimeZoneConverterPage");
+      import("@/pages/CurrencyConverterPage");
+      import("@/pages/MeetingPlannerPage");
+      import("@/pages/FreelancerRateConverterPage");
+      import("@/pages/InvoicePage");
+      import("@/pages/BlogPage");
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <ErrorBoundary>
       <div className="App">

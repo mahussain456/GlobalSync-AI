@@ -35,7 +35,7 @@ export default function NotFoundPage() {
         </div>
 
         <h1 className="font-heading text-2xl md:text-3xl font-bold text-gem-beige mb-3">
-          Page not found
+          404 — Requested Page Was Not Found
         </h1>
         <p className="text-gem-beige/40 text-sm md:text-base max-w-sm mb-10 leading-relaxed">
           The page you're looking for doesn't exist or has been moved. Head back home to sync with the world.

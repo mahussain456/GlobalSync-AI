@@ -37,7 +37,7 @@ export default function AboutPage() {
             <Globe className="w-3.5 h-3.5" /> Free · AI-Powered · No Signup
           </div>
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-4">
-            About GlobalSync AI
+            About GlobalSync AI — Time Zone & Currency Tools
           </h1>
           <p className="text-lg text-gem-beige/60 max-w-2xl leading-relaxed">
             A free, AI-powered toolkit built for remote teams, freelancers, and global workers who work across time zones every day.
@@ -58,7 +58,7 @@ export default function AboutPage() {
         </section>
 
         <section className="mb-10">
-          <h2 className="font-heading text-2xl font-bold text-gem-beige mb-6">Our Tools</h2>
+          <h2 className="font-heading text-2xl font-bold text-gem-beige mb-6">Our Core Time Zone & Currency Tools</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               { icon: Clock, color: "blue", title: "Time Zone Converter", desc: "See live local clocks for 25+ cities worldwide. Compare time zones side by side and identify who is in the office right now.", link: "/time-zone-converter" },
@@ -94,7 +94,7 @@ export default function AboutPage() {
         </section>
 
         <section className="mb-10 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-7">
-          <h2 className="font-heading text-2xl font-bold text-gem-beige mb-6">Meet the Creator</h2>
+          <h2 className="font-heading text-2xl font-bold text-gem-beige mb-6">Meet the Creator & Remote Engineering Community</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="flex gap-4">
               <img 
@@ -184,7 +184,7 @@ export default function AboutPage() {
         </section>
 
         <section className="bg-gem-pine/30 rounded-2xl border border-gem-gold/20 p-7">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-2">Get in Touch</h2>
+          <h2 className="font-heading text-xl font-bold text-gem-beige mb-2">Get in Touch with Our Support Team</h2>
           <p className="text-gem-beige/60 text-sm mb-4">Questions, feedback, or partnership enquiries? We'd love to hear from you.</p>
           <Link to="/contact" className="inline-flex items-center gap-2 bg-gem-gold text-gem-forest font-bold rounded-xl px-5 py-2.5 text-sm hover:opacity-90 transition-all">
             Contact Us <ArrowRight className="w-4 h-4" />

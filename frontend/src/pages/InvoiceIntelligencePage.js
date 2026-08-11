@@ -186,7 +186,7 @@ export default function InvoiceIntelligencePage() {
           {/* Column Left: Input Panel */}
           <div className="lg:col-span-5 bg-white/5 border border-white/10 rounded-[28px] p-6 shadow-xl space-y-6">
             <h2 className="font-heading font-bold text-gem-beige text-lg flex items-center gap-2 border-b border-white/5 pb-4">
-              <Calculator className="w-5 h-5 text-gem-gold" /> Parameters
+              <Calculator className="w-5 h-5 text-gem-gold" /> Invoice Calculation & FX Rail Parameters
             </h2>
 
             <div className="space-y-4">
@@ -269,7 +269,7 @@ export default function InvoiceIntelligencePage() {
             {/* Payout Breakdown glass card */}
             <div className="bg-white/5 border border-white/10 rounded-[28px] p-6 shadow-xl space-y-5">
               <h2 className="font-heading font-bold text-gem-beige text-lg flex items-center gap-2 border-b border-white/5 pb-4">
-                <TrendingUp className="w-5 h-5 text-gem-gold" /> Net Payout Analysis
+                <TrendingUp className="w-5 h-5 text-gem-gold" /> Comprehensive Net Payout & Fee Analysis
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

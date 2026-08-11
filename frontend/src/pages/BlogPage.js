@@ -39,7 +39,7 @@ export default function BlogPage() {
             <BookOpen className="w-3.5 h-3.5" /> Resources & Guides
           </div>
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-4">
-            GlobalSync AI Blog
+            GlobalSync AI Remote Work & Time Zone Blog
           </h1>
           <p className="text-lg text-gem-beige/60 max-w-2xl">
             Practical guides for remote teams, freelancers, and digital nomads — covering time zones, currency, and the tools that make global work easier.

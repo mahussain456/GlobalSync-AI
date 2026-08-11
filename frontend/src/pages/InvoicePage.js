@@ -468,7 +468,7 @@ export default function InvoicePage() {
           {/* Left Column: Input Form */}
           <div className="lg:col-span-6 bg-white/5 border border-white/10 rounded-[28px] p-6 shadow-xl space-y-5">
             <h2 className="font-heading font-bold text-gem-beige text-lg flex items-center gap-2 border-b border-white/5 pb-4">
-              <Calculator className="w-5 h-5 text-gem-gold" /> Invoice Details
+              <Calculator className="w-5 h-5 text-gem-gold" /> Multi-Currency Invoice Line Details
             </h2>
 
             <div className="space-y-4">
@@ -674,7 +674,7 @@ export default function InvoicePage() {
           <div className="lg:col-span-6 bg-white/5 border border-white/10 rounded-[28px] p-6 shadow-xl space-y-4">
             <div className="flex justify-between items-center border-b border-white/5 pb-3">
               <h2 className="font-heading font-bold text-gem-beige text-lg flex items-center gap-2">
-                <FileText className="w-5 h-5 text-gem-gold" /> Live Preview
+                <FileText className="w-5 h-5 text-gem-gold" /> Real-Time Professional Invoice Preview
               </h2>
               {!isPaid && (
                 <span className="text-[10px] text-gem-sage font-bold bg-white/5 border border-white/10 px-2.5 py-0.5 rounded">
