@@ -2,6 +2,7 @@ import "@/App.css";
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
+import { Analytics } from "@vercel/analytics/react";
 import CookieConsent from "@/components/CookieConsent";
 import SEOSingletonHeadGuard from "@/components/SEOSingletonHeadGuard";
 
@@ -159,6 +160,7 @@ function App() {
           </React.Suspense>
           <Toaster position="top-right" richColors />
           <CookieConsent />
+          <Analytics />
         </BrowserRouter>
       </div>
     </ErrorBoundary>
