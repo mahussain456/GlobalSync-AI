@@ -31,7 +31,7 @@ export default function SiteFooter() {
 
         {/* Tools */}
         <div>
-          <h3 className="text-gem-stone font-bold uppercase tracking-wider text-xs mb-4">Tools</h3>
+          <p className="text-gem-stone font-bold uppercase tracking-wider text-xs mb-4">Tools</p>
           <ul className="space-y-3">
             <li><Link to="/time-zone-converter" className="text-sm hover:text-gem-gold transition-colors">Time Zone Converter</Link></li>
             <li><Link to="/meeting-planner" className="text-sm hover:text-gem-gold transition-colors">Meeting Planner</Link></li>
@@ -45,7 +45,7 @@ export default function SiteFooter() {
 
         {/* Resources */}
         <div>
-          <h3 className="text-gem-stone font-bold uppercase tracking-wider text-xs mb-4">Resources</h3>
+          <p className="text-gem-stone font-bold uppercase tracking-wider text-xs mb-4">Resources</p>
           <ul className="space-y-3">
             <li><Link to="/blog" className="text-sm hover:text-gem-gold transition-colors">Blog & Guides</Link></li>
             <li><Link to="/freelancer-rate-converter" className="text-sm hover:text-gem-gold transition-colors">Freelancer Rates</Link></li>
@@ -58,7 +58,7 @@ export default function SiteFooter() {
 
         {/* Company */}
         <div>
-          <h3 className="text-gem-stone font-bold uppercase tracking-wider text-xs mb-4">Company</h3>
+          <p className="text-gem-stone font-bold uppercase tracking-wider text-xs mb-4">Company</p>
           <ul className="space-y-3">
             <li><Link to="/about" className="text-sm hover:text-gem-gold transition-colors">About Us</Link></li>
             <li><Link to="/authors/ahmed-hussain" className="text-sm hover:text-gem-gold transition-colors">Ahmed Hussain</Link></li>

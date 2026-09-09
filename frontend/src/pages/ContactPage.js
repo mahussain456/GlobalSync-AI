@@ -61,14 +61,15 @@ export default function ContactPage() {
             Have a question, suggestion, or technical request? We read every query and typically respond within 48 hours.
           </p>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-sm text-gem-beige/70 space-y-3">
-            <h3 className="font-bold text-gem-beige text-base">What You Can Contact Us About:</h3>
+            <h2 className="font-bold text-gem-beige text-base">What You Can Contact Us About:</h2>
             <ul className="list-disc list-inside space-y-1.5 ml-1">
-              <li><strong className="text-gem-gold">Bug Reports:</strong> Report website glitches, calculator logic errors, rendering bugs, or responsive display anomalies.</li>
-              <li><strong className="text-gem-gold">Data Corrections:</strong> Flag incorrect time offsets, outdated daylight saving changes, or currency rate provider delays.</li>
-              <li><strong className="text-gem-gold">Partnerships & Press Inquiries:</strong> Pitch content syndication ideas, advertising sponsorships, or schedule media interviews.</li>
+              <li><strong className="text-gem-gold">Bug Reports:</strong> Report website glitches, calculator logic errors, rendering bugs, or responsive display anomalies across any mobile or desktop browser.</li>
+              <li><strong className="text-gem-gold">Data & Timezone Corrections:</strong> Flag incorrect time offsets, unexpected daylight saving adjustments, or currency exchange rate provider delays.</li>
+              <li><strong className="text-gem-gold">Feature Suggestions:</strong> Recommend new city pairs, additional currency additions, custom team workspace features, or workflow improvements.</li>
+              <li><strong className="text-gem-gold">Partnerships & Press Inquiries:</strong> Pitch content syndication ideas, advertising sponsorships, media interviews, or developer integration tools.</li>
             </ul>
-            <p className="text-xs text-gem-beige/40 pt-2 border-t border-white/5">
-              🚀 Expected response time: We aim to acknowledge all technical and database corrections within <strong>2 business days (48 hours)</strong>.
+            <p className="text-xs text-gem-beige/50 pt-3 border-t border-white/10 leading-relaxed">
+              🚀 <strong>Response Commitment & SLA:</strong> Our technical team and editorial reviewers monitor incoming inquiries daily. We commit to acknowledging all bug reports and data corrections within <strong>2 business days (48 hours)</strong> and deploying hotfixes for verified calculation bugs within 24 hours.
             </p>
           </div>
         </header>

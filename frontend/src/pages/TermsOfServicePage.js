@@ -44,78 +44,78 @@ export default function TermsOfServicePage() {
         <div className="space-y-8 text-gem-beige/70 leading-relaxed">
           <section>
             <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">1. Acceptance of Terms</h2>
-            <p>By accessing or using GlobalSync AI at <strong className="text-gem-beige">globalsync-ai.com</strong> (the "Service"), you agree to be bound by these Terms of Service ("Terms"). These Terms apply to all visitors, users, and others who access the Service.</p>
+            <p>By accessing or using GlobalSync AI at <strong className="text-gem-beige">globalsync-ai.com</strong> (the "Service"), you agree to be bound by these Terms of Service ("Terms"). These Terms govern all visitors, registered users, and automated consumers who access our website, applications, or API endpoints. If you do not agree to these Terms in full, you must discontinue use of the Service immediately.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">2. Description of Service</h2>
-            <p>GlobalSync AI provides free online tools for:</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">2. Description of Service & Core Features</h2>
+            <p>GlobalSync AI is a free web productivity suite designed for remote teams, freelancers, and distributed organizations. Our tools include:</p>
             <ul className="list-disc pl-5 space-y-1 text-sm mt-2">
-              <li>Time zone conversion and world clock display</li>
-              <li>Currency conversion with live exchange rates</li>
-              <li>Meeting time planning and business hour overlap calculation</li>
-              <li>AI-powered natural language query processing</li>
+              <li>Real-time time zone conversion and world clock displays powered by the IANA database</li>
+              <li>Live currency conversion with hourly reference rates across 160+ world currencies</li>
+              <li>Interactive meeting time planner and working-hour overlap calculations for up to 5 cities</li>
+              <li>Freelancer hourly-to-salary equivalent calculator and invoice building utilities</li>
+              <li>AI-powered natural language query processing for instant scheduling calculations</li>
             </ul>
-            <p className="mt-3">The Service is provided free of charge and does not require registration or account creation.</p>
+            <p className="mt-3">The Service is provided free of charge for individual and organizational use and does not require account creation or mandatory payment.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">3. Accuracy of Information</h2>
-            <p>GlobalSync AI provides conversion tools for informational purposes only. While we strive to ensure accuracy:</p>
-            <ul className="list-disc pl-5 space-y-1 text-sm mt-2">
-              <li><strong className="text-gem-beige">Exchange rates</strong> are sourced from third-party APIs and may not reflect real-time market rates or the rates offered by banks and financial institutions.</li>
-              <li><strong className="text-gem-beige">Time zone data</strong> relies on the IANA Time Zone Database and may not account for recent government changes to daylight saving time rules.</li>
-              <li><strong className="text-gem-beige">We are not responsible</strong> for any financial, legal, or business decisions made based on information provided by this Service.</li>
-            </ul>
-            <p className="mt-3">Always verify critical information with official sources before making financial or legal decisions.</p>
-          </section>
-
-          <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">4. Acceptable Use & System Rules</h2>
-            <p>You agree not to:</p>
-            <ul className="list-disc pl-5 space-y-1 text-sm mt-2">
-              <li>Use the Service for any unlawful purpose or in violation of any regulations</li>
-              <li>Attempt to gain unauthorised access to any part of the Service or its infrastructure</li>
-              <li>Use automated scripts, bots, or scraping tools to access the Service in excess of reasonable usage</li>
-              <li>Reverse engineer, decompile, or attempt to extract the source code of the Service</li>
-              <li>Resell or commercially exploit the Service or its API without written permission</li>
-              <li>Interfere with or disrupt the integrity or performance of the Service</li>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">3. Financial Disclaimer & Information Accuracy</h2>
+            <p>GlobalSync AI provides time zone, currency exchange, and rate calculations strictly for informational and planning purposes:</p>
+            <ul className="list-disc pl-5 space-y-1.5 text-sm mt-2">
+              <li><strong className="text-gem-beige">Currency exchange rates:</strong> All conversion rates represent mid-market reference rates sourced from institutional feeds (such as the European Central Bank). They do not reflect retail commercial rates, bank transfer fees, or card issuer markups. GlobalSync AI is not a financial institution, currency broker, or trading advisory platform.</li>
+              <li><strong className="text-gem-beige">Time zone database:</strong> Time zone offsets build on the official IANA Time Zone Database (TZDB). While updated regularly, we are not liable for scheduling conflicts resulting from sudden government alterations to daylight saving time rules.</li>
+              <li><strong className="text-gem-beige">No financial advisory:</strong> Information provided by the Service should not be construed as investment, legal, or financial advice. Always verify financial rates with your primary banking provider before executing international transactions.</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">5. Intellectual Property</h2>
-            <p>The Service and its original content, features, and functionality are owned by GlobalSync AI and are protected by applicable copyright, trademark, and other intellectual property laws. You may not copy, reproduce, distribute, or create derivative works based on the Service without prior written permission.</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">4. Acceptable Use & System Integrity Rules</h2>
+            <p>To preserve equitable performance and system security for all global users, you agree not to:</p>
+            <ul className="list-disc pl-5 space-y-1 text-sm mt-2">
+              <li>Use the Service for any unlawful purpose or in violation of regional or international laws</li>
+              <li>Deploy automated bots, scrapers, or scripts that overload our infrastructure beyond reasonable usage limits</li>
+              <li>Attempt to gain unauthorized access to server code, backend API keys, or private user workspace states</li>
+              <li>Reverse engineer, decompile, or attempt to extract underlying algorithmic source code</li>
+              <li>Resell, white-label, or commercially monetize our live API endpoints without explicit written consent</li>
+              <li>Interfere with or bypass server-side rate limiting or caching mechanisms</li>
+            </ul>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">6. Third-Party Services</h2>
-            <p>The Service integrates with third-party APIs and services including ExchangeRate-API, Frankfurter API, and Anthropic AI. These services operate independently and their availability is not guaranteed. We are not liable for any disruption or inaccuracy arising from third-party services.</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">5. Intellectual Property Rights</h2>
+            <p>The Service, including its branding, UI design system, custom conversion algorithms, logo assets, and editorial guides, is owned exclusively by GlobalSync AI and protected under international copyright, trademark, and trade secret laws. You may not copy, reproduce, re-publish, or create derivative works from site content without prior written approval.</p>
+          </section>
+
+          <section>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">6. Third-Party API Integrations</h2>
+            <p>The Service relies on third-party data providers including ExchangeRate-API, Frankfurter API, and Anthropic Claude AI. We do not guarantee continuous uptime or uninterrupted availability of third-party feeds and are not liable for service outages caused by third-party infrastructure failures.</p>
           </section>
 
           <section>
             <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">7. Disclaimer of Warranties</h2>
-            <p>THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR COMPLETELY ACCURATE. USE OF THE SERVICE IS AT YOUR SOLE RISK.</p>
+            <p>THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, COMPLETELY ACCURATE, OR ERROR-FREE.</p>
           </section>
 
           <section>
             <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">8. Limitation of Liability</h2>
-            <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, GLOBALSYNC AI SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES RESULTING FROM YOUR USE OF OR INABILITY TO USE THE SERVICE, INCLUDING BUT NOT LIMITED TO FINANCIAL LOSSES ARISING FROM CURRENCY CONVERSION DECISIONS.</p>
+            <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, GLOBALSYNC AI AND ITS OPERATORS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR FOR LOSS OF PROFITS, REVENUE, DATA, OR BUSINESS OPPORTUNITIES RESULTING FROM YOUR USE OF OR INABILITY TO USE THE SERVICE, REGARDLESS OF CAUSE.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">9. Rate Limiting & Usage Policies</h2>
-            <p>To ensure fair access for all users, the Service implements automated rate limiting on its APIs. Excessive automated use may result in temporary access restrictions. Commercial use of the API requires prior written agreement.</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">9. API Rate Limiting & Fair Use Policy</h2>
+            <p>Our backend APIs employ automated IP-based rate limiting to prevent denial-of-service attacks and abuse. Excess automated requests will receive standard 429 HTTP rate-limit responses. Developers interested in high-volume API access should contact our support team to discuss custom integrations.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">10. Changes to Terms</h2>
-            <p>We reserve the right to modify these Terms at any time. Changes will be effective immediately upon posting to this page, with the "Last updated" date revised accordingly. Your continued use of the Service after any changes constitutes acceptance of the new Terms.</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">10. Modifications to Terms</h2>
+            <p>We reserve the right to revise these Terms at any time. Updated Terms will be effective immediately upon posting to this page, marked with a revised "Last updated" date. Continued use of GlobalSync AI after modifications constitutes binding acceptance of the updated Terms.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">11. Contact Information & Legal Notices</h2>
-            <p>If you have questions about these Terms, please contact us at <a href="mailto:hello@globalsync-ai.com" className="text-gem-gold hover:underline">hello@globalsync-ai.com</a>.</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">11. Governing Law & Contact Notices</h2>
+            <p>These Terms shall be governed by and construed in accordance with standard legal principles of international web services. For questions, legal notices, or terms feedback, contact us at <a href="mailto:hello@globalsync-ai.com" className="text-gem-gold hover:underline">hello@globalsync-ai.com</a>.</p>
           </section>
         </div>
       </article>

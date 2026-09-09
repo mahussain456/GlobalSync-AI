@@ -66,59 +66,65 @@ export default function EditorialPolicyPage() {
           <p className="text-xs text-gem-beige/40 mt-4">Last updated: April 2026</p>
         </header>
 
-        <Section icon={Edit3} title="Content Review Process">
+        <Section icon={Edit3} title="Content Review Process & Editorial Philosophy">
           <p>
-            Every guide, calculator description, and editorial article published on GlobalSync AI undergoes a strict human-in-the-loop content review process. Drafts are written by our founder, Ahmed Hussain, and cross-reviewed for technical consistency, terminology accuracy, and readability.
+            Every guide, calculator description, and editorial article published on GlobalSync AI undergoes a strict human-in-the-loop content review process. Drafts are written by our founder, Ahmed Hussain, and cross-reviewed for technical consistency, terminology accuracy, and real-world clarity for remote workers.
           </p>
           <p>
-            Our review pipeline verifies that all technical steps and calculations (such as timezone conversion offsets or salary-to-hourly calculations) correspond exactly with verified mathematical models and data provider guidelines. We do not accept sponsored articles, paid product placements, or native advertising that could bias our reporting or compromise our independence.
+            Our review pipeline verifies that all technical steps and calculations (such as timezone conversion offsets, daylight saving transition rules, or salary-to-hourly equivalency calculations) correspond exactly with verified mathematical models and data provider guidelines. We maintain total editorial independence: we do not accept sponsored articles, paid product placements, or native advertising that could bias our reporting or compromise our utility recommendations.
+          </p>
+          <p>
+            Before publication, every article is evaluated against three core principles: clarity, practical utility for distributed teams, and zero fluff. If a guide does not directly help a remote worker or team manager schedule better meetings or understand financial rates, it is revised or discarded.
           </p>
         </Section>
 
         <Section icon={FileText} title="Accuracy & Data Integrity Policy">
           <p>
-            Accuracy is our primary product standard. For our calculators and interactive maps, we enforce strict data constraints by relying exclusively on verified institutional data sources:
+            Accuracy is our primary product standard. For our interactive converters, world clocks, and calculation tools, we enforce strict data constraints by relying exclusively on verified institutional data sources:
           </p>
           <ul className="list-disc list-outside ml-5 space-y-2">
-            <li><strong className="text-gem-beige">Time zone rules:</strong> We build directly on the official IANA Time Zone Database (TZDB), which regulates all global timezone boundaries and historical/seasonal transitions.</li>
-            <li><strong className="text-gem-beige">Exchange rates:</strong> We pull live reference indices from the European Central Bank (ECB) and high-fidelity interbank feeds.</li>
-            <li><strong className="text-gem-beige">Calculation verification:</strong> All tool logic runs through test scripts to prevent compounding rounding errors and guarantee mathematical consistency.</li>
+            <li><strong className="text-gem-beige">Time zone database:</strong> We build directly on the official IANA Time Zone Database (TZDB), which regulates all global timezone boundaries, historical transitions, and upcoming Daylight Saving Time (DST) switches.</li>
+            <li><strong className="text-gem-beige">Live exchange rates:</strong> We pull reference indices from the European Central Bank (ECB) and high-fidelity interbank feeds, updating rate caches hourly to deliver real mid-market values.</li>
+            <li><strong className="text-gem-beige">Automated logic verification:</strong> All tool logic runs through continuous unit testing scripts to prevent compounding rounding errors and guarantee mathematical consistency across all currency and timezone calculations.</li>
           </ul>
+          <p className="mt-3">
+            We explicitly distinguish between reference mid-market exchange rates and retail commercial exchange rates. Our tools show the true mid-market rate so users can evaluate bank markups and hidden fee margins transparently.
+          </p>
         </Section>
 
         <Section icon={Cpu} title="AI Assistance Disclosure">
           <p>
-            We utilize artificial intelligence (specifically Anthropic Claude models) as a supportive tool for brainstorming, copy editing, and structuring drafts. However, we maintain a strict AI oversight policy:
+            We utilize artificial intelligence models as supportive tools for brainstorming, copy editing, and structuring initial draft outlines. However, we maintain a strict AI oversight policy to guarantee accuracy:
           </p>
           <ul className="list-disc list-outside ml-5 space-y-2">
-            <li>All AI-generated suggestions or draft outlines are fully reviewed, edited, and fact-checked by a human editor before publication.</li>
-            <li>We do not delegate mathematical, timezone offset, or currency conversion calculations to generative AI model parameters. All numerical operations are executed by our deterministic backend APIs to prevent hallucinations.</li>
-            <li>No article or tool description on GlobalSync AI is published without manual human verification and editorial approval.</li>
+            <li>All AI-generated suggestions or draft outlines are fully reviewed, edited, expanded, and fact-checked by a human editor before publication.</li>
+            <li>We do not delegate mathematical operations, timezone offset logic, or currency conversion calculations to generative AI model parameters. All numerical operations are executed by our deterministic backend APIs to prevent AI hallucinations.</li>
+            <li>No article, tool description, or documentation page on GlobalSync AI is published without manual human verification and editorial sign-off.</li>
           </ul>
         </Section>
 
         <Section icon={RefreshCw} title="Correction & Update Policy">
           <p>
-            The global regulatory landscape for currencies and time zones is dynamic. To keep our database accurate, we implement the following update policy:
+            The global regulatory landscape for currencies and time zones is dynamic. To keep our database accurate and responsive to real-world shifts, we implement the following update schedule:
           </p>
           <ul className="list-disc list-outside ml-5 space-y-2">
-            <li><strong className="text-gem-beige">IANA database updates:</strong> We redeploy our timezone service within 48 hours of any new IANA release.</li>
-            <li><strong className="text-gem-beige">Currency feed audits:</strong> We check API integration syncs hourly.</li>
-            <li><strong className="text-gem-beige">Static guides:</strong> We review all editorial guides annually or immediately upon notice of significant regulatory shifts (e.g. DST rule changes).</li>
+            <li><strong className="text-gem-beige">IANA database updates:</strong> We sync and redeploy our timezone database within 48 hours of any official IANA release.</li>
+            <li><strong className="text-gem-beige">Currency feed audits:</strong> We verify API integration feeds hourly to catch data provider delays or unexpected volatility flags.</li>
+            <li><strong className="text-gem-beige">Static guides & hub content:</strong> We review all editorial guides annually or immediately upon notice of significant regulatory shifts (such as sudden DST rule modifications or currency re-denominations).</li>
           </ul>
           <p className="mt-3">
-            If we make a material correction to an article, we update the "last updated" timestamp and add a prominent notice detailing the change.
+            If we make a material correction to an article or guide, we update the "last updated" timestamp at the top of the page and add an explicit notice detailing the specific change made.
           </p>
         </Section>
 
-        <Section icon={AlertCircle} title="Contact Path for Corrections">
+        <Section icon={AlertCircle} title="Contact Path for Corrections & Feedback">
           <p>
-            We welcome corrections from our users. If you identify a typo, a bug, or an outdated fact, please reach out to us. We commit to:
+            We welcome corrections, bug reports, and feedback from our global community of users. If you identify a typo, a calculation bug, or an outdated fact anywhere on GlobalSync AI, please reach out to us. We commit to:
           </p>
           <ul className="list-disc list-outside ml-5 space-y-2">
             <li>Acknowledging and reviewing all correction submissions within 2 business days.</li>
             <li>Routing technical bugs directly to our development logs and deploying hotfixes within 24 hours of confirmation.</li>
-            <li>Allowing users to submit corrections by emailing our team directly at <a href="mailto:editorial@globalsync-ai.com" className="text-gem-gold hover:underline">editorial@globalsync-ai.com</a> or filing a ticket through our <Link to="/contact" className="text-gem-gold hover:underline">Contact Page</Link>.</li>
+            <li>Allowing users to submit corrections by emailing our team directly at <a href="mailto:editorial@globalsync-ai.com" className="text-gem-gold hover:underline">editorial@globalsync-ai.com</a> or submitting a message via our <Link to="/contact" className="text-gem-gold hover:underline">Contact Page</Link>.</li>
           </ul>
         </Section>
 

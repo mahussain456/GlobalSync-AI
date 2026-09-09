@@ -403,7 +403,7 @@ export default function SavedTeamsPanel() {
           {/* List of Saved Teams */}
           <div className="mt-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-heading font-semibold text-sm text-gem-beige uppercase tracking-wider">Your Workspaces</h3>
+              <p className="font-heading font-semibold text-sm text-gem-beige uppercase tracking-wider">Your Workspaces</p>
               <span className="text-[10px] text-gem-sage font-bold bg-white/5 px-2 py-0.5 rounded border border-white/5">
                 {savedTeams.length} saved
               </span>
@@ -419,7 +419,7 @@ export default function SavedTeamsPanel() {
                   <div key={team.slug} className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:border-gem-gold/25 transition-all space-y-3">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <h4 className="font-heading font-bold text-gem-beige text-sm group-hover:text-gem-gold transition-colors">{team.name}</h4>
+                        <span className="font-heading font-bold text-gem-beige text-sm group-hover:text-gem-gold transition-colors block">{team.name}</span>
                         <p className="text-[10px] text-gem-sage/60 mt-0.5">/team/{team.slug}</p>
                       </div>
                       <div className="flex items-center gap-1 shrink-0">
@@ -483,9 +483,9 @@ export default function SavedTeamsPanel() {
         <div className="fixed inset-0 z-[100] flex items-center justify-center onboarding-overlay fade-in">
           <div className="onboarding-card w-full max-w-lg mx-4 p-7 fade-in-up max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-5">
-              <h2 className="font-heading text-2xl font-bold text-gem-beige flex items-center gap-2">
+              <div className="font-heading text-2xl font-bold text-gem-beige flex items-center gap-2">
                 <Users className="w-5.5 h-5.5 text-gem-gold" /> Create Team Workspace
-              </h2>
+              </div>
               <button 
                 onClick={() => setShowCreateModal(false)}
                 className="p-1 rounded-full hover:bg-white/5 text-white/30 hover:text-gem-beige transition-colors"
@@ -550,7 +550,7 @@ export default function SavedTeamsPanel() {
 
               {/* Workspace Members list builder */}
               <div className="space-y-3 border-t border-white/5 pt-4">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-gem-beige">Team Members ({members.length} added)</h3>
+                <div className="text-xs font-bold uppercase tracking-wider text-gem-beige">Team Members ({members.length} added)</div>
                 
                 {/* Member Input Builder Row */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-end">

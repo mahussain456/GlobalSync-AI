@@ -157,7 +157,7 @@ export const buildArticleSchema = (post) => ({
  */
 export const getHomepageSEO = ({ faqs = [] } = {}) => {
   const title = "Sync Global Teams: Free Time Zone & Currency Tools";
-  const desc  = "GlobalSync AI: Free AI tools for remote teams. Synchronize time zones, convert currencies, and plan meetings. Enhance global collaboration with live tools.";
+  const desc  = "Free AI tools for global remote teams. Synchronize time zones, convert 160+ currencies, and plan team meetings effortlessly. No signup required.";
   return {
     rawTitle: title,
     description: desc,
@@ -282,7 +282,7 @@ export const getCurrencyHubSEO = ({ faqs = [] } = {}) => {
  * Meeting Planner hub — /meeting-planner
  */
 export const getMeetingPlannerSEO = ({ faqs = [] } = {}) => {
-  const title = `Meeting Time Planner for Distributed Teams | Find Overlap Hours`;
+  const title = `Meeting Time Planner for Remote Teams | ${BRAND}`;
   return {
     rawTitle: title,
     description: `Find the perfect meeting time across distributed teams. Visual overlap planner shows fair business hours for every member. Free, no signup.`,

@@ -24,7 +24,7 @@ import { Helmet } from "react-helmet-async";
 
 const BASE_URL      = "https://www.globalsync-ai.com";
 const BRAND         = "GlobalSync AI";
-const DEFAULT_TITLE = `${BRAND} — Free Time Zone & Currency Converter for Remote Teams`;
+const DEFAULT_TITLE = `Free Time Zone & Currency Converter | ${BRAND}`;
 
 function normalizeMetaDescription(desc) {
   if (!desc || typeof desc !== "string") {

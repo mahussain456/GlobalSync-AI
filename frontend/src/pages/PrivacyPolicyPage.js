@@ -46,99 +46,98 @@ export default function PrivacyPolicyPage() {
         <div className="space-y-8 text-gem-beige/70 leading-relaxed">
           <section>
             <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">1. Who We Are & How to Reach Us</h2>
-            <p>GlobalSync AI (<strong className="text-gem-beige">globalsync-ai.com</strong>) is a free online toolkit providing time zone conversion, currency conversion, and meeting planning tools for remote teams and global workers. When we say "we", "our", or "us" in this policy, we mean GlobalSync AI.</p>
+            <p>GlobalSync AI (<strong className="text-gem-beige">globalsync-ai.com</strong>) is a free online toolkit providing real-time world clocks, time zone conversion, live currency conversion, and AI-assisted meeting planning for remote teams, freelancers, and global businesses. When we say "we", "our", or "us" in this policy, we refer to GlobalSync AI and its operator, Ahmed Hussain.</p>
+            <p className="mt-2">We act as the data controller for any personal information collected when you browse our site, use our web applications, or voluntarily contact our support channels.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">2. Information We Collect</h2>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">2. Information We Collect & How It Is Collected</h2>
             <h3 className="font-semibold text-gem-beige/90 mb-2">2a. Information You Provide Voluntarily</h3>
-            <p className="mb-3">When you use our optional onboarding form, you may choose to provide:</p>
+            <p className="mb-3">When you use our optional onboarding form, submit a contact message, or create a custom team workspace, you may choose to provide:</p>
             <ul className="list-disc pl-5 space-y-1 text-sm">
-              <li>Your name</li>
-              <li>Your email address</li>
+              <li><strong className="text-gem-beige">Contact details:</strong> Your name and email address</li>
+              <li><strong className="text-gem-beige">Communication records:</strong> Subject lines, message contents, and feedback submitted via our contact forms</li>
+              <li><strong className="text-gem-beige">Workspace data:</strong> Team workspace names, member labels, and timezone preferences</li>
             </ul>
-            <p className="mt-3">This is entirely optional and can be skipped. We use this information to understand our user base and may send product updates if you opt in.</p>
+            <p className="mt-3">Providing this information is entirely optional and is never required to use our core conversion tools. You can use all time zone, currency, and meeting tools anonymously without registering an account.</p>
 
             <h3 className="font-semibold text-gem-beige/90 mb-2 mt-5">2b. Information Collected Automatically</h3>
-            <p className="mb-3">When you visit GlobalSync AI, we automatically collect:</p>
+            <p className="mb-3">When you navigate GlobalSync AI, our servers and analytics providers automatically log standard technical data, including:</p>
             <ul className="list-disc pl-5 space-y-1 text-sm">
-              <li><strong className="text-gem-beige">Usage data:</strong> Pages visited, features used, queries entered (anonymised)</li>
-              <li><strong className="text-gem-beige">Device data:</strong> Browser type, operating system, screen size</li>
-              <li><strong className="text-gem-beige">Technical data:</strong> IP address (anonymised), referral source, session duration</li>
+              <li><strong className="text-gem-beige">Usage data:</strong> Pages visited, features accessed, tool conversion queries entered (anonymised and aggregated)</li>
+              <li><strong className="text-gem-beige">Device & browser metadata:</strong> Browser type, version, operating system, display resolution, and language preferences</li>
+              <li><strong className="text-gem-beige">Network identifiers:</strong> Anonymised IP address, referring website URL, timestamps, and request latency</li>
             </ul>
 
-            <h3 className="font-semibold text-gem-beige/90 mb-2 mt-5">2c. Cookies</h3>
-            <p>We use cookies and similar tracking technologies for:</p>
+            <h3 className="font-semibold text-gem-beige/90 mb-2 mt-5">2c. Cookies & Storage Technologies</h3>
+            <p>We use essential cookies, browser local storage, and third-party tracking scripts to operate and optimize GlobalSync AI:</p>
             <ul className="list-disc pl-5 space-y-1 text-sm mt-2">
-              <li><strong className="text-gem-beige">Analytics cookies (Google Analytics & PostHog):</strong> To understand how visitors use our site, measure traffic, and improve the user experience.</li>
-              <li><strong className="text-gem-beige">Functional cookies:</strong> To remember your preferences (e.g., skipping the onboarding modal).</li>
-              <li><strong className="text-gem-beige">Advertising cookies (Google AdSense):</strong> To serve personalised and non-personalised advertisements.</li>
+              <li><strong className="text-gem-beige">Essential local storage:</strong> Used to save your selected city lists, base currency preferences, and workspace settings locally on your device without sending them to external marketing servers.</li>
+              <li><strong className="text-gem-beige">Analytics cookies (Google Analytics & PostHog):</strong> Help us measure site traffic, identify performance bottlenecks, and understand feature usage patterns across regions.</li>
+              <li><strong className="text-gem-beige">Advertising cookies (Google AdSense):</strong> Serve contextual or non-personalised advertisements to support our free operations.</li>
             </ul>
-            <p className="mt-3">You can disable cookies in your browser settings. Note that some functionality may be affected.</p>
+            <p className="mt-3">You can disable or delete cookies via your browser settings at any time. Essential tools will remain functional, though custom saved settings may revert upon page reload.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">3. How We Use Your Information</h2>
-            <p>We use the information we collect to:</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">3. How We Use Your Information & Legal Basis</h2>
+            <p>We process personal and technical data under the following legal bases and operational purposes:</p>
             <ul className="list-disc pl-5 space-y-1 text-sm mt-2">
-              <li>Provide and improve our conversion tools</li>
-              <li>Analyse usage patterns to enhance user experience</li>
-              <li>Send occasional product updates (only if you provided your email)</li>
-              <li>Detect and prevent abuse of our free API services</li>
-              <li>Display relevant advertising (Google AdSense — see section 5)</li>
+              <li><strong className="text-gem-beige">Service Delivery (Contract / Legitimate Interest):</strong> To render accurate time conversions, live exchange rate outputs, and custom team schedule overlays.</li>
+              <li><strong className="text-gem-beige">System Reliability & Abuse Prevention (Legitimate Interest):</strong> To monitor API rate limits, prevent automated bot scraping, and maintain server availability.</li>
+              <li><strong className="text-gem-beige">Product Communications (Consent):</strong> To send occasional product updates or team productivity tips if you explicitly opt-in via our onboarding modal.</li>
+              <li><strong className="text-gem-beige">Analytics & Optimization (Legitimate Interest / Consent):</strong> To analyze aggregated usage trends and improve conversion algorithms.</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">4. Third-Party Services</h2>
-            <p>GlobalSync AI uses the following third-party services, each with their own privacy policies:</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">4. Third-Party Data Processors</h2>
+            <p>GlobalSync AI partners with trusted third-party infrastructure and service providers. Each provider operates under strict data protection protocols:</p>
             <ul className="list-disc pl-5 space-y-2 text-sm mt-3">
-              <li><strong className="text-gem-beige">Google Analytics (Google LLC):</strong> Website analytics and traffic measurement. <a href="https://policies.google.com/privacy" className="text-gem-gold hover:underline" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
-              <li><strong className="text-gem-beige">PostHog:</strong> Product analytics to understand user flows. <a href="https://posthog.com/privacy" className="text-gem-gold hover:underline" target="_blank" rel="noopener noreferrer">PostHog Privacy Policy</a></li>
-              <li><strong className="text-gem-beige">ExchangeRate-API:</strong> Live currency exchange rate data. No personal data is shared.</li>
-              <li><strong className="text-gem-beige">Frankfurter API (European Central Bank):</strong> Historical currency trend data. No personal data is shared.</li>
-              <li><strong className="text-gem-beige">Anthropic (Claude AI):</strong> Natural language query processing. Queries are processed but not stored by Anthropic under our usage terms.</li>
+              <li><strong className="text-gem-beige">Google Analytics (Google LLC):</strong> Aggregated site measurement. <a href="https://policies.google.com/privacy" className="text-gem-gold hover:underline" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
+              <li><strong className="text-gem-beige">PostHog Analytics:</strong> Product interaction flow tracking. <a href="https://posthog.com/privacy" className="text-gem-gold hover:underline" target="_blank" rel="noopener noreferrer">PostHog Privacy Policy</a></li>
+              <li><strong className="text-gem-beige">ExchangeRate-API & ECB Feeds:</strong> Financial exchange rate data. No personal user identifiers are transmitted.</li>
+              <li><strong className="text-gem-beige">Anthropic (Claude AI):</strong> Natural language query understanding. User search prompts sent to the assistant console are processed transiently and are not retained for model training under our enterprise API terms.</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">5. Advertising & Analytics Cookies</h2>
-            <p>GlobalSync AI may display advertisements served by Google AdSense. Google uses cookies to serve ads based on your prior visits to our website and other sites. You may opt out of personalised advertising by visiting <a href="https://www.google.com/settings/ads" className="text-gem-gold hover:underline" target="_blank" rel="noopener noreferrer">Google Ad Settings</a>.</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">5. Advertising & Choice Controls</h2>
+            <p>To fund ongoing free access, GlobalSync AI displays advertising via Google AdSense. Google and third-party vendors use cookies to serve ads based on prior web visits. You can manage your ad preferences or opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" className="text-gem-gold hover:underline" target="_blank" rel="noopener noreferrer">Google Ad Settings</a> or <a href="https://www.aboutads.info/choices" className="text-gem-gold hover:underline" target="_blank" rel="noopener noreferrer">AboutAds.info</a>.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">6. Data Retention & Privacy Protection</h2>
-            <p>We retain voluntarily submitted email addresses until you request deletion. Analytics data is retained as per Google Analytics default retention settings (26 months). You may request deletion of your data at any time by emailing us.</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">6. Data Retention & Security Standards</h2>
+            <p>We implement industry-standard encryption (HTTPS / TLS 1.3) across all network traffic. Voluntarily submitted contact emails are stored securely and retained only as long as necessary to fulfill user requests or maintain opt-in communication subscriptions. Standard analytics records are automatically purged according to default retention schedules (26 months for Google Analytics).</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">7. User Rights & Data Control Options</h2>
-            <p>You have the right to:</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">7. User Rights (GDPR, CCPA & Global Laws)</h2>
+            <p>Regardless of your geographic location, GlobalSync AI guarantees the following data rights:</p>
             <ul className="list-disc pl-5 space-y-1 text-sm mt-2">
-              <li>Access the personal data we hold about you</li>
-              <li>Request correction of inaccurate data</li>
-              <li>Request deletion of your data</li>
-              <li>Opt out of marketing communications at any time</li>
-              <li>Lodge a complaint with your local data protection authority</li>
+              <li><strong className="text-gem-beige">Right of Access:</strong> Request a copy of any personal data stored about you.</li>
+              <li><strong className="text-gem-beige">Right to Rectification:</strong> Ask us to correct inaccurate or incomplete contact records.</li>
+              <li><strong className="text-gem-beige">Right to Erasure ("Right to be Forgotten"):</strong> Request immediate permanent deletion of your email or contact history.</li>
+              <li><strong className="text-gem-beige">Right to Object / Opt-Out:</strong> Unsubscribe from product emails at any time using the link in any communication or by emailing us.</li>
             </ul>
-            <p className="mt-3">To exercise these rights, contact us at <a href="mailto:hello@globalsync-ai.com" className="text-gem-gold hover:underline">hello@globalsync-ai.com</a>.</p>
+            <p className="mt-3">To exercise any privacy right, email our data team directly at <a href="mailto:hello@globalsync-ai.com" className="text-gem-gold hover:underline">hello@globalsync-ai.com</a>.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">8. Children's Privacy</h2>
-            <p>GlobalSync AI is not directed at children under 13 years of age. We do not knowingly collect personal information from children under 13.</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">8. Children's Privacy Notice</h2>
+            <p>GlobalSync AI is designed for working professionals, remote teams, and general web users. We do not intentionally target or collect personal data from children under 13 years of age (or under 16 in the EU). If you believe a minor has submitted personal information, please contact us immediately for deletion.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">9. Changes to This Policy</h2>
-            <p>We may update this Privacy Policy from time to time. We will notify you of significant changes by updating the "Last updated" date at the top of this page. Continued use of GlobalSync AI after changes constitutes acceptance of the updated policy.</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">9. Policy Modifications</h2>
+            <p>We reserve the right to modify this Privacy Policy to reflect technical updates, data provider changes, or legal requirements. Material modifications will be signaled by updating the "Last updated" date at the top of this policy page. Continued use of GlobalSync AI after updates implies acknowledgment of the updated policy.</p>
           </section>
 
           <section>
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">10. Privacy Contact & Data Inquiries</h2>
-            <p>If you have any questions about this Privacy Policy, please contact us at:</p>
-            <div className="bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 p-4 mt-3 text-sm">
-              <p className="font-medium text-gem-beige">GlobalSync AI</p>
+            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">10. Privacy Contact & Inquiries</h2>
+            <p>For any privacy inquiries, data deletion requests, or regulatory questions, reach out to our privacy officer:</p>
+            <div className="bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 p-4 mt-3 text-sm space-y-1">
+              <p className="font-medium text-gem-beige">GlobalSync AI Privacy Team</p>
               <p className="text-gem-beige/60">Email: <a href="mailto:hello@globalsync-ai.com" className="text-gem-gold hover:underline">hello@globalsync-ai.com</a></p>
               <p className="text-gem-beige/60">Website: <a href="https://www.globalsync-ai.com" className="text-gem-gold hover:underline">globalsync-ai.com</a></p>
             </div>
