@@ -1,0 +1,194 @@
+[
+  {
+    "url": "https://www.globalsync-ai.com/time/dubai-to-san-francisco",
+    "status": 200,
+    "final": "https://www.globalsync-ai.com/time/dubai-to-san-francisco",
+    "headers": {
+      "Access-Control-Allow-Origin": [
+        "*"
+      ],
+      "Age": [
+        "0"
+      ],
+      "Cache-Control": [
+        "public, must-revalidate, max-age=0"
+      ],
+      "Date": [
+        "Tue, 15 Sep 2026 09:18:04 GMT"
+      ],
+      "ETag": [
+        "W/\"c14b45bc5e4b865bab418b28065cd4c0\""
+      ],
+      "Server": [
+        "Vercel"
+      ],
+      "Strict-Transport-Security": [
+        "max-age=63072000"
+      ],
+      "X-Vercel-Cache": [
+        "MISS"
+      ],
+      "X-Vercel-Id": [
+        "sfo1::9p9c9-1789463883993-578ebad33431"
+      ],
+      "Transfer-Encoding": [
+        "chunked"
+      ],
+      "Content-Disposition": [
+        "inline; filename=\"dubai-to-san-francisco\""
+      ],
+      "Content-Type": [
+        "text/html; charset=utf-8"
+      ],
+      "Last-Modified": [
+        "Tue, 15 Sep 2026 09:18:04 GMT"
+      ]
+    },
+    "title": "",
+    "bytes": 28455
+  },
+  {
+    "url": "http://globalsync-ai.com/",
+    "status": 200,
+    "final": "https://www.globalsync-ai.com/",
+    "headers": {
+      "Access-Control-Allow-Origin": [
+        "*"
+      ],
+      "Age": [
+        "37336"
+      ],
+      "Cache-Control": [
+        "public, must-revalidate, max-age=0"
+      ],
+      "Date": [
+        "Tue, 15 Sep 2026 09:18:04 GMT"
+      ],
+      "ETag": [
+        "W/\"f62e5bf86409dc5285d9da4c004fcd67\""
+      ],
+      "Server": [
+        "Vercel"
+      ],
+      "Strict-Transport-Security": [
+        "max-age=63072000"
+      ],
+      "X-Vercel-Cache": [
+        "HIT"
+      ],
+      "X-Vercel-Id": [
+        "sfo1::frptb-1789463884596-48a35c4b2600"
+      ],
+      "Transfer-Encoding": [
+        "chunked"
+      ],
+      "Content-Disposition": [
+        "inline"
+      ],
+      "Content-Type": [
+        "text/html; charset=utf-8"
+      ],
+      "Last-Modified": [
+        "Mon, 14 Sep 2026 22:55:47 GMT"
+      ]
+    },
+    "title": "",
+    "bytes": 23808
+  },
+  {
+    "url": "https://globalsync-ai.com/",
+    "status": 200,
+    "final": "https://www.globalsync-ai.com/",
+    "headers": {
+      "Access-Control-Allow-Origin": [
+        "*"
+      ],
+      "Age": [
+        "37336"
+      ],
+      "Cache-Control": [
+        "public, must-revalidate, max-age=0"
+      ],
+      "Date": [
+        "Tue, 15 Sep 2026 09:18:04 GMT"
+      ],
+      "ETag": [
+        "W/\"f62e5bf86409dc5285d9da4c004fcd67\""
+      ],
+      "Server": [
+        "Vercel"
+      ],
+      "Strict-Transport-Security": [
+        "max-age=63072000"
+      ],
+      "X-Vercel-Cache": [
+        "HIT"
+      ],
+      "X-Vercel-Id": [
+        "sfo1::q6r9w-1789463884829-9848a62d3b48"
+      ],
+      "Transfer-Encoding": [
+        "chunked"
+      ],
+      "Content-Disposition": [
+        "inline"
+      ],
+      "Content-Type": [
+        "text/html; charset=utf-8"
+      ],
+      "Last-Modified": [
+        "Mon, 14 Sep 2026 22:55:47 GMT"
+      ]
+    },
+    "title": "",
+    "bytes": 23808
+  },
+  {
+    "url": "https://www.globalsync-ai.com/audit-nonexistent-20260915",
+    "status": 200,
+    "final": "https://www.globalsync-ai.com/audit-nonexistent-20260915",
+    "headers": {
+      "Access-Control-Allow-Origin": [
+        "*"
+      ],
+      "Age": [
+        "8161"
+      ],
+      "Cache-Control": [
+        "s-maxage=0"
+      ],
+      "Date": [
+        "Tue, 15 Sep 2026 09:18:04 GMT"
+      ],
+      "ETag": [
+        "W/\"f62e5bf86409dc5285d9da4c004fcd67\""
+      ],
+      "Server": [
+        "Vercel"
+      ],
+      "Strict-Transport-Security": [
+        "max-age=63072000"
+      ],
+      "X-Vercel-Cache": [
+        "HIT"
+      ],
+      "X-Vercel-Id": [
+        "sfo1::k72gq-1789463884923-fbde752ca5f9"
+      ],
+      "Transfer-Encoding": [
+        "chunked"
+      ],
+      "Content-Disposition": [
+        "inline; filename=\"index.html\""
+      ],
+      "Content-Type": [
+        "text/html; charset=utf-8"
+      ],
+      "Last-Modified": [
+        "Tue, 15 Sep 2026 07:02:03 GMT"
+      ]
+    },
+    "title": "",
+    "bytes": 23808
+  }
+]
