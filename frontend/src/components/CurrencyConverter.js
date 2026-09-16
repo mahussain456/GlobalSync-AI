@@ -100,9 +100,16 @@ export default function CurrencyConverter({ aiDispatch }) {
   const [loadingTrend, setLoadingTrend] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
 
+  const invalidateResult = () => {
+    requestVersion.current++;
+    setResult(null); setTrend(null); setErrorMsg(null);
+    setLoading(false); setLoadingTrend(false);
+  };
+
   const handleConvert = async (amt = amount, from = fromCurrency, to = toCurrency) => {
-    const numAmt = parseFloat(amt);
-    if (!Number.isFinite(numAmt) || numAmt < 0) { toast.warning("Enter a valid amount"); return; }
+    invalidateResult();
+    const numAmt = Number(amt);
+    if (String(amt).trim() === '' || !Number.isFinite(numAmt) || numAmt < 0) { setErrorMsg("Enter an amount of zero or more, then convert again."); return; }
     
     // Normalize codes to uppercase immediately
     const fromUpper = (from || "USD").toUpperCase();
@@ -123,11 +130,11 @@ export default function CurrencyConverter({ aiDispatch }) {
         converted, date: data.source + " · " + data.date, is_fallback: data.isFallback,
         formatted: `${numAmt.toLocaleString()} ${fromUpper} = ${converted.toLocaleString()} ${toUpper}` });
     } catch (error) { if (version !== requestVersion.current) return; setErrorMsg(error.message); }
-    fetchTrend(fromUpper, toUpper);
+    fetchTrend(fromUpper, toUpper, version);
     setLoading(false);
   };
 
-  const fetchTrend = async (from = fromCurrency, to = toCurrency) => {
+  const fetchTrend = async (from, to, version) => {
     setLoadingTrend(true);
     const fromUpper = (from || "USD").toUpperCase();
     const toUpper = (to || "EUR").toUpperCase();
@@ -136,11 +143,11 @@ export default function CurrencyConverter({ aiDispatch }) {
         params: { from_currency: fromUpper, to_currency: toUpper },
         timeout: 2500
       });
-      setTrend(res.data);
+      if (version === requestVersion.current) setTrend(res.data);
     } catch {
-      // trend is optional
+      if (version === requestVersion.current) setTrend({ available: false, message: 'Historical rates are unavailable for this pair right now.' });
     } finally {
-      setLoadingTrend(false);
+      if (version === requestVersion.current) setLoadingTrend(false);
     }
   };
 
@@ -152,20 +159,22 @@ export default function CurrencyConverter({ aiDispatch }) {
     handleConvert(amount, nextFrom, nextTo);
   };
 
-  const shareLink = () => {
+  const shareLink = async () => {
     const fromUpper = (fromCurrency || "USD").toUpperCase();
     const toUpper = (toCurrency || "EUR").toUpperCase();
     const q = `Convert ${amount} ${fromUpper} to ${toUpper}`;
     const url = `${window.location.origin}/dashboard?q=${encodeURIComponent(q)}`;
-    navigator.clipboard.writeText(url).then(() => toast.success("Share link copied!"));
+    try { await navigator.clipboard.writeText(url); toast.success("Share link copied!"); }
+    catch { toast.error("Clipboard access failed. Please copy the page address manually."); }
   };
 
-  const copyResult = () => {
+  const copyResult = async () => {
     if (!result) return;
     const fromUpper = (result.from || "USD").toUpperCase();
     const toUpper = (result.to || "EUR").toUpperCase();
-    const text = `${result.amount.toLocaleString()} ${fromUpper} = ${result.converted >= 1 ? result.converted.toLocaleString("en-US", { maximumFractionDigits: 4 }) : result.converted.toFixed(6)} ${toUpper} (Rate: 1 ${fromUpper} = ${result.rate} ${toUpper})`;
-    navigator.clipboard.writeText(text).then(() => toast.success("Result copied!"));
+    const text = `${result.amount.toLocaleString()} ${fromUpper} = ${result.converted >= 1 ? result.converted.toLocaleString("en-US", { maximumFractionDigits: 4 }) : result.converted.toFixed(6)} ${toUpper} (Reference rate: 1 ${fromUpper} = ${result.rate} ${toUpper}; ${result.date}${result.is_fallback ? '; offline cache' : ''}). Transfer provider fees and rates may differ.`;
+    try { await navigator.clipboard.writeText(text); toast.success("Result copied!"); }
+    catch { toast.error("Clipboard access failed. Select and copy the displayed result."); }
   };
 
   // Convert automatically on mount so user sees instant result
@@ -176,8 +185,8 @@ export default function CurrencyConverter({ aiDispatch }) {
       const cleanTo = (to_currency || "EUR").toUpperCase();
       setFromCurrency(cleanFrom);
       setToCurrency(cleanTo);
-      if (amt) setAmount(String(amt));
-      handleConvert(String(amt || 1), cleanFrom, cleanTo);
+      setAmount(String(amt ?? 1));
+      handleConvert(String(amt ?? 1), cleanFrom, cleanTo);
     } else {
       handleConvert(amount, fromCurrency, toCurrency);
     }
@@ -199,11 +208,14 @@ export default function CurrencyConverter({ aiDispatch }) {
         <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
           {/* Amount */}
           <div className="flex-1">
-            <label className="text-xs text-gem-sage mb-1 block font-medium">Amount</label>
+            <label htmlFor="conversion-amount" className="text-xs text-gem-sage mb-1 block font-medium">Amount</label>
             <input
+              id="conversion-amount"
+              min="0"
+              step="any"
               type="number"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => { invalidateResult(); setAmount(e.target.value); }}
               onKeyDown={(e) => e.key === "Enter" && handleConvert()}
               className="w-full h-12 px-4 rounded-xl border border-white/10 bg-white/5 text-gem-beige font-medium text-base outline-none focus:border-gem-gold400/50 focus:bg-white/10 transition-all placeholder-gem-mist/50"
               placeholder="100"
@@ -217,7 +229,7 @@ export default function CurrencyConverter({ aiDispatch }) {
             <CurrencySelect
               currencies={CURRENCIES}
               value={fromCurrency}
-              onChange={(code) => { setFromCurrency(code); setResult(null); }}
+              onChange={(code) => { invalidateResult(); setFromCurrency(code); }}
               testId="from-currency-select"
             />
           </div>
@@ -225,6 +237,7 @@ export default function CurrencyConverter({ aiDispatch }) {
           {/* Swap */}
           <button
             onClick={handleSwap}
+            aria-label="Swap currencies"
             className="h-12 w-12 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center text-gem-sage hover:text-gem-beige hover:border-gem-gold400/50 hover:bg-white/10 transition-all self-end shrink-0"
             data-testid="swap-currencies-btn"
           >
@@ -237,7 +250,7 @@ export default function CurrencyConverter({ aiDispatch }) {
             <CurrencySelect
               currencies={CURRENCIES}
               value={toCurrency}
-              onChange={(code) => { setToCurrency(code); setResult(null); }}
+              onChange={(code) => { invalidateResult(); setToCurrency(code); }}
               testId="to-currency-select"
             />
           </div>
@@ -255,8 +268,8 @@ export default function CurrencyConverter({ aiDispatch }) {
 
         {/* Error */}
         {errorMsg && (
-          <div className="mt-4 p-4 bg-orange-500/10 rounded-xl border border-orange-500/30 text-sm text-orange-300 fade-in-up" data-testid="currency-error">
-            <strong>Not supported:</strong> {errorMsg.split("Supported currencies:")[0]}
+          <div role="alert" className="mt-4 p-4 bg-orange-500/10 rounded-xl border border-orange-500/30 text-sm text-orange-300 fade-in-up" data-testid="currency-error">
+            {errorMsg.split("Supported currencies:")[0]}
             {errorMsg.includes("Supported currencies:") && (
               <span className="block mt-1 text-xs text-orange-400/70">
                 Supported: {errorMsg.split("Supported currencies:")[1]?.trim()}
@@ -267,8 +280,8 @@ export default function CurrencyConverter({ aiDispatch }) {
 
         {/* Result */}
         {result && typeof result === 'object' && typeof result.converted === 'number' && (
-          <div className="mt-5 p-4 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 rounded-xl border border-gem-gold/20 fade-in-up shadow-[inset_0_0_20px_rgba(34,211,238,0.05)]" data-testid="conversion-result-display">
-            <div className="flex items-start justify-between">
+          <div role="status" className="mt-5 p-4 bg-gem-pine/30 rounded-xl border border-gem-gold/20" data-testid="conversion-result-display">
+            <div className="flex flex-col sm:flex-row gap-4 items-start justify-between">
               <div>
                 {result.is_fallback && (
                   <div className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-300 rounded-full px-2 py-0.5 text-[10px] font-semibold border border-amber-500/30 mb-2">
@@ -279,7 +292,7 @@ export default function CurrencyConverter({ aiDispatch }) {
                 <div className="text-sm text-gem-sage mb-1">
                   {(result.amount ?? 0).toLocaleString()} {fromMeta?.name || result.from}
                 </div>
-                <div className="font-heading text-3xl font-bold text-gem-beige" data-testid="converted-amount">
+                <div className="font-heading text-3xl font-bold text-gem-beige break-all" data-testid="converted-amount">
                   {result.converted >= 1 ? result.converted.toLocaleString("en-US", { maximumFractionDigits: 4 }) : result.converted.toFixed(6)}
                   <span className="text-lg ml-2 text-gem-mist">{toMeta?.code || result.to}</span>
                 </div>
@@ -316,6 +329,7 @@ export default function CurrencyConverter({ aiDispatch }) {
                 </div>
               </div>
             </div>
+            <p className="mt-4 text-sm text-gem-sage">Reference estimate only. GlobalSync does not transfer money. Your provider's rate and fees determine the final amount received.</p>
           </div>
         )}
       </div>

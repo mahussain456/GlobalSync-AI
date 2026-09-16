@@ -254,19 +254,19 @@ export const getTimeZoneHubSEO = ({ faqs = [] } = {}) => {
  * Currency Converter hub — /currency-converter
  */
 export const getCurrencyHubSEO = ({ faqs = [] } = {}) => {
-  const title = `Free Live Currency Converter | 160+ Rates | ${BRAND}`;
+  const title = `Free Currency Converter | 160+ Rates | ${BRAND}`;
   return {
     rawTitle: title,
-    description: `Convert 160+ currencies with live mid-market exchange rates. USD to INR, EUR to GBP, PKR, NGN and more.`,
+    description: `Estimate amounts across 160+ currencies with dated reference rates, clear sources and labeled offline snapshots. Free, no signup.`,
     canonical: "/currency-converter",
-    keywords: "live currency converter, real-time exchange rates, USD to INR, EUR to GBP, free currency converter, 160 currencies, mid-market rate",
+    keywords: "currency converter, reference exchange rates, USD to INR, EUR to GBP, free currency converter, 160 currencies, dated rates",
     ogType: "website",
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent("Free Live Currency Converter")}&subtitle=${encodeURIComponent("160+ Currencies, Mid-Market Rates")}&type=tool`,
+    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent("Free Currency Converter")}&subtitle=${encodeURIComponent("160+ Currencies, Dated Reference Rates")}&type=tool`,
     structuredData: [
       buildSoftwareApplicationSchema({
-        name: "Free Live Currency Converter",
+        name: "Free Currency Converter",
         path: "/currency-converter",
-        description: "Convert 160+ currencies with live mid-market exchange rates. USD to INR, EUR to GBP, PKR, NGN and more.",
+        description: "Estimate amounts across 160+ currencies with dated reference rates, clear sources and labeled offline snapshots. Free, no signup.",
         category: "FinanceApplication",
       }),
       buildBreadcrumbSchema([
@@ -285,7 +285,7 @@ export const getMeetingPlannerSEO = ({ faqs = [] } = {}) => {
   const title = `Meeting Time Planner for Remote Teams | ${BRAND}`;
   return {
     rawTitle: title,
-    description: `Find the perfect meeting time across distributed teams. Visual overlap planner shows fair business hours for every member. Free, no signup.`,
+    description: `Compare working hours across cities, choose a meeting duration, and share or export a time that fits. Free, no signup.`,
     canonical: "/meeting-planner",
     keywords: "global meeting times, distributed team scheduling, time zone overlap, remote work collaboration, international meeting planner",
     ogType: "website",
@@ -294,7 +294,7 @@ export const getMeetingPlannerSEO = ({ faqs = [] } = {}) => {
       buildSoftwareApplicationSchema({
         name: "Meeting Planner for Distributed Teams",
         path: "/meeting-planner",
-        description: "Find the perfect meeting time across distributed teams. Visual overlap planner shows fair business hours for every member.",
+        description: "Compare working hours across cities, choose a meeting duration, and share or export a time that fits.",
         category: "BusinessApplication",
       }),
       buildBreadcrumbSchema([

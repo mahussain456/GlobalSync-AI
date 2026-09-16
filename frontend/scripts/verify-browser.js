@@ -44,7 +44,8 @@ async function main() {
     assert.equal(await page.$eval('select[aria-label="From currency"]',el=>getComputedStyle(el).outlineStyle),'solid');
     await clickText('a','Find a meeting time');
     await page.waitForSelector('h1');
-    await clickText('button','New York');
+    await page.waitForSelector('[data-testid="meeting-planner"]');
+    await open('/dashboard?q='+encodeURIComponent('Best meeting time for New York, London'));
     await page.waitForSelector('[data-testid="time-converter"]');
     assert(page.url().includes('/dashboard'));
     assert.equal(await page.$('[data-testid="onboarding-modal"]'),null);

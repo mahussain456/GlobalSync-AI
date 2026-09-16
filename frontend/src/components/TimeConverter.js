@@ -1,3 +1,4 @@
+import { CITY_TIMEZONES } from "@/lib/cityTimezones";
 import { fireAnalyticsEvent } from "@/lib/analytics";
 import { meetingWindows, resolveWallTime } from "@/lib/timeCalculations";
 import { useState, useEffect, useCallback } from "react";
@@ -27,46 +28,7 @@ export function parseOffset(offsetStr) {
 }
 
 // Client-side fallback database for city-to-timezone matching
-export const CITY_TIMEZONES = {
-  "New York": "America/New_York", "NYC": "America/New_York", "New York City": "America/New_York",
-  "Los Angeles": "America/Los_Angeles", "LA": "America/Los_Angeles",
-  "San Francisco": "America/Los_Angeles", "SF": "America/Los_Angeles",
-  "Chicago": "America/Chicago", "Houston": "America/Chicago", "Dallas": "America/Chicago",
-  "Denver": "America/Denver", "Phoenix": "America/Phoenix", "Seattle": "America/Los_Angeles",
-  "Boston": "America/New_York", "Miami": "America/New_York", "Atlanta": "America/New_York",
-  "Toronto": "America/Toronto", "Vancouver": "America/Vancouver", "Montreal": "America/Toronto",
-  "Mexico City": "America/Mexico_City",
-  "São Paulo": "America/Sao_Paulo", "Sao Paulo": "America/Sao_Paulo",
-  "Buenos Aires": "America/Argentina/Buenos_Aires",
-  "Bogota": "America/Bogota", "Lima": "America/Lima", "Santiago": "America/Santiago",
-  "London": "Europe/London", "Paris": "Europe/Paris", "Berlin": "Europe/Berlin",
-  "Amsterdam": "Europe/Amsterdam", "Madrid": "Europe/Madrid", "Rome": "Europe/Rome",
-  "Milan": "Europe/Rome", "Zurich": "Europe/Zurich", "Geneva": "Europe/Zurich",
-  "Stockholm": "Europe/Stockholm", "Oslo": "Europe/Oslo", "Copenhagen": "Europe/Copenhagen",
-  "Helsinki": "Europe/Helsinki", "Warsaw": "Europe/Warsaw", "Prague": "Europe/Prague",
-  "Vienna": "Europe/Vienna", "Brussels": "Europe/Brussels", "Lisbon": "Europe/Lisbon",
-  "Athens": "Europe/Athens", "Moscow": "Europe/Moscow", "Istanbul": "Europe/Istanbul",
-  "Dubai": "Asia/Dubai", "Abu Dhabi": "Asia/Dubai", "Riyadh": "Asia/Riyadh",
-  "Doha": "Asia/Qatar", "Kuwait City": "Asia/Kuwait",
-  "Cairo": "Africa/Cairo", "Nairobi": "Africa/Nairobi", "Lagos": "Africa/Lagos",
-  "Johannesburg": "Africa/Johannesburg", "Cape Town": "Africa/Johannesburg", "Casablanca": "Africa/Casablanca",
-  "Mumbai": "Asia/Kolkata", "Delhi": "Asia/Kolkata", "New Delhi": "Asia/Kolkata",
-  "Bangalore": "Asia/Kolkata", "Bengaluru": "Asia/Kolkata", "Kolkata": "Asia/Kolkata",
-  "Chennai": "Asia/Kolkata", "Hyderabad": "Asia/Kolkata", "India": "Asia/Kolkata",
-  "Karachi": "Asia/Karachi", "Islamabad": "Asia/Karachi", "Lahore": "Asia/Karachi",
-  "Dhaka": "Asia/Dhaka", "Colombo": "Asia/Colombo", "Kathmandu": "Asia/Kathmandu",
-  "Singapore": "Asia/Singapore", "Kuala Lumpur": "Asia/Kuala_Lumpur", "KL": "Asia/Kuala_Lumpur",
-  "Jakarta": "Asia/Jakarta", "Bangkok": "Asia/Bangkok",
-  "Ho Chi Minh City": "Asia/Ho_Chi_Minh", "Hanoi": "Asia/Bangkok", "Manila": "Asia/Manila",
-  "Hong Kong": "Asia/Hong_Kong", "HK": "Asia/Hong_Kong", "Taipei": "Asia/Taipei",
-  "Seoul": "Asia/Seoul", "Tokyo": "Asia/Tokyo", "Osaka": "Asia/Tokyo",
-  "Beijing": "Asia/Shanghai", "Shanghai": "Asia/Shanghai", "Guangzhou": "Asia/Shanghai",
-  "Shenzhen": "Asia/Shanghai", "Chengdu": "Asia/Shanghai",
-  "Almaty": "Asia/Almaty", "Tashkent": "Asia/Tashkent",
-  "Sydney": "Australia/Sydney", "Melbourne": "Australia/Melbourne",
-  "Brisbane": "Australia/Brisbane", "Perth": "Australia/Perth",
-  "Auckland": "Pacific/Auckland", "Honolulu": "Pacific/Honolulu", "Hawaii": "Pacific/Honolulu",
-};
+export { CITY_TIMEZONES } from "@/lib/cityTimezones";
 
 export function getLocalCityTimezone(cityName) {
   const clean = cityName.trim();
