@@ -7,21 +7,21 @@ import SiteFooter from "@/components/SiteFooter";
 import { getMeetingPlannerSEO } from "@/lib/seo";
 
 const FAQ = [
-  { q: "What is the best time for a meeting between the US and India?", a: "It's tight, but your best window is usually 8:00 AM to 9:30 AM on the East Coast (EST), which translates to 6:30 PM to 8:00 PM in India (IST). The Indian team will be wrapping up their day, and the US team will just be starting. It's not perfect, but it's the only real overlap you get without making someone wake up at 5 AM." },
+  { q: "What is the best time for a meeting between the US and India?", a: "There is no shared 09:00–17:00 window. An out-of-hours option in standard time is usually 8:00 AM to 9:30 AM on the East Coast (EST), which translates to 6:30 PM to 8:00 PM in India (IST). The Indian team will be wrapping up their day, and the US team will just be starting. It's not perfect, but it's the only real overlap you get without making someone wake up at 5 AM." },
   { q: "What is the best time for a meeting between the US and the UK?", a: "This is one of the easiest connections to make. You've got a solid 3 to 4-hour window every day. If you aim for anywhere between 9:00 AM and 12:00 PM in New York, that's a very comfortable 2:00 PM to 5:00 PM in London." },
   { q: "How do I find a meeting time for San Francisco, London, and Dubai?", a: "This is where things get messy. When San Francisco is waking up at 8 AM, London is already packing up at 4 PM, and Dubai is having dinner at 8 PM. That 8 AM PST slot is basically your only window, and the folks in Dubai will have to take an evening call." },
   { q: "How does your meeting overlap tool actually work?", a: "It's simple: we take the standard 9-to-5 workday for every city you enter, convert them all into a single universal time format (UTC) in the background, and look for the exact hours where everyone's schedule overlaps. We highlight that 'green zone' for you instantly." },
-  { q: "Which time zones are the worst for East Coast US teams?", a: "India (IST) is tough because you only get a 30-minute window of real overlap. But Japan (JST) and Australia (AEST) are arguably the worst—there is literally zero overlap during normal business hours. You have to resort to evening calls or early mornings." },
+  { q: "Which time zones are the worst for East Coast US teams?", a: "New York and India have no shared 09:00–17:00 business hours. But Japan (JST) and Australia (AEST) are arguably the worst—there is literally zero overlap during normal business hours. You have to resort to evening calls or early mornings." },
   { q: "How should we handle Daylight Saving Time changes?", a: "The golden rule: never schedule a recurring meeting using a fixed UTC hour. Always pin it to a specific local time (like '10 AM New York time'). That way, when the clocks change, the meeting shifts naturally for the other side. And always communicate early when your local time is about to change, because Europe and the US change on different weeks!" },
 ];
 
 const OVERLAPS = [
-  { cities: ["New York", "London"], desc: "3-hour overlap window" },
-  { cities: ["San Francisco", "London", "Dubai"], desc: "1-hour overlap window" },
-  { cities: ["New York", "Mumbai"], desc: "30-minute overlap" },
-  { cities: ["London", "Singapore"], desc: "1-hour overlap window" },
+  { cities: ["New York", "London"], desc: "Check overlap for your meeting date" },
+  { cities: ["San Francisco", "London", "Dubai"], desc: "Check overlap for your meeting date" },
+  { cities: ["New York", "Mumbai"], desc: "Check overlap for your meeting date" },
+  { cities: ["London", "Singapore"], desc: "Check overlap for your meeting date" },
   { cities: ["New York", "Berlin", "Tokyo"], desc: "Find optimal slot" },
-  { cities: ["Sydney", "London"], desc: "1-hour overlap window" },
+  { cities: ["Sydney", "London"], desc: "Check overlap for your meeting date" },
 ];
 
 export default function MeetingPlannerPage() {

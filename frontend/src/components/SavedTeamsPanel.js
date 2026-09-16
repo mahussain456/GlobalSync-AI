@@ -57,37 +57,7 @@ export default function SavedTeamsPanel() {
     setIsPaid(paidStatus);
   }, []);
 
-  const toggleUpgrade = async () => {
-    if (isPaid) {
-      setIsPaid(false);
-      localStorage.setItem("gs_is_paid", "false");
-      toast.info("Switched to Free Tier (1 team limit, auto-slugs, branding active).");
-      return;
-    }
-
-    let email = "";
-    const storedUser = localStorage.getItem("gs_user");
-    if (storedUser) {
-      try {
-        const u = JSON.parse(storedUser);
-        if (u.email) email = u.email;
-      } catch {}
-    }
-    if (!email) {
-      email = syncEmail.trim() || creatorEmail.trim() || "upgrade@globalsync-pro.com";
-    }
-
-    try {
-      const res = await axios.post(`${API}/upgrade/checkout`, {
-        email: email,
-        plan_type: "monthly",
-        origin: window.location.origin
-      });
-      window.location.href = res.url;
-    } catch {
-      toast.error("Failed to redirect to simulated upgrade portal.");
-    }
-  };
+  const toggleUpgrade = () => navigate("/stripe-checkout");
 
   const handleCopyLink = (slug) => {
     const url = `${window.location.origin}/team/${slug}`;

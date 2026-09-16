@@ -21,9 +21,10 @@ export default function Dashboard() {
 
   useEffect(() => {
     const stored = localStorage.getItem("gs_user");
-    if (!stored) setShowOnboarding(true);
-    else setUser(JSON.parse(stored));
+    try { if (stored) setUser(JSON.parse(stored)); } catch { /* Continue as guest. */ }
   }, []);
+
+  useEffect(() => { setPendingQuery(searchParams.get("q") || ""); }, [searchParams]);
 
   const handleOnboardingComplete = (userData) => {
     setUser(userData);
@@ -35,10 +36,7 @@ export default function Dashboard() {
     const { intent, originalQuery } = result;
     if (intent === "currency_conversion") setActiveTab("currency");
     else if (intent === "time_conversion" || intent === "meeting_overlap") setActiveTab("time");
-    try {
-      const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
-      await axios.post(`${API}/history`, { query: originalQuery || "", intent, result: result.entities || {} });
-    } catch { /* non-critical */ }
+
   };
 
   return (
@@ -106,6 +104,7 @@ export default function Dashboard() {
           <div className="mb-6 fade-in-up">
             <AIInput
               onResult={handleAIResult}
+              key={searchParams.get("q") || "manual"}
               initialQuery={pendingQuery}
               autoSubmit={!!pendingQuery}
               onAutoSubmitDone={() => setPendingQuery("")}
@@ -182,8 +181,8 @@ export default function Dashboard() {
                 The best part about this tool is the AI input box right at the top. You don't have to click through clunky dropdown menus or manually select time zones. Just type what's on your mind. Trying to set up a group call? Literally just type <em>"Best meeting time for New York, Dubai, and Singapore"</em> and hit enter. The AI will instantly calculate the business hour overlap for all three cities and show you the perfect window to schedule your call.
               </p>
               <p>
-                <strong className="text-gem-beige block mb-1">Live currency conversions without the fluff</strong>
-                We also baked in live, mid-market exchange rates. As freelancers and remote workers, we're constantly dealing with cross-border payments, and knowing the exact rate is crucial. If you need to check how much 1,500 Euros is in USD today, just type <em>"1500 EUR to USD"</em>. The dashboard immediately flips to the Currency tab and gives you the exact conversion based on the latest global forex data. No annoying pop-ups, no confusing charts you don't need—just the actual numbers.
+                <strong className="text-gem-beige block mb-1">Currency conversion with dated reference rates</strong>
+                Currency tools show the provider and update time for reference rates. As freelancers and remote workers, we're constantly dealing with cross-border payments, and knowing the exact rate is crucial. If you need to check how much 1,500 Euros is in USD today, just type <em>"1500 EUR to USD"</em>. The dashboard immediately flips to the Currency tab and gives you the exact conversion based on the latest global forex data. Cached snapshots are labeled when current provider data is unavailable.
               </p>
               <p>
                 <strong className="text-gem-beige block mb-1">Save your brainpower for the work that matters</strong>

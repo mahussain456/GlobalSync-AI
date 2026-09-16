@@ -8,6 +8,8 @@
 
 **Deliverable:** Review and implementation plan only. No application changes.
 
+**Implementation follow-up:** [Completed repairs, validation and remaining production work](IMPLEMENTATION.md).
+
 ## Executive assessment
 
 GlobalSync AI has a recognizable green-and-gold identity and a useful combination of scheduling, currency, rate, and invoice tools. Its greatest opportunity is to help freelancers and small distributed teams complete an international-client workflow: find a fair meeting time, agree a rate, and create an invoice.

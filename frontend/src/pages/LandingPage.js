@@ -1,3 +1,4 @@
+import { getExchangeRate } from "@/lib/exchangeRates";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Globe, ArrowRight, Sun, Moon, CheckCircle2, DollarSign, Clock, Users, Sparkles, Map, TrendingUp } from "lucide-react";
@@ -9,9 +10,9 @@ import { getHomepageSEO } from "@/lib/seo";
 const HOMEPAGE_FAQ = [
   { q: "What is GlobalSync AI?", a: "GlobalSync AI is a free platform for remote teams and freelancers that combines a real-time world clock, time zone converter, AI-powered meeting planner, and live currency converter in one place. No signup or account required." },
   { q: "How does the time zone converter work?", a: "Our time zone converter uses the IANA Time Zone Database - the same authoritative source used by Linux, macOS, and most servers worldwide - to give you accurate, DST-aware conversions for any city or time zone in real time." },
-  { q: "How many currencies does GlobalSync AI support?", a: "We support 160+ currencies with live mid-market exchange rates updated continuously. Major pairs like USD/EUR, USD/INR, GBP/PKR and many more are available with 7-day trend charts." },
-  { q: "Is GlobalSync AI free to use?", a: "Yes, completely free. There is no signup, no premium tier, and no rate limits on any tool - including the AI assistant, time zone converter, meeting planner, and currency converter." },
-  { q: "What is the best time to meet between the US and India?", a: "Your best window is 8:00-9:30 AM Eastern Time (EST/EDT), which is 6:30-8:00 PM India Standard Time (IST). Outside this window, one party will be outside normal business hours. Use our Meeting Planner to find the optimal slot for your specific team." },
+  { q: "How many currencies does GlobalSync AI support?", a: "We support 160+ currencies using timestamped ExchangeRate-API reference snapshots. Rates are cached for up to one hour per browser session; cached build data is labeled when the provider is unavailable. Transfer providers may apply fees and different rates." },
+  { q: "Is GlobalSync AI free to use?", a: "Core time zone, meeting and currency tools are free to use without signup. Invoice exports and saved teams have limits shown in each tool. Pro upgrades are not currently available." },
+  { q: "What is the best time to meet between the US and India?", a: "New York and India have no shared 09:00–17:00 business hours. An early morning in New York is an evening in India; the difference changes with US daylight saving time. Select the meeting date and rotate out-of-hours calls fairly." },
 ];
 
 const SUPPORTED_CURRENCIES = [
@@ -147,18 +148,18 @@ function HeroWorldBoard() {
     <div className="hero-board-card col-span-1 md:col-span-2">
       <div className="hero-board-top">
         <div className="flex items-center gap-2.5 text-[#E9F1EC] text-sm font-semibold tracking-wide">
-          <Globe className="w-4 h-4 text-gem-gold animate-pulse" /> Live Hero Board
+          <Globe className="w-4 h-4 text-gem-gold animate-pulse" /> World clocks
         </div>
         <div className="hero-board-controls">
           <span>{boardCities.length}/4 cities</span>
-          <select onChange={addCity} defaultValue="" disabled={atLimit || availableCities.length === 0} aria-label="Add city to hero board" className="hero-board-select">
+          <select onChange={addCity} defaultValue="" disabled={atLimit || availableCities.length === 0} aria-label="Add city to world clocks" className="hero-board-select">
             <option value="">{atLimit ? "Remove one to add" : "Add city"}</option>
             {availableCities.map(city => <option key={city.id} value={city.id}>{city.city}</option>)}
           </select>
         </div>
       </div>
 
-      <div className="hero-board-map">
+      <div className="hero-board-map hidden sm:block">
         <div className="hero-board-grid" />
         <div className="hero-board-route hero-board-route-one" />
         <div className="hero-board-route hero-board-route-two" />
@@ -167,7 +168,6 @@ function HeroWorldBoard() {
             <span />
             <strong>{city.city}</strong>
             <small>{city.time} {city.ampm}</small>
-            <button type="button" onClick={() => removeCity(city.id)} disabled={boardCities.length <= 2} className="hero-board-remove" aria-label={"Remove " + city.city + " from hero board"}>Remove</button>
           </div>
         ))}
       </div>
@@ -184,7 +184,8 @@ function HeroWorldBoard() {
               <div className="text-2xl font-extrabold mt-1 tracking-tight">
                 {city.time} <span className="text-xs font-normal opacity-75">{city.ampm}</span>
               </div>
-              <div className="text-[10px] opacity-75 mt-1">{city.date}</div>
+              <div className="text-xs opacity-75 mt-1">{city.date}</div>
+              <button type="button" onClick={() => removeCity(city.id)} disabled={boardCities.length <= 2} aria-label={`Remove ${city.city}`} className="min-h-11 px-3 mt-2 text-xs underline disabled:opacity-40">Remove city</button>
             </div>
           );
         })}
@@ -200,44 +201,25 @@ export default function LandingPage() {
   const [currencyAmount, setCurrencyAmount] = useState("1250.00");
   const [currencyFrom, setCurrencyFrom] = useState("USD");
   const [currencyTo, setCurrencyTo] = useState("EUR");
-  const [currencyRate, setCurrencyRate] = useState(0.9266);
+  const [currencyRate, setCurrencyRate] = useState(null);
+
+  const [rateLabel, setRateLabel] = useState("Loading reference rate…");
 
   // Ask AI search query state
   const [aiQuery, setAiQuery] = useState("");
 
 
-  // Fetch live currency rates when currency inputs change
   useEffect(() => {
     if (!mounted) return;
-    
-    let isMounted = true;
-    const fetchRate = async () => {
-      try {
-        const res = await fetch(`https://open.exchangerate-api.com/v6/latest/${currencyFrom}`);
-        const data = await res.json();
-        if (isMounted && data?.rates && data.rates[currencyTo]) {
-          setCurrencyRate(data.rates[currencyTo]);
-        }
-      } catch (err) {
-        console.warn("Failed to fetch live currency rate", err);
-        const fallbackRates = {
-          USD: { EUR: 0.9266, GBP: 0.785, AUD: 1.51, CAD: 1.36, SGD: 1.35, USD: 1.0 },
-          EUR: { USD: 1.079, GBP: 0.847, AUD: 1.63, CAD: 1.47, SGD: 1.46, EUR: 1.0 },
-          GBP: { USD: 1.274, EUR: 1.18, AUD: 1.92, CAD: 1.73, SGD: 1.72, GBP: 1.0 },
-          AUD: { USD: 0.662, EUR: 0.613, GBP: 0.521, CAD: 0.901, SGD: 0.894, AUD: 1.0 },
-          CAD: { USD: 0.735, EUR: 0.68, GBP: 0.578, AUD: 1.11, SGD: 0.993, CAD: 1.0 },
-          SGD: { USD: 0.741, EUR: 0.685, GBP: 0.581, AUD: 1.12, CAD: 1.01, SGD: 1.0 }
-        };
-        if (isMounted) {
-          const fromRates = fallbackRates[currencyFrom] || {};
-          const rate = fromRates[currencyTo] || 1.0;
-          setCurrencyRate(rate);
-        }
-      }
-    };
-
-    fetchRate();
-    return () => { isMounted = false; };
+    let active = true;
+    setCurrencyRate(null);
+    setRateLabel("Loading reference rate…");
+    getExchangeRate(currencyFrom, currencyTo).then(data => {
+      if (!active) return;
+      setCurrencyRate(data.rate);
+      setRateLabel((data.isFallback ? "Cached · " : "") + data.source + " · " + data.date);
+    }).catch(() => { if (active) setRateLabel("Rate unavailable. Please try again later."); });
+    return () => { active = false; };
   }, [currencyFrom, currencyTo, mounted]);
   useEffect(() => {
     if (typeof navigator !== "undefined" && navigator.userAgent === "ReactSnap") return;
@@ -277,33 +259,28 @@ export default function LandingPage() {
           
           {/* Left Column: Copy */}
           <div className="lg:col-span-5 z-20 pt-0 lg:pt-2">
-            <div className="inline-block border border-gem-gold/45 bg-[#0e2a1f]/55 text-gem-gold rounded-full px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] mb-7 backdrop-blur-md">
-              <Sparkles className="w-3 h-3 inline-block mr-1.5 -mt-0.5" />
-              AI-Powered. Globally Minded.
-            </div>
 
-            <h1 className="font-serif text-[clamp(2.8rem,5.5vw,5.5rem)] leading-[0.95] tracking-[-0.04em] font-semibold text-[#E9F1EC] mb-6">
-              Time Zone Converter, World Clock &<br />
-              <span className="text-gem-gold italic">Currency Tools</span><br />
-              for Remote Teams
+            <h1 className="font-serif text-[clamp(2.6rem,4.5vw,4.5rem)] leading-[0.95] tracking-[-0.04em] font-semibold text-[#E9F1EC] mb-6">
+              Work across time zones.<br />
+              <span className="text-gem-gold italic">Keep clients in sync.</span>
             </h1>
 
             <p className="text-[17px] leading-[1.65] text-[#F4EFE6]/75 max-w-[480px] mb-8">
-              Free AI-powered world clock, meeting planner, and live currency converter for remote teams. Sync across 160+ currencies and any global time zone instantly. Time zones are hard. Let AI do the math so you can focus on the work.
+              Find a fair meeting time, check a currency rate, and prepare your next client invoice. Practical tools for freelancers and teams working across borders.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-12">
-              <Link to="/time-zone-converter" className="w-full sm:w-auto btn-primary flex items-center justify-center gap-2 text-[15px]">
-                Timezone Converter <Clock className="w-4 h-4" />
+              <Link to="/meeting-planner" className="w-full sm:w-auto btn-primary flex items-center justify-center gap-2 text-[15px]">
+                Find a meeting time <Clock className="w-4 h-4" />
               </Link>
-              <Link to="/currency-converter" className="w-full sm:w-auto btn-secondary flex items-center justify-center gap-2.5 text-[15px] group">
-                Currency Converter <DollarSign className="w-4 h-4 text-gem-gold" />
+              <Link to="/freelancer-rate-converter" className="w-full sm:w-auto btn-secondary flex items-center justify-center gap-2.5 text-[15px] group">
+                Explore freelance tools <DollarSign className="w-4 h-4 text-gem-gold" />
               </Link>
             </div>
           </div>
 
           {/* Right Column: Live Hero Board + Existing Tools */}
-          <div className="lg:col-span-7 w-full hidden lg:block z-20">
+          <div className="lg:col-span-7 w-full z-20">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
               <HeroWorldBoard />
 
@@ -313,7 +290,7 @@ export default function LandingPage() {
                   <div className="flex items-center gap-2 text-sm font-bold tracking-wide">
                     <DollarSign className="w-4 h-4 text-gem-forest" /> Currency Exchange
                   </div>
-                  <span className="text-[9px] font-bold uppercase tracking-wider bg-gem-forest/10 px-2 py-0.5 rounded text-gem-forest">Live conversion</span>
+                  <span className="text-[9px] font-bold uppercase tracking-wider bg-gem-forest/10 px-2 py-0.5 rounded text-gem-forest">Reference rate</span>
                 </div>
                 
                 <div className="space-y-4">
@@ -324,7 +301,7 @@ export default function LandingPage() {
                         <div className="relative inline-block cursor-pointer">
                           {mounted ? (
                             <select
-                              value={currencyFrom}
+                              aria-label="From currency" value={currencyFrom}
                               onChange={(e) => setCurrencyFrom(e.target.value)}
                               className="appearance-none bg-transparent border-none p-0 pr-4 font-bold text-sm text-[#0E2A1F] focus:outline-none focus:ring-0 cursor-pointer"
                             >
@@ -342,7 +319,7 @@ export default function LandingPage() {
                     {mounted ? (
                       <input
                         type="text"
-                        value={currencyAmount}
+                        aria-label="Amount to convert" value={currencyAmount}
                         onChange={(e) => {
                           const val = e.target.value.replace(/[^0-9.]/g, '');
                           setCurrencyAmount(val);
@@ -361,7 +338,7 @@ export default function LandingPage() {
                         <div className="relative inline-block cursor-pointer">
                           {mounted ? (
                             <select
-                              value={currencyTo}
+                              aria-label="To currency" value={currencyTo}
                               onChange={(e) => setCurrencyTo(e.target.value)}
                               className="appearance-none bg-transparent border-none p-0 pr-4 font-bold text-sm text-[#0E2A1F] focus:outline-none focus:ring-0 cursor-pointer"
                             >
@@ -377,20 +354,20 @@ export default function LandingPage() {
                       </div>
                     </div>
                     <div className="text-xl font-extrabold tracking-tight text-[#0E2A1F]">
-                      {mounted ? (receiveAmount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })) : "1,158.24"}
+                      {currencyRate !== null ? receiveAmount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "—"}
                     </div>
                   </div>
                 </div>
                 
                 <div className="mt-4 flex items-center justify-between text-[11px] font-bold text-[#1B4D3E]/60 border-t border-[#1B4D3E]/10 pt-4">
                   <div className="flex items-center gap-1.5">
-                    <span>1 {mounted ? currencyFrom : "USD"} = {mounted ? currencyRate.toFixed(4) : "0.9266"} {mounted ? currencyTo : "EUR"}</span>
+                    <span aria-live="polite">{currencyRate !== null ? `1 ${currencyFrom} = ${currencyRate.toFixed(4)} ${currencyTo}` : "Reference rate unavailable"}<br />{rateLabel}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <svg width="40" height="12" viewBox="0 0 48 16" fill="none" className="opacity-50">
                       <path d="M0 12 L4 10 L8 11 L12 8 L16 9 L20 6 L24 7 L28 4 L32 5 L36 3 L40 5 L44 4 L48 2" stroke="#C8A96A" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                    <span className="flex items-center gap-1 bg-white px-2 py-0.5 rounded-full shadow-sm text-[9px] border border-[#1B4D3E]/5"><div className="w-1.5 h-1.5 rounded-full bg-gem-forest animate-pulse"></div> Live</span>
+                    <span className="flex items-center gap-1 bg-white px-2 py-0.5 rounded-full shadow-sm text-[9px] border border-[#1B4D3E]/5"><div className="w-1.5 h-1.5 rounded-full bg-gem-forest animate-pulse"></div> Reference</span>
                   </div>
                 </div>
               </div>
@@ -409,13 +386,14 @@ export default function LandingPage() {
                 <div className="bg-[#E9F1EC] rounded-2xl relative border border-[#1B4D3E]/10 shadow-inner overflow-hidden mt-auto">
                   {mounted ? (
                     <textarea
-                      placeholder="What's the best time to meet between NY, London, and Singapore next week?"
+                      aria-label="Describe a meeting or conversion"
+                      placeholder="Best meeting time for New York, London and Singapore"
                       value={aiQuery}
                       onChange={(e) => setAiQuery(e.target.value)}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
                           e.preventDefault();
-                          const query = aiQuery.trim() || "What's the best time to meet between NY, London, and Singapore next week?";
+                          const query = aiQuery.trim() || "Best meeting time for New York, London and Singapore";
                           navigate(`/dashboard?q=${encodeURIComponent(query)}`);
                         }
                       }}
@@ -423,12 +401,13 @@ export default function LandingPage() {
                     />
                   ) : (
                     <div className="text-[13px] font-medium text-[#1B4D3E] leading-relaxed py-4 pl-4 pr-12 select-none h-32">
-                      "What's the best time to meet between NY, London, and Singapore next week?"
+                      "Best meeting time for New York, London and Singapore"
                     </div>
                   )}
                   <button
+                    aria-label="Find an answer in the workspace"
                     onClick={() => {
-                      const query = aiQuery.trim() || "What's the best time to meet between NY, London, and Singapore next week?";
+                      const query = aiQuery.trim() || "Best meeting time for New York, London and Singapore";
                       navigate(`/dashboard?q=${encodeURIComponent(query)}`);
                     }}
                     className="absolute right-3.5 bottom-3.5 w-10 h-10 rounded-full bg-[#0E2A1F] flex items-center justify-center hover:bg-[#1B4D3E] cursor-pointer transition-colors shadow-lg border-none"
@@ -472,8 +451,8 @@ export default function LandingPage() {
               <DollarSign className="w-7 h-7 text-[#1B4D3E]" />
             </div>
             <div>
-              <h3 className="font-bold text-lg mb-1.5">Live Currency</h3>
-              <p className="text-[15px] font-medium opacity-70 leading-snug">Real-time exchange rates with no hidden fees.</p>
+              <h3 className="font-bold text-lg mb-1.5">Currency rates</h3>
+              <p className="text-[15px] font-medium opacity-70 leading-snug">Reference exchange rates before transfer fees.</p>
             </div>
           </div>
 
@@ -500,7 +479,7 @@ export default function LandingPage() {
                <Clock className="w-10 h-10 text-[#1B4D3E] mb-6" />
                <h3 className="text-2xl font-bold mb-3">Time Zone Converter</h3>
                <p className="text-[#1B4D3E]/70 font-medium mb-8 leading-relaxed">Compare multiple cities instantly and understand the exact local time for every participant.</p>
-               <div className="text-[#C8A96A] font-bold flex items-center gap-2 group-hover:gap-3 transition-all">Open tool <ArrowRight className="w-4 h-4" /></div>
+               <div className="text-current font-bold flex items-center gap-2 group-hover:gap-3 transition-all">Open tool <ArrowRight className="w-4 h-4" /></div>
             </Link>
             
             <Link to="/meeting-planner" className="group p-10 rounded-[32px] bg-[#0E2A1F] text-white hover:border-[#C8A96A]/50 border border-transparent transition-all hover:shadow-xl relative overflow-hidden">
@@ -508,7 +487,7 @@ export default function LandingPage() {
                <Map className="w-10 h-10 text-[#C8A96A] mb-6" />
                <h3 className="text-2xl font-bold mb-3">Meeting Overlap Finder</h3>
                <p className="text-[#A7BFAE] font-medium mb-8 leading-relaxed">Find the most respectful time slots across regions without forcing someone into midnight meetings.</p>
-               <div className="text-[#C8A96A] font-bold flex items-center gap-2 group-hover:gap-3 transition-all">Open tool <ArrowRight className="w-4 h-4" /></div>
+               <div className="text-current font-bold flex items-center gap-2 group-hover:gap-3 transition-all">Open tool <ArrowRight className="w-4 h-4" /></div>
             </Link>
             
             <Link to="/currency-converter" className="group p-10 rounded-[32px] bg-[#0E2A1F] text-white hover:border-[#C8A96A]/50 border border-transparent transition-all hover:shadow-xl relative overflow-hidden">
@@ -516,14 +495,14 @@ export default function LandingPage() {
                <TrendingUp className="w-10 h-10 text-[#C8A96A] mb-6" />
                <h3 className="text-2xl font-bold mb-3">Currency Converter</h3>
                <p className="text-[#A7BFAE] font-medium mb-8 leading-relaxed">Convert live exchange rates for invoices, travel, consulting, and international planning.</p>
-               <div className="text-[#C8A96A] font-bold flex items-center gap-2 group-hover:gap-3 transition-all">Open tool <ArrowRight className="w-4 h-4" /></div>
+               <div className="text-current font-bold flex items-center gap-2 group-hover:gap-3 transition-all">Open tool <ArrowRight className="w-4 h-4" /></div>
             </Link>
             
             <Link to="/dashboard" className="group p-10 rounded-[32px] bg-white hover:bg-[#E9F1EC] transition-all border border-[#0E2A1F]/5 hover:border-[#C8A96A]/50 hover:shadow-xl">
                <Sparkles className="w-10 h-10 text-[#1B4D3E] mb-6" />
                <h3 className="text-2xl font-bold mb-3">AI Global Assistant</h3>
                <p className="text-[#1B4D3E]/70 font-medium mb-8 leading-relaxed">Type a real-world question and get a direct answer without switching tabs or doing mental math.</p>
-               <div className="text-[#C8A96A] font-bold flex items-center gap-2 group-hover:gap-3 transition-all">Open tool <ArrowRight className="w-4 h-4" /></div>
+               <div className="text-current font-bold flex items-center gap-2 group-hover:gap-3 transition-all">Open tool <ArrowRight className="w-4 h-4" /></div>
             </Link>
           </div>
           
@@ -559,7 +538,7 @@ export default function LandingPage() {
                 <li><Link to="/currency/usd-to-eur" className="text-[#1B4D3E] hover:text-[#C8A96A] transition-colors font-medium">USD to EUR</Link></li>
               </ul>
               <div className="mt-8 text-[13px] opacity-70">
-                Live exchange rates powered by the <a href="https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html" target="_blank" rel="noopener noreferrer" className="underline hover:text-gem-gold">European Central Bank</a>.
+                Reference rates powered by <a href="https://www.exchangerate-api.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-gem-gold">ExchangeRate-API</a>.
               </div>
             </div>
           </div>
@@ -568,12 +547,15 @@ export default function LandingPage() {
       </div>
       
       <div className="bg-[#0A1E16]">
-        <SiteFooter />
+        <section className="max-w-4xl mx-auto px-6 py-16" aria-labelledby="home-faq">
+        <h2 id="home-faq" className="font-serif text-3xl mb-8">Before you get started</h2>
+        {HOMEPAGE_FAQ.map(({q, a}) => <details key={q} className="border-b border-white/15 py-5"><summary className="cursor-pointer font-semibold text-gem-beige">{q}</summary><p className="text-gem-sage leading-relaxed mt-3 max-w-prose">{a}</p></details>)}
+      </section>
+      <SiteFooter />
       </div>
     </div>
   );
 }
-
 
 
 

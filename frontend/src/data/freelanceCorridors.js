@@ -13,7 +13,7 @@ export const CORRIDORS = [
     title: 'USD to INR Freelance Rate Calculator',
     marketContext: 'India is the largest global market for freelance software development, design, and IT services billing US clients in USD.',
     defaultHourly: 40,
-    purchasingPowerContext: '⚠️ TODO: Write 2-3 sentences on what converted USD income means in India (local cost of living, tier-1 vs tier-2 city purchasing power, middle-class income benchmarks).',
+    purchasingPowerContext: '',
   },
   {
     slug: 'usd-to-php',
@@ -24,7 +24,7 @@ export const CORRIDORS = [
     title: 'USD to PHP Freelance Rate Calculator',
     marketContext: 'The Philippines is the leading destination for virtual assistants, digital marketing, customer support, and design contractors serving US clients.',
     defaultHourly: 25,
-    purchasingPowerContext: '⚠️ TODO: Write 2-3 sentences on purchasing power of USD earnings in the Philippines (Manila/Cebu cost of living, VA rate norms, household income comparison).',
+    purchasingPowerContext: '',
   },
   {
     slug: 'usd-to-pkr',
@@ -35,7 +35,7 @@ export const CORRIDORS = [
     title: 'USD to PKR Freelance Rate Calculator',
     marketContext: 'Pakistan is one of the fastest-growing freelance markets for software engineering, web development, and digital services billing US clients in USD.',
     defaultHourly: 30,
-    purchasingPowerContext: '⚠️ TODO: Write 2-3 sentences on purchasing power of USD in Pakistan (hedging against PKR inflation, tech salary benchmarks in Karachi/Lahore).',
+    purchasingPowerContext: '',
   },
   {
     slug: 'usd-to-eur',
@@ -46,7 +46,7 @@ export const CORRIDORS = [
     title: 'USD to EUR Freelance Rate Calculator',
     marketContext: 'European contractors billing US tech startups and enterprises in USD require clear conversion strategies to manage tax and living expenses in Euros.',
     defaultHourly: 75,
-    purchasingPowerContext: '⚠️ TODO: Write 2-3 sentences on USD to EUR freelance considerations (social security contributions, VAT/IVA rules, currency risk for EU contractors).',
+    purchasingPowerContext: '',
   },
   {
     slug: 'usd-to-gbp',
@@ -57,7 +57,7 @@ export const CORRIDORS = [
     title: 'USD to GBP Freelance Rate Calculator',
     marketContext: 'UK contractors and boutique consultancies billing US clients in USD must account for GBP conversion margins, IR35 considerations, and UK corporate tax.',
     defaultHourly: 85,
-    purchasingPowerContext: '⚠️ TODO: Write 2-3 sentences on USD to GBP freelance considerations (UK tax thresholds, Wise/bank conversion fees, London vs regional cost of living).',
+    purchasingPowerContext: '',
   },
   {
     slug: 'usd-to-brl',
@@ -68,7 +68,7 @@ export const CORRIDORS = [
     title: 'USD to BRL Freelance Rate Calculator',
     marketContext: 'Brazil is a primary nearshore tech talent hub for US companies seeking senior software engineers in overlapping time zones.',
     defaultHourly: 50,
-    purchasingPowerContext: '⚠️ TODO: Write 2-3 sentences on USD to BRL purchasing power in Brazil (PJ vs CLT tax structure, São Paulo/Florianópolis tech income levels).',
+    purchasingPowerContext: '',
   },
   {
     slug: 'usd-to-mxn',
@@ -79,7 +79,7 @@ export const CORRIDORS = [
     title: 'USD to MXN Freelance Rate Calculator',
     marketContext: 'Mexico offers optimal nearshore alignment with US Central/Mountain time zones for software development, design, and engineering roles.',
     defaultHourly: 45,
-    purchasingPowerContext: '⚠️ TODO: Write 2-3 sentences on USD to MXN purchasing power in Mexico (Guadalajara/CDMX tech hubs, RESICO tax framework, USD stability).',
+    purchasingPowerContext: '',
   },
   {
     slug: 'usd-to-ngn',
@@ -90,7 +90,7 @@ export const CORRIDORS = [
     title: 'USD to NGN Freelance Rate Calculator',
     marketContext: 'Nigeria has a rapidly expanding ecosystem of software developers, product designers, and technical writers earning USD from global remote employers.',
     defaultHourly: 35,
-    purchasingPowerContext: '⚠️ TODO: Write 2-3 sentences on USD earnings in Nigeria (Lagos tech ecosystem, official vs parallel rates, hedging local currency risks).',
+    purchasingPowerContext: '',
   },
   {
     slug: 'usd-to-cad',
@@ -101,7 +101,7 @@ export const CORRIDORS = [
     title: 'USD to CAD Freelance Rate Calculator',
     marketContext: 'Canadian freelancers frequently work with US clients due to geographic proximity, shared business hours, and favorable USD-CAD conversion rates.',
     defaultHourly: 70,
-    purchasingPowerContext: '⚠️ TODO: Write 2-3 sentences on USD to CAD freelance dynamics (GST/HST registration for US export services, Canadian sole-prop tax rates).',
+    purchasingPowerContext: '',
   },
   {
     slug: 'eur-to-inr',
@@ -112,7 +112,7 @@ export const CORRIDORS = [
     title: 'EUR to INR Freelance Rate Calculator',
     marketContext: 'European enterprises in Germany, Netherlands, and France frequently outsource software engineering and digital services to Indian tech professionals.',
     defaultHourly: 45,
-    purchasingPowerContext: '⚠️ TODO: Write 2-3 sentences on EUR to INR freelance corridor (EU client payment rails, SEPA transfer handling, local Rupee conversion).',
+    purchasingPowerContext: '',
   },
   {
     slug: 'gbp-to-inr',
@@ -123,7 +123,7 @@ export const CORRIDORS = [
     title: 'GBP to INR Freelance Rate Calculator',
     marketContext: 'The UK-India business corridor is one of the oldest outsourcing channels for software development, accounting, and legal process outsourcing.',
     defaultHourly: 50,
-    purchasingPowerContext: '⚠️ TODO: Write 2-3 sentences on GBP to INR conversion (UK client payment norms, Wise vs bank SWIFT fees, Rupee value).',
+    purchasingPowerContext: '',
   },
   {
     slug: 'usd-to-vnd',
@@ -134,7 +134,7 @@ export const CORRIDORS = [
     title: 'USD to VND Freelance Rate Calculator',
     marketContext: 'Vietnam is a major Southeast Asian hub for mobile app development, game design, and software engineering teams billing in US Dollars.',
     defaultHourly: 30,
-    purchasingPowerContext: '⚠️ TODO: Write 2-3 sentences on USD to VND purchasing power in Vietnam (Ho Chi Minh City / Da Nang cost of living, developer income brackets).',
+    purchasingPowerContext: '',
   },
 ];
 

@@ -24,7 +24,7 @@ export default function SiteNav() {
   }, []);
 
   return (
-    <header className={`sticky top-0 z-50 border-b border-[#D9BC72]/10 bg-[#071611]/88 backdrop-blur-xl transition-all duration-300 ${scrolled ? "shadow-[0_10px_40px_rgba(0,0,0,0.22)]" : ""}`}>
+    <header className={`sticky top-0 z-50 border-b border-[#D9BC72]/10 bg-[#071611] transition-all duration-300 ${scrolled ? "shadow-[0_10px_40px_rgba(0,0,0,0.22)]" : ""}`}>
       <nav className="mx-auto flex h-20 max-w-[1440px] items-center justify-between gap-4 px-5 md:px-8">
         <Link to="/" className="shrink-0 flex items-center gap-2 group">
           <img
@@ -39,7 +39,7 @@ export default function SiteNav() {
         </Link>
 
         {/* Desktop nav links */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden xl:flex items-center gap-1">
           {NAV_LINKS.map(({ label, to }) => (
             <Link
               key={to}
@@ -62,12 +62,13 @@ export default function SiteNav() {
             to="/dashboard"
             className="hidden sm:flex items-center gap-1.5 rounded-xl bg-[#D9BC72] px-5 py-2.5 text-[#071611] text-sm font-bold hover:opacity-90 shadow-[0_4px_14px_rgba(200,169,106,0.15)] hover:shadow-[0_6px_20px_rgba(200,169,106,0.25)] transition-all"
           >
-            Open <ArrowRight className="w-3.5 h-3.5" />
+            Open workspace <ArrowRight className="w-3.5 h-3.5" />
           </Link>
           <button
-            className="md:hidden p-2 rounded-lg text-gem-beige/60 hover:bg-white/10 transition-colors"
+            className="xl:hidden p-2 rounded-lg text-gem-beige/60 hover:bg-white/10 transition-colors"
             onClick={() => setMobileOpen(v => !v)}
             aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -76,7 +77,7 @@ export default function SiteNav() {
 
       {/* Mobile drawer */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-white/10 bg-[#071611] px-6 py-4 flex flex-col gap-2 shadow-2xl">
+        <div className="xl:hidden border-t border-white/10 bg-[#071611] px-6 py-4 flex flex-col gap-2 shadow-2xl">
           {NAV_LINKS.map(({ label, to }) => (
             <Link
               key={to}
@@ -95,7 +96,7 @@ export default function SiteNav() {
             onClick={() => setMobileOpen(false)}
             className="mt-2 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gem-gold text-gem-forest text-sm font-bold hover:opacity-90 transition-all"
           >
-            Open <ArrowRight className="w-3.5 h-3.5" />
+            Open workspace <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       )}

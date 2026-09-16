@@ -63,6 +63,7 @@ export default function SEOHead({
   twitterTitle,
   twitterDescription,
   structuredData,
+  schema,
   noIndex = false,
   author,
 }) {
@@ -74,7 +75,8 @@ export default function SEOHead({
   const ogDescText = formatCharLength(ogDescription || normalizedDescription, 158);
   const twitterTitleText = formatCharLength(twitterTitle || fullTitle, 55);
   const twitterDescriptionText = formatCharLength(twitterDescription || normalizedDescription, 125);
-  const fullCanonical = canonical ? `${BASE_URL}${canonical}` : BASE_URL;
+  const fullCanonical = canonical ? new URL(canonical, BASE_URL).href : `${BASE_URL}/`;
+  structuredData = structuredData || schema;
 
   const schemaOutput = structuredData
     ? Array.isArray(structuredData)
@@ -117,8 +119,6 @@ export default function SEOHead({
       <meta name="twitter:creator"     content="@GlobalSyncAI"       />
       <meta name="twitter:title"       content={twitterTitleText}     />
       <meta name="twitter:description" content={twitterDescriptionText} />
-      <meta name="twitter:image"       content={dynamicOgImage}       />
-      <meta name="twitter:image:alt"   content={`${BRAND} — Free Time Zone & Currency Converter`} />
       <meta name="twitter:image"       content={dynamicOgImage}       />
       <meta name="twitter:image:alt"   content={`${BRAND} — Free Time Zone & Currency Converter`} />
 

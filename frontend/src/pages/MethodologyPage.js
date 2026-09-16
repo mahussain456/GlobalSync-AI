@@ -87,7 +87,7 @@ export default function MethodologyPage() {
           <h2 className="font-heading text-base font-bold text-gem-beige mb-4">Data Sources and Methodology Overview</h2>
           <div className="space-y-3">
             <InfoCard label="Time Zones" value="IANA Time Zone Database (TZDB) — the global standard used by all major operating systems" />
-            <InfoCard label="Exchange Rates" value="Live market rates via European Central Bank (ECB) and supplementary providers, fetched in real time" />
+            <InfoCard label="Exchange Rates" value="Timestamped ExchangeRate-API snapshots shared across conversion tools" />
             <InfoCard label="AI Engine" value="Anthropic Claude (claude-3-5-sonnet) — used for natural language queries in the AI assistant" />
             <InfoCard label="Rate Updates" value="Currency rates: real-time on every query. Time zone rules: on every IANA TZDB release." />
           </div>
@@ -112,13 +112,13 @@ export default function MethodologyPage() {
         <Section icon={DollarSign} color="emerald" title="Currency Exchange Rates">
           <p>
             Live exchange rates displayed on GlobalSync AI are fetched in real time from our backend, which aggregates data from the{" "}
-            <strong className="text-gem-beige">European Central Bank (ECB)</strong> reference rates and supplementary market data providers.
+            <strong className="text-gem-beige">ExchangeRate-API</strong> reference snapshots. These estimates are not executable transfer quotes.
           </p>
           <p>
             <strong className="text-gem-beige">Rate type:</strong> We display the <em>mid-market rate</em> — the midpoint between the buy and sell rates used in interbank trading. This is the most accurate benchmark for the true value of a currency pair. It is not the rate you will receive from a bank, payment app, or money transfer service, which will apply their own margin on top.
           </p>
           <p>
-            <strong className="text-gem-beige">Update frequency:</strong> Rates are fetched live on each query from the currency converter or currency pair pages. There is no cached "daily rate" — each page load requests the current market rate.
+            <strong className="text-gem-beige">Update frequency:</strong> Converters share an ExchangeRate-API reference snapshot, cached for up to one hour in your browser. The provider update timestamp is shown with each result. When the provider is unavailable, a dated build snapshot is explicitly labeled cached. Reference rates are not executable transfer quotes.
           </p>
           <p>
             <strong className="text-gem-beige">Coverage:</strong> Our converter supports 160+ currencies including major, minor, and emerging market currencies. Exotic or illiquid currency pairs may have less precise rate data than major pairs (e.g., USD/EUR, GBP/INR).

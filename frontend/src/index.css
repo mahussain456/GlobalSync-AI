@@ -107,3 +107,10 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   animation: logoGlowPulse 4s infinite ease-in-out;
 }
 
+
+/* Accessible controls across the existing green, gold and ivory palette. */
+:where(a, button, input, select, textarea, [role="button"]):focus-visible { outline: 3px solid #C8A96A !important; outline-offset: 4px; }
+::selection { background: #C8A96A; color: #071611; }
+input, textarea { caret-color: #C8A96A; }
+@media (max-width: 640px) { input, select, textarea { font-size: 16px !important; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }

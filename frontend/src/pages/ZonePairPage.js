@@ -1,3 +1,4 @@
+import { ABBREVIATION_OFFSETS, convertFixedTime } from "@/lib/timeCalculations";
 import { useState, useMemo } from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
 import { Clock, ArrowRight, AlertCircle, CheckCircle2, Sun, Moon, ChevronDown, ChevronUp } from "lucide-react";
@@ -25,59 +26,22 @@ function ZoneWidget({ zonePair }) {
 
   const converted = useMemo(() => {
     try {
-      const [year, month, day] = inputDate.split("-").map(Number);
-      const [hour, minute] = inputTime.split(":").map(Number);
-      // Construct an instant in the "from" zone at the given wall-clock time
-      const dtStr = `${inputDate}T${inputTime}:00`;
-      const fromParts = new Intl.DateTimeFormat("sv-SE", {
-        timeZone: zonePair.fromIANA,
-        year: "numeric", month: "2-digit", day: "2-digit",
-        hour: "2-digit", minute: "2-digit", second: "2-digit",
-      });
-      // Find UTC that gives this wall-clock in fromIANA using binary approach
-      // Simpler: compute offset and apply it
-      const fromOffsetMs = (function () {
-        const probe = new Date(`${inputDate}T12:00:00Z`);
-        const s = new Intl.DateTimeFormat("sv-SE", { timeZone: zonePair.fromIANA,
-          year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"
-        }).format(probe);
-        return new Date(s.replace(" ","T")+"Z").getTime() - probe.getTime();
-      })();
-
-      const wallClockMs = new Date(`${inputDate}T${inputTime}:00Z`).getTime();
-      const utcMs = wallClockMs - fromOffsetMs;
-      const utcDate = new Date(utcMs);
-
-      const toTime = new Intl.DateTimeFormat("en-US", {
-        timeZone: zonePair.toIANA,
-        hour: "2-digit", minute: "2-digit", hour12: true,
-      }).format(utcDate);
-
-      const toDateStr = new Intl.DateTimeFormat("en-US", {
-        timeZone: zonePair.toIANA,
-        weekday: "short", month: "short", day: "numeric",
-      }).format(utcDate);
-
-      const fromDayNum = new Date(`${inputDate}T12:00:00Z`).getUTCDate();
-      const toDayNum = utcDate.toLocaleDateString("en-CA", { timeZone: zonePair.toIANA }).split("-")[2];
-      const dayDiff = parseInt(toDayNum, 10) - fromDayNum;
-
-      return { toTime, toDateStr, dayDiff };
+      return convertFixedTime(inputDate, inputTime, zonePair.from, zonePair.to);
     } catch (_) {
       return null;
     }
-  }, [inputTime, inputDate, zonePair.fromIANA, zonePair.toIANA]);
+  }, [inputTime, inputDate, zonePair.from, zonePair.to]);
 
   return (
     <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8">
       <h2 className="font-heading text-lg font-semibold text-gem-beige mb-4">
-        Convert a specific time
+        Convert a fixed abbreviation time
       </h2>
       <div className="flex flex-wrap gap-4 items-end mb-4">
         <div>
           <label className="block text-xs text-gem-sage mb-1">Date</label>
           <input
-            type="date"
+            aria-label="Conversion date" type="date"
             value={inputDate}
             onChange={e => setInputDate(e.target.value)}
             className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-gem-beige text-sm focus:outline-none focus:border-gem-gold/50"
@@ -86,7 +50,7 @@ function ZoneWidget({ zonePair }) {
         <div>
           <label className="block text-xs text-gem-sage mb-1">Time in {zonePair.from}</label>
           <input
-            type="time"
+            aria-label="Time to convert" type="time"
             value={inputTime}
             onChange={e => setInputTime(e.target.value)}
             className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-gem-beige text-sm focus:outline-none focus:border-gem-gold/50"
@@ -150,14 +114,14 @@ export default function ZonePairPage() {
   const context  = getPairContext(pair);
 
   // Core computations (static — react-snap captures these as HTML)
-  const diffMinutes   = getOffsetDiff(fromIANA, toIANA);
+  const diffMinutes   = ABBREVIATION_OFFSETS[to] - ABBREVIATION_OFFSETS[from];
   const offsetSentence = formatOffsetDescription(from, to, diffMinutes);
-  const table24h       = generate24hTable(fromIANA, toIANA);
-  const overlap        = computeBusinessOverlap(fromIANA, toIANA);
+  const table24h       = Array.from({length: 24}, (_, hour) => { const minutes = ((hour * 60 + diffMinutes) % 1440 + 1440) % 1440; return {fromTime: `${String(hour).padStart(2,"0")}:00`, toTime: `${String(Math.floor(minutes/60)).padStart(2,"0")}:${String(minutes%60).padStart(2,"0")}`}; });
+  const overlap        = computeBusinessOverlap(fromIANA, toIANA, new Date("2026-01-12T12:00:00Z"), ABBREVIATION_OFFSETS[from], ABBREVIATION_OFFSETS[to]);
   const relatedPairs   = getRelatedPairs(pair, 6);
 
-  const fromOffsetStr = formatUTCOffset((fromMeta.stdOffsetHours ?? 0) * 60);
-  const toOffsetStr   = formatUTCOffset((toMeta.stdOffsetHours   ?? 0) * 60);
+  const fromOffsetStr = formatUTCOffset(ABBREVIATION_OFFSETS[from]);
+  const toOffsetStr   = formatUTCOffset(ABBREVIATION_OFFSETS[to]);
 
   // SEO copy
   const absDiffHours = Math.floor(Math.abs(diffMinutes) / 60);
@@ -265,7 +229,7 @@ export default function ZonePairPage() {
           </h2>
           <p className="text-gem-sage text-sm mb-4">
             The table below shows what time it is in {toMeta.fullName ?? to} for every hour of the day in {fromMeta.fullName ?? from},
-            based on standard (non-DST) offsets. See the DST section below for how seasonal changes affect these times.
+            using the fixed UTC offsets named by these abbreviations. A city may use a different abbreviation during daylight saving time.
           </p>
           <div className="overflow-x-auto rounded-2xl border border-white/10">
             <table className="w-full text-sm">
@@ -309,7 +273,7 @@ export default function ZonePairPage() {
             </table>
           </div>
           <p className="text-xs text-gem-sage/50 mt-2 italic">
-            Green rows indicate hours where both zones fall within 09:00–17:00 business hours. Table uses standard (non-DST) offsets; actual times shift by 1 hour during DST transitions.
+            Green rows indicate hours where both zones fall within 09:00–17:00 business hours. Abbreviations use their fixed UTC offsets. For a city that observes daylight saving, use the date-aware meeting planner.
           </p>
         </section>
 
@@ -518,39 +482,7 @@ function buildFAQ({ from, to, fromMeta, toMeta, diffMinutes, overlap, fromAbbrNo
     },
   ];
 
-  if (fromMeta.observesDST && !toMeta.observesDST) {
-    items.push({
-      question: `Does ${from} observe Daylight Saving Time?`,
-      answer: `Yes. ${fromMeta.fullName ?? from} moves from ${formatUTCOffset((fromMeta.stdOffsetHours ?? 0) * 60)} to ${formatUTCOffset((fromMeta.dstOffsetHours ?? 0) * 60)} in ${fromMeta.dstStart}. ${toMeta.fullName ?? to} does not observe DST (${formatUTCOffset((toMeta.stdOffsetHours ?? 0) * 60)} year-round), so the gap between the two zones changes by 1 hour each spring and autumn.`,
-    });
-  } else if (!fromMeta.observesDST && toMeta.observesDST) {
-    items.push({
-      question: `Does ${to} observe Daylight Saving Time?`,
-      answer: `Yes. ${toMeta.fullName ?? to} moves from ${formatUTCOffset((toMeta.stdOffsetHours ?? 0) * 60)} to ${formatUTCOffset((toMeta.dstOffsetHours ?? 0) * 60)} in ${toMeta.dstStart}. ${fromMeta.fullName ?? from} does not observe DST, so the gap between the two zones shifts by 1 hour during ${to}'s DST period.`,
-    });
-  } else if (fromMeta.observesDST && toMeta.observesDST) {
-    items.push({
-      question: `How does Daylight Saving Time affect the ${from} to ${to} offset?`,
-      answer: `Both ${from} and ${to} observe DST, but their transition dates may not align. ${fromMeta.fullName ?? from} transitions in ${fromMeta.dstStart ?? "spring"} while ${toMeta.fullName ?? to} transitions in ${toMeta.dstStart ?? "spring"}. During any period where only one zone has switched, the offset between them differs by 1 hour from the standard ${diffStr}.`,
-    });
-  } else {
-    items.push({
-      question: `Do ${from} or ${to} observe Daylight Saving Time?`,
-      answer: `Neither ${from} nor ${to} observes Daylight Saving Time. The ${diffStr} gap between them is fixed year-round, which makes scheduling between these zones straightforward.`,
-    });
-  }
-
-  if (fromAbbrNote) {
-    items.push({
-      question: `What does ${from} stand for?`,
-      answer: fromAbbrNote,
-    });
-  }
-
-  items.push({
-    question: `How do I quickly convert ${from} to ${to}?`,
-    answer: `Use the converter at the top of this page. Enter a date and time in ${from} and the tool instantly shows the equivalent time in ${to}. For a full reference, the 24-hour table above shows every hour of the day converted.`,
-  });
+  items.push({question: `Do ${from} and ${to} change with daylight saving?`, answer: `These abbreviations name fixed UTC offsets, so this conversion does not change with the date. A city may switch to a different abbreviation in summer. Use the city-based meeting planner for a dated appointment.`});
 
   return items;
 }

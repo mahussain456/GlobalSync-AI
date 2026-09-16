@@ -46,6 +46,9 @@ export default function CurrencySelect({ currencies, value, onChange, testId }) 
       {/* Trigger button */}
       <button
         type="button"
+        aria-expanded={open}
+        aria-label={`Currency: ${selected?.code || "Select"}`}
+        onKeyDown={event => { if (event.key === "Escape") setOpen(false); }}
         onClick={() => setOpen(v => !v)}
         className="w-full h-12 px-4 rounded-xl border border-white/10 bg-white/5 text-gem-beige text-sm outline-none focus:border-gem-gold400/50 focus:bg-white/10 transition-all flex items-center justify-between gap-2 cursor-pointer hover:border-gem-gold400/30"
         data-testid={`${testId}-trigger`}
@@ -63,6 +66,7 @@ export default function CurrencySelect({ currencies, value, onChange, testId }) 
             <Search className="w-4 h-4 text-gem-mist shrink-0 ml-1" />
             <input
               ref={searchRef}
+              aria-label="Search currencies"
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
@@ -71,7 +75,7 @@ export default function CurrencySelect({ currencies, value, onChange, testId }) 
               data-testid={`${testId}-search`}
             />
             {search && (
-              <button onClick={() => setSearch("")} className="text-gem-mist hover:text-gem-beige">
+              <button aria-label="Clear currency search" onClick={() => setSearch("")} className="text-gem-mist hover:text-gem-beige">
                 <X className="w-3.5 h-3.5" />
               </button>
             )}

@@ -1,3 +1,4 @@
+import { getExchangeRate } from "@/lib/exchangeRates";
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
@@ -29,26 +30,20 @@ export default function FreelancerRateConverterPage() {
 
   const seo = getStaticPageSEO("freelancer-rate-converter", { faqs });
 
-  const EXCHANGE_RATES = {
-    USD: 1,
-    INR: 83.5,
-    PKR: 278.5,
-    EUR: 0.92,
-    GBP: 0.79,
-    AED: 3.67,
-    NGN: 1450,
-    PHP: 56.5,
-    ZAR: 18.9,
-    CAD: 1.36,
-    AUD: 1.52
-  };
+  const [quote, setQuote] = useState(null);
+  useEffect(() => {
+    let active = true;
+    setQuote(null);
+    getExchangeRate(baseCurrency, targetCurrency).then(value => { if (active) setQuote(value); }).catch(() => {});
+    return () => { active = false; };
+  }, [baseCurrency, targetCurrency]);
 
   const SYMBOLS = {
     USD: "$", INR: "₹", PKR: "Rs", EUR: "€", GBP: "£", AED: "د.إ", NGN: "₦", PHP: "₱", ZAR: "R", CAD: "C$", AUD: "A$"
   };
 
-  const conversionRate = EXCHANGE_RATES[targetCurrency] / EXCHANGE_RATES[baseCurrency];
-  const convertedAmount = (amount * conversionRate).toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 0 });
+  const conversionRate = quote?.rate;
+  const convertedAmount = quote ? (amount * conversionRate).toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 0 }) : "—";
 
   return (
     <div className="min-h-screen flex flex-col bg-gem-forest text-gem-beige relative">
@@ -87,28 +82,28 @@ export default function FreelancerRateConverterPage() {
         <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-8 mb-12 shadow-2xl">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
             <div className="w-full">
-              <label className="block text-gem-beige/50 text-xs uppercase tracking-wider mb-2 font-semibold">Rate Amount</label>
-              <input type="number" value={amount} onChange={e => setAmount(Number(e.target.value))} className="w-full bg-gem-forest border border-white/10 rounded-xl px-4 py-3 text-gem-beige outline-none focus:border-gem-gold/50 transition-colors" />
+              <label htmlFor="freelancerrateconverterpage-field-1" className="block text-gem-beige/50 text-xs uppercase tracking-wider mb-2 font-semibold">Rate Amount</label>
+              <input id="freelancerrateconverterpage-field-1" type="number" value={amount} onChange={e => setAmount(Number(e.target.value))} className="w-full bg-gem-forest border border-white/10 rounded-xl px-4 py-3 text-gem-beige outline-none focus:border-gem-gold/50 transition-colors" />
             </div>
             <div className="w-full">
-              <label className="block text-gem-beige/50 text-xs uppercase tracking-wider mb-2 font-semibold">Base Currency</label>
-              <select value={baseCurrency} onChange={e => setBaseCurrency(e.target.value)} className="w-full bg-gem-forest border border-white/10 rounded-xl px-4 py-3 text-gem-beige outline-none focus:border-gem-gold/50 transition-colors">
-                {Object.keys(EXCHANGE_RATES).map(code => (
+              <label htmlFor="freelancerrateconverterpage-field-2" className="block text-gem-beige/50 text-xs uppercase tracking-wider mb-2 font-semibold">Base Currency</label>
+              <select id="freelancerrateconverterpage-field-2" value={baseCurrency} onChange={e => setBaseCurrency(e.target.value)} className="w-full bg-gem-forest border border-white/10 rounded-xl px-4 py-3 text-gem-beige outline-none focus:border-gem-gold/50 transition-colors">
+                {Object.keys(SYMBOLS).map(code => (
                   <option key={code} value={code}>{code}</option>
                 ))}
               </select>
             </div>
             <div className="w-full">
-              <label className="block text-gem-beige/50 text-xs uppercase tracking-wider mb-2 font-semibold">Target Currency</label>
-              <select value={targetCurrency} onChange={e => setTargetCurrency(e.target.value)} className="w-full bg-gem-forest border border-white/10 rounded-xl px-4 py-3 text-gem-beige outline-none focus:border-gem-gold/50 transition-colors">
-                {Object.keys(EXCHANGE_RATES).map(code => (
+              <label htmlFor="freelancerrateconverterpage-field-3" className="block text-gem-beige/50 text-xs uppercase tracking-wider mb-2 font-semibold">Target Currency</label>
+              <select id="freelancerrateconverterpage-field-3" value={targetCurrency} onChange={e => setTargetCurrency(e.target.value)} className="w-full bg-gem-forest border border-white/10 rounded-xl px-4 py-3 text-gem-beige outline-none focus:border-gem-gold/50 transition-colors">
+                {Object.keys(SYMBOLS).map(code => (
                   <option key={code} value={code}>{code}</option>
                 ))}
               </select>
             </div>
             <div className="w-full">
-              <label className="block text-gem-beige/50 text-xs uppercase tracking-wider mb-2 font-semibold">Billing Type</label>
-              <select value={rateType} onChange={e => setRateType(e.target.value)} className="w-full bg-gem-forest border border-white/10 rounded-xl px-4 py-3 text-gem-beige outline-none focus:border-gem-gold/50 transition-colors">
+              <label htmlFor="freelancerrateconverterpage-field-4" className="block text-gem-beige/50 text-xs uppercase tracking-wider mb-2 font-semibold">Billing Type</label>
+              <select id="freelancerrateconverterpage-field-4" value={rateType} onChange={e => setRateType(e.target.value)} className="w-full bg-gem-forest border border-white/10 rounded-xl px-4 py-3 text-gem-beige outline-none focus:border-gem-gold/50 transition-colors">
                 <option value="hourly">Hourly Rate</option>
                 <option value="project">Fixed Project Fee</option>
                 <option value="monthly">Monthly Retainer</option>
@@ -121,7 +116,8 @@ export default function FreelancerRateConverterPage() {
             <div className="text-4xl font-bold text-gem-gold">
               {SYMBOLS[targetCurrency]}{convertedAmount} {targetCurrency}
             </div>
-            <p className="text-gem-beige/30 text-xs mt-2">Example calculation based on recent market rates. For actual real-time conversions, use our main <Link to="/currency-converter" className="text-gem-gold hover:underline">Currency Converter</Link>.</p>
+            <p className="text-gem-sage text-sm mt-2">{quote ? `${quote.isFallback ? "Cached · " : ""}${quote.source} · ${quote.date}.` : "Reference rate unavailable."} For more conversions, use our <Link to="/currency-converter" className="text-gem-gold hover:underline">Currency Converter</Link>.</p>
+            <Link to="/invoice" className="btn-primary inline-flex mt-6">Use this rate in an invoice</Link>
           </div>
         </div>
 

@@ -1,3 +1,5 @@
+import { fireAnalyticsEvent } from "@/lib/analytics";
+import { meetingWindows, resolveWallTime } from "@/lib/timeCalculations";
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Clock, Plus, X, Users, AlertCircle, CheckCircle2, Share2, Copy, Star, Sun, Moon, Sunrise, Sunset, RefreshCw } from "lucide-react";
@@ -132,8 +134,8 @@ export function getNormalizedUtcOffset(timezoneId, date = new Date()) {
   return "UTC+0";
 }
 
-export function getLocalHourInUtc(timezoneId, targetHour) {
-  const d = new Date();
+export function getLocalHourInUtc(timezoneId, targetHour, referenceDate = new Date()) {
+  const d = new Date(referenceDate);
   d.setUTCHours(targetHour, 0, 0, 0);
   
   const offsetDecimal = parseOffset(getNormalizedUtcOffset(timezoneId, d));
@@ -144,9 +146,9 @@ export function getLocalHourInUtc(timezoneId, targetHour) {
   return result;
 }
 
-export function clientSideMeetingOverlap(selectedCities, startHour = 9, endHour = 17) {
+export function clientSideMeetingOverlap(selectedCities, startHour = 9, endHour = 17, referenceDate = new Date()) {
   try {
-    const today = new Date();
+    const today = new Date(referenceDate);
     const cityRanges = [];
     const cityDetails = [];
     
@@ -157,8 +159,8 @@ export function clientSideMeetingOverlap(selectedCities, startHour = 9, endHour 
         continue;
       }
       
-      const localStart = getLocalHourInUtc(tzName, startHour);
-      const localEnd = getLocalHourInUtc(tzName, endHour);
+      const localStart = getLocalHourInUtc(tzName, startHour, today);
+      const localEnd = getLocalHourInUtc(tzName, endHour, today);
       
       const startDec = localStart.getUTCHours() + localStart.getUTCMinutes() / 60;
       let endDec = localEnd.getUTCHours() + localEnd.getUTCMinutes() / 60;
@@ -198,59 +200,11 @@ export function clientSideMeetingOverlap(selectedCities, startHour = 9, endHour 
       return { has_overlap: false, message: "Add at least 2 valid cities to find overlap", city_details: cityDetails };
     }
     
-    const ticksInDay = 96;
-    const commonTicks = [];
-    
-    for (let t = 0; t < ticksInDay; t++) {
-      const utcTime = new Date(today);
-      const hours = Math.floor(t / 4);
-      const minutes = (t % 4) * 15;
-      utcTime.setUTCHours(hours, minutes, 0, 0);
-      
-      let allMatch = true;
-      for (const city of cityRanges) {
-        const localHourStr = new Intl.DateTimeFormat("en-US", {
-          timeZone: city.tzName,
-          hour: "numeric",
-          hour12: false
-        }).format(utcTime);
-        const localMinStr = new Intl.DateTimeFormat("en-US", {
-          timeZone: city.tzName,
-          minute: "numeric"
-        }).format(utcTime);
-        
-        const localHour = parseInt(localHourStr, 10) % 24;
-        const localMin = parseInt(localMinStr, 10);
-        const localDec = localHour + localMin / 60;
-        
-        if (localDec < startHour || localDec > endHour) {
-          allMatch = false;
-          break;
-        }
-      }
-      
-      if (allMatch) {
-        commonTicks.push(t);
-      }
-    }
-    
-    const hasOverlap = commonTicks.length > 0;
-    if (!hasOverlap) {
-      return { has_overlap: false, message: "No overlapping business hours between these cities", city_details: cityDetails };
-    }
-    
-    const startTick = commonTicks[0];
-    const endTick = commonTicks[commonTicks.length - 1] + 1;
-    
-    const overlapStartUtc = new Date(today);
-    overlapStartUtc.setUTCHours(Math.floor(startTick / 4), (startTick % 4) * 15, 0, 0);
-    
-    const overlapEndUtc = new Date(today);
-    overlapEndUtc.setUTCHours(Math.floor(endTick / 4), (endTick % 4) * 15, 0, 0);
-    
-    const overlapMins = commonTicks.length * 15;
-    const bestUtc = new Date(overlapStartUtc.getTime() + Math.max(30, Math.floor(overlapMins / 4)) * 60000);
-    
+    const windows = meetingWindows(cityRanges.map(city => city.tzName), today, startHour, endHour);
+    if (!windows.length) return {has_overlap: false, message: "No overlapping business hours between these cities", city_details: cityDetails};
+    const best = [...windows].sort((a,b) => b.minutes-a.minutes)[0];
+    const {startTick, endTick, start: overlapStartUtc, end: overlapEndUtc, minutes: overlapMins} = best;
+    const bestUtc = new Date(overlapStartUtc.getTime() + Math.floor(overlapMins/2) * 60000);
     const overlapStartDec = startTick / 4;
     const overlapEndDec = endTick / 4;
     
@@ -275,7 +229,7 @@ export function clientSideMeetingOverlap(selectedCities, startHour = 9, endHour 
       overlap_end_utc: formatTime24(overlapEndUtc),
       overlap_start_dec: overlapStartDec,
       overlap_end_dec: overlapEndDec,
-      overlap_duration_hours: parseFloat((overlapMins / 60).toFixed(1)),
+      overlap_duration_hours: overlapMins / 60,
       best_meeting_time_utc: formatTime24(bestUtc),
       city_details: cityDetails,
       message: `${Math.floor(overlapMins / 60)}h ${overlapMins % 60}m overlap window found`
@@ -464,9 +418,9 @@ function OverlapBar({ cityDetails, overlapStartDec, overlapEndDec }) {
   const hours = [0, 3, 6, 9, 12, 15, 18, 21];
   return (
     <div className="space-y-4" data-testid="overlap-timeline">
-      <div className="relative flex pl-28 pr-2 mb-2 h-4">
+      <div className="relative ml-[7.75rem] mr-2 mb-2 h-4">
         {hours.map((h) => (
-          <div key={h} className="absolute text-[10px] font-bold text-gem-mist/50" style={{ left: `calc(${(h / 24) * 100}% + 7rem)` }}>
+          <div key={h} className="absolute text-[10px] font-bold text-gem-mist/50" style={{ left: `${(h / 24) * 100}%`, transform: "translateX(-50%)" }}>
             {String(h).padStart(2, "0")}:00
           </div>
         ))}
@@ -526,6 +480,8 @@ export default function TimeConverter({ aiDispatch }) {
     { name: "London", timezone_id: "Europe/London", utc_offset: "UTC+0" },
     { name: "Mumbai", timezone_id: "Asia/Kolkata", utc_offset: "UTC+5:30" },
   ]);
+  const [meetingDate, setMeetingDate] = useState("");
+  const [queryAnswer, setQueryAnswer] = useState(null);
   const [baseCityName, setBaseCityName] = useState("New York");
   const [selectedHour, setSelectedHour] = useState(12);
   const [isCustomTime, setIsCustomTime] = useState(false);
@@ -542,6 +498,7 @@ export default function TimeConverter({ aiDispatch }) {
   useEffect(() => {
     // Set initial time immediately on mount (client-only)
     setLiveTime(new Date());
+    setSelectedCities(cities => cities.map(city => ({...city, utc_offset: getNormalizedUtcOffset(city.timezone_id)})));
     const timer = setInterval(() => {
       setLiveTime(new Date());
     }, 1000);
@@ -567,60 +524,16 @@ export default function TimeConverter({ aiDispatch }) {
     }
   }, [liveTime, isCustomTime, baseCityName, selectedCities]);
 
-  // Automated background calculation of meeting overlaps
   useEffect(() => {
-    const autoOverlap = async () => {
-      if (selectedCities.length < 2) {
-        setOverlapResult(null);
-        return;
-      }
-      setLoadingOverlap(true);
-      try {
-        const res = await axios.post(`${API}/timezone/overlap`, { 
-          cities: selectedCities.map(c => c.name) 
-        });
-        setOverlapResult(res.data);
-      } catch (err) {
-        console.warn("Overlap automated fetch failed. Falling back to client-side computation.", err);
-        const fallbackRes = clientSideMeetingOverlap(selectedCities);
-        setOverlapResult(fallbackRes);
-      } finally {
-        setLoadingOverlap(false);
-      }
-    };
-    autoOverlap();
-  }, [selectedCities]);
+    setOverlapResult(clientSideMeetingOverlap(selectedCities, 9, 17, meetingDate ? new Date(meetingDate + "T12:00:00Z") : new Date()));
+  }, [selectedCities, meetingDate]);
 
-  const fetchCityMeta = useCallback(async (cityNames) => {
-    try {
-      const res = await axios.post(`${API}/timezone/convert`, { cities: cityNames });
-      return res.data.cities.filter(c => c.known !== false);
-    } catch (err) {
-      console.warn("Backend `/timezone/convert` API call failed. Using client-side fallback.", err);
-      const now = new Date();
-      return cityNames.map(name => {
-        const resolved = getLocalCityTimezone(name);
-        if (resolved) {
-          const offset = getNormalizedUtcOffset(resolved.timezoneId, now);
-          return {
-            name: resolved.name,
-            timezone_id: resolved.timezoneId,
-            utc_offset: offset,
-            known: true
-          };
-        } else if (isValidTimezone(name)) {
-          const offset = getNormalizedUtcOffset(name, now);
-          return {
-            name: name.split('/').pop().replace('_', ' '),
-            timezone_id: name,
-            utc_offset: offset,
-            known: true
-          };
-        }
-        return { name, timezone_id: null, known: false };
-      });
-    }
-  }, []);
+  const fetchCityMeta = useCallback(async (cityNames) => cityNames.map(name => {
+    const resolved = getLocalCityTimezone(name);
+    const timezone = resolved?.timezoneId || (isValidTimezone(name) ? name : null);
+    return {name: resolved?.name || name, timezone_id: timezone, known: !!timezone,
+      utc_offset: timezone ? getNormalizedUtcOffset(timezone) : ""};
+  }), []);
 
   const addCity = async (cityName) => {
     if (selectedCities.find(c => c.name.toLowerCase() === cityName.toLowerCase())) {
@@ -671,6 +584,8 @@ export default function TimeConverter({ aiDispatch }) {
   useEffect(() => {
     if (!aiDispatch) return;
     const { intent, entities } = aiDispatch;
+    setQueryAnswer(null);
+    setMeetingDate(entities?.date || "");
     const run = async () => {
       if (intent === "meeting_overlap" && entities?.cities?.length) {
         const meta = await fetchCityMeta(entities.cities);
@@ -686,6 +601,13 @@ export default function TimeConverter({ aiDispatch }) {
           const valid = meta.filter(c => c.known !== false);
           if (valid.length) {
             setSelectedCities(valid);
+            if (entities.from_time || entities.time) {
+              try {
+                const date = entities.date || new Date().toISOString().slice(0,10);
+                const instant = resolveWallTime(date, entities.from_time || entities.time, valid[0].timezone_id);
+                setQueryAnswer(valid.map(city => city.name + ": " + new Intl.DateTimeFormat("en-US", {timeZone: city.timezone_id, dateStyle: "full", timeStyle: "short"}).format(instant)).join(" · "));
+              } catch (error) { setQueryAnswer(error.message); }
+            }
             if (entities.from_city) {
               const matchingBase = valid.find(c => c.name.toLowerCase() === entities.from_city.toLowerCase());
               if (matchingBase) setBaseCityName(matchingBase.name);
@@ -699,9 +621,9 @@ export default function TimeConverter({ aiDispatch }) {
 
   const shareOverlap = () => {
     const cities = selectedCities.map(c => c.name).join(", ");
-    const q = `Best meeting time for ${cities}`;
+    const q = `Best meeting time for ${cities}${meetingDate ? " on " + meetingDate : ""}`;
     const url = `${window.location.origin}/dashboard?q=${encodeURIComponent(q)}`;
-    navigator.clipboard.writeText(url).then(() => toast.success("Scheduler link copied!"));
+    navigator.clipboard.writeText(url).then(() => { fireAnalyticsEvent("meeting_shared", {tool: "meeting"}); toast.success("Scheduler link copied!"); });
   };
 
   const copyOverlapResult = () => {
@@ -726,6 +648,10 @@ export default function TimeConverter({ aiDispatch }) {
 
   return (
     <div className="space-y-6" data-testid="time-converter">
+      {queryAnswer && <div role="status" className="rounded-xl bg-gem-gold/15 p-5 text-gem-beige leading-relaxed">{queryAnswer}</div>}
+      <label className="flex flex-wrap items-center gap-3 text-gem-beige text-sm mb-4">Meeting date (UTC)
+        <input type="date" value={meetingDate || new Date().toISOString().slice(0,10)} onChange={event => setMeetingDate(event.target.value)} className="bg-gem-forest border border-white/30 rounded-lg p-2" />
+      </label>
       {/* World Clocks Control Panel */}
       <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-6 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
@@ -885,7 +811,7 @@ export default function TimeConverter({ aiDispatch }) {
                 <Users className="w-5 h-5 text-gem-gold" /> Meeting Overlap & Scheduler Helper
               </h3>
               <p className="text-xs text-gem-mist mt-0.5">
-                Calculated overlapping business hours (9 AM - 5 PM) across all locations.
+                Longest shared window within 9 AM–5 PM in every city on the selected UTC date.
               </p>
             </div>
             

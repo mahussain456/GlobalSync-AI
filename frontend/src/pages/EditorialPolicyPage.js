@@ -84,7 +84,7 @@ export default function EditorialPolicyPage() {
           </p>
           <ul className="list-disc list-outside ml-5 space-y-2">
             <li><strong className="text-gem-beige">Time zone database:</strong> We build directly on the official IANA Time Zone Database (TZDB), which regulates all global timezone boundaries, historical transitions, and upcoming Daylight Saving Time (DST) switches.</li>
-            <li><strong className="text-gem-beige">Live exchange rates:</strong> We pull reference indices from the European Central Bank (ECB) and high-fidelity interbank feeds, updating rate caches hourly to deliver real mid-market values.</li>
+            <li><strong className="text-gem-beige">Live exchange rates:</strong> We use timestamped ExchangeRate-API reference snapshots. The browser caches a snapshot for up to one hour and labels any dated build snapshot used when the provider is unavailable. </li>
             <li><strong className="text-gem-beige">Automated logic verification:</strong> All tool logic runs through continuous unit testing scripts to prevent compounding rounding errors and guarantee mathematical consistency across all currency and timezone calculations.</li>
           </ul>
           <p className="mt-3">
@@ -109,7 +109,7 @@ export default function EditorialPolicyPage() {
           </p>
           <ul className="list-disc list-outside ml-5 space-y-2">
             <li><strong className="text-gem-beige">IANA database updates:</strong> We sync and redeploy our timezone database within 48 hours of any official IANA release.</li>
-            <li><strong className="text-gem-beige">Currency feed audits:</strong> We verify API integration feeds hourly to catch data provider delays or unexpected volatility flags.</li>
+            <li><strong className="text-gem-beige">Currency feed audits:</strong> Provider timestamps make the age of a reference snapshot visible. Report a discrepancy through our contact page so it can be investigated.</li>
             <li><strong className="text-gem-beige">Static guides & hub content:</strong> We review all editorial guides annually or immediately upon notice of significant regulatory shifts (such as sudden DST rule modifications or currency re-denominations).</li>
           </ul>
           <p className="mt-3">

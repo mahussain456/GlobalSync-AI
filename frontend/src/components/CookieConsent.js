@@ -8,6 +8,7 @@ export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (navigator.userAgent === "ReactSnap") return;
     // Delay slightly so it doesn't flash on first paint
     const t = setTimeout(() => {
       if (!localStorage.getItem(STORAGE_KEY)) setVisible(true);
@@ -17,6 +18,7 @@ export default function CookieConsent() {
 
   const accept = () => {
     localStorage.setItem(STORAGE_KEY, "accepted");
+    window.dispatchEvent(new Event("gs-consent-changed"));
     setVisible(false);
   };
 

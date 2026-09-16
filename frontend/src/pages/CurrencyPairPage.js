@@ -1,3 +1,4 @@
+import { getExchangeRate, getCachedRate } from "@/lib/exchangeRates";
 import { useState, useEffect, useRef } from "react";
 
 import { useParams, Navigate, Link } from "react-router-dom";
@@ -39,7 +40,7 @@ function LiveRateWidget({ from, to, fromMeta, toMeta, rate, loading, refreshedSt
     <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6" data-testid="live-rate-widget">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <div className="text-xs text-zinc-400 mb-1">Live Exchange Rate</div>
+          <div className="text-xs text-zinc-400 mb-1">Reference Exchange Rate</div>
           {/* isFallback badge only renders after client mount (controlled by parent), so no prerender mismatch */}
           {isFallback && (
             <div className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-300 rounded-full px-2 py-0.5 text-[10px] font-semibold border border-amber-500/30 mb-2">
@@ -296,124 +297,29 @@ export default function CurrencyPairPage() {
   // Initialise synchronously from prebuiltRates.json (bundled at build time with
   // fresh live rates from fetch-build-rates.js) so the very first CSR render shows
   // a real number — not a loading skeleton or "Rate unavailable".
-  const [rate,         setRate]        = useState(() => prebuiltRates[fromMeta?.code]?.rates?.[toMeta?.code] ?? null);
+  const [rate,         setRate]        = useState(() => getCachedRate(fromMeta?.code, toMeta?.code)?.rate ?? null);
   const [rateLoading,  setRateLoading] = useState(() => prebuiltRates[fromMeta?.code]?.rates?.[toMeta?.code] == null);
-  const [refreshedStr, setRefreshedStr]= useState(() => prebuiltRates[fromMeta?.code]?.updatedUtc ?? null);
-  const [isFallback,   setIsFallback]  = useState(false);
+  const [refreshedStr, setRefreshedStr]= useState(() => getCachedRate(fromMeta?.code, toMeta?.code)?.date ?? null);
+  const [isFallback,   setIsFallback]  = useState(true);
 
   const pairData = getCurrencyPair(normalizedPair);
 
   // Stable ref to abort in-flight requests when the pair changes or component unmounts.
   const cancelRef = useRef(false);
 
-  // ─── Live rate fetch ───────────────────────────────────────────────────────────────
-  // Runs unconditionally after mount and whenever the currency pair changes.
-  // NO guard flags — useEffect is inherently client-only (never fires during
-  // prerender/SSR). Uses native fetch() so there are zero extra dependencies.
-  //
-  // Three-tier waterfall:
-  //   1. /api/rate  — Vercel Edge Function (CDN-cached, 1-hr TTL)
-  //   2. open.exchangerate-api.com  — confirmed working, CORS-open, 200 OK
-  //   3. Hardcoded approximate rates  — guarantees a number always shows
-  //
-  // "Rate unavailable" can ONLY appear if the component unmounts while all
-  // tiers are in-flight, which is impossible in normal navigation.
+  const [refreshVersion, setRefreshVersion] = useState(0);
   useEffect(() => {
-    const from = fromMeta?.code;
-    const to   = toMeta?.code;
-    if (!from || !to) return;
-
-    cancelRef.current = false;
+    if (!fromMeta || !toMeta || IS_REACT_SNAP) return;
+    let active = true;
+    setRate(null);
     setRateLoading(true);
-
-    // Seed immediately from prebuiltRates so widget shows a number during the fetch
-    const prebuilt = prebuiltRates[from]?.rates?.[to];
-    if (prebuilt != null) {
-      setRate(prebuilt);
-      setRefreshedStr(prebuiltRates[from]?.updatedUtc ?? null);
-      setIsFallback(false);
-      setRateLoading(false); // show prebuilt right away; live fetch still runs below
-    }
-
-    (async () => {
-      // Tier 1: Vercel Edge Function — same-origin, CDN-cached 1 hr
-      try {
-        const res = await fetch(`/api/rate?base=${from}&quote=${to}`);
-        if (res.ok && !cancelRef.current) {
-          const d = await res.json();           // throws if response is HTML (not JSON)
-          if (typeof d?.rate === 'number') {    // strict: never settle with undefined
-            setRate(d.rate);
-            setRefreshedStr(d.updatedUtc ?? fmtUtc(new Date()));
-            setIsFallback(d.isFallback ?? false);
-            setRateLoading(false);
-            return;
-          }
-        }
-      } catch (_) { /* falls through to tier 2 */ }
-
-      // Tier 2: open.exchangerate-api.com — confirmed working, CORS-open
-      try {
-        const res = await fetch(`https://open.exchangerate-api.com/v6/latest/${from}`);
-        if (res.ok && !cancelRef.current) {
-          const d = await res.json();
-          const r = d?.rates?.[to];
-          if (typeof r === 'number') {
-            setRate(r);
-            setRefreshedStr(d.time_last_update_utc
-              ? fmtUtc(new Date(d.time_last_update_utc))
-              : fmtUtc(new Date()));
-            setIsFallback(false);
-            setRateLoading(false);
-            return;
-          }
-        }
-      } catch (_) { /* falls through to tier 3 */ }
-
-      // Tier 3: Hardcoded approximate rates — always succeeds, never "Rate unavailable"
-      if (!cancelRef.current) {
-        const APPROX = {
-          USD:1,    EUR:0.92,  GBP:0.79,  JPY:156.2, CHF:0.91,  CNY:7.24,
-          CAD:1.36, AUD:1.50,  INR:83.3,  PKR:278.5, AED:3.67,  SAR:3.75,
-          NGN:1450, BRL:5.15,  MXN:16.7,  SGD:1.35,  HKD:7.81,  KRW:1360,
-          NZD:1.63, SEK:10.6,  NOK:10.7,  DKK:6.87,  PLN:3.92,  TRY:32.2,
-          ZAR:18.2, ILS:3.68,  THB:36.3,  OMR:0.38,  KWD:0.31,  QAR:3.64,
-        };
-        const rFrom = APPROX[from] ?? 1;
-        const rTo   = APPROX[to]   ?? 1;
-        setRate(Number((rTo / rFrom).toFixed(6)));
-        setRefreshedStr(fmtUtc(new Date()));
-        setIsFallback(true);
-        setRateLoading(false);
-      }
-    })();
-
-    return () => { cancelRef.current = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fromMeta?.code, toMeta?.code]);
-
-  // Manual refresh for the widget button
-  const handleRefresh = () => {
-    const from = fromMeta?.code;
-    const to   = toMeta?.code;
-    if (!from || !to) return;
-    cancelRef.current = false;
-    setRateLoading(true);
-    fetch(`https://open.exchangerate-api.com/v6/latest/${from}`)
-      .then(r => r.json())
-      .then(d => {
-        if (cancelRef.current) return;
-        const r = d?.rates?.[to];
-        if (typeof r === 'number') {
-          setRate(r);
-          setRefreshedStr(fmtUtc(new Date()));
-          setIsFallback(false);
-        }
-        setRateLoading(false);
-      })
-      .catch(() => setRateLoading(false));
-  };
-
-
+    getExchangeRate(fromMeta.code, toMeta.code).then(data => {
+      if (!active) return;
+      setRate(data.rate); setRefreshedStr(data.source + " · " + data.date); setIsFallback(data.isFallback);
+    }).catch(() => { if (active) setRate(null); }).finally(() => { if (active) setRateLoading(false); });
+    return () => { active = false; };
+  }, [fromMeta, toMeta, refreshVersion]);
+  const handleRefresh = () => setRefreshVersion(v => v + 1);
 
   if (!fromMeta || !toMeta || !pairData) return <Navigate to="/currency-converter" replace />;
 

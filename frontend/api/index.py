@@ -968,68 +968,16 @@ async def send_invoice(req: InvoiceSendRequest):
             logger.error(f"Resend error in send_invoice: {e}")
             raise HTTPException(status_code=500, detail=f"Resend dispatch failed: {str(e)}")
     else:
-        logger.info(f"Resend not configured. Simulated sending invoice {req.invoice_number} to {req.client_email}")
-        return {"success": True, "message": f"Simulated invoice dispatch (Resend API key missing)."}
+        logger.info("Invoice email delivery unavailable: provider is not configured")
+        raise HTTPException(status_code=503, detail="Email delivery is unavailable. Download the PDF and send it using your email app.")
 
 @api_router.post("/upgrade/checkout")
 async def upgrade_checkout(req: UpgradeCheckoutRequest):
-    stripe_key = os.environ.get('STRIPE_SECRET_KEY', '')
-    if stripe_key:
-        try:
-            import stripe
-            stripe.api_key = stripe_key
-            session = stripe.checkout.Session.create(
-                payment_method_types=['card'],
-                line_items=[{
-                    'price_data': {
-                        'currency': 'usd',
-                        'product_data': {
-                            'name': 'GlobalSync Pro',
-                            'description': 'Unlimited team workspaces & invoice intelligence builder',
-                        },
-                        'unit_amount': 700 if req.plan_type == "monthly" else 5900,
-                        'recurring': {
-                            'interval': 'month' if req.plan_type == "monthly" else 'year',
-                        },
-                    },
-                    'quantity': 1,
-                }],
-                mode='subscription',
-                success_url=f"{req.origin or 'http://localhost:3000'}/upgrade-success?session_id={{CHECKOUT_SESSION_ID}}&email={req.email}",
-                cancel_url=f"{req.origin or 'http://localhost:3000'}/dashboard",
-                metadata={'email': req.email, 'plan': req.plan_type}
-            )
-            return {"url": session.url}
-        except Exception as e:
-            logger.warning(f"Failed to create Stripe Checkout session: {e}")
-            pass
-            
-    # Mock checkout URL fallback
-    mock_session_id = f"mock_sess_{uuid.uuid4().hex[:12]}"
-    mock_url = f"/stripe-checkout?session_id={mock_session_id}&email={req.email}&plan={req.plan_type}"
-    return {"url": mock_url}
+    raise HTTPException(status_code=503, detail="Pro upgrades are not currently available. No payment was collected.")
 
 @api_router.post("/upgrade/simulate-webhook")
 async def upgrade_simulate_webhook(req: UpgradeWebhookSimulateRequest):
-    email_lower = req.email.strip().lower()
-    if db is not None:
-        await db.users.update_one(
-            {"email": email_lower},
-            {"$set": {"is_paid": True, "plan": req.plan, "updated_at": datetime.now(timezone.utc).isoformat()}},
-            upsert=True
-        )
-        await db.teams.update_many(
-            {"email": email_lower},
-            {"$set": {"is_paid": True}}
-        )
-    else:
-        local_teams = load_local_teams()
-        for t in local_teams.values():
-            if t.get("email", "").lower() == email_lower:
-                t["is_paid"] = True
-        save_local_team_all(local_teams)
-        
-    return {"success": True, "message": "Email successfully upgraded to Pro Tier."}
+    raise HTTPException(status_code=410, detail="Simulated billing is disabled.")
 
 # ============= Simplified News Feed Proxy =============
 RSS_FEEDS = {

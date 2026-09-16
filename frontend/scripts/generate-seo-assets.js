@@ -39,7 +39,7 @@ console.log('Wrote build/llms-full.txt');
 // Generate sitemap.xml dynamically from reactSnap.include
 // FIX: Exclude noindex pages — /dashboard (app UI) and /404 (not found page).
 // Including a noindex page in the sitemap triggers an Ahrefs "Noindex page in sitemap" error.
-const SITEMAP_EXCLUDE = new Set(['/dashboard', '/404']);
+const SITEMAP_EXCLUDE = new Set(['/dashboard', '/404', '/admin', '/stripe-checkout', '/upgrade-success']);
 
 let sitemapXML = `<?xml version="1.0" encoding="UTF-8"?>\n`;
 sitemapXML += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;

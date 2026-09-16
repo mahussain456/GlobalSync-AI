@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { fireAnalyticsEvent } from "@/lib/analytics";
+import { getExchangeRate } from "@/lib/exchangeRates";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { ArrowLeftRight, TrendingUp, TrendingDown, RefreshCw, Loader2, Share2, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -88,6 +90,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 export default function CurrencyConverter({ aiDispatch }) {
+  const requestVersion = useRef(0);
   const [amount, setAmount] = useState("1");
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("EUR");
@@ -99,7 +102,7 @@ export default function CurrencyConverter({ aiDispatch }) {
 
   const handleConvert = async (amt = amount, from = fromCurrency, to = toCurrency) => {
     const numAmt = parseFloat(amt);
-    if (!numAmt || isNaN(numAmt)) { toast.warning("Enter a valid amount"); return; }
+    if (!Number.isFinite(numAmt) || numAmt < 0) { toast.warning("Enter a valid amount"); return; }
     
     // Normalize codes to uppercase immediately
     const fromUpper = (from || "USD").toUpperCase();
@@ -108,91 +111,18 @@ export default function CurrencyConverter({ aiDispatch }) {
     if (fromUpper === toUpper) { toast.warning("Select different currencies"); return; }
     setErrorMsg(null);
 
-    // Baseline offline cache rates matrix
-    const fallbackRates = {
-      USD: 1.0, EUR: 0.92, GBP: 0.79, JPY: 156.2, CHF: 0.91, CNY: 7.24, CAD: 1.36, AUD: 1.50,
-      INR: 86.5, PKR: 278.5, BDT: 117.2, LKR: 300.5, NPR: 133.3, SGD: 1.35, HKD: 7.81, KRW: 1360.0,
-      MYR: 4.69, THB: 36.3, IDR: 16000.0, PHP: 58.2, VND: 25400.0, TWD: 32.2, KZT: 443.0, UZS: 12600.0,
-      MMK: 2100.0, AED: 3.67, SAR: 3.75, QAR: 3.64, KWD: 0.31, BHD: 0.38, OMR: 0.38, JOD: 0.71,
-      ILS: 3.68, ZAR: 18.2, NGN: 1520.0, EGP: 47.2, KES: 130.0, GHS: 14.5, MAD: 10.0, ETB: 57.0,
-      TZS: 2600.0, MXN: 20.4, BRL: 5.65, ARS: 885.0, CLP: 910.0, COP: 3850.0, PEN: 3.72, NZD: 1.63,
-      SEK: 10.6, NOK: 10.7, DKK: 6.87, PLN: 3.92, CZK: 22.8, HUF: 355.0, RON: 4.58, BGN: 1.80,
-      TRY: 32.2, RUB: 91.0, UAH: 39.5, ISK: 138.0
-    };
-
-    const rFrom = fallbackRates[fromUpper] || 1.0;
-    const rTo = fallbackRates[toUpper] || 1.0;
-    const calcRate = rTo / rFrom;
-    const initialConverted = Number((numAmt * calcRate).toFixed(6));
-
-    // INSTANT RESULT (< 1ms UI response)
-    setResult({
-      from: fromUpper,
-      to: toUpper,
-      amount: numAmt,
-      rate: Number(calcRate.toFixed(6)),
-      converted: initialConverted,
-      date: "Live rate",
-      formatted: `${numAmt.toLocaleString()} ${fromUpper} = ${initialConverted.toLocaleString()} ${toUpper}`,
-      is_fallback: false
-    });
-
+    const version = ++requestVersion.current;
     setLoading(true);
-
-    // Fetch live rate asynchronously in background
-    let liveSuccess = false;
-
-    // Try ExchangeRate-API first
+    setResult(null);
     try {
-      const directRes = await axios.get(`https://open.exchangerate-api.com/v6/latest/${fromUpper}`, {
-        timeout: 2500
-      });
-      const rates = directRes.data?.rates || {};
-      const rate = rates[toUpper];
-      if (rate !== undefined && rate !== null) {
-        const lastUpdate = directRes.data?.time_last_update_utc
-          ? directRes.data.time_last_update_utc.slice(0, 16)
-          : "Live rate";
-        const converted = Number((numAmt * rate).toFixed(6));
-        setResult({
-          from: fromUpper,
-          to: toUpper,
-          amount: numAmt,
-          rate: Number(rate.toFixed(6)),
-          converted,
-          date: lastUpdate,
-          formatted: `${numAmt.toLocaleString()} ${fromUpper} = ${converted.toLocaleString()} ${toUpper}`,
-          is_fallback: false
-        });
-        liveSuccess = true;
-      }
-    } catch (_) {}
-
-    // Fallback to Frankfurter
-    if (!liveSuccess) {
-      try {
-        const frankRes = await axios.get(`https://api.frankfurter.app/latest?from=${fromUpper}`, {
-          timeout: 2500
-        });
-        const rates = frankRes.data?.rates || {};
-        const rate = fromUpper === toUpper ? 1.0 : rates[toUpper];
-        if (rate !== undefined && rate !== null) {
-          const converted = Number((numAmt * rate).toFixed(6));
-          const lastUpdate = frankRes.data?.date ? `Live rates (${frankRes.data.date})` : "Live rate";
-          setResult({
-            from: fromUpper,
-            to: toUpper,
-            amount: numAmt,
-            rate: Number(rate.toFixed(6)),
-            converted,
-            date: lastUpdate,
-            formatted: `${numAmt.toLocaleString()} ${fromUpper} = ${converted.toLocaleString()} ${toUpper}`,
-            is_fallback: false
-          });
-        }
-      } catch (_) {}
-    }
-
+      const data = await getExchangeRate(fromUpper, toUpper);
+      if (version !== requestVersion.current) return;
+      const converted = numAmt * data.rate;
+      fireAnalyticsEvent("calculation_succeeded", {tool: "currency", cached: data.isFallback});
+      setResult({ from: fromUpper, to: toUpper, amount: numAmt, rate: data.rate,
+        converted, date: data.source + " · " + data.date, is_fallback: data.isFallback,
+        formatted: `${numAmt.toLocaleString()} ${fromUpper} = ${converted.toLocaleString()} ${toUpper}` });
+    } catch (error) { if (version !== requestVersion.current) return; setErrorMsg(error.message); }
     fetchTrend(fromUpper, toUpper);
     setLoading(false);
   };

@@ -21,22 +21,18 @@
           (function() {
             window.dataLayer = window.dataLayer || [];
             window.gtag = function(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-4DG7YWVLEM');
-
             function loadGtag() {
+              if (localStorage.getItem('gs_cookie_consent') !== 'accepted' || document.getElementById('gs-analytics')) return;
+              gtag('js', new Date());
+              gtag('config', 'G-4DG7YWVLEM');
               var script = document.createElement('script');
+              script.id = 'gs-analytics';
               script.async = true;
               script.src = 'https://www.googletagmanager.com/gtag/js?id=G-4DG7YWVLEM';
               document.head.appendChild(script);
             }
-            if (window.addEventListener) {
-              window.addEventListener('load', function() {
-                setTimeout(loadGtag, 1500);
-              });
-            } else {
-              window.onload = loadGtag;
-            }
+            window.addEventListener('gs-consent-changed', loadGtag);
+            window.addEventListener('load', loadGtag);
           })();
         </script>
         <!-- Google Search Console Verification -->

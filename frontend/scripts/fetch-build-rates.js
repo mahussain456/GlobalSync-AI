@@ -55,7 +55,7 @@ async function run() {
   for (const base of BASE_CURRENCIES) {
     try {
       const data = await fetchRatesForBase(base);
-      if (data && data.rates) {
+      if (data && data.rates && data.time_last_update_utc) {
         const updatedUtc = data.time_last_update_utc
           ? fmtUtc(new Date(data.time_last_update_utc))
           : fmtUtc(new Date());
@@ -73,13 +73,6 @@ async function run() {
       console.warn(`[build-rates] Failed to fetch rates for ${base}, using existing/fallback:`, err.message);
       if (existingRates[base]) {
         results[base] = existingRates[base];
-      } else {
-        // Safe hardcoded fallback if nothing else exists
-        results[base] = {
-          rates: { USD: 1.0, EUR: 0.92, GBP: 0.79, INR: 83.3, PKR: 278.5, NGN: 1450.0 },
-          updatedUtc: fmtUtc(new Date()),
-          source: "hardcoded-build-fallback"
-        };
       }
     }
   }

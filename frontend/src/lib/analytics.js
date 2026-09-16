@@ -6,7 +6,7 @@
  * @param {object} params - Additional event payload parameters
  */
 export function fireAnalyticsEvent(eventName, params = {}) {
-  if (typeof window !== "undefined") {
+  if (typeof window !== "undefined" && localStorage.getItem("gs_cookie_consent") === "accepted") {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: eventName,

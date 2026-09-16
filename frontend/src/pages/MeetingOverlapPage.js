@@ -6,7 +6,7 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import AdBanner from "@/components/AdBanner";
 import { getMeetingCorridor, MEETING_CORRIDORS } from "@/data/meetingCorridors";
-import { generate24hTable } from "@/lib/timezoneUtils";
+import { generate24hTable, computeBusinessOverlap } from "@/lib/timezoneUtils";
 
 function FAQItem({ question, answer }) {
   const [open, setOpen] = useState(false);
@@ -38,11 +38,14 @@ export default function MeetingOverlapPage() {
   const ianaA = corridorData?.ianaA ?? "America/New_York";
   const ianaB = corridorData?.ianaB ?? "Asia/Kolkata";
 
-  const table24h = useMemo(() => generate24hTable(ianaA, ianaB), [ianaA, ianaB]);
+  const table24h = useMemo(() => generate24hTable(ianaA, ianaB, new Date()), [ianaA, ianaB]);
 
   if (!corridorData) return <Navigate to="/meeting-overlap" replace />;
 
-  const { h1, regionA, regionB, citiesA, citiesB, recommendedWindow, overlapType, fairnessAdvice, contextCopy } = corridorData;
+  const { h1, regionA, regionB, citiesA, citiesB, fairnessAdvice, contextCopy } = corridorData;
+  const overlap = computeBusinessOverlap(ianaA, ianaB);
+  const recommendedWindow = overlap.recommendation;
+  const overlapType = overlap.hasOverlap ? overlap.durationStr + " of shared 09:00–17:00 hours" : "No shared 09:00–17:00 hours";
 
   const siblingCorridors = MEETING_CORRIDORS.filter(c => c.slug !== corridor).slice(0, 4);
 
@@ -60,7 +63,7 @@ export default function MeetingOverlapPage() {
   const faqList = [
     {
       question: `What are the best meeting hours between ${regionA} and ${regionB}?`,
-      answer: `The optimal window for live syncs is ${recommendedWindow} This captures shared or least-disruptive working hours across both regions.`
+      answer: `${recommendedWindow} Choose a date in the meeting planner before sending an invitation.`
     },
     {
       question: `How do we manage team meetings when there is little to no business hours overlap?`,
@@ -155,7 +158,7 @@ export default function MeetingOverlapPage() {
             24-Hour Schedule Alignment & Overlap Heat Table
           </h2>
           <p className="text-gem-sage text-sm mb-4">
-            The table below aligns standard hourly slots between {regionA} and {regionB}. Highlighted green rows indicate hours where both regions fall within 09:00–17:00 business hours.
+            The table below aligns hourly slots for today. Use the meeting planner to select another date. It compares between {regionA} and {regionB}. Highlighted green rows indicate hours where both regions fall within 09:00–17:00 business hours.
           </p>
 
           <div className="overflow-x-auto rounded-2xl border border-white/10 mb-2">

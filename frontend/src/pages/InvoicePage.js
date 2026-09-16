@@ -1,3 +1,4 @@
+import { getExchangeRate } from "@/lib/exchangeRates";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { jsPDF } from "jspdf";
@@ -25,7 +26,7 @@ export default function InvoicePage() {
   const [clientEmail, setClientEmail] = useState("");
   
   // Invoice Details
-  const [invoiceNumber, setInvoiceNumber] = useState("");
+  const [invoiceNumber, setInvoiceNumber] = useState("INV-001");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().split("T")[0]);
   const [dueDate, setDueDate] = useState("");
   const [description, setDescription] = useState("");
@@ -64,7 +65,10 @@ export default function InvoicePage() {
     // Pre-fill from rate converter cache if available
     const cachedRate = localStorage.getItem("gs_rate_amount");
     const cachedCurrency = localStorage.getItem("gs_rate_currency");
-    if (cachedRate) setRate(Number(cachedRate));
+    if (cachedRate && Number.isFinite(Number(cachedRate)) && Number(cachedRate) >= 0) {
+      setRate(Number(cachedRate));
+      if (localStorage.getItem("gs_rate_type") !== "hourly") setHours(1);
+    }
     if (cachedCurrency) {
       setBillingCurrency(cachedCurrency);
       setPayoutCurrency(cachedCurrency);
@@ -120,28 +124,14 @@ export default function InvoicePage() {
     fetchNextInvoiceNumber();
   }, [senderEmail]);
 
-  // Fetch live exchange rate
   useEffect(() => {
-    if (billingCurrency === payoutCurrency) {
-      setLiveRate(1);
-      setRateTimestamp("");
-      return;
-    }
+    let active = true;
     setIsLoadingRate(true);
-    const fetchRate = async () => {
-      try {
-        const res = await axios.get(`${API}/currency/convert`, {
-          params: { amount: 1, from_currency: billingCurrency, to_currency: payoutCurrency }
-        });
-        setLiveRate(res.data.rate || 1);
-        setRateTimestamp(res.data.date || "live");
-      } catch (err) {
-        setLiveRate(1);
-      } finally {
-        setIsLoadingRate(false);
-      }
-    };
-    fetchRate();
+    setLiveRate(null);
+    getExchangeRate(billingCurrency, payoutCurrency).then(data => {
+      if (active) {setLiveRate(data.rate); setRateTimestamp((data.isFallback ? "Cached · " : "") + data.source + " · " + data.date);}
+    }).catch(error => { if (active) {setRateTimestamp(error.message); setLiveRate(null);} }).finally(() => { if (active) setIsLoadingRate(false); });
+    return () => { active = false; };
   }, [billingCurrency, payoutCurrency]);
 
   // Handle Logo Upload
@@ -170,12 +160,8 @@ export default function InvoicePage() {
   // Math Calculations
   const grossEarnings = hours * rate;
   
-  // US SE Tax Math: (net earnings * 0.9235) * 0.153
-  const seTaxDeduction = senderCountry === "US" ? (grossEarnings * 0.9235) * 0.153 : 0;
-  const estimatedNet = grossEarnings - seTaxDeduction;
-
   const convertedGross = grossEarnings * liveRate;
-  const convertedNet = estimatedNet * liveRate;
+
 
   // Analytics triggers
   const fireInvoiceAnalytics = (action) => {
@@ -193,22 +179,12 @@ export default function InvoicePage() {
     });
   };
 
-  // Trigger simulated billing checkout redirect
-  const handleSimulatedUpgrade = async () => {
-    try {
-      const res = await axios.post(`${API}/upgrade/checkout`, {
-        email: senderEmail.trim() || "checkout@globalsync-pro.com",
-        plan_type: "monthly",
-        origin: window.location.origin
-      });
-      window.location.href = res.url;
-    } catch {
-      toast.error("Failed to redirect to simulated upgrade portal.");
-    }
-  };
+  const handleSimulatedUpgrade = () => { window.location.assign("/stripe-checkout"); };
 
   // PDF Generation Mechanics
   const buildPDF = () => {
+    if (!Number.isFinite(grossEarnings) || hours <= 0 || rate < 0) throw new Error("Enter valid hours and a non-negative rate.");
+    if (billingCurrency !== payoutCurrency && liveRate === null) throw new Error("Wait for a reference rate or use the billing currency before exporting.");
     const doc = new jsPDF({
       orientation: "portrait",
       unit: "mm",
@@ -300,22 +276,10 @@ export default function InvoicePage() {
     doc.text(`${grossEarnings.toFixed(2)} ${billingCurrency}`, 90, currentY);
     currentY += 6;
 
-    if (senderCountry === "US") {
-      doc.text(`Self-Employment Tax Deduction (15.3%):`, 20, currentY);
-      doc.text(`-${seTaxDeduction.toFixed(2)} ${billingCurrency}`, 90, currentY);
-      currentY += 6;
-
-      doc.setFont("helvetica", "bold");
-      doc.text(`Estimated Net Earnings:`, 20, currentY);
-      doc.text(`${estimatedNet.toFixed(2)} ${billingCurrency}`, 90, currentY);
-      doc.setFont("helvetica", "normal");
-      currentY += 8;
-    } else {
-      doc.setFontSize(8.5);
-      doc.text("Advisory: Non-US local income tax liabilities are not pre-calculated.", 20, currentY);
-      doc.setFontSize(10);
-      currentY += 8;
-    }
+    doc.setFont("helvetica", "bold");
+    doc.text("Amount due:", 20, currentY);
+    doc.text(`${grossEarnings.toFixed(2)} ${billingCurrency}`, 90, currentY);
+    currentY += 8;
 
     // Currency conversion details if applicable
     if (billingCurrency !== payoutCurrency) {
@@ -325,11 +289,11 @@ export default function InvoicePage() {
 
       doc.setFont("helvetica", "bold");
       doc.setTextColor(14, 42, 31);
-      doc.text(`Currency Conversion Terms (Live Mid-Market Rate)`, 24, currentY + 6);
+      doc.text(`Reference conversion (before transfer fees)`, 24, currentY + 6);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
-      doc.text(`Exchange rate: 1 ${billingCurrency} = ${liveRate.toFixed(4)} ${payoutCurrency} (Timestamp: ${rateTimestamp || "live"})`, 24, currentY + 11);
-      doc.text(`Client pays equivalent total: ${convertedGross.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${payoutCurrency}`, 24, currentY + 15);
+      doc.text(`Exchange rate: 1 ${billingCurrency} = ${(liveRate === null ? "Unavailable" : liveRate.toFixed(4))} ${payoutCurrency} (Timestamp: ${rateTimestamp || "live"})`, 24, currentY + 11);
+      doc.text(`Reference equivalent: ${convertedGross.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${payoutCurrency}`, 24, currentY + 15);
       
       doc.setFontSize(10);
       doc.setDrawColor(229, 231, 235); // restore border color
@@ -350,9 +314,9 @@ export default function InvoicePage() {
   const handleExportPDF = () => {
     if (!isPaid && invoiceCount >= 3) {
       fireUpgradeModalTrigger("invoice_limit");
-      toast.warning("Monthly limit reached (3 invoices). Upgrade to GlobalSync Pro for unlimited generations!", {
+      toast.warning("Monthly limit reached (3 invoices in this browser). Pro upgrades are currently unavailable.", {
         action: {
-          label: "Upgrade",
+          label: "View limits",
           onClick: () => handleSimulatedUpgrade()
         }
       });
@@ -366,8 +330,8 @@ export default function InvoicePage() {
       incrementInvoiceCount();
       fireInvoiceAnalytics("export");
       toast.success("PDF invoice generated successfully!");
-    } catch {
-      toast.error("Failed to generate PDF invoice.");
+    } catch (error) {
+      toast.error(error.message || "Could not generate the PDF. Check the invoice details.");
     } finally {
       setIsGenerating(false);
     }
@@ -387,9 +351,9 @@ export default function InvoicePage() {
 
     if (!isPaid && invoiceCount >= 3) {
       fireUpgradeModalTrigger("invoice_limit");
-      toast.warning("Monthly limit reached (3 invoices). Upgrade to GlobalSync Pro to send invoices directly!", {
+      toast.warning("Monthly limit reached (3 invoices in this browser). Pro upgrades are currently unavailable.", {
         action: {
-          label: "Upgrade",
+          label: "View limits",
           onClick: () => handleSimulatedUpgrade()
         }
       });
@@ -425,7 +389,7 @@ export default function InvoicePage() {
     <div className="min-h-screen bg-gem-forest text-gem-beige relative flex flex-col justify-between">
       <SEOHead
         rawTitle="Interactive Invoice Builder | GlobalSync AI"
-        description="Create, preview, and download multi-currency invoices with built-in self-employment tax calculations. Free clean PDF export."
+        description="Create, preview, and download multi-currency invoices with a clear client amount due. Free clean PDF export."
         canonical="/invoice"
         keywords="invoice builder, free invoice generator, multi-currency invoice, create invoice online, professional invoice, tax deduction calculator"
       />
@@ -456,10 +420,10 @@ export default function InvoicePage() {
             <FileText className="w-3.5 h-3.5" /> Multi-Currency PDF builder
           </div>
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-2">
-            Invoice Intelligence Builder
+            Invoice Builder
           </h1>
           <p className="text-sm text-gem-sage max-w-2xl leading-relaxed">
-            Create professional multi-currency invoices, automatically calculate US self-employment tax deductions, and export print-ready PDFs.
+            Prepare a clear client invoice with a billing total, a reference currency conversion and a downloadable PDF.
           </p>
         </header>
 
@@ -476,8 +440,8 @@ export default function InvoicePage() {
               {/* Sender Info Row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Your Name/Business</label>
-                  <input
+                  <label htmlFor="invoicepage-field-1" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Your Name/Business</label>
+                  <input id="invoicepage-field-1"
                     value={senderName}
                     onChange={e => setSenderName(e.target.value)}
                     placeholder="e.g. John Doe Consulting"
@@ -485,8 +449,8 @@ export default function InvoicePage() {
                   />
                 </div>
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Your Email</label>
-                  <input
+                  <label htmlFor="invoicepage-field-2" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Your Email</label>
+                  <input id="invoicepage-field-2"
                     type="email"
                     value={senderEmail}
                     onChange={e => setSenderEmail(e.target.value)}
@@ -499,13 +463,13 @@ export default function InvoicePage() {
               {/* Country select for tax calculations */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Your Country (Tax Rate)</label>
-                  <select
+                  <label htmlFor="invoicepage-field-3" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Your Country</label>
+                  <select id="invoicepage-field-3"
                     value={senderCountry}
                     onChange={e => setSenderCountry(e.target.value)}
                     className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45 cursor-pointer font-bold"
                   >
-                    <option value="US">United States (SE Tax 15.3%)</option>
+                    <option value="US">United States</option>
                     <option value="UK">United Kingdom (Advisory Only)</option>
                     <option value="CA">Canada (Advisory Only)</option>
                     <option value="DE">Germany (Advisory Only)</option>
@@ -550,15 +514,15 @@ export default function InvoicePage() {
                 <div>
                   <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Client Name</label>
                   <input
-                    value={clientName}
+                    aria-label="Client name" value={clientName}
                     onChange={e => setClientName(e.target.value)}
                     placeholder="Client Company Ltd."
                     className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45"
                   />
                 </div>
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Client Email</label>
-                  <input
+                  <label htmlFor="invoicepage-field-4" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Client Email</label>
+                  <input id="invoicepage-field-4"
                     type="email"
                     value={clientEmail}
                     onChange={e => setClientEmail(e.target.value)}
@@ -571,8 +535,8 @@ export default function InvoicePage() {
               {/* Project line items details */}
               <div className="border-t border-white/5 pt-4 space-y-3">
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Work Description</label>
-                  <input
+                  <label htmlFor="invoicepage-field-5" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Work Description</label>
+                  <input id="invoicepage-field-5"
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                     placeholder="Freelance Consulting Sync Services"
@@ -582,8 +546,8 @@ export default function InvoicePage() {
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Hours Worked</label>
-                    <input
+                    <label htmlFor="invoicepage-field-6" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Hours Worked</label>
+                    <input id="invoicepage-field-6"
                       type="number"
                       value={hours}
                       onChange={e => setHours(Math.max(1, Number(e.target.value)))}
@@ -591,8 +555,8 @@ export default function InvoicePage() {
                     />
                   </div>
                   <div>
-                    <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Rate per Hour</label>
-                    <input
+                    <label htmlFor="invoicepage-field-7" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Rate per Hour</label>
+                    <input id="invoicepage-field-7"
                       type="number"
                       value={rate}
                       onChange={e => setRate(Math.max(1, Number(e.target.value)))}
@@ -605,8 +569,8 @@ export default function InvoicePage() {
               {/* Currency conversions */}
               <div className="grid grid-cols-2 gap-3 border-t border-white/5 pt-4">
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Billing Currency</label>
-                  <select
+                  <label htmlFor="invoicepage-field-8" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Billing Currency</label>
+                  <select id="invoicepage-field-8"
                     value={billingCurrency}
                     onChange={e => setBillingCurrency(e.target.value)}
                     className="w-full h-10 px-2 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none cursor-pointer"
@@ -615,8 +579,8 @@ export default function InvoicePage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Client Currency (FX)</label>
-                  <select
+                  <label htmlFor="invoicepage-field-9" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Client Currency (FX)</label>
+                  <select id="invoicepage-field-9"
                     value={payoutCurrency}
                     onChange={e => setPayoutCurrency(e.target.value)}
                     className="w-full h-10 px-2 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none cursor-pointer font-semibold"
@@ -629,8 +593,8 @@ export default function InvoicePage() {
               {/* Dates */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border-t border-white/5 pt-4">
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Issue Date</label>
-                  <input
+                  <label htmlFor="invoicepage-field-10" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Issue Date</label>
+                  <input id="invoicepage-field-10"
                     type="date"
                     value={issueDate}
                     onChange={e => setIssueDate(e.target.value)}
@@ -638,8 +602,8 @@ export default function InvoicePage() {
                   />
                 </div>
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Due Date</label>
-                  <input
+                  <label htmlFor="invoicepage-field-11" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Due Date</label>
+                  <input id="invoicepage-field-11"
                     type="date"
                     value={dueDate}
                     onChange={e => setDueDate(e.target.value)}
@@ -750,34 +714,22 @@ export default function InvoicePage() {
                       <span>{grossEarnings.toFixed(2)} {billingCurrency}</span>
                     </div>
 
-                    {senderCountry === "US" ? (
-                      <>
-                        <div className="flex justify-between text-slate-500">
-                          <span>SE Tax (15.3% of 92.35%):</span>
-                          <span className="text-rose-600">-{seTaxDeduction.toFixed(2)} {billingCurrency}</span>
-                        </div>
-                        <div className="flex justify-between text-slate-900 font-bold border-t border-slate-200 pt-1">
-                          <span>Estimated Net Earnings:</span>
-                          <span>{estimatedNet.toFixed(2)} {billingCurrency}</span>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="text-[9px] text-slate-400 italic text-left pt-1 border-t border-slate-100">
-                        * Non-US tax rate advisory terms apply.
-                      </div>
-                    )}
+                    <div className="flex justify-between text-slate-900 font-bold border-t border-slate-200 pt-2">
+                      <span>Amount due:</span><span>{grossEarnings.toFixed(2)} {billingCurrency}</span>
+                    </div>
+
                   </div>
                 </div>
 
                 {/* Currency Conversion Display */}
-                {billingCurrency !== payoutCurrency && (
+                {billingCurrency !== payoutCurrency && liveRate !== null && (
                   <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[10px] space-y-1 text-slate-700 shadow-sm">
-                    <div className="font-bold text-slate-800">Exchange Rate Conversion (Live)</div>
+                    <div className="font-bold text-slate-800">Reference conversion (before fees)</div>
                     <div className="text-[9px] text-slate-500">
                       Converted at: 1 {billingCurrency} = {liveRate.toFixed(4)} {payoutCurrency}
                     </div>
                     <div className="font-bold text-indigo-700 mt-1">
-                      Target Payout: {convertedGross.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {payoutCurrency}
+                      Reference equivalent: {convertedGross.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {payoutCurrency}
                     </div>
                   </div>
                 )}

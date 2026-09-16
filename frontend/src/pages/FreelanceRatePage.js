@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { getExchangeRate, getCachedRate } from "@/lib/exchangeRates";
+import { useState, useMemo, useEffect } from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
 import { DollarSign, ArrowRight, Calculator, CheckCircle2, ShieldAlert, CreditCard, ChevronDown, ChevronUp } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
@@ -35,7 +36,14 @@ export default function FreelanceRatePage() {
   const corridorData = getCorridor(corridor);
 
   const defaultHourly = corridorData?.defaultHourly ?? 40;
-  const rate = CORRIDOR_APPROX_RATES[corridor] || 1;
+  const [quote, setQuote] = useState(() => getCachedRate(corridorData?.from, corridorData?.to));
+  const rate = quote?.rate ?? NaN;
+  useEffect(() => {
+    let active = true;
+    setQuote(getCachedRate(corridorData?.from, corridorData?.to));
+    if (corridorData) getExchangeRate(corridorData.from, corridorData.to).then(value => { if (active) setQuote(value); }).catch(() => { if (active) setQuote(null); });
+    return () => { active = false; };
+  }, [corridorData]);
 
   // Interactive State (unconditional)
   const [hourlyRate, setHourlyRate] = useState(defaultHourly);
@@ -92,19 +100,19 @@ export default function FreelanceRatePage() {
   const faqList = [
     {
       question: `What is a good hourly rate when billing in ${from} for clients in ${to}?`,
-      answer: `Rates vary by experience and specialized skill. For a ${from} to ${to} corridor, mid-level contractors typically bill between ${fromSymbol}30 and ${fromSymbol}65/hr, while senior specialists and tech consultants bill ${fromSymbol}75 to ${fromSymbol}120+/hr. Use our calculator to determine the net local income after FX conversion and taxes.`
+      answer: `Set your rate from your own income target, billable time, expenses and client scope. The example inputs here are illustrative, not market salary benchmarks.`
     },
     {
       question: `How does payment processing fee affect my ${from} to ${to} earnings?`,
-      answer: `Traditional bank SWIFT transfers and PayPal take between 3% and 4.5% of your total payout through hidden exchange rate markups. Transfer platforms like Wise use the true mid-market rate with fees as low as 0.45%, saving contractors up to $1,500 to $3,000 annually on $50,000 in income.`
+      answer: `Compare the amount your client pays with what you receive after provider fees, bank fees and currency conversion. Fees depend on countries, currencies, amount and payment method; obtain a current quote before choosing a provider.`
     },
     {
       question: `How do I factor self-employment taxes into my ${from} rate?`,
-      answer: `Unlike W-2 employees where the employer pays half of payroll taxes and benefits, freelancers must cover self-employment tax (approx 15.3% in the US), health insurance, software licenses, and unpaid vacation. Multiply your desired employee salary by 1.3x to 1.5x to set an accurate hourly freelance rate.`
+      answer: `Keep personal taxes separate from the amount your client owes. Estimate business costs and unpaid time from your own records, and get tax guidance appropriate to your jurisdiction.`
     },
     {
       question: `What is the current ${from} to ${to} exchange rate used in calculations?`,
-      answer: `The baseline benchmark rate for this calculator is 1 ${from} = ${rate.toLocaleString()} ${to}. Live exchange rates fluctuate throughout the trading week.`
+      answer: `The calculator uses a timestamped reference snapshot displayed above. It is an estimate before transfer fees, not a guaranteed payment rate.`
     }
   ];
 
@@ -159,10 +167,10 @@ export default function FreelanceRatePage() {
         {/* AEO Rate Banner */}
         <div className="bg-gem-gold/10 border border-gem-gold/20 rounded-2xl px-6 py-5 mb-8">
           <p className="text-gem-beige font-semibold text-lg leading-snug mb-2">
-            1 {from} = {rate.toLocaleString()} {to} (Mid-Market Rate Benchmark)
+            {quote ? `1 ${from} = ${rate.toLocaleString()} ${to}` : "Reference rate unavailable"}
           </p>
           <p className="text-gem-sage text-sm">
-            {marketContext}
+            {quote ? `${quote.isFallback ? "Cached · " : ""}${quote.source} · ${quote.date}` : "Try again later for converted estimates."}
           </p>
         </div>
 
@@ -209,10 +217,10 @@ export default function FreelanceRatePage() {
               </div>
 
               <div>
-                <label className="block text-xs text-gem-sage mb-1.5 font-medium">
+                <label htmlFor="freelanceratepage-field-1" className="block text-xs text-gem-sage mb-1.5 font-medium">
                   Working Weeks / Year
                 </label>
-                <input
+                <input id="freelanceratepage-field-1"
                   type="number"
                   min="10"
                   max="52"
@@ -256,7 +264,7 @@ export default function FreelanceRatePage() {
                   Converted Gross Annual ({to})
                 </div>
                 <div className="font-mono text-2xl font-bold text-gem-gold">
-                  {toSymbol}{Math.round(calculations.grossAnnualTarget).toLocaleString()}
+                  {quote ? toSymbol + Math.round(calculations.grossAnnualTarget).toLocaleString() : "—"}
                 </div>
               </div>
 
@@ -265,19 +273,19 @@ export default function FreelanceRatePage() {
                   Effective Monthly Income ({to})
                 </div>
                 <div className="font-mono text-xl font-semibold text-emerald-400">
-                  {toSymbol}{Math.round(calculations.monthlyTarget).toLocaleString()} / month
+                  {quote ? toSymbol + Math.round(calculations.monthlyTarget).toLocaleString() : "—"} / month
                 </div>
               </div>
 
               <div className="pt-3 border-t border-white/10">
                 <div className="text-xs text-gem-sage mb-1">
-                  W-2 Employee Salary Equivalent ({from}):
+                  Illustrative income after 22% overhead ({from}):
                 </div>
                 <div className="font-mono text-sm font-semibold text-gem-beige">
                   ~{fromSymbol}{Math.round(calculations.w2EquivalentSource).toLocaleString()} / year
                 </div>
                 <div className="text-[11px] text-gem-sage/70 mt-0.5">
-                  Accounts for ~22% overhead (self-employment tax, unpaid leave, insurance).
+                  Assumes 22% overhead for illustration; this is not a tax or salary calculation.
                 </div>
               </div>
             </div>
@@ -301,62 +309,21 @@ export default function FreelanceRatePage() {
             </li>
             <li className="flex justify-between">
               <span className="text-gem-sage font-sans">Mid-Market Converted ({to}):</span>
-              <span className="text-gem-gold font-bold">{toSymbol}{Math.round(exampleGrossTarget).toLocaleString()}</span>
+              <span className="text-gem-gold font-bold">{quote ? toSymbol + Math.round(exampleGrossTarget).toLocaleString() : "—"}</span>
             </li>
             <li className="flex justify-between">
-              <span className="text-gem-sage font-sans">Estimated W-2 Salary Equivalent:</span>
+              <span className="text-gem-sage font-sans">Illustrative income after 22% overhead:</span>
               <span>~{fromSymbol}{Math.round(exampleW2).toLocaleString()}</span>
             </li>
           </ul>
           <p className="text-xs text-gem-sage leading-relaxed">
-            Note: The W-2 equivalent reflects what an in-house corporate employee would need to earn to match this freelance contract after employer-paid payroll taxes, health benefits, and 401(k) matching are factored in.
+            The 22% overhead assumption is illustrative. Actual taxes, benefits and business costs vary; this example does not calculate them.
           </p>
         </section>
 
-        {/* Payment-Rail Fee Comparison Table */}
         <section className="mb-10">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">
-            Payment Rail Fee Comparison ({from} → {to})
-          </h2>
-          <p className="text-gem-sage text-sm mb-4">
-            Cross-border payouts lose substantial value through hidden FX margins. Below is a realistic comparison of popular payout methods when receiving payment for this corridor.
-          </p>
-
-          <div className="overflow-x-auto rounded-2xl border border-white/10">
-            <table className="w-full text-sm text-left">
-              <thead>
-                <tr className="bg-white/5 text-gem-sage">
-                  <th className="px-4 py-3 font-semibold">Payment Provider</th>
-                  <th className="px-4 py-3 font-semibold">FX Margin & Fee</th>
-                  <th className="px-4 py-3 font-semibold">Loss on $10,000 Payout</th>
-                  <th className="px-4 py-3 font-semibold hidden md:table-cell">Transfer Speed</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PAYMENT_RAILS.map((rail, i) => {
-                  const lossOn10k = (10000 * (rail.feePercent / 100)) + rail.fixedFeeUSD;
-                  const isBest = i === 0;
-                  return (
-                    <tr key={rail.name} className={`border-t border-white/5 ${isBest ? "bg-emerald-900/10" : ""}`}>
-                      <td className="px-4 py-3 font-medium text-gem-beige">
-                        {rail.name}
-                        {isBest && <span className="ml-2 text-xs text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full font-normal">Lowest Fee</span>}
-                      </td>
-                      <td className="px-4 py-3 text-gem-sage font-mono">
-                        {rail.feePercent}% + ${rail.fixedFeeUSD.toFixed(2)}
-                      </td>
-                      <td className={`px-4 py-3 font-mono font-semibold ${isBest ? "text-emerald-400" : "text-amber-400"}`}>
-                        -${Math.round(lossOn10k)} {from}
-                      </td>
-                      <td className="px-4 py-3 text-gem-sage/70 text-xs hidden md:table-cell">
-                        {rail.speed}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">Compare the amount you will receive</h2>
+          <p className="text-gem-sage leading-relaxed">Before choosing a payment provider, request a quote for your countries, amount and payment method. Compare the final amount received, all fees, the exchange rate and estimated delivery time. A reference currency conversion does not include those costs.</p>
         </section>
 
         {/* Local Purchasing Power Context (Human Written Stub) */}

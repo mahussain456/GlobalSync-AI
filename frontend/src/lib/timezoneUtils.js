@@ -62,15 +62,15 @@ export function formatOffsetDescription(fromAbbr, toAbbr, diffMinutes) {
 // Returns 24 rows, each showing a whole hour in fromIANA and the corresponding
 // time in toIANA. Uses a fixed winter reference date to produce stable output
 // that react-snap captures as static HTML.
-export function generate24hTable(fromIANA, toIANA) {
+export function generate24hTable(fromIANA, toIANA, referenceDate = new Date('2026-01-12T12:00:00Z')) {
   // January 12, 2026 — Monday, deep winter, no DST in northern hemisphere
   // We find what UTC instant corresponds to each hour 00–23 in fromIANA.
-  const FROM_OFFSET = getUTCOffsetMinutes(fromIANA, new Date('2026-01-12T12:00:00Z'));
+  const FROM_OFFSET = getUTCOffsetMinutes(fromIANA, referenceDate);
   const rows = [];
 
   for (let h = 0; h < 24; h++) {
     // UTC ms when fromIANA shows h:00 on Jan 12
-    const utcMs = Date.UTC(2026, 0, 12, h) - FROM_OFFSET * 60000;
+    const utcMs = Date.UTC(referenceDate.getUTCFullYear(), referenceDate.getUTCMonth(), referenceDate.getUTCDate(), h) - FROM_OFFSET * 60000;
     const utcDate = new Date(utcMs);
 
     const toTime = new Intl.DateTimeFormat('en-US', {
@@ -95,27 +95,29 @@ export function generate24hTable(fromIANA, toIANA) {
 // ─── Business hours overlap (09:00–17:00 in both zones) ──────────────────────
 // Returns { hasOverlap, windows, recommendation }
 // windows = array of { fromStart, fromEnd, toStart, toEnd } in local times
-export function computeBusinessOverlap(fromIANA, toIANA) {
+export function computeBusinessOverlap(fromIANA, toIANA, referenceDate = new Date(), fromOffset, toOffset) {
   // Use a fixed date. Compute what UTC range is "business hours" in EACH zone.
-  const REF = new Date('2026-01-12T00:00:00Z');
-  const FROM_OFF = getUTCOffsetMinutes(fromIANA, REF); // minutes
-  const TO_OFF   = getUTCOffsetMinutes(toIANA,   REF); // minutes
+  const REF = new Date(referenceDate);
+  const FROM_OFF = fromOffset ?? getUTCOffsetMinutes(fromIANA, REF); // minutes
+  const TO_OFF   = toOffset ?? getUTCOffsetMinutes(toIANA, REF); // minutes
 
-  // Business hours in UTC minutes from midnight
-  // fromIANA 09:00 = UTC (9*60 - FROM_OFF) minutes
-  const fromStartUTC = 9 * 60 - FROM_OFF;
-  const fromEndUTC   = 17 * 60 - FROM_OFF;
-  const toStartUTC   = 9 * 60 - TO_OFF;
-  const toEndUTC     = 17 * 60 - TO_OFF;
-
-  // Overlap window in UTC
-  const overlapStart = Math.max(fromStartUTC, toStartUTC);
-  const overlapEnd   = Math.min(fromEndUTC, toEndUTC);
+  const windows = [];
+  for (let minute = 0; minute < 1440; minute += 15) {
+    const localA = ((minute + FROM_OFF) % 1440 + 1440) % 1440;
+    const localB = ((minute + TO_OFF) % 1440 + 1440) % 1440;
+    if (localA < 540 || localA >= 1020 || localB < 540 || localB >= 1020) continue;
+    const last = windows[windows.length - 1];
+    if (last && last.end === minute) last.end += 15;
+    else windows.push({start: minute, end: minute + 15});
+  }
+  const longest = windows.sort((a,b) => (b.end-b.start)-(a.end-a.start))[0];
+  const overlapStart = longest?.start ?? 0;
+  const overlapEnd = longest?.end ?? 0;
 
   if (overlapEnd <= overlapStart) {
     // No overlap — suggest least-bad windows
-    const diff = getOffsetDiff(fromIANA, toIANA, REF);
-    const absDiff = Math.abs(diff);
+    const diff = TO_OFF - FROM_OFF;
+    const absDiff = Math.abs(diff) / 60;
     let recommendation;
     if (absDiff >= 12) {
       recommendation = `With a ${absDiff}-hour difference, real-time overlap during standard business hours is not possible. The most common approach is for one team to hold a standing early-morning call (07:00–09:00 local) while the other stays late (17:00–19:00 local). Rotate the sacrifice quarterly to distribute meeting burden fairly.`;
@@ -131,9 +133,10 @@ export function computeBusinessOverlap(fromIANA, toIANA) {
 
   // Convert overlap window back to local times in each zone
   const fmtLocal = (utcMinutes, ianaZone) => {
-    const date = new Date(Date.UTC(2026, 0, 12) + utcMinutes * 60000);
+    const offset = ianaZone === fromIANA ? FROM_OFF : TO_OFF;
+    const date = new Date(Date.UTC(2026, 0, 12) + (utcMinutes + offset) * 60000);
     return new Intl.DateTimeFormat('en-US', {
-      timeZone: ianaZone,
+      timeZone: "UTC",
       hour: '2-digit', minute: '2-digit', hour12: true,
     }).format(date);
   };

@@ -23,9 +23,7 @@ export default function SiteFooter() {
             One calm control center for global schedules, meeting overlaps, and currency conversion. Built for the modern remote workforce.
           </p>
           <div className="flex items-center gap-4">
-            <a href="#" className="text-gem-sage hover:text-gem-gold transition-colors"><Twitter className="w-5 h-5" /></a>
-            <a href="#" className="text-gem-sage hover:text-gem-gold transition-colors"><Github className="w-5 h-5" /></a>
-            <a href="#" className="text-gem-sage hover:text-gem-gold transition-colors"><Linkedin className="w-5 h-5" /></a>
+            <a href="https://github.com/mahussain456/GlobalSync-AI" aria-label="GlobalSync AI on GitHub" className="text-gem-sage hover:text-gem-gold transition-colors"><Github className="w-5 h-5" /></a>
           </div>
         </div>
 
@@ -39,7 +37,7 @@ export default function SiteFooter() {
             <li><Link to="/convert" className="text-sm text-gem-gold font-medium hover:underline transition-colors">Zone Pair Converters Hub</Link></li>
             <li><Link to="/freelance-rate" className="text-sm text-gem-gold font-medium hover:underline transition-colors">Freelance Rate Hub</Link></li>
             <li><Link to="/meeting-overlap" className="text-sm text-gem-gold font-medium hover:underline transition-colors">Meeting Overlap Hub</Link></li>
-            <li><Link to="/dashboard" className="text-sm hover:text-gem-gold transition-colors">AI Answer Console</Link></li>
+            <li><Link to="/dashboard" className="text-sm hover:text-gem-gold transition-colors">Open workspace</Link></li>
           </ul>
         </div>
 

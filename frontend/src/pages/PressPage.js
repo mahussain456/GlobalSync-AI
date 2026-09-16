@@ -52,7 +52,7 @@ export default function PressPage() {
           <div>
             <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">Official Company & Product Boilerplate</h2>
             <p className="text-gem-beige/70 leading-relaxed">
-              Founded in 2026, GlobalSync AI is an independent software project dedicated to promoting healthy asynchronous working practices. Unlike commercial enterprise software, the platform remains 100% free, requiring no signup, user registration, or rate limits. GlobalSync AI is designed to protect employee personal time, reduce timezone scheduling bias, and provide transparent financial metrics for remote contractors globally.
+              Founded in 2026, GlobalSync AI is an independent software project dedicated to promoting healthy asynchronous working practices. Core conversion and meeting tools are free without signup. Saved teams and invoice exports have limits displayed in the tools; Pro upgrades are not currently available. GlobalSync AI is designed to protect employee personal time, reduce timezone scheduling bias, and provide transparent financial metrics for remote contractors globally.
             </p>
           </div>
 

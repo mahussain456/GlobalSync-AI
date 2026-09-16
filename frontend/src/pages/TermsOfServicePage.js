@@ -52,7 +52,7 @@ export default function TermsOfServicePage() {
             <p>GlobalSync AI is a free web productivity suite designed for remote teams, freelancers, and distributed organizations. Our tools include:</p>
             <ul className="list-disc pl-5 space-y-1 text-sm mt-2">
               <li>Real-time time zone conversion and world clock displays powered by the IANA database</li>
-              <li>Live currency conversion with hourly reference rates across 160+ world currencies</li>
+              <li>Currency conversion with timestamped reference rates across 160+ world currencies</li>
               <li>Interactive meeting time planner and working-hour overlap calculations for up to 5 cities</li>
               <li>Freelancer hourly-to-salary equivalent calculator and invoice building utilities</li>
               <li>AI-powered natural language query processing for instant scheduling calculations</li>

@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import CookieConsent from "@/components/CookieConsent";
-import SEOSingletonHeadGuard from "@/components/SEOSingletonHeadGuard";
+
 
 // Global error boundary — prevents any render crash from leaving a blank screen
 class ErrorBoundary extends React.Component {
@@ -72,8 +72,8 @@ const RemoteTeamsMeetingPlannerPage = React.lazy(() => import("@/pages/RemoteTea
 const USIndiaMeetingTimePage = React.lazy(() => import("@/pages/USIndiaMeetingTimePage"));
 const TeamWorkspacePage = React.lazy(() => import("@/pages/TeamWorkspacePage"));
 const InvoicePage = React.lazy(() => import("@/pages/InvoicePage"));
-const StripeCheckoutSimulatorPage = React.lazy(() => import("@/pages/StripeCheckoutSimulatorPage"));
-const UpgradeSuccessPage = React.lazy(() => import("@/pages/UpgradeSuccessPage"));
+const StripeCheckoutSimulatorPage = React.lazy(() => import("@/pages/PlansPage"));
+const UpgradeSuccessPage = React.lazy(() => import("@/pages/PlansPage"));
 const NotFoundPage = React.lazy(() => import("@/pages/NotFoundPage"));
 const PressPage = React.lazy(() => import("@/pages/PressPage"));
 const AuthorPage = React.lazy(() => import("@/pages/AuthorPage"));
@@ -112,7 +112,6 @@ function App() {
     <ErrorBoundary>
       <div className="App">
         <BrowserRouter>
-          <SEOSingletonHeadGuard />
           <React.Suspense fallback={<SuspenseFallback />}>
             <Routes>
               <Route path="/" element={<LandingPage />} />

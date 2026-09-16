@@ -22,7 +22,7 @@ const CONVERSIONS = [
 
 const FAQ = [
   { q: "How does GlobalSync AI handle Daylight Saving Time?", a: "We use the IANA time zone database, the same source used by Linux, macOS, and most server infrastructure. DST shifts are applied automatically based on each region's official rules." },
-  { q: "Is the time zone converter free?", a: "Yes. No signup, no ads on the tool itself, no rate limits, and no premium tier required for any feature." },
+  { q: "Is the time zone converter free?", a: "Yes. Core time conversion is free without signup. Saved teams and invoice exports have separate limits shown in each tool." },
   { q: "How many cities and time zones are supported?", a: "You can compare live time across 25+ pre-set major cities and 160+ countries. The full IANA database (~600 zones) is available via search." },
   { q: "Can I find a meeting time that works for all my team members?", a: "Yes — use the Meeting Planner. It overlays each team member's local working hours (default 9 AM–5 PM) and highlights the fairest overlap windows." },
   { q: "How accurate is the converter near DST transitions?", a: "The IANA database is updated multiple times per year. Our build picks up the latest release on every deploy, so transitions like the EU's last-Sunday-in-March rule are applied to the second." }
@@ -146,7 +146,7 @@ export default function TimeZoneConverterPage() {
             {[
               ["EST to IST Converter", "Use our EST to IST converter to find the best time to call India from the USA. EST (UTC−5) is 10 hrs 30 min behind IST (UTC+5:30). So 9 AM EST = 7:30 PM IST."],
               ["PST to IST Converter", "Check PST to IST for US West Coast to India calls. PST (UTC−8) is 13 hrs 30 min behind IST. So 8 AM PST = 9:30 PM IST."],
-              ["New York to London Time", "Find the time difference between New York and London easily. EST is 5 hours behind GMT. During BST summer, the gap narrows to 4 hours."],
+              ["New York to London Time", "Find the time difference between New York and London easily. EST is 5 hours behind GMT. The city gap is normally 5 hours and briefly narrows to 4 during the US/UK daylight-saving transition mismatch."],
               ["AI Natural Language", 'Ask "What time is 3 PM in New York in India?" or "What time is it in Dubai right now?" and get an instant, accurate answer.'],
             ].map(([title, desc]) => (
               <div key={title} className="flex gap-3">
