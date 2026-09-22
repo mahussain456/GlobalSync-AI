@@ -160,7 +160,7 @@ async function main() {
     });
     
     let next = 0;
-    await Promise.all(Array.from({ length: 2 }, async () => {
+    await Promise.all(Array.from({ length: 1 }, async () => {
       const page = await browser.newPage();
       await page.setUserAgent('ReactSnap');
       await page.setViewport({ width: 1280, height: 900 });
@@ -176,7 +176,8 @@ async function main() {
         page.on('pageerror', onError);
         await page.goto(origin + route, { waitUntil: 'domcontentloaded', timeout: 30000 })
           .catch(error => { console.error(`Render failed on ${route}: ${error.message}`); throw error; });
-        await page.waitForSelector('h1', { timeout: 15000 });
+        await page.waitForSelector('h1', { timeout: 30000 })
+          .catch(error => { throw new Error(`Heading missing on ${route}: ${error.message}`); });
         await page.waitForFunction(() => document.title && document.querySelector('link[rel="canonical"]'), { timeout: 10000, polling: 100 })
           .catch(error => { throw new Error(`Metadata missing on ${route}: ${error.message}`); });
         await new Promise(resolve => setTimeout(resolve, 100));
@@ -198,6 +199,7 @@ async function main() {
     );
     console.log(`Prerendered ${routes.length} routes from application components.`);
   } catch (launchOrRenderErr) {
+    if (browser) throw launchOrRenderErr;
     console.warn(`[prerender] Puppeteer browser prerender bypassed/failed: ${launchOrRenderErr.message}`);
     console.log('[prerender] Generating static HTML snapshots for all routes...');
     
@@ -216,7 +218,10 @@ async function main() {
     );
     console.log(`[prerender] Successfully generated ${written} static route snapshots via fallback generator.`);
   } finally {
-    if (browser) await browser.close().catch(error => console.warn('Browser cleanup:', error.message));
+    if (browser) await browser.close().catch(error => {
+      console.warn('Browser cleanup:', error.message);
+      browser.process()?.kill();
+    });
     server.closeAllConnections?.();
     await new Promise(resolve => server.close(resolve));
   }

@@ -366,7 +366,7 @@ export default function InvoicePage() {
       // Generate base64 string
       const pdfBase64 = doc.output("datauristring").split(",")[1];
 
-      await axios.post(`${API}/invoices/send`, {
+      const response = await axios.post(`${API}/invoices/send`, {
         sender_email: senderEmail.trim(),
         client_email: clientEmail.trim(),
         client_name: clientName.trim(),
@@ -374,11 +374,12 @@ export default function InvoicePage() {
         pdf_base64: pdfBase64
       });
 
+      if (response.data?.success !== true) throw new Error('Unconfirmed delivery');
       incrementInvoiceCount();
       fireInvoiceAnalytics("email");
       toast.success(`Invoice ${invoiceNumber} successfully dispatched to ${clientEmail}!`);
     } catch (err) {
-      const msg = err.response?.data?.detail || "Failed to dispatch invoice email.";
+      const msg = err.response?.data?.detail || "Email delivery could not be confirmed. Download the PDF to send it yourself.";
       toast.error(msg);
     } finally {
       setIsSending(false);

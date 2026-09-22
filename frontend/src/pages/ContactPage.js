@@ -21,7 +21,8 @@ export default function ContactPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post(`${API}/api/contact`, form);
+      const response = await axios.post(`${API}/api/contact`, form);
+      if (response.data?.success !== true) throw new Error('Unconfirmed delivery');
       setSent(true);
       toast.success("Message sent! We'll get back to you within 48 hours.");
     } catch (err) {
