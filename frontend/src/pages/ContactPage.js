@@ -198,12 +198,12 @@ export default function ContactPage() {
         <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-6 text-center">
           <Link to="/" className="inline-block">
             <img
-              src="/logo-dark.webp"
+              src="/meridian/logo-original-transparent.png"
               alt="GlobalSync AI"
               loading="lazy"
               width={204}
               height={68}
-              className="w-auto mx-auto mb-3 transition-transform duration-300 hover:scale-105 logo-glowing-effect"
+              className="w-auto mx-auto mb-3 transition-transform duration-300 hover:scale-105 "
               style={{ height: "68px" }}
             />
           </Link>

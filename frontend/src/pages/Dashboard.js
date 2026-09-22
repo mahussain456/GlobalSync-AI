@@ -70,12 +70,12 @@ export default function Dashboard() {
               <div className="flex items-center gap-2">
                 <Link to="/" className="block">
                   <img
-                    src="/logo-dark.webp"
+                    src="/meridian/logo-original-transparent.png"
                     alt="GlobalSync AI"
                     loading="lazy"
                     width={210}
                     height={70}
-                    className="w-auto transition-transform duration-300 hover:scale-105 logo-glowing-effect"
+                    className="w-auto transition-transform duration-300 hover:scale-105 "
                     style={{ height: "70px" }}
                   />
                 </Link>

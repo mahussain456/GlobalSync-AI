@@ -38,12 +38,12 @@ export default function OnboardingModal({ onComplete }) {
             <div className="flex justify-center mb-8">
               <Link to="/">
                 <img
-                  src="/logo-dark.webp"
+                  src="/meridian/logo-original-transparent.png"
                   alt="GlobalSync AI"
                   loading="lazy"
                   width={216}
                   height={72}
-                  className="w-auto transition-transform duration-300 hover:scale-105 logo-glowing-effect"
+                  className="w-auto transition-transform duration-300 hover:scale-105 "
                   style={{ height: "72px" }}
                 />
               </Link>

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-22T00:00:00Z",
+  "title": "Design System: GlobalSync AI — Meridian",
+  "extensions": {
+    "shadows": [
+      { "name": "navigation-scrolled", "value": "0 7px 22px #0e2a1f10", "purpose": "Subtle separation beneath the shared sticky navigation after scrolling." }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(.16,1,.3,1)", "purpose": "Homepage action and illustration transitions." },
+      { "name": "atlas-breathe", "value": "12s ease-in-out infinite", "purpose": "Shared subtle vertical and rotational movement of the atlas image and route layer." },
+      { "name": "atlas-flow", "value": "18s linear infinite", "purpose": "Dashed decorative routes flowing across the atlas." },
+      { "name": "atlas-node", "value": "5s ease-in-out infinite", "purpose": "Staggered opacity pulses at route endpoints." }
+    ],
+    "breakpoints": [
+      { "name": "navigation-menu", "value": "1000px" },
+      { "name": "homepage-stack", "value": "760px" },
+      { "name": "mobile", "value": "600px" },
+      { "name": "compact-mobile", "value": "360px" }
+    ]
+  },
+  "components": [],
+  "narrative": {
+    "northStar": "Meridian",
+    "overview": "Warm editorial surfaces and a complete sculpted paper atlas. The homepage carries the full Meridian world; shared navigation, footer, and consent carry the identity. Existing tool-page bodies retain their working dark layouts and previous typography.",
+    "keyCharacteristics": ["Ivory and forest surface contrast", "Playfair Display headlines with DM Sans interface text", "Integrated paper atlas", "Quiet dividers and subtle optional motion"],
+    "rules": [
+      { "name": "Motion access", "body": "Respect reduced motion, expose Pause motion, and pause the atlas when hidden or outside the viewport.", "section": "components" }
+    ],
+    "dos": ["Keep the complete atlas legible.", "Preserve visible focus and descriptive field labels.", "Document the actual scope of the Meridian rollout."],
+    "donts": ["Do not place the atlas inside an opaque raised card.", "Do not claim legacy tool bodies have already migrated.", "Do not add unsupported marketing claims."]
+  }
+}

@@ -11,6 +11,7 @@ const puppeteer = require('puppeteer');
 const appRoot = path.resolve(__dirname, '..');
 const build = path.join(appRoot, 'build');
 const routes = require('../package.json').reactSnap.include;
+const buildCommit = process.env.VERCEL_GIT_COMMIT_SHA || process.env.GITHUB_SHA || null;
 
 function getRouteMeta(route) {
   const publicOrigin = 'https://www.globalsync-ai.com';
@@ -109,7 +110,7 @@ function generateFallbackHtml(shell, route) {
 
   html = html.replace('</head>', `  ${metaTags}\n</head>`);
 
-  const bodyContent = `
+  const bodyContent = route === '/' ? fs.readFileSync(path.join(appRoot, 'src/static/meridian-home.html'), 'utf8') : `
     <div data-gs-fallback="1" style="max-width: 900px; margin: 0 auto; padding: 2rem; font-family: system-ui, sans-serif;">
       <h1>${escape(meta.title)}</h1>
       <p>${escape(meta.description)}</p>
@@ -193,7 +194,7 @@ async function main() {
     
     fs.writeFileSync(
       path.join(build, 'BUILD_INFO.json'),
-      JSON.stringify({ build_timestamp: new Date().toISOString(), prerendered_routes: routes.length, renderer: 'application' }, null, 2)
+      JSON.stringify({ build_timestamp: new Date().toISOString(), git_commit_sha: buildCommit, prerendered_routes: routes.length, renderer: 'application' }, null, 2)
     );
     console.log(`Prerendered ${routes.length} routes from application components.`);
   } catch (launchOrRenderErr) {
@@ -211,7 +212,7 @@ async function main() {
     
     fs.writeFileSync(
       path.join(build, 'BUILD_INFO.json'),
-      JSON.stringify({ build_timestamp: new Date().toISOString(), prerendered_routes: written, renderer: 'static-fallback' }, null, 2)
+      JSON.stringify({ build_timestamp: new Date().toISOString(), git_commit_sha: buildCommit, prerendered_routes: written, renderer: 'static-fallback' }, null, 2)
     );
     console.log(`[prerender] Successfully generated ${written} static route snapshots via fallback generator.`);
   } finally {

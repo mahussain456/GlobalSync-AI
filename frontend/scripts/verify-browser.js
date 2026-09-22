@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert/strict');
 const base = process.env.VERIFY_BASE_URL || 'http://127.0.0.1:4173';
-const output = process.env.VERIFY_OUTPUT_DIR || path.join(require('os').tmpdir(), 'globalsync-verification');
+const output = path.resolve(process.env.VERIFY_OUTPUT_DIR || path.join(require('os').tmpdir(), 'globalsync-verification'));
 
 async function main() {
   fs.mkdirSync(output, {recursive: true});
@@ -20,6 +20,7 @@ async function main() {
       fixtureCalls++;
       return request.respond({status:providerOffline ? 503:200, contentType:'application/json', headers:{'Access-Control-Allow-Origin':'*'}, body:JSON.stringify({result:'success', rates:{USD:1,EUR:0.8,GBP:0.5,INR:80}, time_last_update_utc:'Tue, 15 Sep 2026 00:00:00 +0000'})});
     }
+    if (request.url().startsWith('blob:')) return request.continue();
     if (!request.url().startsWith(base)) return request.respond({status:503,contentType:'application/json',body:'{}'});
     return request.continue();
   });
@@ -35,14 +36,14 @@ async function main() {
     await open('/');
     await page.evaluate(() => localStorage.setItem('gs_cookie_consent','declined'));
     await page.reload({waitUntil:'networkidle0'});
-    await page.waitForFunction(() => document.body.innerText.includes('0.8000'));
+    await page.waitForSelector('.meridian-home .picture-frame');
     await page.screenshot({path:path.join(output,'homepage-desktop.png'),fullPage:true});
     await page.screenshot({path:path.join(output,'homepage-desktop-top.png')});
     findings.push({route:'/',viewport:'1440×1000',horizontalOverflow:await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth)});
     assert.equal(await page.$$eval('script[type="application/ld+json"]',nodes=>nodes.length),1);
-    await page.focus('select[aria-label="From currency"]');
-    assert.equal(await page.$eval('select[aria-label="From currency"]',el=>getComputedStyle(el).outlineStyle),'solid');
-    await clickText('a','Find a meeting time');
+    await page.focus('.hero .primary');
+    assert.equal(await page.$eval('.hero .primary',el=>getComputedStyle(el).outlineStyle),'solid');
+    await open('/meeting-planner');
     await page.waitForSelector('h1');
     await page.waitForSelector('[data-testid="meeting-planner"]');
     await open('/dashboard?q='+encodeURIComponent('Best meeting time for New York, London'));

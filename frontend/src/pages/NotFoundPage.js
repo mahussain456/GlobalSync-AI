@@ -19,12 +19,12 @@ export default function NotFoundPage() {
         {/* Logo */}
         <Link to="/" className="mb-10 inline-block">
           <img
-            src="/logo-dark.webp"
+            src="/meridian/logo-original-transparent.png"
             alt="GlobalSync AI"
             loading="lazy"
             width={300}
             height={100}
-            className="w-auto transition-transform duration-300 hover:scale-105 logo-glowing-effect"
+            className="w-auto transition-transform duration-300 hover:scale-105 "
             style={{ height: "100px" }}
           />
         </Link>

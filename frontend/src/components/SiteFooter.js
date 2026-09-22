@@ -3,20 +3,19 @@ import { Github, Twitter, Linkedin, Globe } from "lucide-react";
 
 export default function SiteFooter() {
   return (
-    <footer className="bg-[#0A1E16] text-gem-mist border-t border-white/5 py-12 px-6">
+    <footer className="site-footer-meridian bg-[#0E2A1F] text-gem-mist border-t border-white/5 py-12 px-6">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         
         {/* Brand */}
         <div className="md:col-span-1">
-          <Link to="/" className="flex items-center mb-4 transition-transform duration-300 hover:scale-105">
+          <Link to="/" className="meridian-footer-brand mb-4" aria-label="GlobalSync AI home">
             <img
-              src="/logo-dark.webp"
+              src="/meridian/logo-original-transparent.png"
               alt="GlobalSync AI"
               loading="lazy"
               width={174}
               height={58}
-              className="w-auto logo-glowing-effect"
-              style={{ height: "58px" }}
+              className="brand-footer-image"
             />
           </Link>
           <p className="text-sm text-gem-sage mb-6 leading-relaxed">

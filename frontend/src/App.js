@@ -1,8 +1,8 @@
 import "@/App.css";
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
-import CookieConsent from "@/components/CookieConsent";
+import CookieConsent from "@/components/MeridianConsent";
 
 
 // Global error boundary — prevents any render crash from leaving a blank screen
@@ -93,6 +93,11 @@ const SuspenseFallback = () => (
   <div style={{ minHeight: "100vh", backgroundColor: "#071a0e" }} />
 );
 
+function RoutePosition() {
+  const { pathname, hash } = useLocation();
+  React.useEffect(() => { if (!hash) window.scrollTo({top:0,left:0,behavior:'instant'}); }, [pathname, hash]);
+  return null;
+}
 function App() {
   React.useEffect(() => {
     // Preload main route chunks after 1s idle time so single-click button navigation responds instantly
@@ -112,6 +117,7 @@ function App() {
     <ErrorBoundary>
       <div className="App">
         <BrowserRouter>
+          <RoutePosition />
           <React.Suspense fallback={<SuspenseFallback />}>
             <Routes>
               <Route path="/" element={<LandingPage />} />
@@ -165,4 +171,3 @@ function App() {
 }
 
 export default App;
-
