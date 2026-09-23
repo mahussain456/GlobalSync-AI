@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { 
-  Users, X, Plus, Sparkles, Copy, Trash2, ExternalLink, ArrowUp, ArrowDown, 
+import {
+  Users, X, Plus, Sparkles, Copy, Trash2, ExternalLink, ArrowUp, ArrowDown,
   Check, GripVertical, AlertCircle, Shield, ShieldAlert, RefreshCw, Mail
 } from "lucide-react";
-import { 
-  Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription 
+import {
+  Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription
 } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { getLocalCityTimezone, getNormalizedUtcOffset } from "./TimeConverter";
@@ -27,7 +27,7 @@ export default function SavedTeamsPanel() {
   const [savedTeams, setSavedTeams] = useState([]);
   const [isPaid, setIsPaid] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  
+
   // Sync email search state
   const [syncEmail, setSyncEmail] = useState("");
   const [isSyncing, setIsSyncing] = useState(false);
@@ -38,7 +38,7 @@ export default function SavedTeamsPanel() {
   const [gdprOptIn, setGdprOptIn] = useState(false);
   const [customSlug, setCustomSlug] = useState("");
   const [members, setMembers] = useState([]);
-  
+
   // Member edit inputs
   const [newMemberName, setNewMemberName] = useState("");
   const [newMemberCity, setNewMemberCity] = useState("");
@@ -147,7 +147,7 @@ export default function SavedTeamsPanel() {
     const updated = [...members];
     const targetIndex = index + direction;
     if (targetIndex < 0 || targetIndex >= updated.length) return;
-    
+
     // Swap
     const temp = updated[index];
     updated[index] = updated[targetIndex];
@@ -259,20 +259,20 @@ export default function SavedTeamsPanel() {
 
       const res = await axios.post(`${API}/teams`, payload);
       const savedTeam = res.data.team;
-      
+
       // Update local storage
       const newSavedTeams = [...savedTeams, savedTeam];
       setSavedTeams(newSavedTeams);
       localStorage.setItem("gs_saved_teams", JSON.stringify(newSavedTeams));
       localStorage.setItem("gs_user", JSON.stringify({ name: teamName.trim() + " Owner", email: creatorEmail.trim() }));
-      
+
       toast.success("Workspace saved! Welcome email with link dispatched.");
       fireAnalyticsEvent("team_created", {
         team_name: teamName.trim(),
         members_count: members.length,
         is_paid: isPaid
       });
-      
+
       // Reset Form and close
       setTeamName("");
       setCreatorEmail("");
@@ -280,7 +280,7 @@ export default function SavedTeamsPanel() {
       setCustomSlug("");
       setMembers([]);
       setShowCreateModal(false);
-      
+
       // Navigate to the newly generated team page
       navigate(`/team/${savedTeam.slug}`);
       setIsOpen(false);
@@ -296,74 +296,74 @@ export default function SavedTeamsPanel() {
     <>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <button 
-            className="flex items-center gap-1.5 p-2 rounded-xl bg-white/5 border border-white/10 hover:border-gem-gold/50 text-gem-beige transition-all group"
+          <button
+            className="flex items-center gap-1.5 p-2 rounded-xl bg-surface border border-line hover:border-line text-ink transition-all group"
             title="Team Workspaces"
             data-testid="saved-teams-trigger"
           >
-            <Users className="w-5 h-5 text-gem-gold group-hover:scale-105 transition-transform" />
+            <Users className="w-5 h-5 text-pine group-hover:scale-105 transition-transform" />
             <span className="text-xs font-semibold hidden sm:inline">Teams</span>
             {savedTeams.length > 0 && (
               <span className="flex h-2 w-2 rounded-full bg-gem-gold animate-pulse shrink-0" />
             )}
           </button>
         </SheetTrigger>
-        <SheetContent className="bg-gem-forest border-l border-white/10 text-gem-beige w-full sm:max-w-md overflow-y-auto z-[90]">
-          <SheetHeader className="pb-5 border-b border-white/5">
-            <SheetTitle className="font-heading font-bold text-2xl text-gem-beige flex items-center gap-2">
-              <Users className="w-6 h-6 text-gem-gold" /> Team Workspaces
+        <SheetContent className="bg-paper border-l border-line text-ink w-full sm:max-w-md overflow-y-auto z-[90]">
+          <SheetHeader className="pb-5 border-b border-line">
+            <SheetTitle className="font-heading font-bold text-2xl text-ink flex items-center gap-2">
+              <Users className="w-6 h-6 text-pine" /> Team Workspaces
             </SheetTitle>
-            <SheetDescription className="text-gem-sage text-xs">
+            <SheetDescription className="text-quiet text-xs">
               Manage saved teams and generate shared time conversion workspaces.
             </SheetDescription>
           </SheetHeader>
 
           {/* Subscription Tier Controller */}
-          <div className="mt-5 bg-white/5 border border-white/10 rounded-2xl p-4 space-y-3">
+          <div className="mt-5 bg-surface border border-line rounded-2xl p-4 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 {isPaid ? (
-                  <Sparkles className="w-4 h-4 text-gem-gold animate-bounce" />
+                  <Sparkles className="w-4 h-4 text-pine animate-bounce" />
                 ) : (
-                  <Users className="w-4 h-4 text-gem-sage" />
+                  <Users className="w-4 h-4 text-quiet" />
                 )}
-                <div className="text-xs font-bold uppercase tracking-wider text-gem-beige">
-                  Status: <span className={isPaid ? "text-gem-gold font-extrabold" : "text-gem-sage"}>{isPaid ? "Paid Premium" : "Free Tier"}</span>
+                <div className="text-xs font-bold uppercase tracking-wider text-ink">
+                  Status: <span className={isPaid ? "text-pine font-extrabold" : "text-quiet"}>{isPaid ? "Paid Premium" : "Free Tier"}</span>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={toggleUpgrade}
-                className="text-[10px] uppercase font-bold px-2 py-1 bg-gem-gold/10 hover:bg-gem-gold/20 text-gem-gold rounded border border-gem-gold/30 transition-colors"
+                className="text-[10px] uppercase font-bold px-2 py-1 bg-gem-gold/10 hover:bg-gem-gold/20 text-pine rounded border border-line transition-colors"
               >
                 {isPaid ? "Downgrade" : "Upgrade to Paid"}
               </button>
             </div>
-            <p className="text-[11px] text-gem-sage/80 leading-relaxed">
-              {isPaid 
-                ? "✓ Unlimited saved teams, custom slugs, .ics calendar exports, and branding removed from shared workspaces." 
+            <p className="text-[11px] text-quiet leading-relaxed">
+              {isPaid
+                ? "✓ Unlimited saved teams, custom slugs, .ics calendar exports, and branding removed from shared workspaces."
                 : "Limited to 1 team (up to 6 members). Upgrade to unlock custom slugs and calendar invitations."
               }
             </p>
           </div>
 
           {/* Sync via Email Section */}
-          <div className="mt-5 bg-white/5 border border-white/10 rounded-2xl p-4 space-y-3">
-            <div className="text-xs font-bold text-gem-beige uppercase tracking-wider flex items-center gap-1.5">
-              <Mail className="w-3.5 h-3.5 text-gem-gold" /> Sync Across Devices
+          <div className="mt-5 bg-surface border border-line rounded-2xl p-4 space-y-3">
+            <div className="text-xs font-bold text-ink uppercase tracking-wider flex items-center gap-1.5">
+              <Mail className="w-3.5 h-3.5 text-pine" /> Sync Across Devices
             </div>
-            <p className="text-[11px] text-gem-sage/80">Enter your email to load workspaces you saved on other devices.</p>
+            <p className="text-[11px] text-quiet">Enter your email to load workspaces you saved on other devices.</p>
             <div className="flex gap-2">
               <input
                 type="email"
                 placeholder="developer@agency.com"
                 value={syncEmail}
                 onChange={e => setSyncEmail(e.target.value)}
-                className="flex-1 h-9 px-3 bg-gem-forest border border-white/10 rounded-lg text-xs text-gem-beige outline-none focus:border-gem-gold/45"
+                className="flex-1 h-9 px-3 bg-paper border border-line rounded-lg text-xs text-ink outline-none focus:border-line"
               />
               <button
                 onClick={handleSyncTeams}
                 disabled={isSyncing || !syncEmail}
-                className="px-3 h-9 bg-gem-gold text-gem-forest font-bold rounded-lg text-xs hover:opacity-90 disabled:opacity-50 flex items-center gap-1.5"
+                className="px-3 h-9 bg-pine text-paper font-bold rounded-lg text-xs hover:opacity-90 disabled:opacity-50 flex items-center gap-1.5"
               >
                 {isSyncing ? <RefreshCw className="w-3 h-3 animate-spin" /> : "Sync"}
               </button>
@@ -373,57 +373,57 @@ export default function SavedTeamsPanel() {
           {/* List of Saved Teams */}
           <div className="mt-6 space-y-4">
             <div className="flex items-center justify-between">
-              <p className="font-heading font-semibold text-sm text-gem-beige uppercase tracking-wider">Your Workspaces</p>
-              <span className="text-[10px] text-gem-sage font-bold bg-white/5 px-2 py-0.5 rounded border border-white/5">
+              <p className="font-heading font-semibold text-sm text-ink uppercase tracking-wider">Your Workspaces</p>
+              <span className="text-[10px] text-quiet font-bold bg-surface px-2 py-0.5 rounded border border-line">
                 {savedTeams.length} saved
               </span>
             </div>
 
             {savedTeams.length === 0 ? (
-              <div className="border border-dashed border-white/10 rounded-2xl p-8 text-center text-gem-sage/50 text-xs">
+              <div className="border border-dashed border-line rounded-2xl p-8 text-center text-quiet text-xs">
                 No workspaces created yet.
               </div>
             ) : (
               <div className="space-y-3">
                 {savedTeams.map((team) => (
-                  <div key={team.slug} className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:border-gem-gold/25 transition-all space-y-3">
+                  <div key={team.slug} className="bg-surface border border-line rounded-2xl p-4 hover:border-line transition-all space-y-3">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <span className="font-heading font-bold text-gem-beige text-sm group-hover:text-gem-gold transition-colors block">{team.name}</span>
-                        <p className="text-[10px] text-gem-sage/60 mt-0.5">/team/{team.slug}</p>
+                        <span className="font-heading font-bold text-ink text-sm group-hover:text-pine transition-colors block">{team.name}</span>
+                        <p className="text-[10px] text-quiet mt-0.5">/team/{team.slug}</p>
                       </div>
                       <div className="flex items-center gap-1 shrink-0">
                         {team.is_paid && (
-                          <span className="text-[9px] font-bold text-gem-gold bg-gem-gold/10 border border-gem-gold/20 px-1.5 py-0.5 rounded uppercase">PRO</span>
+                          <span className="text-[9px] font-bold text-pine bg-gem-gold/10 border border-line px-1.5 py-0.5 rounded uppercase">PRO</span>
                         )}
-                        <span className="text-[10px] text-gem-sage font-semibold bg-white/5 border border-white/10 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] text-quiet font-semibold bg-surface border border-line px-1.5 py-0.5 rounded">
                           {team.members?.length || 0} p.
                         </span>
                       </div>
                     </div>
 
                     {/* Member Cities Summary */}
-                    <p className="text-[11px] text-gem-sage/70 line-clamp-1">
+                    <p className="text-[11px] text-quiet line-clamp-1">
                       {team.members?.map(m => m.name).join(" • ")}
                     </p>
 
                     {/* Action buttons */}
-                    <div className="flex items-center justify-between pt-2 border-t border-white/5">
-                      <button 
+                    <div className="flex items-center justify-between pt-2 border-t border-line">
+                      <button
                         onClick={() => handleDeleteTeam(team.slug)}
-                        className="text-xs text-white/30 hover:text-red-400 p-1 hover:bg-white/5 rounded transition-all"
+                        className="text-xs text-ink hover:text-red-800 p-1 hover:bg-surface rounded transition-all"
                         title="Remove Team"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
                       <div className="flex items-center gap-2">
-                        <button 
+                        <button
                           onClick={() => handleCopyLink(team.slug)}
-                          className="flex items-center gap-1 text-[11px] font-bold text-gem-sage hover:text-gem-gold bg-white/5 border border-white/10 px-2 py-1 rounded transition-colors"
+                          className="flex items-center gap-1 text-[11px] font-bold text-quiet hover:text-pine bg-surface border border-line px-2 py-1 rounded transition-colors"
                         >
                           <Copy className="w-3 h-3" /> Share
                         </button>
-                        <button 
+                        <button
                           onClick={() => { navigate(`/team/${team.slug}`); setIsOpen(false); }}
                           className="flex items-center gap-1 text-[11px] font-bold text-gem-forest bg-gem-gold hover:opacity-90 px-2.5 py-1 rounded transition-opacity"
                         >
@@ -439,7 +439,7 @@ export default function SavedTeamsPanel() {
             {/* Create button */}
             <button
               onClick={() => setShowCreateModal(true)}
-              className="w-full mt-4 btn-gradient rounded-xl py-3.5 font-semibold text-sm flex items-center justify-center gap-2 shadow-lg"
+              className="w-full mt-4 btn-gradient rounded-xl py-3.5 font-semibold text-sm flex items-center justify-center gap-2 "
               data-testid="create-team-btn"
             >
               <Plus className="w-4 h-4" /> Create Team Workspace
@@ -453,12 +453,12 @@ export default function SavedTeamsPanel() {
         <div className="fixed inset-0 z-[100] flex items-center justify-center onboarding-overlay fade-in">
           <div className="onboarding-card w-full max-w-lg mx-4 p-7 fade-in-up max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-5">
-              <div className="font-heading text-2xl font-bold text-gem-beige flex items-center gap-2">
-                <Users className="w-5.5 h-5.5 text-gem-gold" /> Create Team Workspace
+              <div className="font-heading text-2xl font-bold text-ink flex items-center gap-2">
+                <Users className="w-5.5 h-5.5 text-pine" /> Create Team Workspace
               </div>
-              <button 
+              <button
                 onClick={() => setShowCreateModal(false)}
-                className="p-1 rounded-full hover:bg-white/5 text-white/30 hover:text-gem-beige transition-colors"
+                className="p-1 rounded-full hover:bg-surface text-ink hover:text-ink transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -467,7 +467,7 @@ export default function SavedTeamsPanel() {
             <form onSubmit={handleSaveWorkspace} className="space-y-4">
               {/* Team Name */}
               <div>
-                <label className="text-gem-beige/60 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Team / Client Name</label>
+                <label className="text-quiet text-xs font-semibold mb-1.5 block uppercase tracking-wider">Team / Client Name</label>
                 <input
                   id="team-name-input"
                   value={teamName}
@@ -480,7 +480,7 @@ export default function SavedTeamsPanel() {
               {/* Email Address & Opt-in */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1.5 block uppercase tracking-wider">Creator Email (To Receive Link)</label>
+                  <label className="text-quiet text-xs font-semibold mb-1.5 block uppercase tracking-wider">Creator Email (To Receive Link)</label>
                   <input
                     id="creator-email-input"
                     type="text"
@@ -491,21 +491,21 @@ export default function SavedTeamsPanel() {
                   />
                 </div>
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1.5 block uppercase tracking-wider flex items-center gap-1">
-                    Custom Slug {!isPaid && <span className="text-[9px] font-bold text-gem-gold bg-gem-gold/10 px-1 rounded uppercase">Pro</span>}
+                  <label className="text-quiet text-xs font-semibold mb-1.5 block uppercase tracking-wider flex items-center gap-1">
+                    Custom Slug {!isPaid && <span className="text-[9px] font-bold text-pine bg-gem-gold/10 px-1 rounded uppercase">Pro</span>}
                   </label>
                   <input
                     value={customSlug}
                     onChange={(e) => setCustomSlug(e.target.value)}
                     placeholder={isPaid ? "e.g. ahmed-clients" : "🔒 Premium feature"}
                     disabled={!isPaid}
-                    className={`onboarding-input ${!isPaid ? "opacity-40 cursor-not-allowed bg-black/20" : ""}`}
+                    className={`onboarding-input ${!isPaid ? "opacity-40 cursor-not-allowed bg-wash" : ""}`}
                   />
                 </div>
               </div>
 
               {/* GDPR Opt-in checkbox */}
-              <div className="flex items-start gap-2 bg-white/5 p-3 rounded-xl border border-white/5">
+              <div className="flex items-start gap-2 bg-surface p-3 rounded-xl border border-line">
                 <input
                   type="checkbox"
                   id="gdpr-opt-in"
@@ -513,28 +513,28 @@ export default function SavedTeamsPanel() {
                   onChange={(e) => setGdprOptIn(e.target.checked)}
                   className="mt-1 accent-gem-gold cursor-pointer"
                 />
-                <label htmlFor="gdpr-opt-in" className="text-xs text-gem-sage/80 cursor-pointer leading-tight select-none">
+                <label htmlFor="gdpr-opt-in" className="text-xs text-quiet cursor-pointer leading-tight select-none">
                   Send me occasional tips for remote teams (single opt-in, GDPR compliant).
                 </label>
               </div>
 
               {/* Workspace Members list builder */}
-              <div className="space-y-3 border-t border-white/5 pt-4">
-                <div className="text-xs font-bold uppercase tracking-wider text-gem-beige">Team Members ({members.length} added)</div>
-                
+              <div className="space-y-3 border-t border-line pt-4">
+                <div className="text-xs font-bold uppercase tracking-wider text-ink">Team Members ({members.length} added)</div>
+
                 {/* Member Input Builder Row */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 items-end">
                   <div className="w-full">
-                    <label className="text-gem-beige/40 text-[10px] uppercase font-semibold mb-1 block">Custom Label (Name/Role)</label>
+                    <label className="text-quiet text-[10px] uppercase font-semibold mb-1 block">Custom Label (Name/Role)</label>
                     <input
                       value={newMemberName}
                       onChange={e => setNewMemberName(e.target.value)}
                       placeholder="e.g. Alice (Lead Developer)"
-                      className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45"
+                      className="w-full h-10 px-3 bg-paper border border-line rounded-xl text-xs text-ink outline-none focus:border-line"
                     />
                   </div>
                   <div className="relative w-full">
-                    <label className="text-gem-beige/40 text-[10px] uppercase font-semibold mb-1 block">City Location</label>
+                    <label className="text-quiet text-[10px] uppercase font-semibold mb-1 block">City Location</label>
                     <div className="flex gap-2">
                       <div className="relative flex-1">
                         <input
@@ -542,16 +542,16 @@ export default function SavedTeamsPanel() {
                           onChange={e => { setCitySearch(e.target.value); setNewMemberCity(e.target.value); setShowCityDropdown(true); }}
                           onFocus={() => setShowCityDropdown(true)}
                           placeholder="e.g. Dubai"
-                          className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45"
+                          className="w-full h-10 px-3 bg-paper border border-line rounded-xl text-xs text-ink outline-none focus:border-line"
                         />
                         {showCityDropdown && citySearch.trim() && filteredCities.length > 0 && (
-                          <div className="absolute z-[110] bottom-11 left-0 right-0 bg-[#0d1326]/95 border border-white/10 rounded-xl shadow-2xl max-h-40 overflow-y-auto">
+                          <div className="absolute z-[110] bottom-11 left-0 right-0 bg-surface border border-line rounded-xl  max-h-40 overflow-y-auto">
                             {filteredCities.slice(0, 5).map(c => (
                               <button
                                 key={c}
                                 type="button"
                                 onMouseDown={() => { setNewMemberCity(c); setCitySearch(c); setShowCityDropdown(false); }}
-                                className="w-full text-left px-3 py-2.5 text-xs text-gem-beige hover:bg-white/10 hover:text-gem-gold transition-colors font-medium border-b border-white/5 last:border-0"
+                                className="w-full text-left px-3 py-2.5 text-xs text-ink hover:bg-surface hover:text-pine transition-colors font-medium border-b border-line last:border-0"
                               >
                                 {c}
                               </button>
@@ -562,7 +562,7 @@ export default function SavedTeamsPanel() {
                       <button
                         type="button"
                         onClick={handleAddMember}
-                        className="h-10 px-3 bg-gem-gold/20 hover:bg-gem-gold/30 border border-gem-gold/35 text-gem-gold font-bold text-xs rounded-xl flex items-center justify-center shrink-0"
+                        className="h-10 px-3 bg-gem-gold/20 hover:bg-gem-gold/30 border border-line text-pine font-bold text-xs rounded-xl flex items-center justify-center shrink-0"
                       >
                         <Plus className="w-4 h-4" /> Add
                       </button>
@@ -572,7 +572,7 @@ export default function SavedTeamsPanel() {
 
                 {/* Added Members Drag/Arrow List */}
                 {members.length === 0 ? (
-                  <p className="text-[11px] text-gem-sage/40 text-center py-4 italic">No members added yet. Add at least 1 teammate.</p>
+                  <p className="text-[11px] text-quiet text-center py-4 italic">No members added yet. Add at least 1 teammate.</p>
                 ) : (
                   <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
                     {members.map((m, idx) => (
@@ -582,10 +582,10 @@ export default function SavedTeamsPanel() {
                         onDragStart={(e) => handleDragStart(e, idx)}
                         onDragOver={handleDragOver}
                         onDrop={(e) => handleDrop(e, idx)}
-                        className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-3 py-2 group cursor-grab active:cursor-grabbing hover:bg-white/10 transition-colors"
+                        className="flex items-center justify-between bg-surface border border-line rounded-xl px-3 py-2 group cursor-grab active:cursor-grabbing hover:bg-surface transition-colors"
                       >
                         <div className="flex items-center gap-2 min-w-0">
-                          <GripVertical className="w-3.5 h-3.5 text-white/20 shrink-0 select-none group-hover:text-white/40" />
+                          <GripVertical className="w-3.5 h-3.5 text-ink shrink-0 select-none group-hover:text-ink" />
                           <div className="min-w-0">
                             {isEditingLabelIndex === idx ? (
                               <input
@@ -593,19 +593,19 @@ export default function SavedTeamsPanel() {
                                 onChange={e => setEditLabelValue(e.target.value)}
                                 onBlur={() => saveEditLabel(idx)}
                                 onKeyDown={e => { if (e.key === "Enter") saveEditLabel(idx); }}
-                                className="h-6 px-1.5 bg-gem-forest border border-gem-gold text-xs rounded text-gem-beige outline-none w-36 font-semibold"
+                                className="h-6 px-1.5 bg-paper border border-line text-xs rounded text-ink outline-none w-36 font-semibold"
                                 autoFocus
                               />
                             ) : (
-                              <span 
+                              <span
                                 onClick={() => startEditLabel(idx, m.name)}
-                                className="text-xs font-bold text-gem-beige cursor-pointer border-b border-dashed border-white/20 hover:border-gem-gold/70"
+                                className="text-xs font-bold text-ink cursor-pointer border-b border-dashed border-line hover:border-line"
                                 title="Click to edit name/label"
                               >
                                 {m.name}
                               </span>
                             )}
-                            <span className="text-[10px] text-gem-sage/65 block font-medium truncate mt-0.5">{m.city} ({m.utc_offset})</span>
+                            <span className="text-[10px] text-quiet block font-medium truncate mt-0.5">{m.city} ({m.utc_offset})</span>
                           </div>
                         </div>
 
@@ -616,7 +616,7 @@ export default function SavedTeamsPanel() {
                               type="button"
                               onClick={() => moveMember(idx, -1)}
                               disabled={idx === 0}
-                              className="p-1 text-white/20 hover:text-gem-gold disabled:opacity-20 disabled:hover:text-white/20"
+                              className="p-1 text-ink hover:text-pine disabled:opacity-20 disabled:hover:text-ink"
                               title="Move Up"
                             >
                               <ArrowUp className="w-3 h-3" />
@@ -625,7 +625,7 @@ export default function SavedTeamsPanel() {
                               type="button"
                               onClick={() => moveMember(idx, 1)}
                               disabled={idx === members.length - 1}
-                              className="p-1 text-white/20 hover:text-gem-gold disabled:opacity-20 disabled:hover:text-white/20"
+                              className="p-1 text-ink hover:text-pine disabled:opacity-20 disabled:hover:text-ink"
                               title="Move Down"
                             >
                               <ArrowDown className="w-3 h-3" />
@@ -634,7 +634,7 @@ export default function SavedTeamsPanel() {
                           <button
                             type="button"
                             onClick={() => handleRemoveMember(idx)}
-                            className="p-1 text-white/20 hover:text-red-400 rounded-full hover:bg-white/5"
+                            className="p-1 text-ink hover:text-red-800 rounded-full hover:bg-surface"
                           >
                             <X className="w-3.5 h-3.5" />
                           </button>
@@ -646,11 +646,11 @@ export default function SavedTeamsPanel() {
               </div>
 
               {/* Submit Buttons */}
-              <div className="flex justify-end gap-3 border-t border-white/5 pt-5 mt-4">
+              <div className="flex justify-end gap-3 border-t border-line pt-5 mt-4">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2.5 rounded-xl border border-white/10 hover:bg-white/5 text-gem-sage text-sm font-semibold transition-colors"
+                  className="px-4 py-2.5 rounded-xl border border-line hover:bg-surface text-quiet text-sm font-semibold transition-colors"
                 >
                   Cancel
                 </button>

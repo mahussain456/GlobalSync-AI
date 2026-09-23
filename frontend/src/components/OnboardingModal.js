@@ -38,7 +38,7 @@ export default function OnboardingModal({ onComplete }) {
             <div className="flex justify-center mb-8">
               <Link to="/">
                 <img
-                  src="/meridian/logo-original-transparent.png"
+                  src="/meridian/logo-finished.png"
                   alt="GlobalSync AI"
                   loading="lazy"
                   width={216}
@@ -50,18 +50,18 @@ export default function OnboardingModal({ onComplete }) {
             </div>
 
             {/* Headline */}
-            <h2 className="font-heading text-3xl font-bold text-gem-beige mb-2 leading-tight">
+            <h2 className="font-heading text-3xl font-bold text-ink mb-2 leading-tight">
               Welcome aboard.{" "}
               <span className="gradient-text">Let's sync</span>
             </h2>
-            <p className="text-gem-beige/50 text-sm mb-8 leading-relaxed">
+            <p className="text-quiet text-sm mb-8 leading-relaxed">
               Enter your name and email to get started — no password, no subscription. Just free access.
             </p>
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-3">
               <div>
-                <label className="text-gem-beige/60 text-xs font-medium mb-1.5 block uppercase tracking-wider">Your Name</label>
+                <label className="text-quiet text-xs font-medium mb-1.5 block uppercase tracking-wider">Your Name</label>
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -72,7 +72,7 @@ export default function OnboardingModal({ onComplete }) {
                 />
               </div>
               <div>
-                <label className="text-gem-beige/60 text-xs font-medium mb-1.5 block uppercase tracking-wider">Email Address</label>
+                <label className="text-quiet text-xs font-medium mb-1.5 block uppercase tracking-wider">Email Address</label>
                 <input
                   type="email"
                   value={email}
@@ -104,7 +104,7 @@ export default function OnboardingModal({ onComplete }) {
 
             <button
               onClick={handleSkip}
-              className="w-full mt-4 text-gem-beige/30 hover:text-gem-beige/60 text-sm transition-colors py-1"
+              className="w-full mt-4 text-quiet hover:text-quiet text-sm transition-colors py-1"
               data-testid="onboarding-skip-btn"
             >
               Skip for now
@@ -113,11 +113,11 @@ export default function OnboardingModal({ onComplete }) {
         ) : (
           /* Success step */
           <div className="text-center py-6 fade-in-up">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-gem-gold to-gem-sage flex items-center justify-center mx-auto mb-5">
-              <Sparkles className="w-8 h-8 text-gem-beige" />
+            <div className="w-16 h-16 rounded-2xl bg-wash flex items-center justify-center mx-auto mb-5">
+              <Sparkles className="w-8 h-8 text-ink" />
             </div>
-            <h3 className="font-heading text-2xl font-bold text-gem-beige mb-2">Welcome, {name}!</h3>
-            <p className="text-gem-beige/50 text-sm">Opening your dashboard...</p>
+            <h3 className="font-heading text-2xl font-bold text-ink mb-2">Welcome, {name}!</h3>
+            <p className="text-quiet text-sm">Opening your dashboard...</p>
           </div>
         )}
       </div>

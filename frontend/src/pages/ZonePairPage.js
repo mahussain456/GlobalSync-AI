@@ -33,39 +33,39 @@ function ZoneWidget({ zonePair }) {
   }, [inputTime, inputDate, zonePair.from, zonePair.to]);
 
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8">
-      <h2 className="font-heading text-lg font-semibold text-gem-beige mb-4">
+    <div className="bg-surface border border-line rounded-2xl p-6 mb-8">
+      <h2 className="font-heading text-lg font-semibold text-ink mb-4">
         Convert a fixed abbreviation time
       </h2>
       <div className="flex flex-wrap gap-4 items-end mb-4">
         <div>
-          <label className="block text-xs text-gem-sage mb-1">Date</label>
+          <label className="block text-xs text-quiet mb-1">Date</label>
           <input
             aria-label="Conversion date" type="date"
             value={inputDate}
             onChange={e => setInputDate(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-gem-beige text-sm focus:outline-none focus:border-gem-gold/50"
+            className="bg-surface border border-line rounded-lg px-3 py-2 text-ink text-sm focus:outline-none focus:border-line"
           />
         </div>
         <div>
-          <label className="block text-xs text-gem-sage mb-1">Time in {zonePair.from}</label>
+          <label className="block text-xs text-quiet mb-1">Time in {zonePair.from}</label>
           <input
             aria-label="Time to convert" type="time"
             value={inputTime}
             onChange={e => setInputTime(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-gem-beige text-sm focus:outline-none focus:border-gem-gold/50"
+            className="bg-surface border border-line rounded-lg px-3 py-2 text-ink text-sm focus:outline-none focus:border-line"
           />
         </div>
       </div>
       {converted && (
-        <div className="flex items-center gap-3 p-4 bg-gem-gold/10 border border-gem-gold/20 rounded-xl">
-          <div className="text-gem-sage text-sm">{inputTime} {zonePair.from}</div>
-          <ArrowRight className="w-4 h-4 text-gem-gold" />
+        <div className="flex items-center gap-3 p-4 bg-gem-gold/10 border border-line rounded-xl">
+          <div className="text-quiet text-sm">{inputTime} {zonePair.from}</div>
+          <ArrowRight className="w-4 h-4 text-pine" />
           <div>
-            <div className="text-gem-beige font-semibold">{converted.toTime} {zonePair.to}</div>
-            <div className="text-gem-sage text-xs">{converted.toDateStr}
+            <div className="text-ink font-semibold">{converted.toTime} {zonePair.to}</div>
+            <div className="text-quiet text-xs">{converted.toDateStr}
               {converted.dayDiff !== 0 && (
-                <span className="ml-1 text-gem-gold">
+                <span className="ml-1 text-pine">
                   ({converted.dayDiff > 0 ? "+" : ""}{converted.dayDiff} day)
                 </span>
               )}
@@ -81,19 +81,19 @@ function ZoneWidget({ zonePair }) {
 function FAQItem({ question, answer }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-white/10 last:border-0">
+    <div className="border-b border-line last:border-0">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full text-left py-4 flex items-start justify-between gap-4 text-gem-beige hover:text-gem-gold transition-colors"
+        className="w-full text-left py-4 flex items-start justify-between gap-4 text-ink hover:text-pine transition-colors"
         aria-expanded={open}
       >
         <span className="font-medium text-sm leading-snug">{question}</span>
         {open
-          ? <ChevronUp className="w-4 h-4 flex-shrink-0 mt-0.5 text-gem-gold" />
-          : <ChevronDown className="w-4 h-4 flex-shrink-0 mt-0.5 text-gem-sage" />}
+          ? <ChevronUp className="w-4 h-4 flex-shrink-0 mt-0.5 text-pine" />
+          : <ChevronDown className="w-4 h-4 flex-shrink-0 mt-0.5 text-quiet" />}
       </button>
       {open && (
-        <div className="pb-4 text-gem-sage text-sm leading-relaxed">
+        <div className="pb-4 text-quiet text-sm leading-relaxed">
           {answer}
         </div>
       )}
@@ -167,7 +167,7 @@ export default function ZonePairPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gem-forest text-gem-beige relative">
+    <div className="min-h-screen bg-paper text-ink relative">
       <SEOHead
         title={seoTitle}
         description={seoDesc}
@@ -177,43 +177,43 @@ export default function ZonePairPage() {
 
       <SiteNav />
 
-      <article className="max-w-4xl mx-auto px-6 pt-28 pb-16">
+      <article className="max-w-4xl mx-auto px-6 pt-12 pb-16">
 
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="text-xs text-zinc-400 mb-6 flex flex-wrap items-center gap-1.5">
-          <Link to="/" className="hover:text-gem-mist">Home</Link>
+          <Link to="/" className="hover:text-quiet">Home</Link>
           <span>/</span>
-          <Link to="/convert" className="hover:text-gem-mist">Time Zone Converters</Link>
+          <Link to="/convert" className="hover:text-quiet">Time Zone Converters</Link>
           <span>/</span>
-          <span className="text-gem-mist">{from} to {to}</span>
+          <span className="text-quiet">{from} to {to}</span>
         </nav>
 
         {/* H1 */}
-        <h1 className="font-heading text-3xl md:text-4xl font-bold text-gem-beige mb-4">
+        <h1 className="font-heading text-3xl md:text-4xl font-bold text-ink mb-4">
           {from} to {to} Time Zone Converter
         </h1>
 
         {/* AEO above-fold answer block — present in raw HTML, cited by LLMs */}
         <div
-          className="bg-gem-gold/10 border border-gem-gold/20 rounded-2xl px-6 py-5 mb-8"
+          className="bg-gem-gold/10 border border-line rounded-2xl px-6 py-5 mb-8"
           data-schema-type="answer"
         >
-          <p className="text-gem-beige font-semibold text-lg leading-snug mb-2">
+          <p className="text-ink font-semibold text-lg leading-snug mb-2">
             {offsetSentence}
           </p>
-          <div className="flex flex-wrap gap-4 text-sm text-gem-sage mt-3">
+          <div className="flex flex-wrap gap-4 text-sm text-quiet mt-3">
             <span>
-              <span className="text-gem-gold font-medium">{from}</span>{" "}
+              <span className="text-pine font-medium">{from}</span>{" "}
               ({fromMeta.fullName ?? from}, {fromOffsetStr} standard)
             </span>
-            <span className="text-gem-gold">→</span>
+            <span className="text-pine">→</span>
             <span>
-              <span className="text-gem-gold font-medium">{to}</span>{" "}
+              <span className="text-pine font-medium">{to}</span>{" "}
               ({toMeta.fullName ?? to}, {toOffsetStr} standard)
             </span>
           </div>
           {fromAbbrNote && (
-            <p className="text-xs text-gem-sage/70 mt-2 italic">{fromAbbrNote}</p>
+            <p className="text-xs text-quiet mt-2 italic">{fromAbbrNote}</p>
           )}
         </div>
 
@@ -224,17 +224,17 @@ export default function ZonePairPage() {
 
         {/* 24-hour conversion table */}
         <section className="mb-10" aria-labelledby="table-heading">
-          <h2 id="table-heading" className="font-heading text-xl font-bold text-gem-beige mb-4">
+          <h2 id="table-heading" className="font-heading text-xl font-bold text-ink mb-4">
             {from} to {to} — Full 24-Hour Conversion Table
           </h2>
-          <p className="text-gem-sage text-sm mb-4">
+          <p className="text-quiet text-sm mb-4">
             The table below shows what time it is in {toMeta.fullName ?? to} for every hour of the day in {fromMeta.fullName ?? from},
             using the fixed UTC offsets named by these abbreviations. A city may use a different abbreviation during daylight saving time.
           </p>
-          <div className="overflow-x-auto rounded-2xl border border-white/10">
+          <div className="overflow-x-auto rounded-2xl border border-line">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-white/5 text-gem-sage">
+                <tr className="bg-surface text-quiet">
                   <th className="text-left px-4 py-3 font-medium">
                     Time in {from} ({fromOffsetStr})
                   </th>
@@ -256,14 +256,14 @@ export default function ZonePairPage() {
                   return (
                     <tr
                       key={fromTime}
-                      className={`border-t border-white/5 ${isOverlap ? "bg-emerald-900/10" : ""}`}
+                      className={`border-t border-line ${isOverlap ? "bg-emerald-900/10" : ""}`}
                     >
-                      <td className="px-4 py-2.5 font-mono text-gem-beige">{fromTime}</td>
-                      <td className={`px-4 py-2.5 font-mono font-semibold ${isOverlap ? "text-emerald-400" : "text-gem-beige"}`}>
+                      <td className="px-4 py-2.5 font-mono text-ink">{fromTime}</td>
+                      <td className={`px-4 py-2.5 font-mono font-semibold ${isOverlap ? "text-emerald-800" : "text-ink"}`}>
                         {toTime}
                         {isOverlap && <span className="ml-2 text-xs text-emerald-500 font-sans">overlap</span>}
                       </td>
-                      <td className="px-4 py-2.5 text-gem-sage/60 text-xs hidden sm:table-cell">
+                      <td className="px-4 py-2.5 text-quiet text-xs hidden sm:table-cell">
                         {hour < 6 ? "🌙 Night" : hour < 9 ? "🌅 Early morning" : hour < 12 ? "🌤 Morning" : hour < 14 ? "☀️ Midday" : hour < 17 ? "🌤 Afternoon" : hour < 20 ? "🌆 Evening" : "🌙 Night"}
                       </td>
                     </tr>
@@ -272,42 +272,42 @@ export default function ZonePairPage() {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-gem-sage/50 mt-2 italic">
+          <p className="text-xs text-quiet mt-2 italic">
             Green rows indicate hours where both zones fall within 09:00–17:00 business hours. Abbreviations use their fixed UTC offsets. For a city that observes daylight saving, use the date-aware meeting planner.
           </p>
         </section>
 
         {/* Business hours overlap */}
-        <section className="mb-10 bg-white/5 border border-white/10 rounded-2xl p-6" aria-labelledby="overlap-heading">
-          <h2 id="overlap-heading" className="font-heading text-xl font-bold text-gem-beige mb-3">
+        <section className="mb-10 bg-surface border border-line rounded-2xl p-6" aria-labelledby="overlap-heading">
+          <h2 id="overlap-heading" className="font-heading text-xl font-bold text-ink mb-3">
             Best Meeting Times: {from} and {to}
           </h2>
           {overlap.hasOverlap ? (
             <>
               <div className="flex items-start gap-3 mb-4">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                <p className="text-gem-beige text-sm leading-relaxed">
+                <CheckCircle2 className="w-5 h-5 text-emerald-800 flex-shrink-0 mt-0.5" />
+                <p className="text-ink text-sm leading-relaxed">
                   {overlap.recommendation}
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/5 rounded-xl p-4 text-center">
-                  <div className="text-xs text-gem-sage mb-1">{from} window</div>
-                  <div className="font-mono text-gem-beige font-semibold">
+                <div className="bg-surface rounded-xl p-4 text-center">
+                  <div className="text-xs text-quiet mb-1">{from} window</div>
+                  <div className="font-mono text-ink font-semibold">
                     {overlap.fromWindowStart} – {overlap.fromWindowEnd}
                   </div>
                 </div>
-                <div className="bg-white/5 rounded-xl p-4 text-center">
-                  <div className="text-xs text-gem-sage mb-1">{to} window</div>
-                  <div className="font-mono text-gem-beige font-semibold">
+                <div className="bg-surface rounded-xl p-4 text-center">
+                  <div className="text-xs text-quiet mb-1">{to} window</div>
+                  <div className="font-mono text-ink font-semibold">
                     {overlap.toWindowStart} – {overlap.toWindowEnd}
                   </div>
                 </div>
               </div>
-              <p className="text-xs text-gem-sage mt-4">
-                Shared business-hours overlap: <strong className="text-gem-gold">{overlap.durationStr}</strong>.
+              <p className="text-xs text-quiet mt-4">
+                Shared business-hours overlap: <strong className="text-pine">{overlap.durationStr}</strong>.
                 Use our{" "}
-                <Link to="/meeting-planner" className="text-gem-gold hover:underline">
+                <Link to="/meeting-planner" className="text-pine hover:underline">
                   Meeting Planner
                 </Link>{" "}
                 to find specific slots and share with your team.
@@ -316,17 +316,17 @@ export default function ZonePairPage() {
           ) : (
             <>
               <div className="flex items-start gap-3 mb-4">
-                <AlertCircle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                <p className="text-gem-beige text-sm leading-relaxed">
+                <AlertCircle className="w-5 h-5 text-amber-800 flex-shrink-0 mt-0.5" />
+                <p className="text-ink text-sm leading-relaxed">
                   Standard 09:00–17:00 business hours do not overlap between {fromMeta.fullName ?? from} and {toMeta.fullName ?? to}.
                 </p>
               </div>
-              <p className="text-gem-sage text-sm leading-relaxed">
+              <p className="text-quiet text-sm leading-relaxed">
                 {overlap.recommendation}
               </p>
-              <p className="text-xs text-gem-sage mt-4">
+              <p className="text-xs text-quiet mt-4">
                 For zero-overlap corridors, we recommend the{" "}
-                <Link to="/meeting-planner" className="text-gem-gold hover:underline">
+                <Link to="/meeting-planner" className="text-pine hover:underline">
                   Meeting Planner's
                 </Link>{" "}
                 rotation-fairness feature to distribute meeting burden equitably.
@@ -337,13 +337,13 @@ export default function ZonePairPage() {
 
         {/* Hand-written corridor context (stub until human writes it) */}
         {context && (
-          <section className="mb-10 bg-white/5 border border-white/10 rounded-2xl p-6" aria-labelledby="corridor-heading">
-            <h2 id="corridor-heading" className="font-heading text-xl font-bold text-gem-beige mb-3">
+          <section className="mb-10 bg-surface border border-line rounded-2xl p-6" aria-labelledby="corridor-heading">
+            <h2 id="corridor-heading" className="font-heading text-xl font-bold text-ink mb-3">
               Working Across {from} and {to}
             </h2>
-            <p className="text-gem-mist leading-relaxed">{context.context}</p>
+            <p className="text-quiet leading-relaxed">{context.context}</p>
             {context.corridor && (
-              <div className="mt-3 inline-flex items-center gap-1.5 bg-gem-gold/10 border border-gem-gold/20 rounded-full px-3 py-1 text-xs text-gem-gold">
+              <div className="mt-3 inline-flex items-center gap-1.5 bg-gem-gold/10 border border-line rounded-full px-3 py-1 text-xs text-pine">
                 {context.corridor}
               </div>
             )}
@@ -352,51 +352,51 @@ export default function ZonePairPage() {
 
         {/* DST section */}
         <section className="mb-10" aria-labelledby="dst-heading">
-          <h2 id="dst-heading" className="font-heading text-xl font-bold text-gem-beige mb-4">
+          <h2 id="dst-heading" className="font-heading text-xl font-bold text-ink mb-4">
             Daylight Saving Time: {from} and {to}
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
             {[{ abbr: from, meta: fromMeta }, { abbr: to, meta: toMeta }].map(({ abbr, meta }) => (
-              <div key={abbr} className="bg-white/5 border border-white/10 rounded-2xl p-5">
+              <div key={abbr} className="bg-surface border border-line rounded-2xl p-5">
                 <div className="flex items-center gap-2 mb-3">
                   {meta.observesDST
-                    ? <Sun className="w-4 h-4 text-amber-400" />
-                    : <Clock className="w-4 h-4 text-gem-sage" />}
-                  <span className="font-semibold text-gem-beige text-sm">{abbr} — {meta.fullName ?? abbr}</span>
+                    ? <Sun className="w-4 h-4 text-amber-800" />
+                    : <Clock className="w-4 h-4 text-quiet" />}
+                  <span className="font-semibold text-ink text-sm">{abbr} — {meta.fullName ?? abbr}</span>
                 </div>
                 {meta.observesDST ? (
                   <>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="inline-block bg-amber-400/10 text-amber-400 text-xs rounded-full px-2 py-0.5">Observes DST</span>
+                      <span className="inline-block bg-amber-400/10 text-amber-800 text-xs rounded-full px-2 py-0.5">Observes DST</span>
                     </div>
-                    <div className="text-gem-sage text-sm space-y-1 mt-2">
-                      <div>Standard: <span className="text-gem-beige font-mono">{formatUTCOffset((meta.stdOffsetHours ?? 0) * 60)}</span></div>
-                      <div>DST ({meta.dstAbbr}): <span className="text-gem-beige font-mono">{formatUTCOffset((meta.dstOffsetHours ?? 0) * 60)}</span></div>
+                    <div className="text-quiet text-sm space-y-1 mt-2">
+                      <div>Standard: <span className="text-ink font-mono">{formatUTCOffset((meta.stdOffsetHours ?? 0) * 60)}</span></div>
+                      <div>DST ({meta.dstAbbr}): <span className="text-ink font-mono">{formatUTCOffset((meta.dstOffsetHours ?? 0) * 60)}</span></div>
                       {meta.dstStartDate && (
-                        <div className="text-xs mt-2 text-gem-sage/70">
-                          2026: clocks forward <strong className="text-gem-beige">{meta.dstStartDate}</strong> · back <strong className="text-gem-beige">{meta.dstEndDate}</strong>
+                        <div className="text-xs mt-2 text-quiet">
+                          2026: clocks forward <strong className="text-ink">{meta.dstStartDate}</strong> · back <strong className="text-ink">{meta.dstEndDate}</strong>
                         </div>
                       )}
                     </div>
-                    <p className="text-xs text-gem-sage/70 mt-3 leading-relaxed">{meta.dstNote}</p>
+                    <p className="text-xs text-quiet mt-3 leading-relaxed">{meta.dstNote}</p>
                   </>
                 ) : (
                   <>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="inline-block bg-gem-sage/10 text-gem-sage text-xs rounded-full px-2 py-0.5">No DST — fixed offset</span>
+                      <span className="inline-block bg-gem-sage/10 text-quiet text-xs rounded-full px-2 py-0.5">No DST — fixed offset</span>
                     </div>
-                    <div className="text-gem-sage text-sm mt-2">
-                      Year-round: <span className="text-gem-beige font-mono">{formatUTCOffset((meta.stdOffsetHours ?? 0) * 60)}</span>
+                    <div className="text-quiet text-sm mt-2">
+                      Year-round: <span className="text-ink font-mono">{formatUTCOffset((meta.stdOffsetHours ?? 0) * 60)}</span>
                     </div>
-                    <p className="text-xs text-gem-sage/70 mt-3 leading-relaxed">{meta.dstNote}</p>
+                    <p className="text-xs text-quiet mt-3 leading-relaxed">{meta.dstNote}</p>
                   </>
                 )}
               </div>
             ))}
           </div>
           {(fromMeta.observesDST || toMeta.observesDST) && (
-            <div className="mt-4 bg-amber-900/10 border border-amber-700/20 rounded-xl p-4 text-xs text-gem-sage/80">
-              <strong className="text-amber-400">DST effect on this pair:</strong>{" "}
+            <div className="mt-4 bg-amber-900/10 border border-amber-700/20 rounded-xl p-4 text-xs text-quiet">
+              <strong className="text-amber-800">DST effect on this pair:</strong>{" "}
               {fromMeta.observesDST && toMeta.observesDST
                 ? `Both zones observe DST, but their transition dates may not align. Between ${fromMeta.dstStartDate ?? "the US spring transition"} and ${toMeta.dstStartDate ?? "the EU spring transition"} (or vice versa in autumn), the gap between ${from} and ${to} will be 1 hour different from the standard offset shown above.`
                 : fromMeta.observesDST
@@ -409,8 +409,8 @@ export default function ZonePairPage() {
         <AdBanner slot="mid" className="mb-8" />
 
         {/* FAQ */}
-        <section className="mb-10 bg-white/5 border border-white/10 rounded-2xl p-6" aria-labelledby="faq-heading">
-          <h2 id="faq-heading" className="font-heading text-xl font-bold text-gem-beige mb-4">
+        <section className="mb-10 bg-surface border border-line rounded-2xl p-6" aria-labelledby="faq-heading">
+          <h2 id="faq-heading" className="font-heading text-xl font-bold text-ink mb-4">
             Frequently Asked Questions
           </h2>
           <div>
@@ -423,7 +423,7 @@ export default function ZonePairPage() {
         {/* Internal links — related pairs */}
         {relatedPairs.length > 0 && (
           <section className="mb-10" aria-labelledby="related-heading">
-            <h2 id="related-heading" className="font-heading text-lg font-semibold text-gem-beige mb-4">
+            <h2 id="related-heading" className="font-heading text-lg font-semibold text-ink mb-4">
               Related Time Zone Converters
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -431,7 +431,7 @@ export default function ZonePairPage() {
                 <Link
                   key={p.slug}
                   to={`/convert/${p.slug}`}
-                  className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-gem-gold/30 rounded-xl px-4 py-3 transition-all text-sm text-gem-beige hover:text-gem-gold"
+                  className="flex items-center gap-2 bg-surface hover:bg-surface border border-line hover:border-line rounded-xl px-4 py-3 transition-all text-sm text-ink hover:text-pine"
                 >
                   <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" />
                   {p.from} to {p.to}
@@ -443,11 +443,11 @@ export default function ZonePairPage() {
 
         {/* Hub links */}
         <div className="flex flex-wrap gap-3 text-sm">
-          <Link to="/convert" className="text-gem-gold hover:underline">← All time zone converters</Link>
-          <span className="text-gem-sage">·</span>
-          <Link to="/time-zone-converter" className="text-gem-gold hover:underline">Time Zone Converter tool</Link>
-          <span className="text-gem-sage">·</span>
-          <Link to="/meeting-planner" className="text-gem-gold hover:underline">Meeting Planner</Link>
+          <Link to="/convert" className="text-pine hover:underline">← All time zone converters</Link>
+          <span className="text-quiet">·</span>
+          <Link to="/time-zone-converter" className="text-pine hover:underline">Time Zone Converter tool</Link>
+          <span className="text-quiet">·</span>
+          <Link to="/meeting-planner" className="text-pine hover:underline">Meeting Planner</Link>
         </div>
 
       </article>

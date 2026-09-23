@@ -8,9 +8,9 @@ import { toast } from "sonner";
 const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
 const INTENT_LABELS = {
-  time_conversion: { label: "Time Zone", color: "bg-gem-forest/60 text-gem-beige border-gem-gold/30 shadow-[0_0_10px_rgba(200,169,106,0.2)]" },
-  meeting_overlap: { label: "Meeting Overlap", color: "bg-gem-forest/60 text-gem-beige border-gem-gold/30 shadow-[0_0_10px_rgba(200,169,106,0.2)]" },
-  currency_conversion: { label: "Currency", color: "bg-gem-forest/60 text-gem-beige border-gem-gold/30 shadow-[0_0_10px_rgba(200,169,106,0.2)]" },
+  time_conversion: { label: "Time Zone", color: "bg-paper text-ink border-line " },
+  meeting_overlap: { label: "Meeting Overlap", color: "bg-paper text-ink border-line " },
+  currency_conversion: { label: "Currency", color: "bg-paper text-ink border-line " },
 };
 
 export default function AIInput({ onResult, initialQuery = "", autoSubmit = false, onAutoSubmitDone }) {
@@ -59,11 +59,11 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
 
   return (
     <div data-testid="ai-input-section" className={`ai-glow-wrap${isFocused ? " focused" : ""}`}>
-      <div className="bg-white/5 backdrop-blur-xl rounded-[28px] p-3 shadow-2xl border border-white/10 transition-all">
+      <div className="bg-surface  rounded-xl p-3  border border-line transition-all">
         <div className="flex items-center gap-3">
           <div className="flex-1 relative">
-            <div className="absolute left-3.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-gem-gold text-gem-forest flex items-center justify-center">
-              <Sparkles className="w-3.5 h-3.5 text-gem-forest" />
+            <div className="absolute left-3.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-pine text-paper flex items-center justify-center">
+              <Sparkles className="w-3.5 h-3.5" />
             </div>
             <input
               aria-label="Describe a time or currency conversion"
@@ -73,14 +73,14 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               placeholder='Ask anything: "Best meeting time for NY, London, Tokyo" or "Convert 100 USD to EUR"'
-              className="w-full pl-14 pr-10 py-3.5 bg-transparent text-gem-beige placeholder-gem-mist/50 outline-none text-sm sm:text-base font-medium"
+              className="w-full pl-14 pr-10 py-3.5 bg-transparent text-ink placeholder-gem-mist/50 outline-none text-sm sm:text-base font-medium"
               data-testid="ai-query-input"
               disabled={loading}
             />
             {query && (
               <button
                 onClick={() => { setQuery(""); setDetectedIntent(null); }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gem-sage hover:text-gem-beige"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-quiet hover:text-ink"
                 aria-label="Clear query" data-testid="ai-input-clear"
               >
                 <X className="w-4 h-4" />
@@ -90,7 +90,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
           <Button
             onClick={() => handleSubmit()}
             disabled={loading || !query.trim()}
-            className="rounded-[28px] bg-gem-gold text-gem-forest px-5 py-3 font-semibold flex items-center gap-2 shrink-0 border-0 shadow-md hover:opacity-90 transition-all"
+            className="rounded-xl bg-pine text-paper px-5 py-3 font-semibold flex items-center gap-2 shrink-0 border-0  hover:opacity-90 transition-all"
             data-testid="ai-submit-btn"
           >
             {loading ? (
@@ -107,7 +107,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
           <span className={`text-xs font-medium border rounded-full px-3 py-1 ${intentMeta.color}`}>
             Detected: {intentMeta.label}
           </span>
-          <span className="text-xs text-gem-sage">Routing to the correct tool...</span>
+          <span className="text-xs text-quiet">Routing to the correct tool...</span>
         </div>
       )}
     </div>

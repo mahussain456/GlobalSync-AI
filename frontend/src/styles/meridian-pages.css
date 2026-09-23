@@ -1,0 +1,67 @@
+/* Shared Meridian surfaces. Utility names express their role, not a former dark theme. */
+:root {
+  --background: 39 39% 93%; --foreground: 156 50% 11%;
+  --card: 38 100% 98%; --card-foreground: 156 50% 11%;
+  --popover: 38 100% 98%; --popover-foreground: 156 50% 11%;
+  --primary: 156 50% 11%; --primary-foreground: 39 39% 93%;
+  --secondary: 80 21% 89%; --secondary-foreground: 156 50% 11%;
+  --muted: 80 21% 89%; --muted-foreground: 141 11% 36%;
+  --accent: 80 21% 89%; --accent-foreground: 156 50% 11%;
+  --border: 93 11% 82%; --input: 93 11% 72%; --ring: 38 48% 34%;
+}
+body { background:#f4efe6; color:#0e2a1f; font-family:'DM Sans',sans-serif; }
+.meridian-interior { background:#f4efe6; color:#0e2a1f; min-height:100vh; font-family:'DM Sans',sans-serif; }
+.meridian-interior h1 { font-family:'Playfair Display',serif; font-size:clamp(36px,4.4vw,64px); font-weight:500; line-height:1.12; letter-spacing:-.03em; text-wrap:balance; }
+.meridian-interior h2 { font-family:'Playfair Display',serif; font-weight:500; letter-spacing:-.02em; line-height:1.25; }
+.meridian-interior :is(h3,h4,h5,h6) { font-family:'DM Sans',sans-serif; }
+.meridian-interior .font-serif { font-family:'Playfair Display',serif; }
+.meridian-interior p { line-height:1.75; }
+.meridian-interior :is(button,input,select,textarea) { font-family:'DM Sans',sans-serif; }
+.meridian-interior :is(input,select,textarea) { color-scheme:light; accent-color:#1b4d3e; }
+.meridian-interior :is(input,textarea)::placeholder { color:#526659; opacity:1; }
+.meridian-interior :is(a,button,input,select,textarea,summary):focus-visible { outline:3px solid #80612d !important; outline-offset:4px; }
+.meridian-interior :is(button,a,input,select,textarea) { transition-property:color,background-color,border-color,opacity; transition-duration:180ms; }
+.meridian-interior button:disabled { cursor:not-allowed; }
+.meridian-interior :is(.card-dark,.card-light,.glass-dark,.glass-light,.clock-card,.onboarding-card,.dash-stat-card) {
+  background:#fffcf7; color:#0e2a1f; border:1px solid #cfd5ca; border-radius:12px; box-shadow:none; backdrop-filter:none;
+}
+.meridian-interior :is(.btn-primary,.btn-gradient) { background:#0e2a1f; color:#f4efe6; border-radius:6px; box-shadow:none; }
+.meridian-interior :is(.btn-primary,.btn-gradient):hover { background:#1b4d3e; box-shadow:none; }
+.meridian-interior .btn-secondary { background:transparent; color:#0e2a1f; border:1px solid #a4afa2; border-radius:6px; }
+.meridian-interior .btn-secondary:hover { background:#e4e8dc; }
+.meridian-interior .btn-gradient::after { content:none; }
+.meridian-interior :is(.gradient-text,.gradient-text-warm) { background:none; -webkit-text-fill-color:currentColor; color:#1b4d3e; }
+.meridian-interior :is(.hero-luxury-bg,.hero-grid,.orb-teal) { display:none; }
+.meridian-interior .ai-glow-wrap:focus-within { animation:none; box-shadow:0 0 0 2px #80612d; }
+.meridian-interior .onboarding-input { background:#fffcf7; border-color:#a4afa2; color:#0e2a1f; }
+.meridian-interior .onboarding-input::placeholder { color:#526659; }
+.meridian-interior .dash-stat-card { border:0; border-bottom:1px solid #cfd5ca; border-radius:0; background:transparent; }
+.meridian-interior :is(.fade-in,.fade-in-up) { animation:none; opacity:1; }
+.meridian-interior .site-footer-meridian { background:#0e2a1f; color:#f4efe6; }
+.site-footer-meridian h3 { font-family:'DM Sans',sans-serif; }
+.meridian-interior .prose-custom { font-size:16px; line-height:1.8; }
+.meridian-interior .prose-custom h2 { margin-top:2.2em; margin-bottom:.7em; }
+.meridian-interior .prose-custom p { max-width:72ch; }
+.meridian-interior [data-testid="blog-grid"] article { border-radius:0; border-width:0 0 1px; background:transparent; }
+.meridian-interior [data-testid="blog-grid"] article > .h-1 { display:none; }
+.meridian-interior [data-testid="blog-grid"] article > .p-6 { padding-left:0; padding-right:20px; }
+.meridian-interior [data-testid="blog-grid"] h2 { font-size:27px; }
+.meridian-interior [data-testid="blog-grid"] .flex.items-center.gap-3 { flex-wrap:wrap; }
+.meridian-loading { min-height:65vh; display:grid; place-items:center; background:#f4efe6; color:#526659; font:16px 'DM Sans',sans-serif; }
+.meridian-interior .workspace-heading { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-bottom:32px; }
+.meridian-interior .workspace-heading p { margin-top:12px; max-width:52ch; color:#526659; }
+.meridian-interior .workspace-heading h1 { font-size:clamp(36px,4vw,56px); }
+.meridian-interior .not-found-number { font:500 clamp(80px,18vw,160px)/1 'Playfair Display',serif; color:#1b4d3e; }
+[role="dialog"] { font-family:'DM Sans',sans-serif; }
+html { scrollbar-color:#a4afa2 #f4efe6; }
+@media(max-width:600px) {
+  .meridian-interior h1 { font-size:36px; }
+  .meridian-interior .workspace-heading { align-items:flex-start; flex-direction:column; gap:18px; }
+  .meridian-interior [data-testid="blog-grid"] h2 { font-size:25px; }
+  .meridian-interior .dash-stat-card { padding:12px 4px; flex-direction:column; align-items:flex-start; gap:9px; }
+  .meridian-interior .dash-stat-card .truncate { white-space:normal; overflow:visible; font-size:11px; }
+  .meridian-interior [data-testid="ai-input-section"] > div > .flex { flex-direction:column; align-items:stretch; }
+  .meridian-interior [data-testid="ai-submit-btn"] { min-height:44px; }
+  .meridian-interior [role="tablist"] { display:flex; height:auto; padding:4px; }
+  .meridian-interior [role="tab"] { flex:1; min-width:0; padding:10px 6px; font-size:12px; }
+}

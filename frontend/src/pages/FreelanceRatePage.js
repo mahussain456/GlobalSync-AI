@@ -11,19 +11,19 @@ import { getCorridor, CORRIDOR_APPROX_RATES, PAYMENT_RAILS, CORRIDORS } from "@/
 function FAQItem({ question, answer }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-white/10 last:border-0">
+    <div className="border-b border-line last:border-0">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full text-left py-4 flex items-start justify-between gap-4 text-gem-beige hover:text-gem-gold transition-colors"
+        className="w-full text-left py-4 flex items-start justify-between gap-4 text-ink hover:text-pine transition-colors"
         aria-expanded={open}
       >
         <span className="font-medium text-sm leading-snug">{question}</span>
         {open
-          ? <ChevronUp className="w-4 h-4 flex-shrink-0 mt-0.5 text-gem-gold" />
-          : <ChevronDown className="w-4 h-4 flex-shrink-0 mt-0.5 text-gem-sage" />}
+          ? <ChevronUp className="w-4 h-4 flex-shrink-0 mt-0.5 text-pine" />
+          : <ChevronDown className="w-4 h-4 flex-shrink-0 mt-0.5 text-quiet" />}
       </button>
       {open && (
-        <div className="pb-4 text-gem-sage text-sm leading-relaxed">
+        <div className="pb-4 text-quiet text-sm leading-relaxed">
           {answer}
         </div>
       )}
@@ -139,7 +139,7 @@ export default function FreelanceRatePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gem-forest text-gem-beige relative">
+    <div className="min-h-screen bg-paper text-ink relative">
       <SEOHead
         title={`${title} | Calculate Earnings & FX Fees`}
         description={`Calculate take-home income when billing in ${from} for ${to} payouts. Compare payment rail fees (Wise vs PayPal), W-2 equivalent, and mid-market conversion.`}
@@ -149,27 +149,27 @@ export default function FreelanceRatePage() {
 
       <SiteNav />
 
-      <article className="max-w-4xl mx-auto px-6 pt-28 pb-16">
+      <article className="max-w-4xl mx-auto px-6 pt-12 pb-16">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="text-xs text-zinc-400 mb-6 flex flex-wrap items-center gap-1.5">
-          <Link to="/" className="hover:text-gem-mist">Home</Link>
+          <Link to="/" className="hover:text-quiet">Home</Link>
           <span>/</span>
-          <Link to="/freelance-rate" className="hover:text-gem-mist">Freelance Rate Calculators</Link>
+          <Link to="/freelance-rate" className="hover:text-quiet">Freelance Rate Calculators</Link>
           <span>/</span>
-          <span className="text-gem-mist">{from} to {to}</span>
+          <span className="text-quiet">{from} to {to}</span>
         </nav>
 
         {/* H1 */}
-        <h1 className="font-heading text-3xl md:text-4xl font-bold text-gem-beige mb-4">
+        <h1 className="font-heading text-3xl md:text-4xl font-bold text-ink mb-4">
           Freelance Rate Calculator: {from} to {to}
         </h1>
 
         {/* AEO Rate Banner */}
-        <div className="bg-gem-gold/10 border border-gem-gold/20 rounded-2xl px-6 py-5 mb-8">
-          <p className="text-gem-beige font-semibold text-lg leading-snug mb-2">
+        <div className="bg-gem-gold/10 border border-line rounded-2xl px-6 py-5 mb-8">
+          <p className="text-ink font-semibold text-lg leading-snug mb-2">
             {quote ? `1 ${from} = ${rate.toLocaleString()} ${to}` : "Reference rate unavailable"}
           </p>
-          <p className="text-gem-sage text-sm">
+          <p className="text-quiet text-sm">
             {quote ? `${quote.isFallback ? "Cached · " : ""}${quote.source} · ${quote.date}` : "Try again later for converted estimates."}
           </p>
         </div>
@@ -177,33 +177,33 @@ export default function FreelanceRatePage() {
         <AdBanner slot="top" className="mb-8" />
 
         {/* Interactive Calculator Widget */}
-        <section className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-10">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-6 flex items-center gap-2">
-            <Calculator className="w-5 h-5 text-gem-gold" />
+        <section className="bg-surface border border-line rounded-2xl p-6 mb-10">
+          <h2 className="font-heading text-xl font-bold text-ink mb-6 flex items-center gap-2">
+            <Calculator className="w-5 h-5 text-pine" />
             Interactive Rate & Take-Home Calculator
           </h2>
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <div className="space-y-4">
               <div>
-                <label className="block text-xs text-gem-sage mb-1.5 font-medium">
+                <label className="block text-xs text-quiet mb-1.5 font-medium">
                   Hourly Billing Rate ({from})
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-2.5 text-gem-sage">{fromSymbol}</span>
+                  <span className="absolute left-3 top-2.5 text-quiet">{fromSymbol}</span>
                   <input
                     type="number"
                     min="5"
                     max="500"
                     value={hourlyRate}
                     onChange={e => setHourlyRate(Number(e.target.value))}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-8 pr-4 py-2 text-gem-beige font-mono text-sm focus:outline-none focus:border-gem-gold"
+                    className="w-full bg-surface border border-line rounded-xl pl-8 pr-4 py-2 text-ink font-mono text-sm focus:outline-none focus:border-line"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs text-gem-sage mb-1.5 font-medium">
+                <label className="block text-xs text-quiet mb-1.5 font-medium">
                   Billable Hours / Week
                 </label>
                 <input
@@ -212,12 +212,12 @@ export default function FreelanceRatePage() {
                   max="80"
                   value={hoursPerWeek}
                   onChange={e => setHoursPerWeek(Number(e.target.value))}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-gem-beige font-mono text-sm focus:outline-none focus:border-gem-gold"
+                  className="w-full bg-surface border border-line rounded-xl px-4 py-2 text-ink font-mono text-sm focus:outline-none focus:border-line"
                 />
               </div>
 
               <div>
-                <label htmlFor="freelanceratepage-field-1" className="block text-xs text-gem-sage mb-1.5 font-medium">
+                <label htmlFor="freelanceratepage-field-1" className="block text-xs text-quiet mb-1.5 font-medium">
                   Working Weeks / Year
                 </label>
                 <input id="freelanceratepage-field-1"
@@ -226,65 +226,65 @@ export default function FreelanceRatePage() {
                   max="52"
                   value={weeksPerYear}
                   onChange={e => setWeeksPerYear(Number(e.target.value))}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-gem-beige font-mono text-sm focus:outline-none focus:border-gem-gold"
+                  className="w-full bg-surface border border-line rounded-xl px-4 py-2 text-ink font-mono text-sm focus:outline-none focus:border-line"
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-gem-sage mb-1.5 font-medium">
+                <label className="block text-xs text-quiet mb-1.5 font-medium">
                   Annual Software & Business Expenses ({from})
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-2.5 text-gem-sage">{fromSymbol}</span>
+                  <span className="absolute left-3 top-2.5 text-quiet">{fromSymbol}</span>
                   <input
                     type="number"
                     min="0"
                     max="50000"
                     value={annualExpensesUSD}
                     onChange={e => setAnnualExpensesUSD(Number(e.target.value))}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-8 pr-4 py-2 text-gem-beige font-mono text-sm focus:outline-none focus:border-gem-gold"
+                    className="w-full bg-surface border border-line rounded-xl pl-8 pr-4 py-2 text-ink font-mono text-sm focus:outline-none focus:border-line"
                   />
                 </div>
               </div>
             </div>
 
             {/* Calculations Output */}
-            <div className="bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col justify-between space-y-4">
+            <div className="bg-surface border border-line rounded-xl p-5 flex flex-col justify-between space-y-4">
               <div>
-                <div className="text-xs text-gem-sage uppercase tracking-wider mb-1 font-semibold">
+                <div className="text-xs text-quiet uppercase tracking-wider mb-1 font-semibold">
                   Gross Annual Income ({from})
                 </div>
-                <div className="font-mono text-2xl font-bold text-gem-beige">
+                <div className="font-mono text-2xl font-bold text-ink">
                   {fromSymbol}{calculations.grossAnnualSource.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-white/10">
-                <div className="text-xs text-gem-gold uppercase tracking-wider mb-1 font-semibold">
+              <div className="pt-3 border-t border-line">
+                <div className="text-xs text-pine uppercase tracking-wider mb-1 font-semibold">
                   Converted Gross Annual ({to})
                 </div>
-                <div className="font-mono text-2xl font-bold text-gem-gold">
+                <div className="font-mono text-2xl font-bold text-pine">
                   {quote ? toSymbol + Math.round(calculations.grossAnnualTarget).toLocaleString() : "—"}
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-white/10">
-                <div className="text-xs text-emerald-400 uppercase tracking-wider mb-1 font-semibold">
+              <div className="pt-3 border-t border-line">
+                <div className="text-xs text-emerald-800 uppercase tracking-wider mb-1 font-semibold">
                   Effective Monthly Income ({to})
                 </div>
-                <div className="font-mono text-xl font-semibold text-emerald-400">
+                <div className="font-mono text-xl font-semibold text-emerald-800">
                   {quote ? toSymbol + Math.round(calculations.monthlyTarget).toLocaleString() : "—"} / month
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-white/10">
-                <div className="text-xs text-gem-sage mb-1">
+              <div className="pt-3 border-t border-line">
+                <div className="text-xs text-quiet mb-1">
                   Illustrative income after 22% overhead ({from}):
                 </div>
-                <div className="font-mono text-sm font-semibold text-gem-beige">
+                <div className="font-mono text-sm font-semibold text-ink">
                   ~{fromSymbol}{Math.round(calculations.w2EquivalentSource).toLocaleString()} / year
                 </div>
-                <div className="text-[11px] text-gem-sage/70 mt-0.5">
+                <div className="text-[11px] text-quiet mt-0.5">
                   Assumes 22% overhead for illustration; this is not a tax or salary calculation.
                 </div>
               </div>
@@ -293,54 +293,54 @@ export default function FreelanceRatePage() {
         </section>
 
         {/* Worked Example Section (Server Rendered) */}
-        <section className="mb-10 bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">
+        <section className="mb-10 bg-surface border border-line rounded-2xl p-6">
+          <h2 className="font-heading text-xl font-bold text-ink mb-3">
             Worked Corridor Example: {fromSymbol}{exampleRate}/hr Baseline
           </h2>
-          <p className="text-gem-sage text-sm leading-relaxed mb-4">
-            Consider a contractor billing <strong className="text-gem-beige">{fromSymbol}{exampleRate}/hour</strong> for{" "}
-            <strong className="text-gem-beige">{exampleHours} billable hours/week</strong> across{" "}
-            <strong className="text-gem-beige">{exampleWeeks} weeks/year</strong>:
+          <p className="text-quiet text-sm leading-relaxed mb-4">
+            Consider a contractor billing <strong className="text-ink">{fromSymbol}{exampleRate}/hour</strong> for{" "}
+            <strong className="text-ink">{exampleHours} billable hours/week</strong> across{" "}
+            <strong className="text-ink">{exampleWeeks} weeks/year</strong>:
           </p>
-          <ul className="space-y-2 text-sm text-gem-beige font-mono bg-white/5 rounded-xl p-4 border border-white/10 mb-4">
+          <ul className="space-y-2 text-sm text-ink font-mono bg-surface rounded-xl p-4 border border-line mb-4">
             <li className="flex justify-between">
-              <span className="text-gem-sage font-sans">Gross Annual Billing ({from}):</span>
+              <span className="text-quiet font-sans">Gross Annual Billing ({from}):</span>
               <span>{fromSymbol}{exampleGrossSource.toLocaleString()}</span>
             </li>
             <li className="flex justify-between">
-              <span className="text-gem-sage font-sans">Mid-Market Converted ({to}):</span>
-              <span className="text-gem-gold font-bold">{quote ? toSymbol + Math.round(exampleGrossTarget).toLocaleString() : "—"}</span>
+              <span className="text-quiet font-sans">Mid-Market Converted ({to}):</span>
+              <span className="text-pine font-bold">{quote ? toSymbol + Math.round(exampleGrossTarget).toLocaleString() : "—"}</span>
             </li>
             <li className="flex justify-between">
-              <span className="text-gem-sage font-sans">Illustrative income after 22% overhead:</span>
+              <span className="text-quiet font-sans">Illustrative income after 22% overhead:</span>
               <span>~{fromSymbol}{Math.round(exampleW2).toLocaleString()}</span>
             </li>
           </ul>
-          <p className="text-xs text-gem-sage leading-relaxed">
+          <p className="text-xs text-quiet leading-relaxed">
             The 22% overhead assumption is illustrative. Actual taxes, benefits and business costs vary; this example does not calculate them.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">Compare the amount you will receive</h2>
-          <p className="text-gem-sage leading-relaxed">Before choosing a payment provider, request a quote for your countries, amount and payment method. Compare the final amount received, all fees, the exchange rate and estimated delivery time. A reference currency conversion does not include those costs.</p>
+          <h2 className="font-heading text-xl font-bold text-ink mb-3">Compare the amount you will receive</h2>
+          <p className="text-quiet leading-relaxed">Before choosing a payment provider, request a quote for your countries, amount and payment method. Compare the final amount received, all fees, the exchange rate and estimated delivery time. A reference currency conversion does not include those costs.</p>
         </section>
 
         {/* Local Purchasing Power Context (Human Written Stub) */}
         {purchasingPowerContext && (
-          <section className="mb-10 bg-white/5 border border-white/10 rounded-2xl p-6">
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">
+          <section className="mb-10 bg-surface border border-line rounded-2xl p-6">
+            <h2 className="font-heading text-xl font-bold text-ink mb-3">
               Local Purchasing Power & Market Insights
             </h2>
-            <p className="text-gem-mist leading-relaxed text-sm">{purchasingPowerContext}</p>
+            <p className="text-quiet leading-relaxed text-sm">{purchasingPowerContext}</p>
           </section>
         )}
 
         <AdBanner slot="mid" className="mb-8" />
 
         {/* FAQ Section */}
-        <section className="mb-10 bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-4">
+        <section className="mb-10 bg-surface border border-line rounded-2xl p-6">
+          <h2 className="font-heading text-xl font-bold text-ink mb-4">
             Frequently Asked Questions
           </h2>
           <div>
@@ -353,7 +353,7 @@ export default function FreelanceRatePage() {
         {/* Sibling Corridor Links */}
         {siblingCorridors.length > 0 && (
           <section className="mb-10">
-            <h2 className="font-heading text-lg font-semibold text-gem-beige mb-4">
+            <h2 className="font-heading text-lg font-semibold text-ink mb-4">
               Related Freelance Rate Calculators
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -361,10 +361,10 @@ export default function FreelanceRatePage() {
                 <Link
                   key={c.slug}
                   to={`/freelance-rate/${c.slug}`}
-                  className="flex items-center justify-between bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-gem-beige hover:text-gem-gold transition-all"
+                  className="flex items-center justify-between bg-surface hover:bg-surface border border-line rounded-xl px-4 py-3.5 text-sm text-ink hover:text-pine transition-all"
                 >
                   <span>{c.from} to {c.to} Freelance Rate</span>
-                  <ArrowRight className="w-4 h-4 text-gem-gold" />
+                  <ArrowRight className="w-4 h-4 text-pine" />
                 </Link>
               ))}
             </div>
@@ -373,13 +373,13 @@ export default function FreelanceRatePage() {
 
         {/* Footer Navigation Hub Links */}
         <div className="flex flex-wrap gap-3 text-sm">
-          <Link to="/freelance-rate" className="text-gem-gold hover:underline">← All freelance rate calculators</Link>
-          <span className="text-gem-sage">·</span>
-          <Link to="/freelancer-rate-converter" className="text-gem-gold hover:underline">Freelancer Rate Converter</Link>
-          <span className="text-gem-sage">·</span>
-          <Link to="/currency-converter" className="text-gem-gold hover:underline">Currency Converter</Link>
-          <span className="text-gem-sage">·</span>
-          <Link to="/blog/mid-market-exchange-rate-freelancers" className="text-gem-gold hover:underline">Mid-Market Rate Guide</Link>
+          <Link to="/freelance-rate" className="text-pine hover:underline">← All freelance rate calculators</Link>
+          <span className="text-quiet">·</span>
+          <Link to="/freelancer-rate-converter" className="text-pine hover:underline">Freelancer Rate Converter</Link>
+          <span className="text-quiet">·</span>
+          <Link to="/currency-converter" className="text-pine hover:underline">Currency Converter</Link>
+          <span className="text-quiet">·</span>
+          <Link to="/blog/mid-market-exchange-rate-freelancers" className="text-pine hover:underline">Mid-Market Rate Guide</Link>
         </div>
       </article>
 

@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import CookieConsent from "@/components/MeridianConsent";
+import "@/styles/meridian-pages.css";
 
 
 // Global error boundary — prevents any render crash from leaving a blank screen
@@ -23,11 +24,11 @@ class ErrorBoundary extends React.Component {
         <div style={{
           minHeight: "100vh", display: "flex", flexDirection: "column",
           alignItems: "center", justifyContent: "center",
-          background: "#071a0e", color: "#e8d5b0", fontFamily: "Inter, sans-serif",
+          background: "#f4efe6", color: "#0e2a1f", fontFamily: "DM Sans, sans-serif",
           textAlign: "center", padding: "2rem"
         }}>
           <h1 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>Something went wrong</h1>
-          <p style={{ color: "#8a9e8a", marginBottom: "2rem" }}>
+          <p style={{ color: "#526659", marginBottom: "2rem" }}>
             An unexpected error occurred. Please refresh the page to continue.
           </p>
           <button
@@ -90,8 +91,13 @@ const ComparisonPage = React.lazy(() => import("@/pages/ComparisonPage"));
 
 
 const SuspenseFallback = () => (
-  <div style={{ minHeight: "100vh", backgroundColor: "#071a0e" }} />
+  <div role="status" className="meridian-loading">Opening your workspace…</div>
 );
+
+function PageTheme({ children }) {
+  const { pathname } = useLocation();
+  return <div className={pathname === '/' ? 'meridian-root' : 'meridian-interior'}>{children}</div>;
+}
 
 function RoutePosition() {
   const { pathname, hash } = useLocation();
@@ -118,6 +124,7 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <RoutePosition />
+          <PageTheme>
           <React.Suspense fallback={<SuspenseFallback />}>
             <Routes>
               <Route path="/" element={<LandingPage />} />
@@ -162,6 +169,7 @@ function App() {
 
             </Routes>
           </React.Suspense>
+          </PageTheme>
           <Toaster position="top-right" richColors />
           <CookieConsent />
         </BrowserRouter>

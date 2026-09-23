@@ -16,7 +16,7 @@ const breadcrumbSchema = {
 
 export default function FreelanceRateHubPage() {
   return (
-    <div className="min-h-screen bg-gem-forest text-gem-beige relative">
+    <div className="min-h-screen bg-paper text-ink relative">
       <SEOHead
         rawTitle="Freelance Rate & Currency Corridor Calculators | GlobalSync AI"
         description="Calculate net freelance earnings across major currency corridors (USD to INR, PHP, PKR, EUR, GBP). Compare payment fees and W-2 salary equivalents."
@@ -27,36 +27,36 @@ export default function FreelanceRateHubPage() {
 
       <SiteNav />
 
-      <div className="max-w-5xl mx-auto px-6 pt-28 pb-16">
+      <div className="max-w-5xl mx-auto px-6 pt-12 pb-16">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="text-xs text-zinc-400 mb-6 flex items-center gap-1.5">
-          <Link to="/" className="hover:text-gem-mist">Home</Link>
+          <Link to="/" className="hover:text-quiet">Home</Link>
           <span>/</span>
-          <span className="text-gem-mist">Freelance Rate Calculators</span>
+          <span className="text-quiet">Freelance Rate Calculators</span>
         </nav>
 
         {/* H1 + Intro */}
-        <header className="mb-10">
-          <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-gem-gold rounded-full px-3 py-1 text-xs font-medium mb-4 border border-gem-gold/20">
-            <DollarSign className="w-3.5 h-3.5" /> 12 Major Freelance Corridors · FX Fee Analysis
-          </div>
-          <h1 className="font-heading text-3xl md:text-4xl font-bold text-gem-beige mb-4">
+        <header className="mb-10"><h1 className="font-heading text-3xl md:text-4xl font-bold text-ink mb-4">
             Freelance Rate & Currency Corridor Calculators
           </h1>
-          <p className="text-gem-mist text-lg max-w-3xl leading-relaxed">
+          <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-pine rounded-full px-3 py-1 text-xs font-medium mb-4 border border-line">
+            <DollarSign className="w-3.5 h-3.5" /> 12 Major Freelance Corridors · FX Fee Analysis
+          </div>
+
+          <p className="text-quiet text-lg max-w-3xl leading-relaxed">
             Crossing hourly rates with live currency conversion and payment rail fee analysis.
             Designed specifically for international freelancers, agency contractors, and remote engineering teams billing cross-border.
           </p>
           <div className="flex flex-wrap gap-3 mt-6">
             <Link
               to="/freelancer-rate-converter"
-              className="inline-flex items-center gap-1.5 bg-gem-gold text-gem-forest font-semibold text-sm rounded-xl px-4 py-2.5 hover:bg-gem-gold/90 transition-colors"
+              className="inline-flex items-center gap-1.5 bg-pine text-paper font-semibold text-sm rounded-xl px-4 py-2.5 hover:bg-ink transition-colors"
             >
               <Calculator className="w-4 h-4" /> Freelancer Rate Tool
             </Link>
             <Link
               to="/currency-converter"
-              className="inline-flex items-center gap-1.5 bg-white/5 border border-white/20 text-gem-beige text-sm rounded-xl px-4 py-2.5 hover:bg-white/10 transition-colors"
+              className="inline-flex items-center gap-1.5 bg-surface border border-line text-ink text-sm rounded-xl px-4 py-2.5 hover:bg-surface transition-colors"
             >
               Currency Converter
             </Link>
@@ -65,8 +65,8 @@ export default function FreelanceRateHubPage() {
 
         {/* Corridor Grid */}
         <section className="mb-12">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-6 flex items-center gap-2">
-            <Globe className="w-5 h-5 text-gem-gold" />
+          <h2 className="font-heading text-xl font-bold text-ink mb-6 flex items-center gap-2">
+            <Globe className="w-5 h-5 text-pine" />
             Select Your Currency Corridor
           </h2>
 
@@ -75,20 +75,20 @@ export default function FreelanceRateHubPage() {
               <Link
                 key={corridor.slug}
                 to={`/freelance-rate/${corridor.slug}`}
-                className="group bg-white/5 hover:bg-white/10 border border-white/10 hover:border-gem-gold/30 rounded-2xl p-5 transition-all flex flex-col justify-between"
+                className="group bg-surface hover:bg-surface border border-line hover:border-line rounded-2xl p-5 transition-all flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-heading font-bold text-gem-beige group-hover:text-gem-gold text-lg transition-colors">
+                    <span className="font-heading font-bold text-ink group-hover:text-pine text-lg transition-colors">
                       {corridor.from} to {corridor.to}
                     </span>
-                    <ArrowRight className="w-4 h-4 text-gem-sage group-hover:text-gem-gold transition-colors" />
+                    <ArrowRight className="w-4 h-4 text-quiet group-hover:text-pine transition-colors" />
                   </div>
-                  <p className="text-xs text-gem-sage line-clamp-2 leading-relaxed mb-4">
+                  <p className="text-xs text-quiet line-clamp-2 leading-relaxed mb-4">
                     {corridor.marketContext}
                   </p>
                 </div>
-                <div className="flex items-center gap-2 text-[11px] text-gem-gold font-medium bg-gem-gold/10 rounded-lg px-3 py-1.5 border border-gem-gold/20 w-fit">
+                <div className="flex items-center gap-2 text-[11px] text-pine font-medium bg-gem-gold/10 rounded-lg px-3 py-1.5 border border-line w-fit">
                   <CreditCard className="w-3 h-3" /> Calculate Take-Home & FX Fees
                 </div>
               </Link>
@@ -97,8 +97,8 @@ export default function FreelanceRateHubPage() {
         </section>
 
         {/* Value Proposition & Educational Content */}
-        <section className="bg-white/3 border border-white/8 rounded-2xl p-6 text-sm text-gem-sage leading-relaxed space-y-4">
-          <h2 className="font-heading text-base font-semibold text-gem-beige">Why Currency Corridor Rate Calculation Matters</h2>
+        <section className="bg-surface border border-line rounded-2xl p-6 text-sm text-quiet leading-relaxed space-y-4">
+          <h2 className="font-heading text-base font-semibold text-ink">Why Currency Corridor Rate Calculation Matters</h2>
           <p>
             When contractors work across international borders, standard currency converters only tell half the story.
             Hidden exchange rate markups (which range from 1% to 4.5% across traditional banks and payment platforms), local tax obligations,

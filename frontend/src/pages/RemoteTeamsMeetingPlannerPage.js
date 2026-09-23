@@ -9,66 +9,50 @@ import { getStaticPageSEO } from "@/lib/seo";
 export default function RemoteTeamsMeetingPlannerPage() {
   const seo = getStaticPageSEO("global-meeting-planner-for-remote-teams");
   return (
-    <div className="min-h-screen flex flex-col bg-gem-forest text-gem-beige relative">
+    <div className="min-h-screen flex flex-col bg-paper text-ink relative">
       <SEOHead {...seo} />
 
-      {/* LUXURY HERO BACKGROUND with World Map */}
-      <div className="hero-luxury-bg absolute top-0 left-0 right-0 h-[600px] pointer-events-none z-0 overflow-hidden">
-        {/* Subtle gradient overlay to soften */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gem-forest/20 via-transparent to-gem-forest z-10"></div>
-        {/* World Map Background */}
-        <div 
-          className="absolute inset-0 opacity-[0.12] mix-blend-screen" 
-          style={{
-            backgroundImage: "url('/world-map-bg.webp')", 
-            backgroundSize: 'cover', 
-            backgroundPosition: 'center 30%',
-            maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)',
-            WebkitMaskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)'
-          }}
-        ></div>
-      </div>
 
       <SiteNav />
-      <main className="flex-1 max-w-4xl mx-auto px-6 pt-36 pb-12 w-full">
+      <main className="flex-1 max-w-4xl mx-auto px-6 pt-16 pb-12 w-full">
         <div className="mb-10 text-center">
-          <h1 className="font-heading text-3xl md:text-5xl font-bold mb-4 text-gem-beige">
+          <h1 className="font-heading text-3xl md:text-5xl font-bold mb-4 text-ink">
             Global Meeting Planner for Remote Teams
           </h1>
-          <p className="text-gem-beige/60 text-lg max-w-2xl mx-auto">
+          <p className="text-quiet text-lg max-w-2xl mx-auto">
             Stop guessing and start scheduling fair meetings. Our AI-powered overlap calculator protects your team from time zone burnout.
           </p>
           <Link
             to="/meeting-planner"
-            className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gem-gold text-gem-forest font-bold hover:opacity-90 transition-all shadow-[0_4px_14px_rgba(200,169,106,0.15)]"
+            className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-pine text-paper font-bold hover:opacity-90 transition-all "
           >
             <Users className="w-4 h-4" /> Go to Meeting Planner <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
-        <div className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-8 mb-12 shadow-2xl">
-          <h2 className="text-2xl font-bold text-gem-beige mb-4">How Remote Teams Schedule Fair Meetings</h2>
-          <div className="prose prose-invert max-w-none text-gem-beige/70">
+        <div className="bg-surface  rounded-xl border border-line p-8 mb-12 ">
+          <h2 className="text-2xl font-bold text-ink mb-4">How Remote Teams Schedule Fair Meetings</h2>
+          <div className="prose meridian-prose max-w-none text-quiet">
             <p>
               When a team is distributed across New York, London, and Tokyo, finding a meeting time isn't about convenience—it's about fairness. Over time, recurring late-night or early-morning meetings lead to burnout for team members in marginalized time zones.
             </p>
-            <h3 className="text-xl font-semibold text-gem-beige mt-8 mb-3">1. Map the Overlap</h3>
+            <h3 className="text-xl font-semibold text-ink mt-8 mb-3">1. Map the Overlap</h3>
             <p>
               Always start by identifying the "Golden Overlap"—the hours where standard business hours (usually 9 AM to 5 PM local time) overlap for all participants.
             </p>
-            <h3 className="text-xl font-semibold text-gem-beige mt-8 mb-3">2. Rotate the Burden</h3>
+            <h3 className="text-xl font-semibold text-ink mt-8 mb-3">2. Rotate the Burden</h3>
             <p>
               When no clean overlap exists, implement a rotating meeting schedule. This ensures that no single region permanently bears the burden of taking 10 PM calls.
             </p>
-            <h3 className="text-xl font-semibold text-gem-beige mt-8 mb-3">3. Use the AI Meeting Score</h3>
+            <h3 className="text-xl font-semibold text-ink mt-8 mb-3">3. Use the AI Meeting Score</h3>
             <p>
               GlobalSync AI introduces the AI Meeting Overlap Score, which evaluates any proposed time slot from 0 to 100 based on local time fairness, weekend collisions, and lunch-hour disruptions.
             </p>
-            <h3 className="text-xl font-semibold text-gem-beige mt-8 mb-3">Related resources</h3>
+            <h3 className="text-xl font-semibold text-ink mt-8 mb-3">Related resources</h3>
             <ul>
-              <li><Link to="/us-india-meeting-time" className="text-gem-gold hover:text-gem-gold/80">Best time for US and India meetings</Link></li>
-              <li><Link to="/blog/remote-team-world-clock-best-practices" className="text-gem-gold hover:text-gem-gold/80">Remote team world clock best practices</Link></li>
-              <li><Link to="/methodology" className="text-gem-gold hover:text-gem-gold/80">How our overlap recommendations work</Link></li>
+              <li><Link to="/us-india-meeting-time" className="text-pine hover:text-pine">Best time for US and India meetings</Link></li>
+              <li><Link to="/blog/remote-team-world-clock-best-practices" className="text-pine hover:text-pine">Remote team world clock best practices</Link></li>
+              <li><Link to="/methodology" className="text-pine hover:text-pine">How our overlap recommendations work</Link></li>
             </ul>
           </div>
         </div>

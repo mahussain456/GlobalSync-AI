@@ -2,8 +2,8 @@ import { getExchangeRate } from "@/lib/exchangeRates";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { jsPDF } from "jspdf";
-import { 
-  Calculator, Download, Send, Sparkles, FileText, Globe, DollarSign, Upload, Trash2, ShieldCheck, AlertCircle 
+import {
+  Calculator, Download, Send, Sparkles, FileText, Globe, DollarSign, Upload, Trash2, ShieldCheck, AlertCircle
 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
@@ -20,11 +20,11 @@ export default function InvoicePage() {
   const [senderName, setSenderName] = useState("");
   const [senderEmail, setSenderEmail] = useState("");
   const [senderCountry, setSenderCountry] = useState("US");
-  
+
   // Client Info
   const [clientName, setClientName] = useState("");
   const [clientEmail, setClientEmail] = useState("");
-  
+
   // Invoice Details
   const [invoiceNumber, setInvoiceNumber] = useState("INV-001");
   const [issueDate, setIssueDate] = useState(new Date().toISOString().split("T")[0]);
@@ -32,7 +32,7 @@ export default function InvoicePage() {
   const [description, setDescription] = useState("");
   const [hours, setHours] = useState(40);
   const [rate, setRate] = useState(50);
-  
+
   // Currencies
   const [billingCurrency, setBillingCurrency] = useState("USD");
   const [payoutCurrency, setPayoutCurrency] = useState("USD");
@@ -43,7 +43,7 @@ export default function InvoicePage() {
   // Upgrade state
   const [isPaid, setIsPaid] = useState(false);
   const [customLogo, setCustomLogo] = useState(""); // base64 string
-  
+
   // Invoice logs
   const [invoiceCount, setInvoiceCount] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -159,7 +159,7 @@ export default function InvoicePage() {
 
   // Math Calculations
   const grossEarnings = hours * rate;
-  
+
   const convertedGross = grossEarnings * liveRate;
 
 
@@ -233,7 +233,7 @@ export default function InvoicePage() {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10);
     doc.setTextColor(80, 80, 80);
-    
+
     // Sender
     doc.text(senderName || "Your Name", 20, 70);
     doc.text(senderEmail || "your@email.com", 20, 75);
@@ -270,7 +270,7 @@ export default function InvoicePage() {
 
     doc.setFont("helvetica", "normal");
     doc.setTextColor(80, 80, 80);
-    
+
     let currentY = 138;
     doc.text(`Subtotal:`, 20, currentY);
     doc.text(`${grossEarnings.toFixed(2)} ${billingCurrency}`, 90, currentY);
@@ -294,7 +294,7 @@ export default function InvoicePage() {
       doc.setFontSize(9);
       doc.text(`Exchange rate: 1 ${billingCurrency} = ${(liveRate === null ? "Unavailable" : liveRate.toFixed(4))} ${payoutCurrency} (Timestamp: ${rateTimestamp || "live"})`, 24, currentY + 11);
       doc.text(`Reference equivalent: ${convertedGross.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${payoutCurrency}`, 24, currentY + 15);
-      
+
       doc.setFontSize(10);
       doc.setDrawColor(229, 231, 235); // restore border color
     }
@@ -387,7 +387,7 @@ export default function InvoicePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gem-forest text-gem-beige relative flex flex-col justify-between">
+    <div className="min-h-screen bg-paper text-ink relative flex flex-col justify-between">
       <SEOHead
         rawTitle="Interactive Invoice Builder | GlobalSync AI"
         description="Create, preview, and download multi-currency invoices with a clear client amount due. Free clean PDF export."
@@ -397,12 +397,12 @@ export default function InvoicePage() {
 
       {/* Luxury Background Map */}
       <div className="hero-luxury-bg absolute top-0 left-0 right-0 h-[600px] pointer-events-none z-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-gem-forest/20 via-transparent to-gem-forest z-10" />
-        <div 
-          className="absolute inset-0 opacity-[0.10] mix-blend-screen" 
+        <div className="absolute inset-0 bg-wash z-10" />
+        <div
+          className="absolute inset-0 opacity-[0.10] mix-blend-screen"
           style={{
-            backgroundImage: "url('/world-map-bg.webp')", 
-            backgroundSize: 'cover', 
+            backgroundImage: "url('/world-map-bg.webp')",
+            backgroundSize: 'cover',
             backgroundPosition: 'center 30%',
             maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)',
             WebkitMaskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)'
@@ -412,51 +412,50 @@ export default function InvoicePage() {
 
       <SiteNav />
 
-      <main className="flex-1 max-w-6xl mx-auto px-6 pt-36 pb-12 w-full z-10 space-y-6">
-        
+      <main className="flex-1 max-w-6xl mx-auto px-6 pt-16 pb-12 w-full z-10 space-y-6">
+
         {/* Title */}
-        <header className="mb-4 text-center sm:text-left">
-          <p className="text-gem-gold text-sm font-semibold mb-2">Live Preview Active</p>
-          <div className="inline-flex items-center gap-1.5 bg-gem-gold/10 text-gem-gold rounded-full px-3 py-1 text-xs font-medium mb-3 border border-gem-gold/25">
-            <FileText className="w-3.5 h-3.5" /> Multi-Currency PDF builder
-          </div>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-2">
+        <header className="mb-4 text-center sm:text-left"><h1 className="font-heading text-4xl md:text-5xl font-bold text-ink leading-tight mb-2">
             Invoice Builder
           </h1>
-          <p className="text-sm text-gem-sage max-w-2xl leading-relaxed">
+          <div className="inline-flex items-center gap-1.5 bg-gem-gold/10 text-pine rounded-full px-3 py-1 text-xs font-medium mb-3 border border-line">
+            <FileText className="w-3.5 h-3.5" /> Multi-Currency PDF builder
+          </div>
+
+          <p className="text-sm text-quiet max-w-2xl leading-relaxed">
             Prepare a clear client invoice with a billing total, a reference currency conversion and a downloadable PDF.
           </p>
         </header>
 
         {/* Builder Workspace Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
+
           {/* Left Column: Input Form */}
-          <div className="lg:col-span-6 bg-white/5 border border-white/10 rounded-[28px] p-6 shadow-xl space-y-5">
-            <h2 className="font-heading font-bold text-gem-beige text-lg flex items-center gap-2 border-b border-white/5 pb-4">
-              <Calculator className="w-5 h-5 text-gem-gold" /> Multi-Currency Invoice Line Details
+          <div className="lg:col-span-6 bg-surface border border-line rounded-xl p-6  space-y-5">
+            <h2 className="font-heading font-bold text-ink text-lg flex items-center gap-2 border-b border-line pb-4">
+              <Calculator className="w-5 h-5 text-pine" /> Multi-Currency Invoice Line Details
             </h2>
 
             <div className="space-y-4">
               {/* Sender Info Row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="invoicepage-field-1" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Your Name/Business</label>
+                  <label htmlFor="invoicepage-field-1" className="text-quiet text-xs font-semibold mb-1 block uppercase">Your Name/Business</label>
                   <input id="invoicepage-field-1"
                     value={senderName}
                     onChange={e => setSenderName(e.target.value)}
                     placeholder="e.g. John Doe Consulting"
-                    className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45"
+                    className="w-full h-10 px-3 bg-paper border border-line rounded-xl text-xs text-ink outline-none focus:border-line"
                   />
                 </div>
                 <div>
-                  <label htmlFor="invoicepage-field-2" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Your Email</label>
+                  <label htmlFor="invoicepage-field-2" className="text-quiet text-xs font-semibold mb-1 block uppercase">Your Email</label>
                   <input id="invoicepage-field-2"
                     type="email"
                     value={senderEmail}
                     onChange={e => setSenderEmail(e.target.value)}
                     placeholder="your@company.com"
-                    className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45"
+                    className="w-full h-10 px-3 bg-paper border border-line rounded-xl text-xs text-ink outline-none focus:border-line"
                   />
                 </div>
               </div>
@@ -464,11 +463,11 @@ export default function InvoicePage() {
               {/* Country select for tax calculations */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="invoicepage-field-3" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Your Country</label>
+                  <label htmlFor="invoicepage-field-3" className="text-quiet text-xs font-semibold mb-1 block uppercase">Your Country</label>
                   <select id="invoicepage-field-3"
                     value={senderCountry}
                     onChange={e => setSenderCountry(e.target.value)}
-                    className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45 cursor-pointer font-bold"
+                    className="w-full h-10 px-3 bg-paper border border-line rounded-xl text-xs text-ink outline-none focus:border-line cursor-pointer font-bold"
                   >
                     <option value="US">United States</option>
                     <option value="UK">United Kingdom (Advisory Only)</option>
@@ -480,21 +479,21 @@ export default function InvoicePage() {
                   </select>
                 </div>
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase flex items-center justify-between">
+                  <label className="text-quiet text-xs font-semibold mb-1 block uppercase flex items-center justify-between">
                     <span>Branding Logo</span>
-                    {!isPaid && <span className="text-[9px] font-bold text-gem-gold bg-gem-gold/10 px-1 rounded uppercase">Pro</span>}
+                    {!isPaid && <span className="text-[9px] font-bold text-pine bg-gem-gold/10 px-1 rounded uppercase">Pro</span>}
                   </label>
                   {isPaid ? (
                     customLogo ? (
-                      <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-3 h-10">
-                        <span className="text-[10px] text-gem-sage truncate font-bold">Logo Uploaded</span>
-                        <button type="button" onClick={handleRemoveLogo} className="text-red-400 hover:text-red-300 p-1">
+                      <div className="flex items-center justify-between bg-surface border border-line rounded-xl px-3 h-10">
+                        <span className="text-[10px] text-quiet truncate font-bold">Logo Uploaded</span>
+                        <button type="button" onClick={handleRemoveLogo} className="text-red-800 hover:text-red-800 p-1">
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     ) : (
-                      <label className="flex items-center justify-center gap-1.5 h-10 border border-dashed border-white/10 rounded-xl bg-white/5 text-gem-sage hover:border-gem-gold/30 hover:bg-white/10 transition-all cursor-pointer text-xs font-bold">
-                        <Upload className="w-4 h-4 text-gem-gold" /> Upload Image
+                      <label className="flex items-center justify-center gap-1.5 h-10 border border-dashed border-line rounded-xl bg-surface text-quiet hover:border-line hover:bg-surface transition-all cursor-pointer text-xs font-bold">
+                        <Upload className="w-4 h-4 text-pine" /> Upload Image
                         <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
                       </label>
                     )
@@ -502,7 +501,7 @@ export default function InvoicePage() {
                     <button
                       type="button"
                       onClick={handleSimulatedUpgrade}
-                      className="w-full h-10 border border-dashed border-white/5 rounded-xl bg-black/20 text-white/35 flex items-center justify-center gap-1.5 text-xs font-semibold opacity-60"
+                      className="w-full h-10 border border-dashed border-line rounded-xl bg-wash text-ink flex items-center justify-center gap-1.5 text-xs font-semibold opacity-60"
                     >
                       Upload custom logo (🔒 Pro Only)
                     </button>
@@ -511,80 +510,80 @@ export default function InvoicePage() {
               </div>
 
               {/* Client Info Row */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border-t border-white/5 pt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border-t border-line pt-4">
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Client Name</label>
+                  <label className="text-quiet text-xs font-semibold mb-1 block uppercase">Client Name</label>
                   <input
                     aria-label="Client name" value={clientName}
                     onChange={e => setClientName(e.target.value)}
                     placeholder="Client Company Ltd."
-                    className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45"
+                    className="w-full h-10 px-3 bg-paper border border-line rounded-xl text-xs text-ink outline-none focus:border-line"
                   />
                 </div>
                 <div>
-                  <label htmlFor="invoicepage-field-4" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Client Email</label>
+                  <label htmlFor="invoicepage-field-4" className="text-quiet text-xs font-semibold mb-1 block uppercase">Client Email</label>
                   <input id="invoicepage-field-4"
                     type="email"
                     value={clientEmail}
                     onChange={e => setClientEmail(e.target.value)}
                     placeholder="finance@client.com"
-                    className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45"
+                    className="w-full h-10 px-3 bg-paper border border-line rounded-xl text-xs text-ink outline-none focus:border-line"
                   />
                 </div>
               </div>
 
               {/* Project line items details */}
-              <div className="border-t border-white/5 pt-4 space-y-3">
+              <div className="border-t border-line pt-4 space-y-3">
                 <div>
-                  <label htmlFor="invoicepage-field-5" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Work Description</label>
+                  <label htmlFor="invoicepage-field-5" className="text-quiet text-xs font-semibold mb-1 block uppercase">Work Description</label>
                   <input id="invoicepage-field-5"
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                     placeholder="Freelance Consulting Sync Services"
-                    className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45"
+                    className="w-full h-10 px-3 bg-paper border border-line rounded-xl text-xs text-ink outline-none focus:border-line"
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label htmlFor="invoicepage-field-6" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Hours Worked</label>
+                    <label htmlFor="invoicepage-field-6" className="text-quiet text-xs font-semibold mb-1 block uppercase">Hours Worked</label>
                     <input id="invoicepage-field-6"
                       type="number"
                       value={hours}
                       onChange={e => setHours(Math.max(1, Number(e.target.value)))}
-                      className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45"
+                      className="w-full h-10 px-3 bg-paper border border-line rounded-xl text-xs text-ink outline-none focus:border-line"
                     />
                   </div>
                   <div>
-                    <label htmlFor="invoicepage-field-7" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Rate per Hour</label>
+                    <label htmlFor="invoicepage-field-7" className="text-quiet text-xs font-semibold mb-1 block uppercase">Rate per Hour</label>
                     <input id="invoicepage-field-7"
                       type="number"
                       value={rate}
                       onChange={e => setRate(Math.max(1, Number(e.target.value)))}
-                      className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45"
+                      className="w-full h-10 px-3 bg-paper border border-line rounded-xl text-xs text-ink outline-none focus:border-line"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Currency conversions */}
-              <div className="grid grid-cols-2 gap-3 border-t border-white/5 pt-4">
+              <div className="grid grid-cols-2 gap-3 border-t border-line pt-4">
                 <div>
-                  <label htmlFor="invoicepage-field-8" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Billing Currency</label>
+                  <label htmlFor="invoicepage-field-8" className="text-quiet text-xs font-semibold mb-1 block uppercase">Billing Currency</label>
                   <select id="invoicepage-field-8"
                     value={billingCurrency}
                     onChange={e => setBillingCurrency(e.target.value)}
-                    className="w-full h-10 px-2 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none cursor-pointer"
+                    className="w-full h-10 px-2 bg-paper border border-line rounded-xl text-xs text-ink outline-none cursor-pointer"
                   >
                     {POPULAR_CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="invoicepage-field-9" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Client Currency (FX)</label>
+                  <label htmlFor="invoicepage-field-9" className="text-quiet text-xs font-semibold mb-1 block uppercase">Client Currency (FX)</label>
                   <select id="invoicepage-field-9"
                     value={payoutCurrency}
                     onChange={e => setPayoutCurrency(e.target.value)}
-                    className="w-full h-10 px-2 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none cursor-pointer font-semibold"
+                    className="w-full h-10 px-2 bg-paper border border-line rounded-xl text-xs text-ink outline-none cursor-pointer font-semibold"
                   >
                     {POPULAR_CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
@@ -592,39 +591,39 @@ export default function InvoicePage() {
               </div>
 
               {/* Dates */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border-t border-white/5 pt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 border-t border-line pt-4">
                 <div>
-                  <label htmlFor="invoicepage-field-10" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Issue Date</label>
+                  <label htmlFor="invoicepage-field-10" className="text-quiet text-xs font-semibold mb-1 block uppercase">Issue Date</label>
                   <input id="invoicepage-field-10"
                     type="date"
                     value={issueDate}
                     onChange={e => setIssueDate(e.target.value)}
-                    className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45"
+                    className="w-full h-10 px-3 bg-paper border border-line rounded-xl text-xs text-ink outline-none focus:border-line"
                   />
                 </div>
                 <div>
-                  <label htmlFor="invoicepage-field-11" className="text-gem-beige/60 text-xs font-semibold mb-1 block uppercase">Due Date</label>
+                  <label htmlFor="invoicepage-field-11" className="text-quiet text-xs font-semibold mb-1 block uppercase">Due Date</label>
                   <input id="invoicepage-field-11"
                     type="date"
                     value={dueDate}
                     onChange={e => setDueDate(e.target.value)}
-                    className="w-full h-10 px-3 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-beige outline-none focus:border-gem-gold/45"
+                    className="w-full h-10 px-3 bg-paper border border-line rounded-xl text-xs text-ink outline-none focus:border-line"
                   />
                 </div>
               </div>
             </div>
 
             {/* Action dispatch buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-white/5">
+            <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-line">
               <button
                 type="button"
                 onClick={handleExportPDF}
                 disabled={isGenerating}
-                className="flex-1 h-11 bg-white/5 border border-white/10 text-gem-sage hover:text-gem-beige hover:border-gem-gold/50 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                className="flex-1 h-11 bg-surface border border-line text-quiet hover:text-ink hover:border-line rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5"
               >
                 <Download className="w-4 h-4" /> Download PDF
               </button>
-              
+
               <button
                 type="button"
                 onClick={handleSendInvoiceEmail}
@@ -637,28 +636,28 @@ export default function InvoicePage() {
           </div>
 
           {/* Right Column: Live Document Preview Panel */}
-          <div className="lg:col-span-6 bg-white/5 border border-white/10 rounded-[28px] p-6 shadow-xl space-y-4">
-            <div className="flex justify-between items-center border-b border-white/5 pb-3">
-              <h2 className="font-heading font-bold text-gem-beige text-lg flex items-center gap-2">
-                <FileText className="w-5 h-5 text-gem-gold" /> Real-Time Professional Invoice Preview
+          <div className="lg:col-span-6 bg-surface border border-line rounded-xl p-6  space-y-4">
+            <div className="flex justify-between items-center border-b border-line pb-3">
+              <h2 className="font-heading font-bold text-ink text-lg flex items-center gap-2">
+                <FileText className="w-5 h-5 text-pine" /> Real-Time Professional Invoice Preview
               </h2>
               {!isPaid && (
-                <span className="text-[10px] text-gem-sage font-bold bg-white/5 border border-white/10 px-2.5 py-0.5 rounded">
+                <span className="text-[10px] text-quiet font-bold bg-surface border border-line px-2.5 py-0.5 rounded">
                   {invoiceCount}/3 Free Invoices
                 </span>
               )}
             </div>
 
             {/* Simulated Light-Background A4 Sheet Paper */}
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-slate-800 text-xs shadow-inner min-h-[520px] flex flex-col justify-between">
+            <div className="bg-paper border border-line rounded-2xl p-6 text-slate-800 text-xs shadow-inner min-h-[520px] flex flex-col justify-between">
               <div className="space-y-6">
-                
+
                 {/* Header Row */}
                 <div className="flex justify-between items-start gap-4">
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 leading-none">INVOICE</h3>
-                    <p className="text-[10px] text-slate-500 font-mono mt-1">{invoiceNumber || "INV-2026-0001"}</p>
-                    <div className="text-[9px] text-slate-400 mt-2 space-y-0.5">
+                    <p className="text-[10px] text-quiet font-mono mt-1">{invoiceNumber || "INV-2026-0001"}</p>
+                    <div className="text-[9px] text-quiet mt-2 space-y-0.5">
                       <div>Issued: {issueDate}</div>
                       <div>Due: {dueDate}</div>
                     </div>
@@ -669,7 +668,7 @@ export default function InvoicePage() {
                     {isPaid && customLogo ? (
                       <img src={customLogo} alt="Business logo" className="max-h-11 w-auto rounded object-contain border border-slate-100" />
                     ) : (
-                      <div className="h-10 w-24 border border-dashed border-slate-200 rounded flex items-center justify-center text-[9px] text-slate-300 font-bold uppercase tracking-wider">
+                      <div className="h-10 w-24 border border-dashed border-line rounded flex items-center justify-center text-[9px] text-slate-300 font-bold uppercase tracking-wider">
                         {senderName ? senderName.substring(0, 3) : "GS"} Logo
                       </div>
                     )}
@@ -677,29 +676,29 @@ export default function InvoicePage() {
                 </div>
 
                 {/* Sender & Receiver Address Details */}
-                <div className="grid grid-cols-2 gap-4 border-t border-slate-200 pt-4 text-[10px]">
+                <div className="grid grid-cols-2 gap-4 border-t border-line pt-4 text-[10px]">
                   <div>
                     <span className="font-bold text-slate-900 block mb-1 text-[9px] uppercase tracking-wider">From:</span>
                     <div className="font-bold text-slate-800">{senderName || "Your Business Name"}</div>
-                    <div className="text-slate-500">{senderEmail || "your@email.com"}</div>
-                    <div className="text-slate-400">{senderCountry}</div>
+                    <div className="text-quiet">{senderEmail || "your@email.com"}</div>
+                    <div className="text-quiet">{senderCountry}</div>
                   </div>
                   <div>
                     <span className="font-bold text-slate-900 block mb-1 text-[9px] uppercase tracking-wider">Bill To:</span>
                     <div className="font-bold text-slate-800">{clientName || "Client Business"}</div>
-                    <div className="text-slate-500">{clientEmail || "client@email.com"}</div>
+                    <div className="text-quiet">{clientEmail || "client@email.com"}</div>
                   </div>
                 </div>
 
                 {/* Line Items Table */}
-                <div className="border border-slate-200 rounded-lg overflow-hidden text-[10px] shadow-sm">
-                  <div className="bg-slate-100 font-bold text-slate-800 flex border-b border-slate-200 py-1.5 px-3">
+                <div className="border border-line rounded-lg overflow-hidden text-[10px] ">
+                  <div className="bg-slate-100 font-bold text-slate-800 flex border-b border-line py-1.5 px-3">
                     <span className="flex-1">Description</span>
                     <span className="w-12 text-center">Hours</span>
                     <span className="w-20 text-right">Rate</span>
                     <span className="w-20 text-right">Total</span>
                   </div>
-                  <div className="flex py-2 px-3 text-slate-700 bg-white font-medium">
+                  <div className="flex py-2 px-3 text-ink bg-white font-medium">
                     <span className="flex-1 truncate">{description || "Freelance Consultation Sync Services"}</span>
                     <span className="w-12 text-center">{hours}</span>
                     <span className="w-20 text-right">{rate.toFixed(2)} {billingCurrency}</span>
@@ -708,14 +707,14 @@ export default function InvoicePage() {
                 </div>
 
                 {/* Subtotal & Taxes breakdown */}
-                <div className="border-t border-slate-200 pt-4 flex justify-end">
+                <div className="border-t border-line pt-4 flex justify-end">
                   <div className="w-64 space-y-1.5 text-right font-medium text-[10px]">
-                    <div className="flex justify-between text-slate-500">
+                    <div className="flex justify-between text-quiet">
                       <span>Subtotal:</span>
                       <span>{grossEarnings.toFixed(2)} {billingCurrency}</span>
                     </div>
 
-                    <div className="flex justify-between text-slate-900 font-bold border-t border-slate-200 pt-2">
+                    <div className="flex justify-between text-slate-900 font-bold border-t border-line pt-2">
                       <span>Amount due:</span><span>{grossEarnings.toFixed(2)} {billingCurrency}</span>
                     </div>
 
@@ -724,9 +723,9 @@ export default function InvoicePage() {
 
                 {/* Currency Conversion Display */}
                 {billingCurrency !== payoutCurrency && liveRate !== null && (
-                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[10px] space-y-1 text-slate-700 shadow-sm">
+                  <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[10px] space-y-1 text-ink ">
                     <div className="font-bold text-slate-800">Reference conversion (before fees)</div>
-                    <div className="text-[9px] text-slate-500">
+                    <div className="text-[9px] text-quiet">
                       Converted at: 1 {billingCurrency} = {liveRate.toFixed(4)} {payoutCurrency}
                     </div>
                     <div className="font-bold text-indigo-700 mt-1">
@@ -739,7 +738,7 @@ export default function InvoicePage() {
 
               {/* Watermark branding (Removed for Paid) */}
               {!isPaid && (
-                <div className="pt-6 border-t border-slate-200 text-center text-[9px] text-slate-400 font-bold uppercase tracking-wider">
+                <div className="pt-6 border-t border-line text-center text-[9px] text-quiet font-bold uppercase tracking-wider">
                   Powered by GlobalSync AI
                 </div>
               )}
@@ -758,14 +757,14 @@ export default function InvoicePage() {
 // Simple loader icon
 function Loader2({ className }) {
   return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2.5" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={className}
     >
       <path d="M21 12a9 9 0 1 1-6.219-8.56" />

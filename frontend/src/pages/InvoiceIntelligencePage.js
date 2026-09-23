@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { 
+import {
   TrendingUp, ArrowRight, ShieldCheck, Copy, Calculator, Info, Check, RefreshCw, AlertCircle
 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
@@ -17,7 +17,7 @@ const PLATFORMS = {
     feePercent: 0.4,
     feeFlat: 0,
     markupPercent: 0.0, // uses mid-market
-    color: "text-emerald-400 border-emerald-500/20 bg-emerald-500/5",
+    color: "text-emerald-800 border-emerald-500/20 bg-emerald-500/5",
     pros: ["Uses real mid-market exchange rate", "Ultra-low transparent fee", "Fast transfer speeds"],
     cons: ["Both sender and receiver need Wise accounts for optimal rates"]
   },
@@ -26,7 +26,7 @@ const PLATFORMS = {
     feePercent: 2.9,
     feeFlat: 0.30,
     markupPercent: 2.0, // standard Stripe fx conversion markup
-    color: "text-indigo-400 border-indigo-500/20 bg-indigo-500/5",
+    color: "text-indigo-800 border-indigo-500/20 bg-indigo-500/5",
     pros: ["Clients can pay directly with card", "Highly professional invoice UX", "Solid automation integrations"],
     cons: ["High base fee + standard double conversion fx margin"]
   },
@@ -35,7 +35,7 @@ const PLATFORMS = {
     feePercent: 2.0,
     feeFlat: 0,
     markupPercent: 1.5,
-    color: "text-orange-400 border-orange-500/20 bg-orange-500/5",
+    color: "text-orange-800 border-orange-500/20 bg-orange-500/5",
     pros: ["Local receiving accounts in USD, EUR, GBP", "Direct billing triggers", "Great platform integrations"],
     cons: ["Annual fees apply", "High conversion markups on small volumes"]
   },
@@ -44,7 +44,7 @@ const PLATFORMS = {
     feePercent: 4.4,
     feeFlat: 0.49,
     markupPercent: 4.0, // standard retail fx markup
-    color: "text-blue-400 border-blue-500/20 bg-blue-500/5",
+    color: "text-blue-800 border-blue-500/20 bg-blue-500/5",
     pros: ["Accepted globally by almost all clients", "Easy disputes protection"],
     cons: ["Extremely high fee structure", "Padded hidden exchange rate margins"]
   }
@@ -99,16 +99,16 @@ export default function InvoiceIntelligencePage() {
 
   // Calculations
   const rawMidMarketValue = amount * liveRate;
-  
+
   // Platform fees
   const platformFeeAmountBilling = (amount * (platform.feePercent / 100)) + platform.feeFlat;
   const platformFeeAmountPayout = platformFeeAmountBilling * liveRate;
-  
+
   // Exchange rate markup losses (deducted from target exchange rate)
   const actualRateUsed = liveRate * (1 - (platform.markupPercent / 100));
   const payoutAfterMarkupBeforeFee = amount * actualRateUsed;
   const payoutAfterAll = payoutAfterMarkupBeforeFee - platformFeeAmountPayout;
-  
+
   // Total losses in payout currency
   const totalLosesPayout = rawMidMarketValue - payoutAfterAll;
   const totalLosesBilling = totalLosesPayout / liveRate;
@@ -122,7 +122,7 @@ export default function InvoiceIntelligencePage() {
   const feePercentDecimal = platform.feePercent / 100;
   const markupPercentDecimal = platform.markupPercent / 100;
   const divisor = 1 - markupPercentDecimal - feePercentDecimal;
-  
+
   let recommendedInvoiceAmount = amount;
   if (divisor > 0) {
     recommendedInvoiceAmount = (amount + platform.feeFlat) / divisor;
@@ -141,7 +141,7 @@ export default function InvoiceIntelligencePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gem-forest text-gem-beige relative flex flex-col justify-between">
+    <div className="min-h-screen bg-paper text-ink relative flex flex-col justify-between">
       <SEOHead
         rawTitle="Freelancer Invoice Intelligence: Platform Payout & Fee Calculator"
         description="Verify net payouts, analyze exchange rate markups, and calculate invoice protection buffers for Stripe, Wise, Payoneer, and PayPal."
@@ -151,12 +151,12 @@ export default function InvoiceIntelligencePage() {
 
       {/* Luxury Background Map */}
       <div className="hero-luxury-bg absolute top-0 left-0 right-0 h-[600px] pointer-events-none z-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-gem-forest/20 via-transparent to-gem-forest z-10" />
-        <div 
-          className="absolute inset-0 opacity-[0.10] mix-blend-screen" 
+        <div className="absolute inset-0 bg-wash z-10" />
+        <div
+          className="absolute inset-0 opacity-[0.10] mix-blend-screen"
           style={{
-            backgroundImage: "url('/world-map-bg.webp')", 
-            backgroundSize: 'cover', 
+            backgroundImage: "url('/world-map-bg.webp')",
+            backgroundSize: 'cover',
             backgroundPosition: 'center 30%',
             maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)',
             WebkitMaskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)'
@@ -166,62 +166,62 @@ export default function InvoiceIntelligencePage() {
 
       <SiteNav />
 
-      <main className="flex-1 max-w-6xl mx-auto px-6 pt-36 pb-12 w-full z-10 space-y-8">
+      <main className="flex-1 max-w-6xl mx-auto px-6 pt-16 pb-12 w-full z-10 space-y-8">
         {/* Title */}
-        <header className="mb-8 text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-1.5 bg-gem-gold/10 text-gem-gold rounded-full px-3 py-1 text-xs font-semibold border border-gem-gold/25 mb-4">
-            <Calculator className="w-3.5 h-3.5" /> Solopreneur Finance
-          </div>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold text-gem-beige leading-tight mb-4">
+        <header className="mb-8 text-center max-w-3xl mx-auto"><h1 className="font-heading text-4xl md:text-5xl font-bold text-ink leading-tight mb-4">
             Freelancer Invoice Intelligence
           </h1>
-          <p className="text-lg text-gem-sage">
+          <div className="inline-flex items-center gap-1.5 bg-gem-gold/10 text-pine rounded-full px-3 py-1 text-xs font-semibold border border-line mb-4">
+            <Calculator className="w-3.5 h-3.5" /> Solopreneur Finance
+          </div>
+
+          <p className="text-lg text-quiet">
             Calculate payment processor fees, identify hidden exchange rate markups, and compute the fair buffer to charge global clients.
           </p>
         </header>
 
         {/* Inputs Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
+
           {/* Column Left: Input Panel */}
-          <div className="lg:col-span-5 bg-white/5 border border-white/10 rounded-[28px] p-6 shadow-xl space-y-6">
-            <h2 className="font-heading font-bold text-gem-beige text-lg flex items-center gap-2 border-b border-white/5 pb-4">
-              <Calculator className="w-5 h-5 text-gem-gold" /> Invoice Calculation & FX Rail Parameters
+          <div className="lg:col-span-5 bg-surface border border-line rounded-xl p-6  space-y-6">
+            <h2 className="font-heading font-bold text-ink text-lg flex items-center gap-2 border-b border-line pb-4">
+              <Calculator className="w-5 h-5 text-pine" /> Invoice Calculation & FX Rail Parameters
             </h2>
 
             <div className="space-y-4">
               {/* Amount */}
               <div>
-                <label className="text-gem-beige/60 text-xs font-semibold mb-2 block uppercase tracking-wider">Invoice Amount</label>
+                <label className="text-quiet text-xs font-semibold mb-2 block uppercase tracking-wider">Invoice Amount</label>
                 <div className="relative">
                   <input
                     type="number"
                     value={amount}
                     onChange={(e) => setAmount(Math.max(1, Number(e.target.value)))}
-                    className="w-full h-11 px-4 bg-gem-forest border border-white/10 rounded-xl text-gem-beige outline-none focus:border-gem-gold/45 text-sm font-semibold"
+                    className="w-full h-11 px-4 bg-paper border border-line rounded-xl text-ink outline-none focus:border-line text-sm font-semibold"
                   />
-                  <span className="absolute right-4 top-3 text-xs text-gem-sage font-bold">{billingCurrency}</span>
+                  <span className="absolute right-4 top-3 text-xs text-quiet font-bold">{billingCurrency}</span>
                 </div>
               </div>
 
               {/* Currency Select */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-2 block uppercase tracking-wider">Billing Currency</label>
+                  <label className="text-quiet text-xs font-semibold mb-2 block uppercase tracking-wider">Billing Currency</label>
                   <select
                     value={billingCurrency}
                     onChange={(e) => setBillingCurrency(e.target.value)}
-                    className="w-full h-11 px-3 bg-gem-forest border border-white/10 rounded-xl text-gem-beige outline-none focus:border-gem-gold/45 text-xs font-bold cursor-pointer"
+                    className="w-full h-11 px-3 bg-paper border border-line rounded-xl text-ink outline-none focus:border-line text-xs font-bold cursor-pointer"
                   >
                     {POPULAR_CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="text-gem-beige/60 text-xs font-semibold mb-2 block uppercase tracking-wider">Your Payout Currency</label>
+                  <label className="text-quiet text-xs font-semibold mb-2 block uppercase tracking-wider">Your Payout Currency</label>
                   <select
                     value={payoutCurrency}
                     onChange={(e) => setPayoutCurrency(e.target.value)}
-                    className="w-full h-11 px-3 bg-gem-forest border border-white/10 rounded-xl text-gem-beige outline-none focus:border-gem-gold/45 text-xs font-bold cursor-pointer"
+                    className="w-full h-11 px-3 bg-paper border border-line rounded-xl text-ink outline-none focus:border-line text-xs font-bold cursor-pointer"
                   >
                     {POPULAR_CURRENCIES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
@@ -229,12 +229,12 @@ export default function InvoiceIntelligencePage() {
               </div>
 
               {/* Exchange Rate Status Indicator */}
-              <div className="flex items-center justify-between bg-white/5 rounded-xl p-3 border border-white/5 text-xs">
-                <span className="text-gem-sage font-semibold">Live Market Exchange Rate:</span>
+              <div className="flex items-center justify-between bg-surface rounded-xl p-3 border border-line text-xs">
+                <span className="text-quiet font-semibold">Live Market Exchange Rate:</span>
                 {isLoadingRate ? (
-                  <RefreshCw className="w-3.5 h-3.5 text-gem-gold animate-spin" />
+                  <RefreshCw className="w-3.5 h-3.5 text-pine animate-spin" />
                 ) : (
-                  <span className="text-gem-gold font-bold">
+                  <span className="text-pine font-bold">
                     1 {billingCurrency} = {liveRate.toFixed(4)} {payoutCurrency}
                   </span>
                 )}
@@ -242,7 +242,7 @@ export default function InvoiceIntelligencePage() {
 
               {/* Platform Selector */}
               <div>
-                <label className="text-gem-beige/60 text-xs font-semibold mb-2.5 block uppercase tracking-wider">Payment Platform</label>
+                <label className="text-quiet text-xs font-semibold mb-2.5 block uppercase tracking-wider">Payment Platform</label>
                 <div className="grid grid-cols-2 gap-2">
                   {Object.keys(PLATFORMS).map(key => (
                     <button
@@ -250,9 +250,9 @@ export default function InvoiceIntelligencePage() {
                       type="button"
                       onClick={() => setSelectedPlatform(key)}
                       className={`px-3 py-3 rounded-xl border text-xs font-bold transition-all text-center ${
-                        selectedPlatform === key 
-                          ? "border-gem-gold bg-gem-gold/10 text-gem-gold shadow-md"
-                          : "border-white/10 bg-white/5 text-gem-sage hover:border-white/20"
+                        selectedPlatform === key
+                          ? "border-line bg-gem-gold/10 text-pine "
+                          : "border-line bg-surface text-quiet hover:border-line"
                       }`}
                     >
                       {PLATFORMS[key].name}
@@ -265,56 +265,56 @@ export default function InvoiceIntelligencePage() {
 
           {/* Column Right: calculations outputs */}
           <div className="lg:col-span-7 space-y-6">
-            
+
             {/* Payout Breakdown glass card */}
-            <div className="bg-white/5 border border-white/10 rounded-[28px] p-6 shadow-xl space-y-5">
-              <h2 className="font-heading font-bold text-gem-beige text-lg flex items-center gap-2 border-b border-white/5 pb-4">
-                <TrendingUp className="w-5 h-5 text-gem-gold" /> Comprehensive Net Payout & Fee Analysis
+            <div className="bg-surface border border-line rounded-xl p-6  space-y-5">
+              <h2 className="font-heading font-bold text-ink text-lg flex items-center gap-2 border-b border-line pb-4">
+                <TrendingUp className="w-5 h-5 text-pine" /> Comprehensive Net Payout & Fee Analysis
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-white/5 rounded-2xl p-4 border border-white/5">
-                  <div className="text-[10px] text-gem-sage/75 font-bold uppercase tracking-wider">Gross Mid-Market Value</div>
-                  <div className="font-heading font-extrabold text-2xl text-gem-beige mt-1.5">
-                    {rawMidMarketValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-xs text-gem-sage font-medium">{payoutCurrency}</span>
+                <div className="bg-surface rounded-2xl p-4 border border-line">
+                  <div className="text-[10px] text-quiet font-bold uppercase tracking-wider">Gross Mid-Market Value</div>
+                  <div className="font-heading font-extrabold text-2xl text-ink mt-1.5">
+                    {rawMidMarketValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-xs text-quiet font-medium">{payoutCurrency}</span>
                   </div>
-                  <p className="text-[10px] text-gem-sage/50 mt-1">If zero conversion markups or processor fees applied.</p>
+                  <p className="text-[10px] text-quiet mt-1">If zero conversion markups or processor fees applied.</p>
                 </div>
 
-                <div className="bg-gem-gold/10 rounded-2xl p-4 border border-gem-gold/25">
-                  <div className="text-[10px] text-gem-gold font-bold uppercase tracking-wider">Estimated Net Payout</div>
-                  <div className="font-heading font-extrabold text-2xl text-gem-gold mt-1.5">
+                <div className="bg-gem-gold/10 rounded-2xl p-4 border border-line">
+                  <div className="text-[10px] text-pine font-bold uppercase tracking-wider">Estimated Net Payout</div>
+                  <div className="font-heading font-extrabold text-2xl text-pine mt-1.5">
                     {payoutAfterAll.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} <span className="text-xs text-gem-forest font-bold bg-gem-gold px-1 py-0.5 rounded">{payoutCurrency}</span>
                   </div>
-                  <p className="text-[10px] text-gem-gold/60 mt-1">Net amount expected to land in local account.</p>
+                  <p className="text-[10px] text-pine mt-1">Net amount expected to land in local account.</p>
                 </div>
               </div>
 
               {/* Losses Breakdown Table */}
-              <div className="border border-white/5 rounded-2xl overflow-hidden">
+              <div className="border border-line rounded-2xl overflow-hidden">
                 <table className="w-full text-xs text-left">
-                  <thead className="bg-white/5 text-gem-sage font-bold border-b border-white/5">
+                  <thead className="bg-surface text-quiet font-bold border-b border-line">
                     <tr>
                       <th className="p-3">Fee Category</th>
                       <th className="p-3">Platform Cost</th>
                       <th className="p-3 text-right">Value Loss ({payoutCurrency})</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5 font-semibold text-gem-beige/90">
+                  <tbody className="divide-y divide-line font-semibold text-quiet">
                     <tr>
                       <td className="p-3 flex items-center gap-1.5">Platform Transaction Fee</td>
                       <td className="p-3">{platform.feePercent}% {platform.feeFlat > 0 ? `+ ${platform.feeFlat} ${billingCurrency}` : ""}</td>
-                      <td className="p-3 text-right text-orange-400">-{platformFeeAmountPayout.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                      <td className="p-3 text-right text-orange-800">-{platformFeeAmountPayout.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     </tr>
                     <tr>
                       <td className="p-3">Hidden Exchange Rate Markup</td>
                       <td className="p-3">{platform.markupPercent}%</td>
-                      <td className="p-3 text-right text-orange-400">-{((rawMidMarketValue - payoutAfterMarkupBeforeFee)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                      <td className="p-3 text-right text-orange-800">-{((rawMidMarketValue - payoutAfterMarkupBeforeFee)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     </tr>
-                    <tr className="bg-white/5 font-extrabold text-gem-beige">
+                    <tr className="bg-surface font-extrabold text-ink">
                       <td className="p-3">Total Transaction Loss</td>
                       <td className="p-3">{totalLosesPercent.toFixed(2)}% of Gross</td>
-                      <td className="p-3 text-right text-red-400">-{totalLosesPayout.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                      <td className="p-3 text-right text-red-800">-{totalLosesPayout.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -322,46 +322,46 @@ export default function InvoiceIntelligencePage() {
             </div>
 
             {/* Fair Invoice Buffer Panel */}
-            <div className="bg-white/5 border border-white/10 rounded-[28px] p-6 shadow-xl space-y-4">
-              <h3 className="font-heading font-bold text-gem-beige text-md flex items-center gap-1.5 text-gem-gold">
-                <ShieldCheck className="w-5 h-5 text-gem-gold shrink-0" /> Recommended Invoice Buffer
+            <div className="bg-surface border border-line rounded-xl p-6  space-y-4">
+              <h3 className="font-heading font-bold text-ink text-md flex items-center gap-1.5 text-pine">
+                <ShieldCheck className="w-5 h-5 text-pine shrink-0" /> Recommended Invoice Buffer
               </h3>
-              <p className="text-xs text-gem-sage leading-relaxed">
+              <p className="text-xs text-quiet leading-relaxed">
                 To counter platform fees and rate markups, adjust your invoice gross amount. By billing the amount below, you guarantee your net home currency yield matches your target.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white/5 border border-white/5 p-4 rounded-2xl">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-surface border border-line p-4 rounded-2xl">
                 <div>
-                  <div className="text-[10px] text-gem-sage/60 uppercase font-bold tracking-wider">Invoice Billing Target</div>
-                  <div className="text-xl font-heading font-bold text-gem-beige mt-1">
+                  <div className="text-[10px] text-quiet uppercase font-bold tracking-wider">Invoice Billing Target</div>
+                  <div className="text-xl font-heading font-bold text-ink mt-1">
                     {recommendedInvoiceAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {billingCurrency}
                   </div>
                 </div>
-                <div className="bg-gem-gold/25 border border-gem-gold/40 px-4 py-2 rounded-xl text-center shrink-0 self-start sm:self-center">
-                  <div className="text-[9px] uppercase font-bold text-gem-gold tracking-wider">Required Markup Buffer</div>
-                  <div className="text-lg font-bold text-gem-beige mt-0.5">+{fairBufferPercent.toFixed(2)}%</div>
+                <div className="bg-gem-gold/25 border border-line px-4 py-2 rounded-xl text-center shrink-0 self-start sm:self-center">
+                  <div className="text-[9px] uppercase font-bold text-pine tracking-wider">Required Markup Buffer</div>
+                  <div className="text-lg font-bold text-ink mt-0.5">+{fairBufferPercent.toFixed(2)}%</div>
                 </div>
               </div>
             </div>
 
             {/* Smart Clause generator */}
-            <div className="bg-white/5 border border-white/10 rounded-[28px] p-6 shadow-xl space-y-4">
-              <div className="flex justify-between items-center border-b border-white/5 pb-3">
-                <h3 className="font-heading font-bold text-gem-beige text-md flex items-center gap-1.5">
+            <div className="bg-surface border border-line rounded-xl p-6  space-y-4">
+              <div className="flex justify-between items-center border-b border-line pb-3">
+                <h3 className="font-heading font-bold text-ink text-md flex items-center gap-1.5">
                   Smart Contract Payment Clause
                 </h3>
                 <button
                   onClick={copyClauseToClipboard}
-                  className="text-xs font-bold text-gem-gold hover:underline flex items-center gap-1 cursor-pointer"
+                  className="text-xs font-bold text-pine hover:underline flex items-center gap-1 cursor-pointer"
                 >
                   {copiedClause ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   {copiedClause ? "Copied" : "Copy Clause"}
                 </button>
               </div>
-              <p className="text-xs text-gem-sage leading-relaxed">
+              <p className="text-xs text-quiet leading-relaxed">
                 Append this legal protection clause directly to your master services agreement (MSA) or proposal terms to protect your income margins:
               </p>
-              <div className="p-4 bg-gem-forest border border-white/10 rounded-xl text-xs text-gem-sage font-mono leading-relaxed select-all">
+              <div className="p-4 bg-paper border border-line rounded-xl text-xs text-quiet font-mono leading-relaxed select-all">
                 "{contractClause}"
               </div>
             </div>

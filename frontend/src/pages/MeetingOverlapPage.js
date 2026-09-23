@@ -11,19 +11,19 @@ import { generate24hTable, computeBusinessOverlap } from "@/lib/timezoneUtils";
 function FAQItem({ question, answer }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-white/10 last:border-0">
+    <div className="border-b border-line last:border-0">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full text-left py-4 flex items-start justify-between gap-4 text-gem-beige hover:text-gem-gold transition-colors"
+        className="w-full text-left py-4 flex items-start justify-between gap-4 text-ink hover:text-pine transition-colors"
         aria-expanded={open}
       >
         <span className="font-medium text-sm leading-snug">{question}</span>
         {open
-          ? <ChevronUp className="w-4 h-4 flex-shrink-0 mt-0.5 text-gem-gold" />
-          : <ChevronDown className="w-4 h-4 flex-shrink-0 mt-0.5 text-gem-sage" />}
+          ? <ChevronUp className="w-4 h-4 flex-shrink-0 mt-0.5 text-pine" />
+          : <ChevronDown className="w-4 h-4 flex-shrink-0 mt-0.5 text-quiet" />}
       </button>
       {open && (
-        <div className="pb-4 text-gem-sage text-sm leading-relaxed">
+        <div className="pb-4 text-quiet text-sm leading-relaxed">
           {answer}
         </div>
       )}
@@ -90,7 +90,7 @@ export default function MeetingOverlapPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gem-forest text-gem-beige relative">
+    <div className="min-h-screen bg-paper text-ink relative">
       <SEOHead
         title={`${h1} | Meeting Planner Guide`}
         description={`Find optimal meeting times between ${regionA} and ${regionB}. Interactive 24-hour heat map, business hours overlap, and rotation fairness advice.`}
@@ -100,53 +100,53 @@ export default function MeetingOverlapPage() {
 
       <SiteNav />
 
-      <article className="max-w-4xl mx-auto px-6 pt-28 pb-16">
+      <article className="max-w-4xl mx-auto px-6 pt-12 pb-16">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="text-xs text-zinc-400 mb-6 flex flex-wrap items-center gap-1.5">
-          <Link to="/" className="hover:text-gem-mist">Home</Link>
+          <Link to="/" className="hover:text-quiet">Home</Link>
           <span>/</span>
-          <Link to="/meeting-overlap" className="hover:text-gem-mist">Meeting Overlap Guides</Link>
+          <Link to="/meeting-overlap" className="hover:text-quiet">Meeting Overlap Guides</Link>
           <span>/</span>
-          <span className="text-gem-mist">{regionA} & {regionB}</span>
+          <span className="text-quiet">{regionA} & {regionB}</span>
         </nav>
 
         {/* H1 */}
-        <h1 className="font-heading text-3xl md:text-4xl font-bold text-gem-beige mb-4">
+        <h1 className="font-heading text-3xl md:text-4xl font-bold text-ink mb-4">
           {h1}
         </h1>
 
         {/* AEO Above-Fold Answer Box */}
-        <div className="bg-gem-gold/10 border border-gem-gold/20 rounded-2xl px-6 py-5 mb-8">
-          <div className="flex items-center gap-2 text-gem-gold font-semibold text-xs uppercase tracking-wider mb-2">
+        <div className="bg-gem-gold/10 border border-line rounded-2xl px-6 py-5 mb-8">
+          <div className="flex items-center gap-2 text-pine font-semibold text-xs uppercase tracking-wider mb-2">
             <CheckCircle2 className="w-4 h-4" /> Recommended Meeting Window
           </div>
-          <p className="text-gem-beige font-semibold text-lg leading-snug mb-3">
+          <p className="text-ink font-semibold text-lg leading-snug mb-3">
             {recommendedWindow}
           </p>
-          <div className="flex flex-wrap gap-4 text-xs text-gem-sage">
+          <div className="flex flex-wrap gap-4 text-xs text-quiet">
             <span><strong>Region A:</strong> {regionA} ({citiesA})</span>
             <span>•</span>
             <span><strong>Region B:</strong> {regionB} ({citiesB})</span>
             <span>•</span>
-            <span className="text-gem-gold">{overlapType}</span>
+            <span className="text-pine">{overlapType}</span>
           </div>
         </div>
 
         <AdBanner slot="top" className="mb-8" />
 
         {/* Deep Link CTA to Interactive Tool */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="bg-surface border border-line rounded-2xl p-6 mb-10 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <h2 className="font-heading text-lg font-bold text-gem-beige mb-1">
+            <h2 className="font-heading text-lg font-bold text-ink mb-1">
               Need to schedule a multi-city team call?
             </h2>
-            <p className="text-gem-sage text-sm">
+            <p className="text-quiet text-sm">
               Use our interactive Meeting Planner tool to compare multiple team locations with a visual time slider.
             </p>
           </div>
           <Link
             to="/meeting-planner"
-            className="flex-shrink-0 inline-flex items-center gap-2 bg-gem-gold text-gem-forest font-bold text-sm rounded-xl px-5 py-3 hover:bg-gem-gold/90 transition-colors"
+            className="flex-shrink-0 inline-flex items-center gap-2 bg-pine text-paper font-bold text-sm rounded-xl px-5 py-3 hover:bg-ink transition-colors"
           >
             <Calendar className="w-4 h-4" /> Open Meeting Planner
           </Link>
@@ -154,17 +154,17 @@ export default function MeetingOverlapPage() {
 
         {/* 24-Hour Overlap Heat Table */}
         <section className="mb-10">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">
+          <h2 className="font-heading text-xl font-bold text-ink mb-3">
             24-Hour Schedule Alignment & Overlap Heat Table
           </h2>
-          <p className="text-gem-sage text-sm mb-4">
+          <p className="text-quiet text-sm mb-4">
             The table below aligns hourly slots for today. Use the meeting planner to select another date. It compares between {regionA} and {regionB}. Highlighted green rows indicate hours where both regions fall within 09:00–17:00 business hours.
           </p>
 
-          <div className="overflow-x-auto rounded-2xl border border-white/10 mb-2">
+          <div className="overflow-x-auto rounded-2xl border border-line mb-2">
             <table className="w-full text-sm text-left">
               <thead>
-                <tr className="bg-white/5 text-gem-sage">
+                <tr className="bg-surface text-quiet">
                   <th className="px-4 py-3 font-semibold">{regionA} Time</th>
                   <th className="px-4 py-3 font-semibold">{regionB} Time</th>
                   <th className="px-4 py-3 font-semibold hidden sm:table-cell">Overlap Alignment</th>
@@ -178,13 +178,13 @@ export default function MeetingOverlapPage() {
                   const isBizB = hourB >= 9 && hourB < 17;
                   const isOverlap = isBizA && isBizB;
                   return (
-                    <tr key={fromTime} className={`border-t border-white/5 ${isOverlap ? "bg-emerald-900/10" : ""}`}>
-                      <td className="px-4 py-2.5 font-mono text-gem-beige">{fromTime}</td>
-                      <td className={`px-4 py-2.5 font-mono font-semibold ${isOverlap ? "text-emerald-400" : "text-gem-beige"}`}>
+                    <tr key={fromTime} className={`border-t border-line ${isOverlap ? "bg-emerald-900/10" : ""}`}>
+                      <td className="px-4 py-2.5 font-mono text-ink">{fromTime}</td>
+                      <td className={`px-4 py-2.5 font-mono font-semibold ${isOverlap ? "text-emerald-800" : "text-ink"}`}>
                         {toTime}
                         {isOverlap && <span className="ml-2 text-xs text-emerald-500 font-sans font-normal">Optimal Overlap</span>}
                       </td>
-                      <td className="px-4 py-2.5 text-xs text-gem-sage/70 hidden sm:table-cell">
+                      <td className="px-4 py-2.5 text-xs text-quiet hidden sm:table-cell">
                         {isOverlap
                           ? "✅ Shared Business Hours"
                           : isBizA
@@ -200,35 +200,35 @@ export default function MeetingOverlapPage() {
         </section>
 
         {/* Rotation Fairness Advice */}
-        <section className="mb-10 bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-3 flex items-center gap-2">
-            <Users className="w-5 h-5 text-gem-gold" />
+        <section className="mb-10 bg-surface border border-line rounded-2xl p-6">
+          <h2 className="font-heading text-xl font-bold text-ink mb-3 flex items-center gap-2">
+            <Users className="w-5 h-5 text-pine" />
             Schedule Rotation & Team Fairness Guidelines
           </h2>
-          <p className="text-gem-mist text-sm leading-relaxed mb-4">
+          <p className="text-quiet text-sm leading-relaxed mb-4">
             {fairnessAdvice}
           </p>
-          <div className="bg-amber-900/10 border border-amber-700/20 rounded-xl p-4 text-xs text-gem-sage space-y-1">
-            <strong className="text-amber-400 block mb-1">Async Handoff Best Practice:</strong>
+          <div className="bg-amber-900/10 border border-amber-700/20 rounded-xl p-4 text-xs text-quiet space-y-1">
+            <strong className="text-amber-800 block mb-1">Async Handoff Best Practice:</strong>
             When live overlap is shorter than 2 hours, establish written end-of-day handoff logs (e.g. key decisions, blockers, and next actions) so the opposite team can pick up work seamlessly.
           </div>
         </section>
 
         {/* Context Copy Stub */}
         {contextCopy && (
-          <section className="mb-10 bg-white/5 border border-white/10 rounded-2xl p-6">
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">
+          <section className="mb-10 bg-surface border border-line rounded-2xl p-6">
+            <h2 className="font-heading text-xl font-bold text-ink mb-3">
               Corridor Collaboration Context
             </h2>
-            <p className="text-gem-mist text-sm leading-relaxed">{contextCopy}</p>
+            <p className="text-quiet text-sm leading-relaxed">{contextCopy}</p>
           </section>
         )}
 
         <AdBanner slot="mid" className="mb-8" />
 
         {/* FAQ Section */}
-        <section className="mb-10 bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-4">
+        <section className="mb-10 bg-surface border border-line rounded-2xl p-6">
+          <h2 className="font-heading text-xl font-bold text-ink mb-4">
             Frequently Asked Questions
           </h2>
           <div>
@@ -241,7 +241,7 @@ export default function MeetingOverlapPage() {
         {/* Sibling Corridor Links */}
         {siblingCorridors.length > 0 && (
           <section className="mb-10">
-            <h2 className="font-heading text-lg font-semibold text-gem-beige mb-4">
+            <h2 className="font-heading text-lg font-semibold text-ink mb-4">
               Related Meeting Overlap Guides
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -249,10 +249,10 @@ export default function MeetingOverlapPage() {
                 <Link
                   key={c.slug}
                   to={`/meeting-overlap/${c.slug}`}
-                  className="flex items-center justify-between bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-gem-beige hover:text-gem-gold transition-all"
+                  className="flex items-center justify-between bg-surface hover:bg-surface border border-line rounded-xl px-4 py-3.5 text-sm text-ink hover:text-pine transition-all"
                 >
                   <span>{c.h1}</span>
-                  <ArrowRight className="w-4 h-4 text-gem-gold flex-shrink-0" />
+                  <ArrowRight className="w-4 h-4 text-pine flex-shrink-0" />
                 </Link>
               ))}
             </div>
@@ -261,13 +261,13 @@ export default function MeetingOverlapPage() {
 
         {/* Footer Navigation Hub Links */}
         <div className="flex flex-wrap gap-3 text-sm">
-          <Link to="/meeting-overlap" className="text-gem-gold hover:underline">← All meeting overlap guides</Link>
-          <span className="text-gem-sage">·</span>
-          <Link to="/meeting-planner" className="text-gem-gold hover:underline">Global Meeting Planner</Link>
-          <span className="text-gem-sage">·</span>
-          <Link to="/time-zone-converter" className="text-gem-gold hover:underline">Time Zone Converter</Link>
-          <span className="text-gem-sage">·</span>
-          <Link to="/blog/async-first-remote-team-operating-system" className="text-gem-gold hover:underline">Async Operating System Guide</Link>
+          <Link to="/meeting-overlap" className="text-pine hover:underline">← All meeting overlap guides</Link>
+          <span className="text-quiet">·</span>
+          <Link to="/meeting-planner" className="text-pine hover:underline">Global Meeting Planner</Link>
+          <span className="text-quiet">·</span>
+          <Link to="/time-zone-converter" className="text-pine hover:underline">Time Zone Converter</Link>
+          <span className="text-quiet">·</span>
+          <Link to="/blog/async-first-remote-team-operating-system" className="text-pine hover:underline">Async Operating System Guide</Link>
         </div>
       </article>
 

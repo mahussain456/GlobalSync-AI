@@ -10,6 +10,13 @@ colors:
   stone: "#d8d2c7"
   muted-text: "#526659"
   closing-surface: "#e4e8dc"
+  paper: "#F4EFE6"
+  surface: "#FFFCF7"
+  ink: "#0E2A1F"
+  quiet: "#526659"
+  line: "#CFD5CA"
+  wash: "#E4E8DC"
+  brass: "#80612D"
 typography:
   display:
     fontFamily: "Playfair Display, serif"
@@ -19,6 +26,12 @@ typography:
     letterSpacing: "-0.035em"
   body:
     fontFamily: "DM Sans, sans-serif"
+  page-title:
+    fontFamily: "Playfair Display, serif"
+    fontSize: "clamp(36px, 4.4vw, 64px)"
+    fontWeight: 500
+    lineHeight: 1.12
+    letterSpacing: "-0.03em"
   tool-title:
     fontFamily: "Playfair Display, serif"
     fontSize: "32px"
@@ -29,6 +42,7 @@ rounded:
   workspace: "6px"
   consent: "12px"
   planner: "16px"
+  interior-card: "12px"
 components:
   button-primary:
     backgroundColor: "{colors.forest}"
@@ -37,6 +51,14 @@ components:
     padding: "0 25px"
   button-primary-hover:
     backgroundColor: "{colors.pine}"
+  button-interior:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.paper}"
+    rounded: "{rounded.workspace}"
+  card-interior:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.interior-card}"
   button-find-time:
     backgroundColor: "{colors.gold}"
     textColor: "{colors.forest}"
@@ -50,13 +72,13 @@ components:
 
 **Creative North Star: Meridian.** A warm, editorial world built around forest green, ivory paper, generous serif headlines, and a sculpted atlas. The imagery connects directly to the product's time-zone, currency, and invoice tools. Quiet rules and ample space organize information; small movements make the atlas and tool illustrations feel alive.
 
-**Current scope:** the homepage implements this world, and the shared navigation, footer, and consent surface carry the Meridian identity. Existing tool-page bodies retain their working dark layouts and previous typography. This document does not imply that those bodies have been redesigned. Extend Meridian deliberately without treating legacy tool styles as the preferred starting point for new marketing surfaces.
+**Current scope:** Meridian extends across all routed pages: converters, meeting tools, invoices, workspace and dashboard, admin, guides and articles, company and policy pages, forms, and error/loading states. Interiors use light paper surfaces, forest text, Playfair headings, and DM Sans interface text. Dashboard, admin, and the 404 page also use the shared navigation and footer. This is a visual migration; backend availability and tool-service problems remain separate functional concerns.
 
-The implementation sources are `frontend/src/styles/meridian.css`, `frontend/src/styles/meridian-brand.css`, `LandingPage.js`, `MeridianNav.js`, `MeridianConsent.js`, `SiteFooter.js`, and `meridianExperience.js`. The CSS contains earlier rules followed by refinements: the final cascade and rendered components take precedence over obsolete selectors.
+The implementation sources are `frontend/src/styles/meridian.css`, `meridian-brand.css`, `meridian-pages.css`, `frontend/tailwind.config.js`, the `PageTheme` route wrapper in `App.js`, and the page and tool components. The homepage retains its own composition and motion. Interior styles adapt the same identity to forms, data, and reading. The final cascade and rendered components take precedence over obsolete selectors.
 
 Key characteristics:
 
-- Ivory editorial sections alternating with forest utility surfaces.
+- Ivory interiors and editorial sections, with forest actions, homepage utility sections, and shared footers.
 - Playfair Display headlines paired with DM Sans interface text.
 - A complete paper atlas integrated with the page background.
 - Thin dividers, restrained rounding, readable data, and visible keyboard focus.
@@ -74,6 +96,10 @@ The palette uses green as its foundation, warm paper as its main surface, and go
 - **Muted text:** supporting copy and the question field placeholder on ivory. The placeholder uses full opacity.
 - **Closing surface:** pale green wash for the closing call to action.
 
+### Interior semantic roles
+
+Use **paper** for page backgrounds, **surface** for cards and fields, **ink** for primary text and filled actions, **pine** for emphasis and hover, **quiet** for supporting text, **line** for dividers, **wash** for muted or selected backgrounds, and **brass** for visible focus. Paper/ivory, ink/forest, quiet/muted-text, and wash/closing-surface intentionally share values; the semantic names match the interior Tailwind utilities. Light dialog and popover primitives use the global semantic CSS variables.
+
 Borders generally use translucent forest on light surfaces and translucent sage on dark ones. Color supports state alongside underlines, borders, labels, and position.
 
 ## Typography
@@ -88,7 +114,7 @@ Borders generally use translucent forest on light surfaces and translucent sage 
 - Labels, captions, and navigation: compact DM Sans, generally 10–14px. Do not apply this compact scale to new long-form body copy.
 - Clock values use tabular numbers; the large city readout uses Playfair Display with a responsive 36–80px scale.
 
-Preserve readable labels and numerical alignment in the tools. Typography migration inside legacy tool pages is a separate task.
+Interior page titles use the page-title token and become 36px at widths up to 600px. Workspace titles cap at 56px. Interior h2 headings use Playfair; h3–h6, controls, labels, and supporting text use DM Sans. Long-form prose is 16px with 1.8 line height and paragraphs capped at 72ch. Preserve readable labels and numerical alignment in tools.
 
 ## Layout
 
@@ -100,15 +126,19 @@ At 760px, hero, story, planner, and FAQ stack. At 600px, tool rows and the quest
 
 Shared navigation has its own responsive behavior: desktop links hide at 1000px, showing the menu control. Header height moves from 92px to 80px, then 78px at 600px. The standalone workspace button hides on small screens, but the mobile menu retains its workspace link. Account for the sticky header when scrolling to anchors.
 
+Interior pages retain task-appropriate content widths and responsive data grids. Workspace heading rows stack below 600px; mobile AI input actions stack, tabs share the available width, and dashboard labels wrap. Reserve enough width for native time fields rather than clipping their controls. Blog listings use open editorial rows and bottom rules instead of raised tiles.
+
 ## Elevation & Depth
 
 Depth comes primarily from contrasting surfaces, fine rules, and the atlas artwork. The atlas wrapper is transparent with no CSS box shadow; multiply blending and soft edge masking integrate the artwork with ivory. Preserve the baked-in paper shading instead of adding a detached card around it.
+
+Interior cards use a light surface and thin line border with no shadow or backdrop blur. Dashboard summary rows and blog listings remain flat and open.
 
 The shared sticky navigation gains `0 7px 22px #0e2a1f10` after scrolling. Planner grouping uses pine against forest. The consent surface uses a border rather than a heavy shadow.
 
 ## Shapes
 
-Controls use modest 5–7px radii. The planner is a 16px clipped surface; consent uses 12px. The transparent atlas wrapper has 28px clipping, reduced to 22px on mobile. Tool rows are open compositions bounded by straight rules. Circular forms are reserved for time markers, atlas nodes, and slider thumbs.
+Shared controls use modest 5–7px radii; interior cards use 12px corners, with component-specific field rounding retained. The planner is a 16px clipped surface; consent uses 12px. The transparent atlas wrapper has 28px clipping, reduced to 22px on mobile. Tool rows are open compositions bounded by straight rules. Circular forms are reserved for time markers, atlas nodes, and slider thumbs.
 
 ## Components
 
@@ -118,13 +148,19 @@ Primary homepage actions use forest with ivory text, a 5px radius, a 56px minimu
 
 The planner action uses gold on forest, minimum height 46px, and a lighter gold hover. Copy actions use a gold outline; secondary editorial links use an understated bottom rule. Keep action labels explicit and preserve semantic links for navigation.
 
-### Inputs and planner
+### Homepage inputs and planner
 
-Planner selects and date fields use forest backgrounds, ivory text, 5px radii, sage borders, and minimum height 48px. Date controls retain their native dark color scheme. Labels sit above fields. Results align city, local time, and working-hours status in rows separated by sage rules.
+The homepage planner selects and date fields use forest backgrounds, ivory text, 5px radii, sage borders, and minimum height 48px. Date controls retain their native dark color scheme. Labels sit above fields. Results align city, local time, and working-hours status in rows separated by sage rules.
 
 The question input uses a translucent white background, forest border, 6px radius, and full-opacity muted-text placeholder. Keep the visible label; the placeholder is an example rather than the field's only accessible name.
 
 The planner presents fit feedback through live status text, plus separate copy and calendar-download actions. Preserve factual boundaries in copy: the homepage uses fixed three-city teams and stated working hours; custom settings belong to the full planner.
+
+### Interior tools and forms
+
+Tool cards and onboarding fields use surface backgrounds, ink text, and quiet full-opacity placeholders. Native date/time/select controls use a light color scheme. Forest or pine actions use paper text; icons inherit the action color. Secondary actions use transparent backgrounds, a visible border, and wash on hover. Maintain labels, status feedback, numerical alignment, and existing tool interactions during visual changes.
+
+Interior control transitions use 180ms color, background, border, and opacity changes. Legacy entrance animations are disabled so content is immediately visible. Light loading and error states stay within the same palette.
 
 ### Navigation, footer, and consent
 
@@ -144,7 +180,7 @@ Tool illustrations respond to hover with small changes: the connecting time mark
 
 ### Focus
 
-Homepage controls generally use a 3px gold outline with 5px offset. Shared navigation and consent use darker gold `#947135` on ivory; footer links use a 2px gold outline. FAQ summaries use a pine outline. Preserve visible focus with adequate contrast on each surface.
+Interior controls use a 3px brass outline with 4px offset; AI-field focus uses a brass ring. Homepage controls generally use a 3px gold outline with 5px offset. Shared navigation and consent use darker gold `#947135` on ivory; footer links use a 2px gold outline. FAQ summaries use a pine outline. Preserve visible focus with adequate contrast on each surface.
 
 ## Do's and Don'ts
 
@@ -152,9 +188,10 @@ Homepage controls generally use a 3px gold outline with 5px offset. Shared navig
 - **Do** keep the whole atlas legible and visually integrated with the hero background.
 - **Do** use editorial spacing and rules for marketing content, and aligned rows for data.
 - **Do** preserve reduced-motion behavior, the pause control, keyboard focus, and descriptive labels.
-- **Do** describe the actual tool behavior and acknowledge the existing tool-body styling when assessing scope.
+- **Do** use the semantic interior tokens for new workspace, tool, document, and form surfaces.
+- **Do** distinguish visual consistency from backend or service readiness.
 - **Don't** reintroduce a raised opaque card or shine sweep around the atlas.
 - **Don't** use pale gold or sage for small text on ivory without checking contrast.
 - **Don't** substitute decorative animation for working controls or status feedback.
-- **Don't** claim that all tool pages already use the Meridian headline and body system.
+- **Don't** restore dark tool bodies, neon gradients, blur, or decorative glow as the default interior style.
 - **Don't** add unsupported trust badges, customer counts, or claims to fill visual space.

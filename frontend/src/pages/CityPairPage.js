@@ -25,12 +25,12 @@ function LiveClock({ timezone, city, country, abbr }) {
   }, [timezone]);
 
   return (
-    <div className="flex-1 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6 text-center">
+    <div className="flex-1 bg-surface  rounded-xl border border-line text-ink p-6 text-center">
       <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">{abbr}</div>
       {/* suppressHydrationWarning: empty string during SSR prerender, real time after mount */}
-      <div className="font-heading text-4xl font-bold text-gem-beige tabular-nums mb-1" suppressHydrationWarning>{time || " "}</div>
-      <div className="text-sm text-gem-sage mb-3" suppressHydrationWarning>{date || " "}</div>
-      <div className="font-semibold text-gem-beige/90">{city}</div>
+      <div className="font-heading text-4xl font-bold text-ink tabular-nums mb-1" suppressHydrationWarning>{time || " "}</div>
+      <div className="text-sm text-quiet mb-3" suppressHydrationWarning>{date || " "}</div>
+      <div className="font-semibold text-quiet">{city}</div>
       <div className="text-xs text-zinc-400">{country}</div>
     </div>
   );
@@ -74,12 +74,12 @@ function CustomTimeConverter({ cityA, cityB }) {
   const outAmPm    = outH24 < 12 ? "AM" : "PM";
   const dayShift   = Math.sign(Math.round((rawOut - outMinutes) / (24 * 60)));
 
-  const sel = "border border-white/10 rounded-lg px-3 py-2 text-sm font-semibold text-gem-beige/90 bg-white focus:outline-none focus:ring-2 focus:ring-gem-gold/20 cursor-pointer";
+  const sel = "border border-line rounded-lg px-3 py-2 text-sm font-semibold text-quiet bg-white focus:outline-none focus:ring-2 focus:ring-gem-gold/20 cursor-pointer";
 
   return (
-    <section className="mb-8 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6" data-testid="custom-time-converter">
-      <h2 className="font-heading text-xl font-bold text-gem-beige mb-4 flex items-center gap-2">
-        <Clock className="w-5 h-5 text-gem-gold" />
+    <section className="mb-8 bg-surface  rounded-xl border border-line text-ink p-6" data-testid="custom-time-converter">
+      <h2 className="font-heading text-xl font-bold text-ink mb-4 flex items-center gap-2">
+        <Clock className="w-5 h-5 text-pine" />
         Convert a Specific Time
       </h2>
 
@@ -100,27 +100,27 @@ function CustomTimeConverter({ cityA, cityB }) {
           <option value="PM">PM</option>
         </select>
         <span className="text-zinc-400 text-sm">in</span>
-        <span className="font-semibold text-gem-beige/90 text-sm bg-white/5 border border-white/10 rounded-lg px-3 py-2">
+        <span className="font-semibold text-quiet text-sm bg-surface border border-line rounded-lg px-3 py-2">
           {fromCity.name}
         </span>
         <button
           onClick={() => setReversed(r => !r)}
-          className="flex items-center gap-1.5 text-xs font-medium text-gem-gold hover:text-gem-gold/80 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg px-3 py-2 transition-colors"
+          className="flex items-center gap-1.5 text-xs font-medium text-pine hover:text-pine bg-surface hover:bg-surface border border-line rounded-lg px-3 py-2 transition-colors"
           data-testid="swap-direction-btn"
         >
           <ArrowRight className="w-3 h-3 rotate-90" /> Swap
         </button>
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-        <div className="text-xs text-gem-sage mb-2">
+      <div className="bg-surface border border-line rounded-xl p-5">
+        <div className="text-xs text-quiet mb-2">
           {hour}:{String(minute).padStart(2, "0")} {ampm} in {fromCity.name} ({fromCity.abbr}) =
         </div>
         <div className="flex flex-wrap items-end gap-3">
-          <span className="font-heading text-3xl font-bold text-gem-beige tabular-nums" data-testid="converted-time-result">
+          <span className="font-heading text-3xl font-bold text-ink tabular-nums" data-testid="converted-time-result">
             {outH12}:{String(outMin).padStart(2, "0")} {outAmPm}
           </span>
-          <span className="text-gem-mist font-semibold text-base pb-0.5">
+          <span className="text-quiet font-semibold text-base pb-0.5">
             in {toCity.name} ({toCity.abbr})
           </span>
         </div>
@@ -141,14 +141,14 @@ function FullDayConversionTable({ cityA, cityB }) {
   const toOffset = getTimezoneOffsetMinutes(cityB.timezone);
 
   return (
-    <section className="mb-8 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6" data-testid="24-hour-table">
-      <h2 className="font-heading text-xl font-bold text-gem-beige mb-4 flex items-center gap-2">
-        <Clock className="w-5 h-5 text-gem-gold" />
+    <section className="mb-8 bg-surface  rounded-xl border border-line text-ink p-6" data-testid="24-hour-table">
+      <h2 className="font-heading text-xl font-bold text-ink mb-4 flex items-center gap-2">
+        <Clock className="w-5 h-5 text-pine" />
         24-Hour Conversion Table: {cityA.name} to {cityB.name}
       </h2>
       <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left text-gem-mist">
-          <thead className="text-xs text-zinc-400 uppercase bg-white/5 border-b border-white/10">
+        <table className="w-full text-sm text-left text-quiet">
+          <thead className="text-xs text-zinc-400 uppercase bg-surface border-b border-line">
             <tr>
               <th scope="col" className="px-4 py-3 font-semibold">{cityA.name} Time ({cityA.abbr})</th>
               <th scope="col" className="px-4 py-3 font-semibold">{cityB.name} Time ({cityB.abbr})</th>
@@ -162,7 +162,7 @@ function FullDayConversionTable({ cityA, cityB }) {
               const outH24 = Math.floor(outMinutes / 60);
               const outMin = outMinutes % 60;
               const dayShift = Math.sign(Math.round((rawOut - outMinutes) / (24 * 60)));
-              
+
               const fmtH12 = (hour24) => {
                 const h12 = hour24 % 12 || 12;
                 const ampm = hour24 < 12 ? "AM" : "PM";
@@ -173,8 +173,8 @@ function FullDayConversionTable({ cityA, cityB }) {
               const dayStr = dayShift > 0 ? " (Next Day)" : dayShift < 0 ? " (Previous Day)" : "";
 
               return (
-                <tr key={h} className="border-b border-white/5 hover:bg-white/5">
-                  <td className="px-4 py-2 font-medium text-gem-beige/90">{fmtH12(h)}</td>
+                <tr key={h} className="border-b border-line hover:bg-surface">
+                  <td className="px-4 py-2 font-medium text-quiet">{fmtH12(h)}</td>
                   <td className="px-4 py-2">{outFmt}{dayStr && <span className="text-xs text-zinc-400 ml-1">{dayStr}</span>}</td>
                 </tr>
               );
@@ -189,7 +189,7 @@ function FullDayConversionTable({ cityA, cityB }) {
 // ─── Main page ────────────────────────────────────────────────────────────────
 export default function CityPairPage() {
   const { pair } = useParams();
-  
+
   const normalizedPair = (pair || "").toLowerCase();
   const [fromSlug, toSlug] = normalizedPair.split("-to-");
   const cityA = CITIES[fromSlug];
@@ -212,45 +212,29 @@ export default function CityPairPage() {
   const seo = getCityPairSEO({ cityA, cityB, pair, pairData });
 
   return (
-    <div className="min-h-screen bg-gem-forest text-gem-beige relative">
+    <div className="min-h-screen bg-paper text-ink relative">
       <SEOHead {...seo} />
 
-      {/* LUXURY HERO BACKGROUND with World Map */}
-      <div className="hero-luxury-bg absolute top-0 left-0 right-0 h-[600px] pointer-events-none z-0 overflow-hidden">
-        {/* Subtle gradient overlay to soften */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gem-forest/20 via-transparent to-gem-forest z-10"></div>
-        {/* World Map Background */}
-        <div 
-          className="absolute inset-0 opacity-[0.12] mix-blend-screen" 
-          style={{
-            backgroundImage: "url('/world-map-bg.webp')", 
-            backgroundSize: 'cover', 
-            backgroundPosition: 'center 30%',
-            maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)',
-            WebkitMaskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 75%)'
-          }}
-        ></div>
-      </div>
 
       <SiteNav />
 
-      <article className="max-w-4xl mx-auto px-6 pt-36 pb-8">
+      <article className="max-w-4xl mx-auto px-6 pt-16 pb-8">
         {/* Breadcrumb */}
         <nav className="text-xs text-zinc-400 mb-6 flex items-center gap-1.5">
-          <Link to="/" className="hover:text-gem-mist">Home</Link>
+          <Link to="/" className="hover:text-quiet">Home</Link>
           <span>/</span>
-          <Link to="/time-zone-converter" className="hover:text-gem-mist">Time Zone Converter</Link>
+          <Link to="/time-zone-converter" className="hover:text-quiet">Time Zone Converter</Link>
           <span>/</span>
-          <span className="text-gem-mist">{cityA.name} to {cityB.name}</span>
+          <span className="text-quiet">{cityA.name} to {cityB.name}</span>
         </nav>
 
         {/* H1 */}
-        <header className="mb-8">
-          <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-gem-gold rounded-full px-3 py-1 text-xs font-medium mb-4 border border-gem-gold/20">
+        <header className="mb-8"><h1 className="font-heading text-3xl md:text-4xl font-bold text-ink mb-3">{h1}</h1>
+          <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-pine rounded-full px-3 py-1 text-xs font-medium mb-4 border border-line">
             <Clock className="w-3.5 h-3.5" /> Live · Free · No Signup
           </div>
-          <h1 className="font-heading text-3xl md:text-4xl font-bold text-gem-beige mb-3">{h1}</h1>
-          <p className="text-gem-sage text-lg leading-relaxed max-w-2xl">
+
+          <p className="text-quiet text-lg leading-relaxed max-w-2xl">
             Live local time for {cityA.name} and {cityB.name} — updated every second.
             Find the best meeting window and understand the {cityA.abbr} to {cityB.abbr} time difference instantly.
           </p>
@@ -276,31 +260,31 @@ export default function CityPairPage() {
 
         {/* Context */}
         {pairData && (
-          <section className="mb-8 bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 text-gem-beige p-6">
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">
+          <section className="mb-8 bg-surface  rounded-xl border border-line text-ink p-6">
+            <h2 className="font-heading text-xl font-bold text-ink mb-3">
               Working Hours Overlap Explained
             </h2>
-            <p className="text-gem-mist leading-relaxed">{pairData.context}</p>
+            <p className="text-quiet leading-relaxed">{pairData.context}</p>
           </section>
         )}
 
         {/* Working across these cities editorial */}
-        <section className="mb-8 bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-4">
+        <section className="mb-8 bg-surface border border-line rounded-2xl p-6">
+          <h2 className="font-heading text-xl font-bold text-ink mb-4">
             Working Remotely Across {cityA.name} and {cityB.name}
           </h2>
-          <div className="space-y-3 text-gem-mist text-sm leading-relaxed">
+          <div className="space-y-3 text-quiet text-sm leading-relaxed">
             <p>
               The {cityA.abbr} to {cityB.abbr} corridor is one of the most navigated in global remote work. With {cityA.name} serving as {cityA.role} and {cityB.name} as {cityB.role}, this pairing spans real geographic, cultural, and scheduling challenges that benefit from deliberate team habits.
             </p>
             <p>
-              <strong className="text-gem-beige/90">For synchronous collaboration:</strong> Use the time converter above to identify the exact window where both cities fall within their standard 9 AM–5 PM workday. Schedule recurring standups at a fixed local time each week — and always double-check ahead of Daylight Saving Time switches, which can silently shift the gap by an hour on one side without the other team noticing.
+              <strong className="text-quiet">For synchronous collaboration:</strong> Use the time converter above to identify the exact window where both cities fall within their standard 9 AM–5 PM workday. Schedule recurring standups at a fixed local time each week — and always double-check ahead of Daylight Saving Time switches, which can silently shift the gap by an hour on one side without the other team noticing.
             </p>
             <p>
-              <strong className="text-gem-beige/90">For asynchronous workflows:</strong> Leave detailed written updates at the close of your workday so the other city can action them at the start of theirs. Tools like Loom (async video), Notion or Confluence (shared documentation), and Linear or Jira (project tracking) are the backbone of effective async work across the {cityA.name}–{cityB.name} corridor. The more context you provide in each async message, the fewer back-and-forth roundtrips you create.
+              <strong className="text-quiet">For asynchronous workflows:</strong> Leave detailed written updates at the close of your workday so the other city can action them at the start of theirs. Tools like Loom (async video), Notion or Confluence (shared documentation), and Linear or Jira (project tracking) are the backbone of effective async work across the {cityA.name}–{cityB.name} corridor. The more context you provide in each async message, the fewer back-and-forth roundtrips you create.
             </p>
             <p>
-              <strong className="text-gem-beige/90">On meeting fairness:</strong> When the overlap window is small or inconvenient for one side, rotate who takes the off-hours call. A schedule that permanently assigns early mornings to one team or late evenings to another creates invisible resentment. Document the rotation explicitly and review it quarterly. Teams that share the inconvenience equitably maintain stronger collaboration and lower turnover.
+              <strong className="text-quiet">On meeting fairness:</strong> When the overlap window is small or inconvenient for one side, rotate who takes the off-hours call. A schedule that permanently assigns early mornings to one team or late evenings to another creates invisible resentment. Document the rotation explicitly and review it quarterly. Teams that share the inconvenience equitably maintain stronger collaboration and lower turnover.
             </p>
           </div>
         </section>
@@ -319,15 +303,15 @@ export default function CityPairPage() {
 
         {/* Meeting tip */}
         {pairData && (
-          <section className="mb-8 bg-white/5 border border-white/10 rounded-2xl p-6">
-            <h2 className="font-heading text-xl font-bold text-gem-beige mb-3 flex items-center gap-2">
-              <Users className="w-5 h-5 text-gem-gold" />
+          <section className="mb-8 bg-surface border border-line rounded-2xl p-6">
+            <h2 className="font-heading text-xl font-bold text-ink mb-3 flex items-center gap-2">
+              <Users className="w-5 h-5 text-pine" />
               Best Meeting Times Between {cityA.name} and {cityB.name}
             </h2>
-            <p className="text-gem-mist leading-relaxed">{pairData.meetingTip}</p>
+            <p className="text-quiet leading-relaxed">{pairData.meetingTip}</p>
             <Link
               to="/meeting-planner"
-              className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-gem-gold hover:text-gem-gold/80 transition-colors"
+              className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-pine hover:text-pine transition-colors"
             >
               Find the best meeting time for any city combination <ArrowRight className="w-4 h-4" />
             </Link>
@@ -337,17 +321,17 @@ export default function CityPairPage() {
         {/* FAQ */}
         {pairData?.faqs && (
           <section className="mb-8">
-            <h2 className="font-heading text-2xl font-bold text-gem-beige mb-5">
+            <h2 className="font-heading text-2xl font-bold text-ink mb-5">
               Frequently Asked Questions
             </h2>
             <div className="space-y-4">
               {pairData.faqs.map((faq, i) => (
-                <div key={i} className="bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 text-gem-beige p-5">
-                  <h3 className="font-semibold text-gem-beige mb-2 flex gap-2">
-                    <span className="text-gem-gold font-black">Q.</span> {faq.q}
+                <div key={i} className="bg-surface  rounded-xl border border-line text-ink p-5">
+                  <h3 className="font-semibold text-ink mb-2 flex gap-2">
+                    <span className="text-pine font-black">Q.</span> {faq.q}
                   </h3>
-                  <p className="text-gem-mist text-sm leading-relaxed flex gap-2">
-                    <span className="text-gem-gold font-black">A.</span> {faq.a}
+                  <p className="text-quiet text-sm leading-relaxed flex gap-2">
+                    <span className="text-pine font-black">A.</span> {faq.a}
                   </p>
                 </div>
               ))}
@@ -356,27 +340,27 @@ export default function CityPairPage() {
         )}
 
         {/* Blog cross-link */}
-        <section className="mb-8 bg-white/5 border border-white/10 rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <section className="mb-8 bg-surface border border-line rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-semibold text-gem-beige/90 mb-0.5">Want a deeper guide on working across time zones?</p>
-            <p className="text-xs text-gem-sage">How to schedule meetings fairly, handle DST, and build async habits.</p>
+            <p className="text-sm font-semibold text-quiet mb-0.5">Want a deeper guide on working across time zones?</p>
+            <p className="text-xs text-quiet">How to schedule meetings fairly, handle DST, and build async habits.</p>
           </div>
           <div className="mt-6 flex flex-col sm:flex-row items-center gap-3 justify-center">
-            <Link to="/blog/remote-team-world-clock-best-practices" className="text-sm font-semibold text-gem-gold hover:text-gem-gold/80 transition-colors flex items-center gap-1">
+            <Link to="/blog/remote-team-world-clock-best-practices" className="text-sm font-semibold text-pine hover:text-pine transition-colors flex items-center gap-1">
               Read: World Clock best practices <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </section>
 
         {/* Use full tool CTA */}
-        <section className="mb-8 bg-white/5 backdrop-blur-xl rounded-[28px] text-gem-beige border border-white/10 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <section className="mb-8 bg-surface  rounded-xl text-ink border border-line rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h2 className="font-heading text-xl font-bold mb-1">Need more cities?</h2>
             <p className="text-zinc-400 text-sm">Compare up to 5 cities simultaneously and find business-hour overlaps instantly.</p>
           </div>
           <Link
             to="/time-zone-converter"
-            className="shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-gem-beige font-semibold text-sm hover:bg-white/10 transition-colors"
+            className="shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-ink font-semibold text-sm hover:bg-surface transition-colors"
           >
             Open free time zone converter <ArrowRight className="w-4 h-4" />
           </Link>
@@ -386,7 +370,7 @@ export default function CityPairPage() {
 
         {/* Related pairs */}
         <section className="mb-8">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-4">
+          <h2 className="font-heading text-xl font-bold text-ink mb-4">
             Related Time Zone Converters ({relatedPairs.length} found)
           </h2>
           {relatedPairs.length > 0 && (
@@ -395,9 +379,9 @@ export default function CityPairPage() {
                 <Link
                   key={slug}
                   to={`/time/${slug}`}
-                  className="bg-white/5 backdrop-blur-xl rounded-[28px] border border-white/10 p-4 hover:shadow-sm hover:border-gem-gold/30 transition-all group"
+                  className="bg-surface  rounded-xl border border-line p-4  hover:border-line transition-all group"
                 >
-                  <div className="font-semibold text-gem-beige/90 text-sm group-hover:text-gem-gold transition-colors">
+                  <div className="font-semibold text-quiet text-sm group-hover:text-pine transition-colors">
                     Convert Time: {from.name} to {to.name}
                   </div>
                   <div className="text-xs text-zinc-400 mt-0.5">{from.abbr} to {to.abbr}</div>

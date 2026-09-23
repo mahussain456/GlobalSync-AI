@@ -10,19 +10,19 @@ import { getComparison, COMPARISONS } from "@/data/comparisons";
 function FAQItem({ question, answer }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-white/10 last:border-0">
+    <div className="border-b border-line last:border-0">
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full text-left py-4 flex items-start justify-between gap-4 text-gem-beige hover:text-gem-gold transition-colors"
+        className="w-full text-left py-4 flex items-start justify-between gap-4 text-ink hover:text-pine transition-colors"
         aria-expanded={open}
       >
         <span className="font-medium text-sm leading-snug">{question}</span>
         {open
-          ? <ChevronUp className="w-4 h-4 flex-shrink-0 mt-0.5 text-gem-gold" />
-          : <ChevronDown className="w-4 h-4 flex-shrink-0 mt-0.5 text-gem-sage" />}
+          ? <ChevronUp className="w-4 h-4 flex-shrink-0 mt-0.5 text-pine" />
+          : <ChevronDown className="w-4 h-4 flex-shrink-0 mt-0.5 text-quiet" />}
       </button>
       {open && (
-        <div className="pb-4 text-gem-sage text-sm leading-relaxed">
+        <div className="pb-4 text-quiet text-sm leading-relaxed">
           {answer}
         </div>
       )}
@@ -61,7 +61,7 @@ export default function ComparisonPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gem-forest text-gem-beige relative">
+    <div className="min-h-screen bg-paper text-ink relative">
       <SEOHead
         title={metaTitle}
         description={metaDescription}
@@ -71,20 +71,20 @@ export default function ComparisonPage() {
 
       <SiteNav />
 
-      <article className="max-w-4xl mx-auto px-6 pt-28 pb-16">
+      <article className="max-w-4xl mx-auto px-6 pt-12 pb-16">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="text-xs text-zinc-400 mb-6 flex items-center gap-1.5">
-          <Link to="/" className="hover:text-gem-mist">Home</Link>
+          <Link to="/" className="hover:text-quiet">Home</Link>
           <span>/</span>
-          <span className="text-gem-mist">Tool Comparisons</span>
+          <span className="text-quiet">Tool Comparisons</span>
         </nav>
 
         {/* H1 */}
-        <h1 className="font-heading text-3xl md:text-4xl font-bold text-gem-beige mb-4">
+        <h1 className="font-heading text-3xl md:text-4xl font-bold text-ink mb-4">
           {h1}
         </h1>
 
-        <p className="text-gem-mist text-lg mb-8 leading-relaxed">
+        <p className="text-quiet text-lg mb-8 leading-relaxed">
           An honest, transparent comparison of features, workflow design, and strengths to help remote teams choose the right time zone and currency tools.
         </p>
 
@@ -93,14 +93,14 @@ export default function ComparisonPage() {
         {/* Side-by-Side Comparison Box */}
         <div className="grid md:grid-cols-2 gap-6 mb-10">
           {/* Competitor Strengths */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-            <div className="flex items-center gap-2 text-gem-gold font-heading font-bold text-lg mb-4 pb-3 border-b border-white/10">
+          <div className="bg-surface border border-line rounded-2xl p-6">
+            <div className="flex items-center gap-2 text-pine font-heading font-bold text-lg mb-4 pb-3 border-b border-line">
               <Shield className="w-5 h-5" /> What {competitorName} Does Best
             </div>
-            <ul className="space-y-3 text-sm text-gem-sage">
+            <ul className="space-y-3 text-sm text-quiet">
               {competitorStrengths.map((point, i) => (
                 <li key={i} className="flex items-start gap-2.5">
-                  <Check className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-emerald-800 flex-shrink-0 mt-0.5" />
                   <span className="leading-snug">{point}</span>
                 </li>
               ))}
@@ -108,14 +108,14 @@ export default function ComparisonPage() {
           </div>
 
           {/* GlobalSync AI Strengths */}
-          <div className="bg-gem-gold/10 border border-gem-gold/25 rounded-2xl p-6">
-            <div className="flex items-center gap-2 text-gem-beige font-heading font-bold text-lg mb-4 pb-3 border-b border-gem-gold/20">
-              <Sparkles className="w-5 h-5 text-gem-gold" /> GlobalSync AI Advantages
+          <div className="bg-gem-gold/10 border border-line rounded-2xl p-6">
+            <div className="flex items-center gap-2 text-ink font-heading font-bold text-lg mb-4 pb-3 border-b border-line">
+              <Sparkles className="w-5 h-5 text-pine" /> GlobalSync AI Advantages
             </div>
-            <ul className="space-y-3 text-sm text-gem-beige">
+            <ul className="space-y-3 text-sm text-ink">
               {globalSyncStrengths.map((point, i) => (
                 <li key={i} className="flex items-start gap-2.5">
-                  <Check className="w-4 h-4 text-gem-gold flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-pine flex-shrink-0 mt-0.5" />
                   <span className="leading-snug">{point}</span>
                 </li>
               ))}
@@ -124,26 +124,26 @@ export default function ComparisonPage() {
         </div>
 
         {/* Fair Verdict Section */}
-        <section className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-10">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-3">
+        <section className="bg-surface border border-line rounded-2xl p-6 mb-10">
+          <h2 className="font-heading text-xl font-bold text-ink mb-3">
             Our Honest Verdict
           </h2>
-          <p className="text-gem-mist text-base leading-relaxed mb-6">
+          <p className="text-quiet text-base leading-relaxed mb-6">
             {verdict}
           </p>
 
           <div className="flex flex-wrap gap-3">
             <Link
               to="/time-zone-converter"
-              className="inline-flex items-center gap-2 bg-gem-gold text-gem-forest font-bold text-sm rounded-xl px-5 py-3 hover:bg-gem-gold/90 transition-colors"
+              className="inline-flex items-center gap-2 bg-pine text-paper font-bold text-sm rounded-xl px-5 py-3 hover:bg-ink transition-colors"
             >
               <Clock className="w-4 h-4" /> Try Time Zone Converter
             </Link>
             <Link
               to="/currency-converter"
-              className="inline-flex items-center gap-2 bg-white/5 border border-white/20 text-gem-beige font-semibold text-sm rounded-xl px-5 py-3 hover:bg-white/10 transition-colors"
+              className="inline-flex items-center gap-2 bg-surface border border-line text-ink font-semibold text-sm rounded-xl px-5 py-3 hover:bg-surface transition-colors"
             >
-              <DollarSign className="w-4 h-4 text-gem-gold" /> Currency Converter
+              <DollarSign className="w-4 h-4 text-pine" /> Currency Converter
             </Link>
           </div>
         </section>
@@ -151,8 +151,8 @@ export default function ComparisonPage() {
         <AdBanner slot="mid" className="mb-8" />
 
         {/* FAQ Section */}
-        <section className="mb-10 bg-white/5 border border-white/10 rounded-2xl p-6">
-          <h2 className="font-heading text-xl font-bold text-gem-beige mb-4">
+        <section className="mb-10 bg-surface border border-line rounded-2xl p-6">
+          <h2 className="font-heading text-xl font-bold text-ink mb-4">
             Frequently Asked Questions
           </h2>
           <div>
@@ -165,7 +165,7 @@ export default function ComparisonPage() {
         {/* Other Comparisons */}
         {siblingComparisons.length > 0 && (
           <section className="mb-10">
-            <h2 className="font-heading text-lg font-semibold text-gem-beige mb-4">
+            <h2 className="font-heading text-lg font-semibold text-ink mb-4">
               Other Tool Comparisons
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -173,10 +173,10 @@ export default function ComparisonPage() {
                 <Link
                   key={c.slug}
                   to={`/compare/${c.slug}`}
-                  className="flex items-center justify-between bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3.5 text-xs text-gem-beige hover:text-gem-gold transition-all"
+                  className="flex items-center justify-between bg-surface hover:bg-surface border border-line rounded-xl px-4 py-3.5 text-xs text-ink hover:text-pine transition-all"
                 >
                   <span className="line-clamp-1">{c.h1}</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-gem-gold flex-shrink-0 ml-2" />
+                  <ArrowRight className="w-3.5 h-3.5 text-pine flex-shrink-0 ml-2" />
                 </Link>
               ))}
             </div>
@@ -185,11 +185,11 @@ export default function ComparisonPage() {
 
         {/* Hub Links */}
         <div className="flex flex-wrap gap-3 text-sm">
-          <Link to="/time-zone-converter" className="text-gem-gold hover:underline">Time Zone Converter</Link>
-          <span className="text-gem-sage">·</span>
-          <Link to="/meeting-planner" className="text-gem-gold hover:underline">Meeting Planner</Link>
-          <span className="text-gem-sage">·</span>
-          <Link to="/freelancer-rate-converter" className="text-gem-gold hover:underline">Freelancer Rate Converter</Link>
+          <Link to="/time-zone-converter" className="text-pine hover:underline">Time Zone Converter</Link>
+          <span className="text-quiet">·</span>
+          <Link to="/meeting-planner" className="text-pine hover:underline">Meeting Planner</Link>
+          <span className="text-quiet">·</span>
+          <Link to="/freelancer-rate-converter" className="text-pine hover:underline">Freelancer Rate Converter</Link>
         </div>
       </article>
 
