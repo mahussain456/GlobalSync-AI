@@ -485,8 +485,8 @@ const STATIC_META = {
     keywords: "GlobalSync AI data sources, exchange rate sources, IANA time zone database, ECB exchange rates",
   },
   "freelancer-rate-converter": {
-    rawTitle: `Freelancer Rate Calculator — Hourly to Annual Salary Equivalent`,
-    description: `Convert freelance hourly rates to annual W-2 salary equivalents. Factors in self-employment tax, holidays, and unbillable time. Free calculator.`,
+    rawTitle: `Freelance Rate & Annual Revenue Calculator | GlobalSync AI`,
+    description: `Convert hourly rates, retainers and project fees across 11 currencies. Estimate gross annual freelance revenue and use your rate in an invoice. Free, no signup.`,
     canonical: "/freelancer-rate-converter",
     keywords: "freelancer rate converter, hourly rate converter, project fee converter, international freelancer pricing",
   },

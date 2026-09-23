@@ -1,3 +1,4 @@
+import { fireAnalyticsEvent } from './analytics';
 export function initializeMeridian(root) {
   const controller=new AbortController();
   const listen=(target,...args)=>target.addEventListener(args[0],args[1],{...(args[2]||{}),signal:controller.signal});
@@ -49,7 +50,8 @@ export function initializeMeridian(root) {
     if(!dateInput.checkValidity()){dateInput.reportValidity();return}
     const candidates=Array.from({length:96},(_,i)=>i).sort((a,b)=>Math.abs(a-tick)-Math.abs(b-tick));
     const found=candidates.find(step=>groups[group].every(([,tz])=>works(tz,step)));
-    if(found===undefined){$('.notice').textContent='No shared 09:00–17:00 window for this team and meeting length. Try a shorter meeting or discuss an out-of-hours time.';return}
+    if(found===undefined){fireAnalyticsEvent('meeting_no_overlap',{tool:'homepage_planner',duration});$('.notice').textContent='No shared 09:00–17:00 window for this team and meeting length. Try a shorter meeting or discuss an out-of-hours time.';return}
+    fireAnalyticsEvent('calculation_succeeded',{tool:'homepage_planner',duration});
     tick=found;update();$('.notice').textContent='Shared time found. Everyone stays within working hours.';
   });
   const summary=()=>`GlobalSync AI · ${selectedDate} · ${duration} minutes\n`+groups[group].map(([name,tz])=>{const end=new Date(moment().getTime()+duration*60000);return `${name}: ${dateLabel(tz)} ${local(moment(),tz)}–${dateLabel(tz,end)} ${local(end,tz)}`}).join('\n');
@@ -63,6 +65,7 @@ export function initializeMeridian(root) {
     const url=URL.createObjectURL(new Blob([lines.map(fold).join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'}));
     const a=document.createElement('a');a.href=url;a.download='globalsync-meeting-'+selectedDate+'.ics';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
     $('.notice').textContent='Calendar file downloaded. Open it in your calendar to review and invite your team.';
+    fireAnalyticsEvent('meeting_calendar_exported',{tool:'homepage_planner',duration});
   });
   function motionState(){root.classList.toggle('pause',paused);$('.motion-toggle').textContent=paused?'Motion paused':'Pause motion';$('.motion-toggle').setAttribute('aria-pressed',String(paused))}
   listen($('.motion-toggle'),'click',()=>{paused=!paused;motionState()});

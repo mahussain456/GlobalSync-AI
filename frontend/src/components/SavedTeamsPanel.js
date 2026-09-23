@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
-  Users, X, Plus, Sparkles, Copy, Trash2, ExternalLink, ArrowUp, ArrowDown,
-  Check, GripVertical, AlertCircle, Shield, ShieldAlert, RefreshCw, Mail
+  Users, X, Plus, Copy, Trash2, ExternalLink, ArrowUp, ArrowDown,
+  Check, GripVertical, RefreshCw
 } from "lucide-react";
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription
 } from "@/components/ui/sheet";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { getLocalCityTimezone, getNormalizedUtcOffset } from "./TimeConverter";
 import { fireAnalyticsEvent } from "@/lib/analytics";
@@ -25,18 +26,11 @@ export default function SavedTeamsPanel() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [savedTeams, setSavedTeams] = useState([]);
-  const [isPaid, setIsPaid] = useState(false);
+  const isPaid = false;
   const [showCreateModal, setShowCreateModal] = useState(false);
-
-  // Sync email search state
-  const [syncEmail, setSyncEmail] = useState("");
-  const [isSyncing, setIsSyncing] = useState(false);
 
   // New team form state
   const [teamName, setTeamName] = useState("");
-  const [creatorEmail, setCreatorEmail] = useState("");
-  const [gdprOptIn, setGdprOptIn] = useState(false);
-  const [customSlug, setCustomSlug] = useState("");
   const [members, setMembers] = useState([]);
 
   // Member edit inputs
@@ -50,14 +44,12 @@ export default function SavedTeamsPanel() {
 
   // Load from local storage on mount
   useEffect(() => {
-    const teams = localStorage.getItem("gs_saved_teams");
-    if (teams) setSavedTeams(JSON.parse(teams));
-
-    const paidStatus = localStorage.getItem("gs_is_paid") === "true";
-    setIsPaid(paidStatus);
+    try {
+      const teams = JSON.parse(localStorage.getItem("gs_saved_teams") || "[]");
+      if (Array.isArray(teams)) setSavedTeams(teams.filter(t => t && typeof t.slug === "string"));
+    } catch { /* Storage may be unavailable. */ }
   }, []);
 
-  const toggleUpgrade = () => navigate("/stripe-checkout");
 
   const handleCopyLink = (slug) => {
     const url = `${window.location.origin}/team/${slug}`;
@@ -72,38 +64,6 @@ export default function SavedTeamsPanel() {
     setSavedTeams(updated);
     localStorage.setItem("gs_saved_teams", JSON.stringify(updated));
     toast.success("Workspace removed from your local panel");
-  };
-
-  // Sync teams via API using email address
-  const handleSyncTeams = async () => {
-    if (!syncEmail.trim()) {
-      toast.error("Please enter a valid email to sync.");
-      return;
-    }
-    setIsSyncing(true);
-    try {
-      const res = await axios.get(`${API}/teams/user/${encodeURIComponent(syncEmail.trim())}`);
-      const fetched = res.data.teams || [];
-      if (fetched.length === 0) {
-        toast.info("No teams found in the database for this email address.");
-      } else {
-        // Merge into local list
-        const merged = [...savedTeams];
-        fetched.forEach(ft => {
-          if (!merged.find(mt => mt.slug === ft.slug)) {
-            merged.push(ft);
-          }
-        });
-        setSavedTeams(merged);
-        localStorage.setItem("gs_saved_teams", JSON.stringify(merged));
-        toast.success(`Successfully synced ${fetched.length} workspaces!`);
-        setSyncEmail("");
-      }
-    } catch (err) {
-      toast.error("Failed to sync team workspaces. Please check your connection.");
-    } finally {
-      setIsSyncing(false);
-    }
   };
 
   // Autocomplete city match filter
@@ -205,25 +165,6 @@ export default function SavedTeamsPanel() {
       }
       return;
     }
-    if (!creatorEmail.trim()) {
-      toast.error("Email address is required to generate workspace links.");
-      const emailInput = document.getElementById("creator-email-input");
-      if (emailInput) {
-        emailInput.scrollIntoView({ behavior: "smooth", block: "center" });
-        emailInput.focus();
-      }
-      return;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(creatorEmail.trim())) {
-      toast.error("Please enter a valid email address.");
-      const emailInput = document.getElementById("creator-email-input");
-      if (emailInput) {
-        emailInput.scrollIntoView({ behavior: "smooth", block: "center" });
-        emailInput.focus();
-      }
-      return;
-    }
     if (members.length === 0) {
       toast.error("Please add at least one member to the workspace.");
       return;
@@ -231,18 +172,7 @@ export default function SavedTeamsPanel() {
 
     // Limit check for free tier
     if (!isPaid && members.length > 6) {
-      toast.error("Free tier is limited to 6 members. Please upgrade to the Premium tier or remove members.");
-      return;
-    }
-
-    // Enforce 1 saved team limit on free tier
-    if (!isPaid && savedTeams.length >= 1) {
-      toast.warning("Free tier limit reached (1 workspace). Upgrade to Premium to save unlimited teams!", {
-        action: {
-          label: "Upgrade",
-          onClick: () => toggleUpgrade()
-        }
-      });
+      toast.error("A shared workspace supports up to 6 members. Please remove a member to continue.");
       return;
     }
 
@@ -250,10 +180,7 @@ export default function SavedTeamsPanel() {
     try {
       const payload = {
         name: teamName.trim(),
-        email: creatorEmail.trim(),
-        opt_in: gdprOptIn,
-        custom_slug: isPaid && customSlug.trim() ? customSlug.trim() : null,
-        is_paid: isPaid,
+        is_paid: false,
         members: members
       };
 
@@ -263,21 +190,17 @@ export default function SavedTeamsPanel() {
       // Update local storage
       const newSavedTeams = [...savedTeams, savedTeam];
       setSavedTeams(newSavedTeams);
-      localStorage.setItem("gs_saved_teams", JSON.stringify(newSavedTeams));
-      localStorage.setItem("gs_user", JSON.stringify({ name: teamName.trim() + " Owner", email: creatorEmail.trim() }));
+      try { localStorage.setItem("gs_saved_teams", JSON.stringify(newSavedTeams)); }
+      catch { toast.info("Bookmark the workspace link; this browser could not remember it."); }
 
-      toast.success("Workspace saved! Welcome email with link dispatched.");
+      toast.success("Workspace saved. Anyone with the link can view it.");
       fireAnalyticsEvent("team_created", {
-        team_name: teamName.trim(),
         members_count: members.length,
         is_paid: isPaid
       });
 
       // Reset Form and close
       setTeamName("");
-      setCreatorEmail("");
-      setGdprOptIn(false);
-      setCustomSlug("");
       setMembers([]);
       setShowCreateModal(false);
 
@@ -318,56 +241,9 @@ export default function SavedTeamsPanel() {
             </SheetDescription>
           </SheetHeader>
 
-          {/* Subscription Tier Controller */}
           <div className="mt-5 bg-surface border border-line rounded-2xl p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {isPaid ? (
-                  <Sparkles className="w-4 h-4 text-pine animate-bounce" />
-                ) : (
-                  <Users className="w-4 h-4 text-quiet" />
-                )}
-                <div className="text-xs font-bold uppercase tracking-wider text-ink">
-                  Status: <span className={isPaid ? "text-pine font-extrabold" : "text-quiet"}>{isPaid ? "Paid Premium" : "Free Tier"}</span>
-                </div>
-              </div>
-              <button
-                onClick={toggleUpgrade}
-                className="text-[10px] uppercase font-bold px-2 py-1 bg-gem-gold/10 hover:bg-gem-gold/20 text-pine rounded border border-line transition-colors"
-              >
-                {isPaid ? "Downgrade" : "Upgrade to Paid"}
-              </button>
-            </div>
-            <p className="text-[11px] text-quiet leading-relaxed">
-              {isPaid
-                ? "✓ Unlimited saved teams, custom slugs, .ics calendar exports, and branding removed from shared workspaces."
-                : "Limited to 1 team (up to 6 members). Upgrade to unlock custom slugs and calendar invitations."
-              }
-            </p>
-          </div>
-
-          {/* Sync via Email Section */}
-          <div className="mt-5 bg-surface border border-line rounded-2xl p-4 space-y-3">
-            <div className="text-xs font-bold text-ink uppercase tracking-wider flex items-center gap-1.5">
-              <Mail className="w-3.5 h-3.5 text-pine" /> Sync Across Devices
-            </div>
-            <p className="text-[11px] text-quiet">Enter your email to load workspaces you saved on other devices.</p>
-            <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder="developer@agency.com"
-                value={syncEmail}
-                onChange={e => setSyncEmail(e.target.value)}
-                className="flex-1 h-9 px-3 bg-paper border border-line rounded-lg text-xs text-ink outline-none focus:border-line"
-              />
-              <button
-                onClick={handleSyncTeams}
-                disabled={isSyncing || !syncEmail}
-                className="px-3 h-9 bg-pine text-paper font-bold rounded-lg text-xs hover:opacity-90 disabled:opacity-50 flex items-center gap-1.5"
-              >
-                {isSyncing ? <RefreshCw className="w-3 h-3 animate-spin" /> : "Sync"}
-              </button>
-            </div>
+            <p className="text-sm font-semibold">Free shared workspaces · up to 6 members</p>
+            <p className="text-xs text-quiet">Saved links are remembered in this browser. Open or bookmark the same link on another device. Email-based sync and paid upgrades are unavailable.</p>
           </div>
 
           {/* List of Saved Teams */}
@@ -438,7 +314,7 @@ export default function SavedTeamsPanel() {
 
             {/* Create button */}
             <button
-              onClick={() => setShowCreateModal(true)}
+              onClick={() => { setIsOpen(false); setShowCreateModal(true); }}
               className="w-full mt-4 btn-gradient rounded-xl py-3.5 font-semibold text-sm flex items-center justify-center gap-2 "
               data-testid="create-team-btn"
             >
@@ -448,26 +324,14 @@ export default function SavedTeamsPanel() {
         </SheetContent>
       </Sheet>
 
-      {/* Custom Creation Glass Modal (Onboarding style) */}
-      {showCreateModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center onboarding-overlay fade-in">
-          <div className="onboarding-card w-full max-w-lg mx-4 p-7 fade-in-up max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center mb-5">
-              <div className="font-heading text-2xl font-bold text-ink flex items-center gap-2">
-                <Users className="w-5.5 h-5.5 text-pine" /> Create Team Workspace
-              </div>
-              <button
-                onClick={() => setShowCreateModal(false)}
-                className="p-1 rounded-full hover:bg-surface text-ink hover:text-ink transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
+      <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
+        <DialogContent className="bg-paper text-ink max-w-lg p-7 max-h-[90vh] overflow-y-auto z-[100]">
+          <DialogTitle className="font-heading text-2xl font-bold">Create Team Workspace</DialogTitle>
+          <DialogDescription className="text-quiet">Build a public time-zone page for up to six people.</DialogDescription>
             <form onSubmit={handleSaveWorkspace} className="space-y-4">
               {/* Team Name */}
               <div>
-                <label className="text-quiet text-xs font-semibold mb-1.5 block uppercase tracking-wider">Team / Client Name</label>
+                <label htmlFor="team-name-input" className="text-quiet text-xs font-semibold mb-1.5 block uppercase tracking-wider">Team / Client Name</label>
                 <input
                   id="team-name-input"
                   value={teamName}
@@ -477,46 +341,11 @@ export default function SavedTeamsPanel() {
                 />
               </div>
 
-              {/* Email Address & Opt-in */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-quiet text-xs font-semibold mb-1.5 block uppercase tracking-wider">Creator Email (To Receive Link)</label>
-                  <input
-                    id="creator-email-input"
-                    type="text"
-                    value={creatorEmail}
-                    onChange={(e) => setCreatorEmail(e.target.value)}
-                    placeholder="you@company.com"
-                    className="onboarding-input"
-                  />
-                </div>
-                <div>
-                  <label className="text-quiet text-xs font-semibold mb-1.5 block uppercase tracking-wider flex items-center gap-1">
-                    Custom Slug {!isPaid && <span className="text-[9px] font-bold text-pine bg-gem-gold/10 px-1 rounded uppercase">Pro</span>}
-                  </label>
-                  <input
-                    value={customSlug}
-                    onChange={(e) => setCustomSlug(e.target.value)}
-                    placeholder={isPaid ? "e.g. ahmed-clients" : "🔒 Premium feature"}
-                    disabled={!isPaid}
-                    className={`onboarding-input ${!isPaid ? "opacity-40 cursor-not-allowed bg-wash" : ""}`}
-                  />
-                </div>
-              </div>
-
-              {/* GDPR Opt-in checkbox */}
-              <div className="flex items-start gap-2 bg-surface p-3 rounded-xl border border-line">
-                <input
-                  type="checkbox"
-                  id="gdpr-opt-in"
-                  checked={gdprOptIn}
-                  onChange={(e) => setGdprOptIn(e.target.checked)}
-                  className="mt-1 accent-gem-gold cursor-pointer"
-                />
-                <label htmlFor="gdpr-opt-in" className="text-xs text-quiet cursor-pointer leading-tight select-none">
-                  Send me occasional tips for remote teams (single opt-in, GDPR compliant).
-                </label>
-              </div>
+              <p className="text-xs text-quiet bg-surface p-3 rounded-xl">
+                Anyone with this link can view the workspace name, member labels and cities.
+                Use role labels instead of private details. Shared workspaces cannot be edited;
+                create a new link when your team changes. No email address is required.
+              </p>
 
               {/* Workspace Members list builder */}
               <div className="space-y-3 border-t border-line pt-4">
@@ -527,6 +356,7 @@ export default function SavedTeamsPanel() {
                   <div className="w-full">
                     <label className="text-quiet text-[10px] uppercase font-semibold mb-1 block">Custom Label (Name/Role)</label>
                     <input
+                      aria-label="Member label"
                       value={newMemberName}
                       onChange={e => setNewMemberName(e.target.value)}
                       placeholder="e.g. Alice (Lead Developer)"
@@ -538,6 +368,7 @@ export default function SavedTeamsPanel() {
                     <div className="flex gap-2">
                       <div className="relative flex-1">
                         <input
+                          aria-label="Member city"
                           value={citySearch}
                           onChange={e => { setCitySearch(e.target.value); setNewMemberCity(e.target.value); setShowCityDropdown(true); }}
                           onFocus={() => setShowCityDropdown(true)}
@@ -663,9 +494,8 @@ export default function SavedTeamsPanel() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-      )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

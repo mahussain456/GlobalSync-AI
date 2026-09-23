@@ -21,6 +21,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
   const autoSubmittedRef = useRef(false);
 
   useEffect(() => {
+    if (!autoSubmit) autoSubmittedRef.current = false;
     if (autoSubmit && initialQuery && !autoSubmittedRef.current) {
       autoSubmittedRef.current = true;
       setQuery(initialQuery);
@@ -35,7 +36,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
     setLoading(true);
     setDetectedIntent(null);
     try {
-      const res = await axios.post(`${API}/ai/parse`, { query: text });
+      const res = await axios.post(`${API}/ai/parse`, { query: text }, { timeout: 8000 });
       setDetectedIntent(res.data.intent);
       const local = localParseQuery(text);
       const result = local.entities?.from_time || local.entities?.date ? local : res.data;
@@ -67,6 +68,7 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
             </div>
             <input
               aria-label="Describe a time or currency conversion"
+              maxLength={500}
               value={query}
               onChange={(e) => { setQuery(e.target.value); setDetectedIntent(null); }}
               onKeyDown={(e) => e.key === "Enter" && handleSubmit()}

@@ -12,6 +12,7 @@ import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import SavedTeamsPanel from "@/components/SavedTeamsPanel";
+import { saveQueryHistory } from "@/lib/queryHistory";
 
 export default function Dashboard() {
   const [searchParams] = useSearchParams();
@@ -36,6 +37,7 @@ export default function Dashboard() {
   const handleAIResult = async (result) => {
     setAiDispatch({ ...result, ts: Date.now() });
     const { intent, originalQuery } = result;
+    saveQueryHistory(originalQuery, intent);
     if (intent === "currency_conversion") setActiveTab("currency");
     else if (intent === "time_conversion" || intent === "meeting_overlap") setActiveTab("time");
 
@@ -129,7 +131,7 @@ export default function Dashboard() {
               <CurrencyConverter aiDispatch={aiDispatch?.intent === "currency_conversion" ? aiDispatch : null} />
             </TabsContent>
             <TabsContent value="history">
-              <HistoryPanel />
+              <HistoryPanel onReplay={query => { setPendingQuery(query); setActiveTab('time'); }} />
             </TabsContent>
           </Tabs>
 

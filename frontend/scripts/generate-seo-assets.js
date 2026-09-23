@@ -49,7 +49,8 @@ for (const route of routes) {
 
   sitemapXML += `  <url>\n`;
   sitemapXML += `    <loc>https://www.globalsync-ai.com${route}</loc>\n`;
-  sitemapXML += `    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>\n`;
+    // Omit lastmod until a reliable per-page content revision date is available.
+    // A deployment date is not an editorial update to every page.
   sitemapXML += `  </url>\n`;
 }
 

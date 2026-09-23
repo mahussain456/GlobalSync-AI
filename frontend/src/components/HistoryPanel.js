@@ -1,132 +1,27 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { History, Clock, TrendingUp, Users, Trash2, RefreshCw, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { useState } from 'react';
+import { History, Trash2, RefreshCw } from 'lucide-react';
+import { readQueryHistory, clearQueryHistory } from '@/lib/queryHistory';
 
-const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
-
-const INTENT_META = {
-  time_conversion: { label: "Time Zone", icon: Clock, color: "bg-gem-gold/10 text-pine border-line" },
-  meeting_overlap: { label: "Meeting Overlap", icon: Users, color: "bg-orange-500/10 text-orange-800 border-orange-500/30" },
-  currency_conversion: { label: "Currency", icon: TrendingUp, color: "bg-gem-gold/10 text-pine border-line" },
-};
-
-function formatTime(isoStr) {
-  const d = new Date(isoStr);
-  return d.toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
-}
-
-function ResultSummary({ intent, result }) {
-  if (intent === "currency_conversion") {
-    const r = result?.conversion || result;
-    return r?.formatted ? (
-      <p className="text-sm text-quiet mt-1">{r.formatted}</p>
-    ) : null;
-  }
-  if (intent === "meeting_overlap") {
-    const r = result?.overlap || result;
-    return r?.has_overlap ? (
-      <p className="text-sm text-quiet mt-1">Overlap: {r.overlap_start_utc} – {r.overlap_end_utc}</p>
-    ) : (
-      <p className="text-sm text-quiet mt-1">No overlap found</p>
-    );
-  }
-  if (intent === "time_conversion") {
-    const cities = result?.cities || [];
-    return cities.length ? (
-      <p className="text-sm text-quiet mt-1">{cities.map(c => `${c.name}: ${c.current_time_12h}`).join(" · ")}</p>
-    ) : null;
-  }
-  return null;
-}
-
-export default function HistoryPanel() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchHistory = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(`${API}/history`);
-      setItems(res.data.items || []);
-    } catch {
-      toast.error("Failed to load history");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const clearHistory = async () => {
-    try {
-      await axios.delete(`${API}/history`);
-      setItems([]);
-      toast.success("History cleared");
-    } catch {
-      toast.error("Failed to clear history");
-    }
-  };
-
-  useEffect(() => { fetchHistory(); }, []);
-
-  return (
-    <div className="space-y-4" data-testid="history-panel">
-      <div className="flex items-center justify-between">
-        <h2 className="font-heading font-semibold text-ink flex items-center gap-2">
-          <History className="w-5 h-5 text-quiet" />
-          Query History
-          {items.length > 0 && (
-            <span className="text-xs bg-surface text-quiet rounded-full px-2 py-0.5">{items.length}</span>
-          )}
-        </h2>
-        <div className="flex gap-2">
-          <Button variant="ghost" size="sm" onClick={fetchHistory} className="text-quiet hover:text-ink hover:bg-surface" data-testid="refresh-history-btn">
-            <RefreshCw className="w-4 h-4" />
-          </Button>
-          {items.length > 0 && (
-            <Button variant="ghost" size="sm" onClick={clearHistory} className="text-orange-800 hover:text-orange-800 hover:bg-orange-500/10" data-testid="clear-history-btn">
-              <Trash2 className="w-4 h-4" />
-            </Button>
-          )}
-        </div>
+export default function HistoryPanel({ onReplay }) {
+  const [items, setItems] = useState(readQueryHistory);
+  const [notice, setNotice] = useState('');
+  return <section className="space-y-4" data-testid="history-panel">
+    <div className="flex items-center justify-between gap-3">
+      <h2 className="font-heading font-semibold text-ink flex items-center gap-2"><History className="w-5 h-5" /> Recent queries</h2>
+      <div className="flex gap-2">
+        <button aria-label="Refresh query history" className="p-3" onClick={() => setItems(readQueryHistory())}><RefreshCw className="w-4 h-4" /></button>
+        {items.length > 0 && <button aria-label="Clear history in this browser" className="p-3" onClick={() => {
+          if (clearQueryHistory()) { setItems([]); setNotice('History cleared from this browser.'); }
+          else setNotice('Browser storage is unavailable. History could not be cleared.');
+        }}><Trash2 className="w-4 h-4" /></button>}
       </div>
-
-      {loading ? (
-        <div className="flex items-center justify-center py-12" data-testid="history-loading">
-          <Loader2 className="w-6 h-6 text-quiet animate-spin" />
-        </div>
-      ) : items.length === 0 ? (
-        <div className="text-center py-16 bg-surface  rounded-xl border border-line" data-testid="history-empty">
-          <History className="w-10 h-10 text-quiet mx-auto mb-3" />
-          <p className="text-sm text-quiet">No queries yet. Use the AI input to get started.</p>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {items.map((item) => {
-            const meta = INTENT_META[item.intent] || INTENT_META.time_conversion;
-            const Icon = meta.icon;
-            return (
-              <div key={item.id} className="bg-surface  rounded-xl border border-line p-4 hover:border-line transition-colors " data-testid={`history-item-${item.id}`}>
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className={`text-xs font-medium border rounded-full px-2 py-0.5 flex items-center gap-1 ${meta.color}`}>
-                        <Icon className="w-3 h-3" />
-                        {meta.label}
-                      </span>
-                    </div>
-                    <p className="text-sm font-medium text-ink truncate" data-testid={`history-query-${item.id}`}>
-                      "{item.query}"
-                    </p>
-                    <ResultSummary intent={item.intent} result={item.result} />
-                  </div>
-                  <span className="text-xs text-quiet shrink-0 mt-0.5">{formatTime(item.timestamp)}</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
     </div>
-  );
+    <p className="text-sm text-quiet">Your last 30 queries stay in this browser for up to 90 days. Run one again to get current results.</p>
+    <p role="status" className="text-sm text-quiet">{notice}</p>
+    {items.length === 0 ? <p className="rounded-xl border border-line bg-surface p-8 text-quiet" data-testid="history-empty">No queries yet. Ask about a time or currency conversion to get started.</p> :
+      <ul className="space-y-2">{items.map(item => <li key={item.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface p-4">
+        <div className="min-w-0"><p className="text-sm text-ink break-words">{item.query}</p><time className="text-xs text-quiet" dateTime={item.timestamp}>{new Date(item.timestamp).toLocaleString()}</time></div>
+        <button className="btn-primary" onClick={() => onReplay?.(item.query)} aria-label={`Run again: ${item.query}`}>Run again</button>
+      </li>)}</ul>}
+  </section>;
 }

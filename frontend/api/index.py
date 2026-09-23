@@ -156,8 +156,8 @@ class TeamMemberModel(BaseModel):
 class TeamCreateRequest(BaseModel):
     name: str
     members: List[TeamMemberModel]
-    email: str
-    opt_in: bool
+    email: str = ""  # Legacy input accepted but never used for ownership or stored.
+    opt_in: bool = False
     custom_slug: Optional[str] = None
     is_paid: bool = False
 
@@ -575,26 +575,15 @@ def get_currency_trend(request: Request, from_currency: str = Query(...), to_cur
 
 @api_router.post("/history")
 async def save_history_item(req: HistoryCreate):
-    if db is None: return {"error": "DB not configured"}
-    item = {
-        "id": str(uuid.uuid4()),
-        "query": req.query, "intent": req.intent, "result": req.result,
-        "timestamp": datetime.now(timezone.utc).isoformat()
-    }
-    await db.history.insert_one({**item, "_id": item["id"]})
-    return item
+    raise HTTPException(status_code=410, detail="Query history is now stored only in your browser.")
 
 @api_router.get("/history")
 async def get_history_items():
-    if db is None: return {"items": []}
-    items = await db.history.find({}, {"_id": 0}).sort("timestamp", -1).to_list(30)
-    return {"items": items}
+    raise HTTPException(status_code=410, detail="Query history is now stored only in your browser.")
 
 @api_router.delete("/history")
 async def clear_history():
-    if db is None: return {"message": "History cleared"}
-    await db.history.delete_many({})
-    return {"message": "History cleared"}
+    raise HTTPException(status_code=410, detail="Clear query history from the History tab in your browser.")
 
 class UserLead(BaseModel):
     name: str
@@ -618,9 +607,8 @@ async def register_user(req: UserLead):
 
 @api_router.get("/users")
 async def get_all_users():
-    if db is None: return {"total": 0, "users": []}
-    users = await db.users.find({}, {"_id": 0}).sort("timestamp", -1).to_list(1000)
-    return {"total": len(users), "users": users}
+    # Fail closed until an authenticated, owner-authorized admin flow is available.
+    raise HTTPException(status_code=403, detail="Authenticated administrative access is required.")
 
 class ContactForm(BaseModel):
     name: str
@@ -694,179 +682,47 @@ def slugify(text: str) -> str:
     return text.strip('-')
 
 # ============= Team Endpoints =============
-@api_router.post("/teams")
-async def save_or_update_team(req: TeamCreateRequest):
-    # Enforce limit for free tier
-    if not req.is_paid and len(req.members) > 6:
-        raise HTTPException(
-            status_code=422,
-            detail="Free tier is limited to 6 members. Please upgrade to the Paid tier for unlimited members!"
-        )
-    
-    # Establish slug
-    slug = None
-    if req.custom_slug:
-        slug = req.custom_slug.lower().strip()
-        if not re.match(r'^[a-z0-9-]+$', slug):
-            raise HTTPException(
-                status_code=400,
-                detail="Custom slug can only contain letters, numbers, and hyphens."
-            )
-        # Check custom slug validation
-        if not req.is_paid:
-            raise HTTPException(
-                status_code=400,
-                detail="Custom slugs are only available in the Paid tier."
-            )
-    else:
-        # Generate slugified name
-        base_slug = slugify(req.name)
-        if not base_slug:
-            base_slug = "team"
-        
-    # Check uniqueness of slug (or if it belongs to the same email for update)
-    existing_team = None
-    if db is not None:
-        if slug:
-            existing_team = await db.teams.find_one({"slug": slug})
-        else:
-            # Generate a unique slug
-            for _ in range(10):
-                candidate = f"{base_slug}-{uuid.uuid4().hex[:6]}"
-                if not await db.teams.find_one({"slug": candidate}):
-                    slug = candidate
-                    break
-            if not slug:
-                slug = f"{base_slug}-{uuid.uuid4().hex[:8]}"
-    else:
-        local_teams = load_local_teams()
-        if slug:
-            existing_team = local_teams.get(slug)
-        else:
-            # Generate unique slug
-            for _ in range(10):
-                candidate = f"{base_slug}-{uuid.uuid4().hex[:6]}"
-                if candidate not in local_teams:
-                    slug = candidate
-                    break
-            if not slug:
-                slug = f"{base_slug}-{uuid.uuid4().hex[:8]}"
+def public_team(team):
+    """Shared pages expose display data only, never owner contact or consent."""
+    result = {key: team.get(key) for key in ("slug", "name", "created_at", "is_paid")}
+    result["members"] = [{key: member.get(key) for key in ("name", "city", "timezone_id", "utc_offset")} for member in team.get("members", [])]
+    return result
 
-    if existing_team:
-        if existing_team.get("email", "").lower() != req.email.lower():
-            sug1 = f"{slug}-1"
-            sug2 = f"{slug}-{uuid.uuid4().hex[:4]}"
-            if db is not None:
-                if await db.teams.find_one({"slug": sug1}):
-                    sug1 = f"{slug}-{uuid.uuid4().hex[:4]}"
-            else:
-                if sug1 in local_teams:
-                    sug1 = f"{slug}-{uuid.uuid4().hex[:4]}"
-            raise HTTPException(
-                status_code=400,
-                detail=f"The slug '{slug}' is already taken by another team. Try '{sug1}' or '{sug2}'."
-            )
-    
-    team_data = {
-        "slug": slug,
-        "name": req.name.strip(),
-        "email": req.email.strip().lower(),
-        "opt_in": req.opt_in,
-        "is_paid": req.is_paid,
+@api_router.post("/teams")
+@limiter.limit("5/minute")
+async def save_or_update_team(request: Request, req: TeamCreateRequest):
+    # Public links are immutable. Email addresses and browser flags are not credentials.
+    if req.custom_slug or req.is_paid:
+        raise HTTPException(status_code=403, detail="Custom URLs and paid workspaces are unavailable.")
+    if not req.name.strip() or len(req.name.strip()) > 100 or not 1 <= len(req.members) <= 6:
+        raise HTTPException(status_code=422, detail="Use a workspace name up to 100 characters and 1–6 members.")
+    for member in req.members:
+        if not member.name.strip() or len(member.name) > 100 or len(member.city) > 100 or member.timezone_id not in pytz.all_timezones_set:
+            raise HTTPException(status_code=422, detail="Each member needs a short label and a valid time zone.")
+    if db is None:
+        raise HTTPException(status_code=503, detail="Workspace storage is temporarily unavailable. Please try again later.")
+    slug = f"{slugify(req.name)[:60] or 'team'}-{uuid.uuid4().hex}"
+    team = {
+        "slug": slug, "name": req.name.strip(), "is_paid": False,
         "members": [m.dict() for m in req.members],
         "created_at": datetime.now(timezone.utc).isoformat()
     }
-    
-    # Save/update
-    if db is not None:
-        await db.teams.replace_one({"slug": slug}, {**team_data, "_id": slug}, upsert=True)
-        # Also register the user lead if not exists
-        email_lower = req.email.strip().lower()
-        if not await db.users.find_one({"email": email_lower}):
-            user_lead = {
-                "id": str(uuid.uuid4()),
-                "name": req.name.strip() + " Owner",
-                "email": email_lower,
-                "timestamp": datetime.now(timezone.utc).isoformat()
-            }
-            await db.users.insert_one({**user_lead, "_id": user_lead["id"]})
-    else:
-        save_local_team(team_data)
-        
-    # Trigger Resend welcome email
-    email_status = "skipped"
-    if resend.api_key:
-        try:
-            html = f"""
-            <div style="font-family:'Inter', sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0E2A1F;color:#F4EFE6;border-radius:24px;border:1px solid #C8A96A;">
-              <h2 style="font-size:24px;font-weight:700;color:#C8A96A;margin-top:0;">Your Team Workspace is Live!</h2>
-              <p style="font-size:16px;line-height:1.6;color:#A7BFAE;">
-                Hey there,
-              </p>
-              <p style="font-size:16px;line-height:1.6;color:#A7BFAE;">
-                Your workspace for <strong>{req.name.strip()}</strong> has been successfully created. You can share this link with your teammates or clients so they can instantly view everyone's local time zones and find optimal meeting windows.
-              </p>
-              
-              <div style="margin:32px 0;text-align:center;">
-                <a href="https://globalsync-ai.com/team/{slug}" style="display:inline-block;background:#C8A96A;color:#0E2A1F;padding:14px 28px;border-radius:12px;font-weight:700;text-decoration:none;font-size:16px;box-shadow:0 4px 12px rgba(200,169,106,0.3);">
-                  Open Team Workspace
-                </a>
-              </div>
-              
-              <p style="font-size:14px;color:#A7BFAE;opacity:0.8;">
-                Or copy and paste this URL into your browser:<br>
-                <a href="https://globalsync-ai.com/team/{slug}" style="color:#C8A96A;text-decoration:underline;">https://globalsync-ai.com/team/{slug}</a>
-              </p>
-              
-              <hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:32px 0;">
-              
-              <p style="font-size:12px;color:#A7BFAE;opacity:0.6;margin-bottom:0;text-align:center;">
-                GlobalSync AI — The World Clock & Meeting Planner for Distributed Teams
-              </p>
-            </div>
-            """
-            
-            params = {
-                "from": "GlobalSync AI <onboarding@resend.dev>",
-                "to": [req.email.strip()],
-                "subject": f"Your GlobalSync AI Team Workspace: {req.name.strip()}",
-                "html": html,
-            }
-            await asyncio.to_thread(resend.Emails.send, params)
-            email_status = "sent"
-        except Exception as e:
-            logger.error(f"Resend error in save_team: {e}")
-            email_status = f"failed: {str(e)}"
-            
-    return {"success": True, "slug": slug, "email_status": email_status, "team": team_data}
+    # Insert only: a public caller can never replace an existing workspace.
+    await db.teams.insert_one({**team, "_id": slug})
+    return {"success": True, "slug": slug, "team": public_team(team)}
 
 @api_router.get("/teams/{slug}")
 async def get_team(slug: str):
-    slug_clean = slug.lower().strip()
-    team_data = None
-    if db is not None:
-        team_data = await db.teams.find_one({"slug": slug_clean}, {"_id": 0})
-    else:
-        local_teams = load_local_teams()
-        team_data = local_teams.get(slug_clean)
-        
-    if not team_data:
-        raise HTTPException(status_code=404, detail=f"Team workspace with slug '{slug}' not found.")
-        
-    return team_data
+    if db is None:
+        raise HTTPException(status_code=503, detail="Workspace storage is temporarily unavailable.")
+    team = await db.teams.find_one({"slug": slug.lower().strip()}, {"_id": 0})
+    if not team:
+        raise HTTPException(status_code=404, detail="Team workspace not found.")
+    return public_team(team)
 
 @api_router.get("/teams/user/{email}")
 async def get_user_teams(email: str):
-    email_clean = email.strip().lower()
-    teams_list = []
-    if db is not None:
-        cursor = db.teams.find({"email": email_clean}, {"_id": 0})
-        teams_list = await cursor.to_list(length=100)
-    else:
-        local_teams = load_local_teams()
-        teams_list = [t for t in local_teams.values() if t.get("email", "").lower() == email_clean]
-        
-    return {"teams": teams_list}
+    raise HTTPException(status_code=403, detail="Email-only workspace lookup is disabled. Open your saved workspace link.")
 
 # ============= Local File Fallback Storage for Invoices & Webhooks =============
 LOCAL_INVOICES_SEQ_FILE = ROOT_DIR / "local_invoices_seq.json"

@@ -31,6 +31,9 @@ export default function InvoicePage() {
   const [dueDate, setDueDate] = useState("");
   const [description, setDescription] = useState("");
   const [hours, setHours] = useState(40);
+  const [billingType, setBillingType] = useState("hourly");
+  const quantityLabel = billingType === "hourly" ? "Hours" : billingType === "monthly" ? "Months" : "Projects";
+  const rateLabel = billingType === "hourly" ? "Rate per Hour" : billingType === "monthly" ? "Monthly Rate" : "Project Fee";
   const [rate, setRate] = useState(50);
 
   // Currencies
@@ -67,7 +70,8 @@ export default function InvoicePage() {
     const cachedCurrency = localStorage.getItem("gs_rate_currency");
     if (cachedRate && Number.isFinite(Number(cachedRate)) && Number(cachedRate) >= 0) {
       setRate(Number(cachedRate));
-      if (localStorage.getItem("gs_rate_type") !== "hourly") setHours(1);
+      const type = localStorage.getItem("gs_rate_type");
+      if (["monthly", "project"].includes(type)) { setBillingType(type); setHours(1); }
     }
     if (cachedCurrency) {
       setBillingCurrency(cachedCurrency);
@@ -249,7 +253,7 @@ export default function InvoicePage() {
     doc.setFont("helvetica", "bold");
     doc.setTextColor(14, 42, 31);
     doc.text("Item Description", 23, 97);
-    doc.text("Hours", 110, 97);
+    doc.text(quantityLabel, 110, 97);
     doc.text("Rate", 140, 97);
     doc.text("Total", 170, 97);
 
@@ -532,6 +536,12 @@ export default function InvoicePage() {
                 </div>
               </div>
 
+              <div>
+                <label htmlFor="invoice-billing-type" className="text-quiet text-xs font-semibold mb-1 block uppercase">Billing type</label>
+                <select id="invoice-billing-type" value={billingType} onChange={e => { setBillingType(e.target.value); setHours(1); }} className="w-full h-10 px-2 bg-paper border border-line rounded-xl text-xs text-ink">
+                  <option value="hourly">Hourly</option><option value="monthly">Monthly retainer</option><option value="project">Project fee</option>
+                </select>
+              </div>
               {/* Project line items details */}
               <div className="border-t border-line pt-4 space-y-3">
                 <div>
@@ -546,7 +556,7 @@ export default function InvoicePage() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label htmlFor="invoicepage-field-6" className="text-quiet text-xs font-semibold mb-1 block uppercase">Hours Worked</label>
+                    <label htmlFor="invoicepage-field-6" className="text-quiet text-xs font-semibold mb-1 block uppercase">{quantityLabel}</label>
                     <input id="invoicepage-field-6"
                       type="number"
                       value={hours}
@@ -555,7 +565,7 @@ export default function InvoicePage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="invoicepage-field-7" className="text-quiet text-xs font-semibold mb-1 block uppercase">Rate per Hour</label>
+                    <label htmlFor="invoicepage-field-7" className="text-quiet text-xs font-semibold mb-1 block uppercase">{rateLabel}</label>
                     <input id="invoicepage-field-7"
                       type="number"
                       value={rate}
@@ -694,7 +704,7 @@ export default function InvoicePage() {
                 <div className="border border-line rounded-lg overflow-hidden text-[10px] ">
                   <div className="bg-slate-100 font-bold text-slate-800 flex border-b border-line py-1.5 px-3">
                     <span className="flex-1">Description</span>
-                    <span className="w-12 text-center">Hours</span>
+                    <span className="w-12 text-center">{quantityLabel}</span>
                     <span className="w-20 text-right">Rate</span>
                     <span className="w-20 text-right">Total</span>
                   </div>

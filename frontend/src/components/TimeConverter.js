@@ -351,6 +351,7 @@ function CityCard({ city, isBase, makeBase, timeData, onRemove }) {
           {onRemove && (
             <button
               onClick={() => onRemove(city.name)}
+              aria-label={`Remove ${city.name}`}
               className="text-ink hover:text-orange-800 transition-colors p-1 rounded-full hover:bg-surface"
               data-testid={`remove-city-${city.name}`}
             >

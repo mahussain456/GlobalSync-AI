@@ -5,7 +5,7 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { getStaticPageSEO } from "@/lib/seo";
 
-const LAST_UPDATED = "March 2026";
+const LAST_UPDATED = "September 23, 2026";
 
 export default function PrivacyPolicyPage() {
   const seo = getStaticPageSEO("privacy-policy");
@@ -42,6 +42,7 @@ export default function PrivacyPolicyPage() {
               <li><strong className="text-ink">Contact details:</strong> Your name and email address</li>
               <li><strong className="text-ink">Communication records:</strong> Subject lines, message contents, and feedback submitted via our contact forms</li>
               <li><strong className="text-ink">Workspace data:</strong> Team workspace names, member labels, and timezone preferences</li>
+              <li>Shared workspace names, member labels and cities are visible to anyone with the link. New shared workspaces do not collect an email address. Saved links are remembered in your browser; email-only lookup is disabled.</li>
             </ul>
             <p className="mt-3">Providing this information is entirely optional and is never required to use our core conversion tools. You can use all time zone, currency, and meeting tools anonymously without registering an account.</p>
 
@@ -54,6 +55,7 @@ export default function PrivacyPolicyPage() {
             </ul>
 
             <h3 className="font-semibold text-quiet mb-2 mt-5">2c. Cookies & Storage Technologies</h3>
+            <p className="mb-3">Recent query history is kept in this browser, with at most 30 entries. Entries older than 90 days are removed when history is next read. You can clear it from the workspace History tab. Running a query again submits it to the conversion service; saving history does not create an account or sync it across devices. The freelance rate calculator also remembers valid settings in this browser.</p>
             <p>We use essential cookies, browser local storage, and third-party tracking scripts to operate and optimize GlobalSync AI:</p>
             <ul className="list-disc pl-5 space-y-1 text-sm mt-2">
               <li><strong className="text-ink">Essential local storage:</strong> Used to save your selected city lists, base currency preferences, and workspace settings locally on your device without sending them to external marketing servers.</li>
