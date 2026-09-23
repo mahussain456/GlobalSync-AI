@@ -157,10 +157,11 @@
   ],
   "framework": null,
   "buildCommand": "npm run build",
-  "outputDirectory": "build",
+  "outputDirectory": "frontend/build",
   "functions": {
     "api/index.py": {
-      "excludeFiles": "{node_modules/**,build/**,src/**,public/**,api/local_*.json}"
+      "includeFiles": "frontend/api/index.py",
+      "excludeFiles": "{node_modules/**,frontend/node_modules/**,frontend/build/**,frontend/src/**,frontend/public/**,frontend/api/local_*.json,tests/**,scratch/**,docs/**}"
     }
   }
 }
