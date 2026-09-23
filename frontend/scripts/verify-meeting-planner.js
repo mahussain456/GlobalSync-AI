@@ -106,6 +106,9 @@ async function main() {
     for (let i = 0; i < 30 && !pendingRate; i++) await new Promise(r => setTimeout(r, 100));
     assert(pendingRate, 'Expected a delayed rate request');
     await input('#conversion-amount', '999');
+    // Release the fixture after this delayed response; background requests from
+    // a prerendered page must not remain intercepted indefinitely.
+    holdRates = false;
     await pendingRate.respond(rateResponse);
     await page.waitForNetworkIdle({ idleTime: 500 });
     assert.equal(await page.$('[data-testid="conversion-result-display"]'), null);
