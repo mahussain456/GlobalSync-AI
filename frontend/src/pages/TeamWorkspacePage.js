@@ -320,7 +320,7 @@ export default function TeamWorkspacePage() {
             </div>
 
             <p className="text-xs text-quiet mt-2">
-              Workspace created by: <span className="text-ink font-semibold">{team.email}</span>
+              Anyone with the complete link can view this workspace.
             </p>
           </div>
 
@@ -340,13 +340,12 @@ export default function TeamWorkspacePage() {
                 <Calendar className="w-4 h-4" /> Export Invite (.ics)
               </button>
             ) : (
-              <button
-                disabled
-                title="Premium feature. Upgrade creator account to unlock."
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-surface border border-line text-ink text-xs font-bold cursor-not-allowed"
+              <Link
+                to="/meeting-planner"
+                className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-surface border border-line text-ink text-xs font-bold"
               >
-                <Calendar className="w-4 h-4 opacity-40" /> Export Invite (🔒 Paid Only)
-              </button>
+                <Calendar className="w-4 h-4" /> Plan a meeting
+              </Link>
             )}
           </div>
         </header>
