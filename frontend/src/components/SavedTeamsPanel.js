@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { createSharedTeam, sharedTeamPath } from "@/lib/sharedTeam";
 import {
   Users, X, Plus, Copy, Trash2, ExternalLink, ArrowUp, ArrowDown,
   Check, GripVertical, RefreshCw
@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { getLocalCityTimezone, getNormalizedUtcOffset } from "./TimeConverter";
 import { fireAnalyticsEvent } from "@/lib/analytics";
 
-const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
+
 
 const POPULAR_CITIES = [
   "New York", "San Francisco", "Chicago", "Toronto", "London", "Paris", "Berlin",
@@ -51,11 +51,11 @@ export default function SavedTeamsPanel() {
   }, []);
 
 
-  const handleCopyLink = (slug) => {
-    const url = `${window.location.origin}/team/${slug}`;
+  const handleCopyLink = (team) => {
+    const url = `${window.location.origin}${sharedTeamPath(team)}`;
     navigator.clipboard.writeText(url).then(() => {
       toast.success("Workspace link copied to clipboard!");
-      fireAnalyticsEvent("team_link_shared", { team_slug: slug });
+      fireAnalyticsEvent("team_link_shared", { members_count: team.members?.length || 0 });
     });
   };
 
@@ -184,8 +184,7 @@ export default function SavedTeamsPanel() {
         members: members
       };
 
-      const res = await axios.post(`${API}/teams`, payload);
-      const savedTeam = res.data.team;
+      const savedTeam = createSharedTeam(payload);
 
       // Update local storage
       const newSavedTeams = [...savedTeams, savedTeam];
@@ -205,10 +204,10 @@ export default function SavedTeamsPanel() {
       setShowCreateModal(false);
 
       // Navigate to the newly generated team page
-      navigate(`/team/${savedTeam.slug}`);
+      navigate(sharedTeamPath(savedTeam));
       setIsOpen(false);
     } catch (err) {
-      const msg = err.response?.data?.detail || "Failed to save team workspace.";
+      const msg = err.message || "Failed to save team workspace.";
       toast.error(msg);
     } finally {
       setIsSavingTeam(false);
@@ -243,7 +242,7 @@ export default function SavedTeamsPanel() {
 
           <div className="mt-5 bg-surface border border-line rounded-2xl p-4 space-y-3">
             <p className="text-sm font-semibold">Free shared workspaces · up to 6 members</p>
-            <p className="text-xs text-quiet">Saved links are remembered in this browser. Open or bookmark the same link on another device. Email-based sync and paid upgrades are unavailable.</p>
+            <p className="text-xs text-quiet">Workspaces are saved in this browser. The complete share link contains the team details and works on another device without signing in.</p>
           </div>
 
           {/* List of Saved Teams */}
@@ -294,13 +293,13 @@ export default function SavedTeamsPanel() {
                       </button>
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => handleCopyLink(team.slug)}
+                          onClick={() => handleCopyLink(team)}
                           className="flex items-center gap-1 text-[11px] font-bold text-quiet hover:text-pine bg-surface border border-line px-2 py-1 rounded transition-colors"
                         >
                           <Copy className="w-3 h-3" /> Share
                         </button>
                         <button
-                          onClick={() => { navigate(`/team/${team.slug}`); setIsOpen(false); }}
+                          onClick={() => { navigate(sharedTeamPath(team)); setIsOpen(false); }}
                           className="flex items-center gap-1 text-[11px] font-bold text-gem-forest bg-gem-gold hover:opacity-90 px-2.5 py-1 rounded transition-opacity"
                         >
                           Open <ExternalLink className="w-3 h-3" />
@@ -344,7 +343,7 @@ export default function SavedTeamsPanel() {
               <p className="text-xs text-quiet bg-surface p-3 rounded-xl">
                 Anyone with this link can view the workspace name, member labels and cities.
                 Use role labels instead of private details. Shared workspaces cannot be edited;
-                create a new link when your team changes. No email address is required.
+                create a new link when your team changes. The complete link contains these details. No email address is required.
               </p>
 
               {/* Workspace Members list builder */}

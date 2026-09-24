@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import axios from "axios";
+import { readSharedTeam } from "@/lib/sharedTeam";
 import {
   Users, Clock, ArrowRight, CheckCircle2, AlertCircle, Copy, Share2, Calendar, ShieldCheck, Heart
 } from "lucide-react";
@@ -115,6 +116,7 @@ function TeamOverlapBar({ cityDetails, overlapStartDec, overlapEndDec }) {
 
 export default function TeamWorkspacePage() {
   const { slug } = useParams();
+  const { hash } = useLocation();
 
   const [team, setTeam] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -133,19 +135,22 @@ export default function TeamWorkspacePage() {
     const fetchTeam = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${API}/teams/${slug}`);
+        setError("");
+        const res = slug.startsWith("shared-")
+          ? { data: { ...readSharedTeam(hash), slug } }
+          : await axios.get(`${API}/teams/${slug}`, { timeout: 8000 });
         setTeam(res.data);
         if (res.data.members?.length > 0) {
           setBaseCityName(res.data.members[0].name);
         }
       } catch (err) {
-        setError(err.response?.data?.detail || "Failed to load team workspace. Check the URL slug.");
+        setError(err.response?.data?.detail || err.message || "Failed to load team workspace. Check the URL slug.");
       } finally {
         setLoading(false);
       }
     };
     fetchTeam();
-  }, [slug]);
+  }, [slug, hash]);
 
   // Clock tick timer
   useEffect(() => {
@@ -194,7 +199,7 @@ export default function TeamWorkspacePage() {
   const handleShareWorkspace = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
       toast.success("Workspace link copied to clipboard!");
-      fireAnalyticsEvent("team_link_shared", { team_slug: slug, team_name: team.name });
+      fireAnalyticsEvent("team_link_shared", { members_count: team.members.length });
     });
   };
 

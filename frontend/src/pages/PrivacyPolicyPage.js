@@ -42,7 +42,7 @@ export default function PrivacyPolicyPage() {
               <li><strong className="text-ink">Contact details:</strong> Your name and email address</li>
               <li><strong className="text-ink">Communication records:</strong> Subject lines, message contents, and feedback submitted via our contact forms</li>
               <li><strong className="text-ink">Workspace data:</strong> Team workspace names, member labels, and timezone preferences</li>
-              <li>Shared workspace names, member labels and cities are visible to anyone with the link. New shared workspaces do not collect an email address. Saved links are remembered in your browser; email-only lookup is disabled.</li>
+              <li>Shared workspace names, member labels and cities are visible to anyone with the link. New shared workspaces do not collect an email address. Their details are encoded in the complete share link and saved in your browser. Anyone you give the link to can read those details; email-only lookup is disabled.</li>
             </ul>
             <p className="mt-3">Providing this information is entirely optional and is never required to use our core conversion tools. You can use all time zone, currency, and meeting tools anonymously without registering an account.</p>
 
