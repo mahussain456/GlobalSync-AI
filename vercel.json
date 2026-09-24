@@ -152,7 +152,7 @@
     },
     {
       "source": "/team/:slug",
-      "destination": "/index.html"
+      "destination": "/"
     }
   ],
   "framework": null,
