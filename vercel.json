@@ -140,7 +140,7 @@
   "rewrites": [
     {
       "source": "/api/og",
-      "destination": "/api/og"
+      "destination": "/globalsync-ai-logo-1600x400.png"
     },
     {
       "source": "/api/rate",

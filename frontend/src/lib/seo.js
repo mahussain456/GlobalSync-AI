@@ -168,7 +168,7 @@ export const getHomepageSEO = ({ faqs = [] } = {}) => {
     ogDescription: "Sync your global team effortlessly! Free AI-powered time zone, meeting, and currency tools.",
     twitterTitle: "GlobalSync: Free Time Zone & Currency Tools for Teams!",
     twitterDescription: "Sync global teams easily! Free time zone, world clock, & currency converter. No signup needed.",
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent("Sync Global Teams: Free Time Zone & Currency Tools")}&subtitle=${encodeURIComponent("Free tools for remote teams — No signup")}&type=default`,
+    ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     structuredData: [
       {
         "@type": "Organization",
@@ -233,7 +233,7 @@ export const getTimeZoneHubSEO = ({ faqs = [] } = {}) => {
     canonical: "/time-zone-converter",
     keywords: "time zone converter, world clock, city time comparison, international time zones, business hour overlap, EST to IST, GMT to PST, free world clock online",
     ogType: "website",
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent("Free Time Zone Converter")}&subtitle=${encodeURIComponent("Compare live time across 25+ cities")}&type=tool`,
+    ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     structuredData: [
       buildSoftwareApplicationSchema({
         name: "Free Time Zone Converter",
@@ -261,7 +261,7 @@ export const getCurrencyHubSEO = ({ faqs = [] } = {}) => {
     canonical: "/currency-converter",
     keywords: "currency converter, reference exchange rates, USD to INR, EUR to GBP, free currency converter, 160 currencies, dated rates",
     ogType: "website",
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent("Free Currency Converter")}&subtitle=${encodeURIComponent("160+ Currencies, Dated Reference Rates")}&type=tool`,
+    ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     structuredData: [
       buildSoftwareApplicationSchema({
         name: "Free Currency Converter",
@@ -289,7 +289,7 @@ export const getMeetingPlannerSEO = ({ faqs = [] } = {}) => {
     canonical: "/meeting-planner",
     keywords: "global meeting times, distributed team scheduling, time zone overlap, remote work collaboration, international meeting planner",
     ogType: "website",
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent("Meeting Time Planner")}&subtitle=${encodeURIComponent("Find Overlap Hours")}&type=tool`,
+    ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     structuredData: [
       buildSoftwareApplicationSchema({
         name: "Meeting Planner for Distributed Teams",
@@ -322,7 +322,7 @@ export const getCityPairSEO = ({ cityA, cityB, pair, pairData }) => {
     canonical: `/time/${pair}`,
     keywords: `${cityA.name} to ${cityB.name} time, ${cityA.abbr} to ${cityB.abbr}, time difference ${cityA.name} ${cityB.name}, ${cityA.name} time now, ${cityB.name} time now, meeting overlap ${cityA.name} ${cityB.name}`,
     ogType: "website",
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent(title)}&subtitle=${encodeURIComponent("Time Zone & Meeting Overlap")}&type=tool`,
+    ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     noIndex: !pairData,
     structuredData: [
       buildWebPageSchema({
@@ -366,7 +366,7 @@ export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData }) => {
     ogType: "website",
     ogTitle: `${fromMeta.code} to ${toMeta.code}: Live Exchange Rate Converter | ${BRAND}`,
     twitterTitle: `${fromMeta.code} to ${toMeta.code}: Live Rates & Smart Currency Conversion!`,
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent(`${fromMeta.code} to ${toMeta.code} Live Exchange Rate`)}&subtitle=${encodeURIComponent("Live Currency Exchange Rate")}&type=tool`,
+    ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     noIndex: !pairData,
     structuredData: [
       buildWebPageSchema({
@@ -402,7 +402,7 @@ export const getBlogIndexSEO = () => {
     canonical: "/blog",
     keywords: "remote work blog, time zone tips, currency converter guide, digital nomad tools, remote team scheduling, freelancer currency, best meeting time",
     ogType: "website",
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent("Remote Work Blog")}&subtitle=${encodeURIComponent("Guides for Global Teams")}&type=blog`,
+    ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     structuredData: [
       buildBreadcrumbSchema([
         { name: "Home", path: "/" },
@@ -424,7 +424,7 @@ export const getBlogPostSEO = ({ post }) => {
     canonical: `/blog/${post.slug}`,
     keywords: post.keywords,
     ogType: "article",
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent(post.title)}&subtitle=${encodeURIComponent("GlobalSync AI Blog")}&type=blog`,
+    ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     structuredData: [
       buildArticleSchema(post),
       buildBreadcrumbSchema([
@@ -528,7 +528,7 @@ export const getStaticPageSEO = (pageKey, { faqs = [] } = {}) => {
   return {
     ...meta,
     ogType: "website",
-    ogImage: `${BASE_URL}/api/og?title=${encodeURIComponent(meta.rawTitle.split(" | ")[0])}&subtitle=${encodeURIComponent("GlobalSync AI")}&type=tool`,
+    ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     structuredData: [
       buildBreadcrumbSchema([
         { name: "Home", path: "/" },
