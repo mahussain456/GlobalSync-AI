@@ -15,6 +15,20 @@ const BASE_URL  = "https://www.globalsync-ai.com";
 const BRAND     = "GlobalSync AI";
 const LOGO_URL  = `${BASE_URL}/meridian/logo-original-icon.png`;
 
+// 站内实体的稳定 @id。没有这个，每一页都会生成一个新的匿名 Organization /
+// Person 节点，而不是指向同一个实体 —— 首页已经在用 `/#org`，其余对齐它。
+const ORG_ID    = `${BASE_URL}/#org`;
+const PERSON_ID = `${BASE_URL}/authors/ahmed-hussain#person`;
+
+// 信任页的编辑修订日期。页面内容有实质更新时手动改这里。
+// 部署日期不是编辑日期，所以不从构建时间推导。
+const PAGE_DATES = {
+  "methodology":      { published: "2026-06-04", modified: "2026-09-23" },
+  "editorial-policy": { published: "2026-06-04", modified: "2026-09-23" },
+  "data-sources":     { published: "2026-06-04", modified: "2026-09-23" },
+  "blog":             { published: "2026-06-04", modified: "2026-09-23" },
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Schema Builders
 // Each returns a plain schema object (no @context — that's added by SEOHead
@@ -23,11 +37,12 @@ const LOGO_URL  = `${BASE_URL}/meridian/logo-original-icon.png`;
 
 export const buildPersonSchema = () => ({
   "@type": "Person",
+  "@id": PERSON_ID,
   "name": "Ahmed Hussain",
   "url": `${BASE_URL}/authors/ahmed-hussain`,
   "sameAs": [
     `${BASE_URL}/about`,
-    "https://twitter.com/GlobalSyncAI"
+    "https://x.com/GlobalSyncAI"
   ],
   "jobTitle": "Founder",
   "worksFor": {
@@ -45,11 +60,12 @@ export const buildPersonSchema = () => ({
 
 export const buildOrganizationSchema = () => ({
   "@type": "Organization",
+  "@id": ORG_ID,
   "name": BRAND,
   "url": BASE_URL,
   "logo": { "@type": "ImageObject", "url": LOGO_URL },
   "sameAs": [
-    "https://twitter.com/GlobalSyncAI",
+    "https://x.com/GlobalSyncAI",
     "https://www.linkedin.com/company/globalsync-ai"
   ]
 });
@@ -114,33 +130,90 @@ export const buildBreadcrumbSchema = (crumbs) => ({
   })),
 });
 
-export const buildExchangeRateSchema = (fromCode, toCode) => ({
-  "@type": "ExchangeRateSpecification",
-  "currency": toCode,
-  "currentExchangeRate": {
-    "@type": "UnitPriceSpecification",
-    "priceCurrency": fromCode
-  }
-});
+/**
+ * 把快照日期转成 ISO8601。解析失败就返回 null —— 宁可不发日期，
+ * 也不要发一个编造的日期。
+ */
+const toISO = (dateStr) => {
+  if (!dateStr) return null;
+  const d = new Date(dateStr);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString();
+};
+
+/**
+ * @param {string} fromCode  基准货币，例如 "USD"
+ * @param {string} toCode    报价货币，例如 "PHP"
+ * @param {object} snapshot  { rate, date, source } —— 页面实际渲染的那个值
+ *
+ * price / validFrom 只在真有数值和可解析日期时才发出。没有就退回到
+ * 不带数字的描述性块，绝不填占位数。
+ */
+export const buildExchangeRateSchema = (fromCode, toCode, snapshot) => {
+  const { rate, date } = snapshot || {};
+  const hasRate = Number.isFinite(rate) && rate > 0;
+  const validFrom = toISO(date);
+  const validThrough = validFrom
+    ? new Date(new Date(validFrom).getTime() + 24 * 60 * 60 * 1000).toISOString()
+    : null;
+  const slug = `${fromCode.toLowerCase()}-to-${toCode.toLowerCase()}`;
+
+  return {
+    "@type": "ExchangeRateSpecification",
+    "@id": `${BASE_URL}/currency/${slug}#rate`,
+    "url": `${BASE_URL}/currency/${slug}`,
+    "name": `${fromCode} to ${toCode} reference exchange rate`,
+    "currency": toCode,
+    "currentExchangeRate": {
+      "@type": "UnitPriceSpecification",
+      "priceCurrency": toCode,
+      ...(hasRate ? { "price": Number(rate.toFixed(6)) } : {}),
+      "referenceQuantity": {
+        "@type": "QuantitativeValue",
+        "value": 1,
+        "unitText": fromCode,
+      },
+      ...(validFrom ? { validFrom, validThrough } : {}),
+    },
+    "provider": { "@id": ORG_ID },
+    "isBasedOn": {
+      "@type": "Dataset",
+      "name": "ECB-benchmarked reference rates via ExchangeRate-API",
+      "url": `${BASE_URL}/data-sources`,
+    },
+    "disambiguatingDescription": "Dated reference rate for planning and estimation. Not a live mid-market quote, and not the final transfer rate offered by a payment provider.",
+  };
+};
+
+const MONTHS = {
+  january: "01", february: "02", march: "03", april: "04", may: "05", june: "06",
+  july: "07", august: "08", september: "09", october: "10", november: "11", december: "12",
+};
+
+/** "June 2026" -> "2026-06"（ISO 8601 的年月精度）。解析不了就返回 null。 */
+const normalizePostDate = (value) => {
+  if (!value) return null;
+  if (/^\d{4}-\d{2}(-\d{2})?$/.test(value)) return value;
+  const m = /^([A-Za-z]+)\s+(\d{4})$/.exec(value.trim());
+  if (!m) return null;
+  const month = MONTHS[m[1].toLowerCase()];
+  return month ? `${m[2]}-${month}` : null;
+};
+
+export const postDates = (post) => {
+  const published = normalizePostDate(post.datePublished || post.publishDate);
+  const modified = normalizePostDate(post.dateModified) || published;
+  return { published, modified };
+};
 
 export const buildArticleSchema = (post) => ({
   "@type": "BlogPosting",
   "headline": post.title,
   "description": post.metaDescription,
   "keywords": post.keywords,
-  "datePublished": post.datePublished || "2026-03-01",
-  "dateModified": post.dateModified || post.datePublished || "2026-03-01",
-  "author": { 
-    "@type": "Person", 
-    "name": post.authorName || "Ahmed Hussain", 
-    "url": `${BASE_URL}/authors/ahmed-hussain` 
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": BRAND,
-    "url": BASE_URL,
-    "logo": { "@type": "ImageObject", "url": LOGO_URL },
-  },
+  ...(postDates(post).published ? { "datePublished": postDates(post).published } : {}),
+  ...(postDates(post).modified ? { "dateModified": postDates(post).modified } : {}),
+  "author": { "@id": PERSON_ID },
+  "publisher": { "@id": ORG_ID },
   "mainEntityOfPage": { "@type": "WebPage", "@id": `${BASE_URL}/blog/${post.slug}` },
   "url": `${BASE_URL}/blog/${post.slug}`,
   "image": `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
@@ -353,7 +426,7 @@ export const getCityPairSEO = ({ cityA, cityB, pair, pairData }) => {
  * @param {string} pair     — route slug e.g. "usd-to-inr"
  * @param {object} pairData — entry from CURRENCY_PAIRS[pair] (has .faqs etc.)
  */
-export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData }) => {
+export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData, rateSnapshot }) => {
   const title = `${fromMeta.code} to ${toMeta.code} Live Exchange Rates | ${BRAND}`;
   const desc = (fromMeta.code === "USD" && toMeta.code === "PHP")
     ? `Convert USD to PHP live with GlobalSync AI. Get real-time exchange rates for 160+ currencies. Free and no signup required.`
@@ -385,7 +458,22 @@ export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData }) => {
         description: desc,
         category: "FinanceApplication"
       }),
-      buildExchangeRateSchema(fromMeta.code, toMeta.code),
+      buildExchangeRateSchema(fromMeta.code, toMeta.code, rateSnapshot),
+      {
+        "@type": "WebPage",
+        "@id": `${BASE_URL}/currency/${pair}#webpage`,
+        "url": `${BASE_URL}/currency/${pair}`,
+        ...(toISO(rateSnapshot?.date) ? { "dateModified": toISO(rateSnapshot.date) } : {}),
+        "author": { "@id": PERSON_ID },
+        "publisher": { "@id": ORG_ID },
+        "citation": {
+          "@type": "CreativeWork",
+          "name": "GlobalSync AI Methodology",
+          "url": `${BASE_URL}/methodology`,
+        },
+      },
+      buildOrganizationSchema(),
+      buildPersonSchema(),
       ...(pairData?.faqs?.length ? [buildFAQSchema(pairData.faqs)] : []),
     ],
   };
@@ -394,7 +482,7 @@ export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData }) => {
 /**
  * Blog index page — /blog
  */
-export const getBlogIndexSEO = () => {
+export const getBlogIndexSEO = ({ posts = [] } = {}) => {
   const title = `GlobalSync AI: Expert Guides for Global Remote Work`;
   return {
     rawTitle: title,
@@ -408,6 +496,26 @@ export const getBlogIndexSEO = () => {
         { name: "Home", path: "/" },
         { name: "Blog", path: "/blog" },
       ]),
+      buildOrganizationSchema(),
+      buildPersonSchema(),
+      {
+        "@type": "Blog",
+        "@id": `${BASE_URL}/blog#blog`,
+        "name": title,
+        "url": `${BASE_URL}/blog`,
+        "inLanguage": "en",
+        "publisher": { "@id": ORG_ID },
+        ...(posts.length ? {
+          "blogPost": posts.map(post => ({
+            "@type": "BlogPosting",
+            "headline": post.title,
+            "url": `${BASE_URL}/blog/${post.slug}`,
+            ...(postDates(post).published ? { "datePublished": postDates(post).published } : {}),
+            ...(postDates(post).modified ? { "dateModified": postDates(post).modified } : {}),
+            "author": { "@id": PERSON_ID },
+          })),
+        } : {}),
+      },
     ],
   };
 };
@@ -427,6 +535,8 @@ export const getBlogPostSEO = ({ post }) => {
     ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     structuredData: [
       buildArticleSchema(post),
+      buildOrganizationSchema(),
+      buildPersonSchema(),
       buildBreadcrumbSchema([
         { name: "Home", path: "/" },
         { name: "Blog", path: "/blog" },
@@ -519,6 +629,59 @@ const STATIC_META = {
 /**
  * Static page SEO — pass the route key e.g. getStaticPageSEO("about", { faqs: [...] })
  */
+/** 把一个信任页描述成有作者、有日期的技术文章。 */
+const buildTrustArticleSchema = (pageKey, { rawTitle, description, canonical }) => {
+  const dates = PAGE_DATES[pageKey];
+  if (!dates) return [];
+  return [{
+    "@type": "TechArticle",
+    "@id": `${BASE_URL}${canonical}#article`,
+    "headline": rawTitle,
+    "url": `${BASE_URL}${canonical}`,
+    "description": description,
+    "datePublished": dates.published,
+    "dateModified": dates.modified,
+    "inLanguage": "en",
+    "author": { "@id": PERSON_ID },
+    "publisher": { "@id": ORG_ID },
+    "proficiencyLevel": "Beginner",
+  }];
+};
+
+/** /data-sources 上的两个 Dataset —— 这是可被引用为来源的那部分。 */
+const buildDataSourceDatasets = () => {
+  const modified = PAGE_DATES["data-sources"].modified;
+  return [
+    {
+      "@type": "Dataset",
+      "@id": `${BASE_URL}/data-sources#tzdata`,
+      "name": "Time zone rules used by GlobalSync AI",
+      "description": "Time zone offsets and daylight saving transition rules for 25+ cities, sourced from the IANA Time Zone Database.",
+      "url": `${BASE_URL}/data-sources`,
+      "license": "https://www.iana.org/time-zones",
+      "isBasedOn": {
+        "@type": "Dataset",
+        "name": "IANA Time Zone Database",
+        "url": "https://www.iana.org/time-zones",
+      },
+      "creator": { "@id": ORG_ID },
+      "temporalCoverage": modified,
+      "keywords": ["time zones", "daylight saving time", "IANA tzdata", "UTC offsets"],
+    },
+    {
+      "@type": "Dataset",
+      "@id": `${BASE_URL}/data-sources#fx`,
+      "name": "Currency reference rates used by GlobalSync AI",
+      "description": "Dated reference exchange rates for 160+ currencies, aligned with benchmark rates published by the European Central Bank and institutional liquidity pools via ExchangeRate-API. Estimates for planning, not final transfer rates.",
+      "url": `${BASE_URL}/data-sources`,
+      "creator": { "@id": ORG_ID },
+      "temporalCoverage": modified,
+      "measurementTechnique": "Benchmark reference rate aggregation",
+      "keywords": ["exchange rates", "reference rates", "ECB", "currency conversion"],
+    },
+  ];
+};
+
 export const getStaticPageSEO = (pageKey, { faqs = [] } = {}) => {
   const meta = STATIC_META[pageKey];
   if (!meta) {
@@ -536,6 +699,9 @@ export const getStaticPageSEO = (pageKey, { faqs = [] } = {}) => {
       ]),
       ...(pageKey === "about" ? [buildOrganizationSchema(), buildPersonSchema()] : []),
       ...(pageKey === "author-ahmed-hussain" ? [buildPersonSchema(), buildOrganizationSchema()] : []),
+      ...(PAGE_DATES[pageKey] ? [buildOrganizationSchema(), buildPersonSchema()] : []),
+      ...buildTrustArticleSchema(pageKey, meta),
+      ...(pageKey === "data-sources" ? buildDataSourceDatasets() : []),
       ...(faqs.length ? [buildFAQSchema(faqs)] : []),
     ],
   };

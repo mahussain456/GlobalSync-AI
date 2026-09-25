@@ -41,6 +41,37 @@ console.log('Wrote build/llms-full.txt');
 // Including a noindex page in the sitemap triggers an Ahrefs "Noindex page in sitemap" error.
 const SITEMAP_EXCLUDE = new Set(['/dashboard', '/404', '/admin', '/stripe-checkout', '/upgrade-success']);
 
+// ─── lastmod ───
+// 原本这里完全不发 lastmod，理由是「部署日期不是编辑日期」—— 这个判断是对的，
+// 所以下面没有退回到构建时间。只有确实知道某一页内容变更日期时才发 lastmod，
+// 其余的继续省略。部分页面带 lastmod 的 sitemap 是合法的。
+//
+// 汇率页每天随数据变化，而它们正是最需要重抓信号的一批。
+const RATE_SNAPSHOT_DATE = (() => {
+  try {
+    const snapshot = JSON.parse(
+      fs.readFileSync(path.join(__dirname, '../src/data/prebuiltRates.json'), 'utf8')
+    );
+    const d = new Date(snapshot.USD && snapshot.USD.updatedUtc);
+    return Number.isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+  } catch (e) { return null; }
+})();
+
+// 信任页的编辑修订日期，与 src/lib/seo.js 里的 PAGE_DATES 保持一致。
+const REVISION_DATES = {
+  '/methodology':      '2026-09-23',
+  '/editorial-policy': '2026-09-23',
+  '/data-sources':     '2026-09-23',
+};
+
+function lastmodFor(route) {
+  if (REVISION_DATES[route]) return REVISION_DATES[route];
+  if (route.startsWith('/currency/') || route.startsWith('/freelance-rate/')) {
+    return RATE_SNAPSHOT_DATE;
+  }
+  return null;
+}
+
 let sitemapXML = `<?xml version="1.0" encoding="UTF-8"?>\n`;
 sitemapXML += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
@@ -49,8 +80,8 @@ for (const route of routes) {
 
   sitemapXML += `  <url>\n`;
   sitemapXML += `    <loc>https://www.globalsync-ai.com${route}</loc>\n`;
-    // Omit lastmod until a reliable per-page content revision date is available.
-    // A deployment date is not an editorial update to every page.
+  const lastmod = lastmodFor(route);
+  if (lastmod) sitemapXML += `    <lastmod>${lastmod}</lastmod>\n`;
   sitemapXML += `  </url>\n`;
 }
 

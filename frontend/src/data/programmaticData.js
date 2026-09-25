@@ -165,10 +165,23 @@ export const CURRENCIES_META = {
   "jpy": { name: "Japanese Yen",     country: "Japan",          symbol: "¥",  code: "JPY", description: "Asia's most widely traded currency and a traditional safe-haven asset" },
   "aud": { name: "Australian Dollar",country: "Australia",      symbol: "A$", code: "AUD", description: "a major commodity currency and the currency of a growing remote work and tech hub" },
   "cad": { name: "Canadian Dollar",  country: "Canada",         symbol: "C$", code: "CAD", description: "closely correlated with the US Dollar and important for North American remote workers" },
+  "php": { name: "Philippine Peso",  country: "Philippines",    symbol: "₱",  code: "PHP", description: "the currency of one of the world's largest remittance-receiving economies and a major BPO and remote work hub" },
 };
 
 // ─── CURRENCY PAIRS ───────────────────────────────────────────────────────────
 export const CURRENCY_PAIRS = {
+  "usd-to-php": {
+    from: "usd", to: "php",
+    context: "USD to PHP is one of the busiest money corridors on the planet. Millions of Filipinos working abroad send money home every month, and for families receiving it, the difference between a good rate and a bad one is measured in groceries rather than trading margin. The peso tends to move on US interest rate decisions, Philippine inflation, and the seasonal surge in remittances toward the end of the year. If you are sending money regularly, small differences compound quickly.",
+    remoteTip: "Compare the pesos actually received, not the headline rate. Two services can advertise the same rate and deliver different amounts once transfer fees are applied. If you send on a schedule, check two or three providers each time rather than staying loyal to one.",
+    faqs: [
+      { q: "How do I find the real USD to PHP rate?", a: "Start from the reference rate on this page, which is aligned with benchmark rates and carries the date it was taken. That is the mid-point before anyone adds a margin. The rate a bank or remittance service gives you will be lower, so use this as your baseline for comparison rather than the amount that will arrive." },
+      { q: "Why does the remittance rate differ from the rate shown here?", a: "Remittance providers quote a rate that already includes their margin, and may add a separate transfer fee on top. Two providers quoting the same headline rate can still deliver different amounts once fees are applied. Compare the final pesos received." },
+      { q: "When is the best time to send money from the US to the Philippines?", a: "There is no reliably best time. USD/PHP moves on US interest rate decisions, Philippine inflation and central bank policy, and seasonal remittance demand that rises toward the end of the year. Rather than timing the market, compare the total amount received across providers on the day you send." },
+      { q: "How often does the USD to PHP rate change?", a: "The underlying market rate moves continuously during trading hours. The reference rate shown here is a dated snapshot, and the date is displayed with the figure so you know how current it is." },
+    ],
+    related: ["usd-to-inr", "usd-to-pkr", "usd-to-ngn", "php-to-usd"],
+  },
   "usd-to-eur": {
     from: "usd", to: "eur",
     context: "The US Dollar and the Euro are the heavyweights of the financial world. If you're a European freelancer working with American clients, this is the exchange rate you probably check every single morning. Over the years, we've seen everything from the Euro being super strong, to the two currencies hitting nearly 1:1 parity. Keeping an eye on this rate is crucial because a small shift in the market can literally mean the difference between a good paycheck and a great one.",

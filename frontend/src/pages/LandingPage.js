@@ -6,10 +6,24 @@ import SEOHead from '@/components/SEOHead';
 import {getHomepageSEO} from '@/lib/seo';
 import {initializeMeridian} from '@/lib/meridianExperience';
 import '@/styles/meridian.css';
+const HOME_FAQS=[
+{q:'What can I do with GlobalSync AI?',
+ a:'Compare three-city teams, change your meeting date and length, find a shared time, copy local times or download a calendar file. Use the complete planner for custom cities and working hours, or explore currency, freelance rates and invoices.'},
+{q:'Is GlobalSync AI free?',
+ a:'Yes. All tools are free to use and there is no signup or account required. You can open any tool and use it immediately.'},
+{q:'How are shared hours calculated?',
+ a:'The planner checks the entire meeting against 09:00–17:00 in each city, using the selected date and each city’s time zone. Working hours here apply to every day; holidays and individual availability are not checked.'},
+{q:'What happens if there is no overlap?',
+ a:'Some teams span too many time zones for everyone to meet during working hours. The planner tells you when no shared window exists, so you can discuss a compromise with your team.'},
+{q:'Where do GlobalSync AI’s time zone rules come from?',
+ a:'Time zone rules, including daylight saving transitions, come from the IANA Time Zone Database, the reference dataset used by most operating systems. Full details are published on the GlobalSync AI data sources page.'},
+{q:'Are the currency rates live?',
+ a:'They are dated reference rates, not live mid-market quotes. Pricing feeds are aligned with benchmark rates published by the European Central Bank and institutional liquidity pools via ExchangeRate-API. Each result shows its source and date. Use the figure for estimating and planning, and check your payment provider for the final transfer rate.'},
+];
 export default function LandingPage(){
 const root=useRef(null);
 useEffect(()=>initializeMeridian(root.current),[]);
-return <div className="meridian-home" ref={root}><SEOHead {...getHomepageSEO()}/><SiteNav/>
+return <div className="meridian-home" ref={root}><SEOHead {...getHomepageSEO({faqs:HOME_FAQS})}/><SiteNav/>
 <main id="main-content">
 <div className="shell"><section className="hero">
 <div className="hero-content"><h1>Great work.<br/><em>No borders.</em></h1><p className="hero-copy">Free time zone, meeting planner and currency tools for remote teams. Find a shared time, compare a rate and prepare an invoice.</p><a className="primary" href="#planner">Find a meeting time <ArrowRight aria-hidden="true" /></a><p className="caption">No signup needed for the tools.<br/>Made for your next international collaboration.</p></div>
@@ -29,9 +43,9 @@ return <div className="meridian-home" ref={root}><SEOHead {...getHomepageSEO()}/
 <label>Your team<select name="team"><option value="atlantic">New York · London · Berlin</option><option value="asia">London · Dubai · Singapore</option><option value="pacific">Los Angeles · Tokyo · Sydney</option></select></label>
 <div className="control-pair"><label>Meeting date · UTC<input type="date" name="meeting-date" required min="2020-01-01" max="2100-12-31" /></label><label>Meeting length<select name="duration"><option value="30">30 minutes</option><option value="60">60 minutes</option><option value="90">90 minutes</option></select></label></div>
 <label>Start time · <output data-utc></output><input className="range" type="range" min="0" max="95" defaultValue="52" aria-label="Meeting start time in 15-minute steps" /></label><button className="find-time">Find a shared time <ArrowRight aria-hidden="true" /></button><p className="caption">Working hours: 09:00–17:00 in each city.<br/>Local times account for daylight saving.</p></div><div className="planner-results"><div className="results-label"><span>Your shared moment</span><span data-date-label></span></div><div data-schedule></div><div className="schedule-footer"><p data-fit aria-live="polite"></p><div className="share-actions"><button className="copy">Copy local times</button><button className="calendar">Save calendar file <svg><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></svg></button></div></div><p className="notice" role="status" aria-live="polite"></p></div></div><p className="planner-note"><a href="/meeting-planner">Choose custom cities and working hours in the full planner →</a><br/>Calendar files save the chosen time. Review the event in your calendar before inviting your team.</p></section>
-<section className="faq" id="questions"><h2>A little clarity.<br/>A better start.</h2><div><details><summary>What can I do with GlobalSync AI?<svg><path d="M12 4v16M4 12h16"/></svg></summary><p>Compare three-city teams, change your meeting date and length, find a shared time, copy local times or download a calendar file. Use the complete planner for custom cities and working hours, or explore currency, freelance rates and invoices.</p></details><details><summary>How are shared hours calculated?<svg><path d="M12 4v16M4 12h16"/></svg></summary><p>The planner checks the entire meeting against 09:00–17:00 in each city, using the selected date and each city’s time zone. Working hours here apply to every day; holidays and individual availability are not checked.</p></details><details><summary>What happens if there is no overlap?<svg><path d="M12 4v16M4 12h16"/></svg></summary><p>Some teams span too many time zones for everyone to meet during working hours. The planner tells you when no shared window exists, so you can discuss a compromise with your team.</p></details></div></section></div>
+<section className="faq" id="questions"><h2>A little clarity.<br/>A better start.</h2><div>{HOME_FAQS.map(f=><details key={f.q}><summary>{f.q}<svg><path d="M12 4v16M4 12h16"/></svg></summary><p>{f.a}</p></details>)}</div></section></div>
 <section className="closing"><div className="shell"><h2>A smaller world.<br/><em>A bigger possibility.</em></h2><a className="primary" href="#planner">Bring your world together <ArrowRight aria-hidden="true" /></a></div></section>
 </main>
-<section className="shell more-tools"><h2>Your next step, made simpler.</h2><nav aria-label="More GlobalSync tools"><a href="/time-zone-converter">World clocks and time zones</a><a href="/freelancer-rate-converter">Freelancer rate calculator</a><a href="/dashboard">Open your workspace</a><a href="/blog">Guides for working globally</a></nav><form action="/dashboard"><label htmlFor="home-question">Ask about a time or currency conversion</label><div><input id="home-question" name="q" placeholder="What time is 3 PM New York in London?" required maxLength={500}/><button type="submit">Find an answer <ArrowRight aria-hidden="true"/></button></div></form></section>
+<section className="shell more-tools"><h2>Your next step, made simpler.</h2><nav aria-label="More GlobalSync tools"><a href="/time-zone-converter">World clocks and time zones</a><a href="/freelancer-rate-converter">Freelancer rate calculator</a><a href="/dashboard" rel="nofollow">Open your workspace</a><a href="/blog">Guides for working globally</a></nav><form action="/dashboard"><label htmlFor="home-question">Ask about a time or currency conversion</label><div><input id="home-question" name="q" placeholder="What time is 3 PM New York in London?" required maxLength={500}/><button type="submit">Find an answer <ArrowRight aria-hidden="true"/></button></div></form></section>
 <div className="shell motion-row"><button className="motion-toggle" aria-pressed="false">Pause motion</button></div><SiteFooter/></div>;
 }

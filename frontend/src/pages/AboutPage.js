@@ -103,8 +103,7 @@ export default function AboutPage() {
                   I'm a developer and remote work advocate who got tired of the mental math required to manage global teams. I built GlobalSync AI to solve my own scheduling nightmares, and now I'm sharing it with you.
                 </p>
                 <div className="flex gap-3 mt-2">
-                  <a href="https://www.linkedin.com/in/REPLACE" target="_blank" rel="noopener noreferrer" className="text-sm text-pine hover:underline">LinkedIn</a>
-                  <a href="https://x.com/REPLACE" target="_blank" rel="noopener noreferrer" className="text-sm text-pine hover:underline">X (Twitter)</a>
+                  <a href="https://x.com/GlobalSyncAI" target="_blank" rel="noopener noreferrer me" className="text-sm text-pine hover:underline">X (Twitter)</a>
                 </div>
               </div>
             </div>

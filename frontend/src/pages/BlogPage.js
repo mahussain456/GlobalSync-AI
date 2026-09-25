@@ -7,7 +7,7 @@ import { BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
 import { getBlogIndexSEO } from "@/lib/seo";
 
 export default function BlogPage() {
-  const seo = getBlogIndexSEO();
+  const seo = getBlogIndexSEO({ posts: BLOG_POSTS });
 
   return (
     <div className="min-h-screen bg-paper text-ink relative">

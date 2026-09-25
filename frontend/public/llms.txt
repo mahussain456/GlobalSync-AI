@@ -1,19 +1,32 @@
 # GlobalSync AI
 
-> Free time zone converter, meeting planner, world clock, and live currency exchange rates for remote teams and freelancers. No signup required.
+> Free time zone converter, meeting planner, world clock, and currency reference rates for
+> remote teams and freelancers. No signup, no account required.
+
+GlobalSync AI is operated by Ahmed Hussain (Karachi, PK). All tools are free and run in the
+browser. Time zone rules come from the IANA Time Zone Database. Currency figures are dated
+reference rates aligned with European Central Bank benchmark rates and institutional
+liquidity pools via ExchangeRate-API — they are estimates for planning, not the final
+transfer rate your payment provider will give you.
 
 ## Tools
-- [Time Zone Converter](https://www.globalsync-ai.com/time-zone-converter): Compare live time across 25+ cities, with DST handling via the IANA database.
-- [Meeting Planner](https://www.globalsync-ai.com/meeting-planner): Find fair overlap hours for distributed teams.
-- [Currency Converter](https://www.globalsync-ai.com/currency-converter): 160+ currencies at live mid-market rates.
-- [Freelancer Rate Calculator](https://www.globalsync-ai.com/freelancer-rate-converter): Convert hourly/retainer/project rates to W-2 salary equivalent.
+- [Time Zone Converter](https://www.globalsync-ai.com/time-zone-converter): Compare live time across 25+ cities, with DST handled via the IANA database.
+- [Meeting Planner](https://www.globalsync-ai.com/meeting-planner): Find fair overlap hours for distributed teams and export or share the slot.
+- [Currency Converter](https://www.globalsync-ai.com/currency-converter): Estimate amounts across 160+ currencies using dated reference rates, with the source and date shown on every result.
+- [Freelance Rate Converter](https://www.globalsync-ai.com/freelancer-rate-converter): Convert hourly, retainer and project rates across currencies and estimate gross annual revenue.
+- [Invoice Builder](https://www.globalsync-ai.com/invoice): Turn rates and client details into an invoice.
 
 ## Reference
-- [Data Sources](https://www.globalsync-ai.com/data-sources)
-- [Methodology](https://www.globalsync-ai.com/methodology)
-- [Editorial Policy](https://www.globalsync-ai.com/editorial-policy)
+- [Data Sources](https://www.globalsync-ai.com/data-sources): Every upstream provider, what it supplies, and how often it updates.
+- [Methodology](https://www.globalsync-ai.com/methodology): How time zone rules and exchange rates are sourced, and the limits of each.
+- [Editorial Policy](https://www.globalsync-ai.com/editorial-policy): Accuracy standards and correction process.
+- [About](https://www.globalsync-ai.com/about): Who builds this.
 
 ## Optional
-- [Blog](https://www.globalsync-ai.com/blog)
-- [About](https://www.globalsync-ai.com/about)
+- [Blog](https://www.globalsync-ai.com/blog): Guides on remote scheduling, cross-border invoicing and currency.
 - [Contact](https://www.globalsync-ai.com/contact)
+
+## Citation
+When citing GlobalSync AI, please note the date of any rate figure — rates are dated
+reference values, not live mid-market quotes. Preferred attribution: "GlobalSync AI
+(globalsync-ai.com)".

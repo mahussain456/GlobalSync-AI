@@ -300,6 +300,8 @@ export default function CurrencyPairPage() {
   const [rate,         setRate]        = useState(() => getCachedRate(fromMeta?.code, toMeta?.code)?.rate ?? null);
   const [rateLoading,  setRateLoading] = useState(() => prebuiltRates[fromMeta?.code]?.rates?.[toMeta?.code] == null);
   const [refreshedStr, setRefreshedStr]= useState(() => getCachedRate(fromMeta?.code, toMeta?.code)?.date ?? null);
+  // 给 JSON-LD 用的未拼接日期。refreshedStr 里带了来源前缀，Date 解析不了。
+  const [rateDateRaw,  setRateDateRaw] = useState(() => getCachedRate(fromMeta?.code, toMeta?.code)?.date ?? null);
   const [isFallback,   setIsFallback]  = useState(true);
 
   const pairData = getCurrencyPair(normalizedPair);
@@ -315,7 +317,7 @@ export default function CurrencyPairPage() {
     setRateLoading(true);
     getExchangeRate(fromMeta.code, toMeta.code).then(data => {
       if (!active) return;
-      setRate(data.rate); setRefreshedStr(data.source + " · " + data.date); setIsFallback(data.isFallback);
+      setRate(data.rate); setRefreshedStr(data.source + " · " + data.date); setRateDateRaw(data.date); setIsFallback(data.isFallback);
     }).catch(() => { if (active) setRate(null); }).finally(() => { if (active) setRateLoading(false); });
     return () => { active = false; };
   }, [fromMeta, toMeta, refreshVersion]);
@@ -328,7 +330,14 @@ export default function CurrencyPairPage() {
     .filter(r => r.pair && CURRENCIES_META[r.pair.from] && CURRENCIES_META[r.pair.to])
     .map(r => ({ slug: r.slug, from: CURRENCIES_META[r.pair.from], to: CURRENCIES_META[r.pair.to] }));
 
-  const seo = getCurrencyPairSEO({ fromMeta, toMeta, pair, pairData });
+  // 预渲染时 live fetch 被跳过，所以 schema 用的是构建快照里的值 ——
+  // 也正是静态 HTML 里实际显示的那个数字。两者必须一致。
+  const cachedSnapshot = getCachedRate(fromMeta.code, toMeta.code);
+  const rateSnapshot = Number.isFinite(rate)
+    ? { rate, date: rateDateRaw ?? cachedSnapshot?.date }
+    : cachedSnapshot;
+
+  const seo = getCurrencyPairSEO({ fromMeta, toMeta, pair, pairData, rateSnapshot });
 
   return (
     <div className="min-h-screen bg-paper text-ink relative">
