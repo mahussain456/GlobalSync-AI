@@ -9,7 +9,7 @@ import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { toast } from "sonner";
-import { fireAnalyticsEvent } from "@/lib/analytics";
+import { fireAnalyticsEvent, markToolUsed } from "@/lib/analytics";
 
 const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
@@ -169,6 +169,7 @@ export default function InvoicePage() {
 
   // Analytics triggers
   const fireInvoiceAnalytics = (action) => {
+    markToolUsed("invoice");
     fireAnalyticsEvent("invoice_generated", {
       currency_pair: `${billingCurrency}/${payoutCurrency}`,
       has_fx_conversion: billingCurrency !== payoutCurrency,
@@ -435,7 +436,7 @@ export default function InvoicePage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
           {/* Left Column: Input Form */}
-          <div className="lg:col-span-6 bg-surface border border-line rounded-xl p-6  space-y-5">
+          <div onInputCapture={() => markToolUsed("invoice")} className="lg:col-span-6 bg-surface border border-line rounded-xl p-6  space-y-5">
             <h2 className="font-heading font-bold text-ink text-lg flex items-center gap-2 border-b border-line pb-4">
               <Calculator className="w-5 h-5 text-pine" /> Multi-Currency Invoice Line Details
             </h2>

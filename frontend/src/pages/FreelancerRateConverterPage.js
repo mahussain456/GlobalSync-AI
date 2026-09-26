@@ -6,7 +6,7 @@ import SEOHead from '@/components/SEOHead';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
 import { getStaticPageSEO } from '@/lib/seo';
-import { fireAnalyticsEvent } from '@/lib/analytics';
+import { fireAnalyticsEvent, markToolUsed } from '@/lib/analytics';
 
 const CURRENCIES = ['USD', 'INR', 'PKR', 'EUR', 'GBP', 'AED', 'NGN', 'PHP', 'ZAR', 'CAD', 'AUD'];
 const inputClass = 'w-full bg-paper border border-line rounded-xl px-4 py-3 text-ink';
@@ -57,7 +57,7 @@ export default function FreelancerRateConverterPage() {
       <header className="mb-10"><p className="text-pine text-sm mb-2">Free freelance pricing tool · Updated September 23, 2026</p>
         <h1 className="font-heading text-3xl md:text-5xl font-bold mb-4">Freelance rate converter & annual revenue calculator</h1>
         <p className="text-quiet text-lg">Convert an hourly rate, monthly retainer or project fee across 11 currencies. Estimate your gross annual revenue and carry your rate into an invoice.</p></header>
-      <section aria-label="Freelance rate calculator" className="bg-surface rounded-xl border border-line p-5 sm:p-8 mb-10">
+      <section aria-label="Freelance rate calculator" onInputCapture={() => markToolUsed('freelance_rate')} className="bg-surface rounded-xl border border-line p-5 sm:p-8 mb-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <label className="text-sm space-y-2">Rate Amount<input type="number" min="0" step="any" value={amount} onChange={e => update({amount:e.target.value})} className={inputClass} /></label>
           <label className="text-sm space-y-2">Billing Type<select value={type} onChange={e => update({type:e.target.value, units:e.target.value === 'project' ? '8' : '25'})} className={inputClass}><option value="hourly">Hourly Rate</option><option value="monthly">Monthly Retainer</option><option value="project">Fixed Project Fee</option></select></label>

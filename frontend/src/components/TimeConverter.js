@@ -1,5 +1,5 @@
 import { CITY_TIMEZONES } from "@/lib/cityTimezones";
-import { fireAnalyticsEvent } from "@/lib/analytics";
+import { fireAnalyticsEvent, markToolUsed } from "@/lib/analytics";
 import { meetingWindows, resolveWallTime } from "@/lib/timeCalculations";
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
@@ -499,6 +499,7 @@ export default function TimeConverter({ aiDispatch }) {
   }), []);
 
   const addCity = async (cityName) => {
+    markToolUsed("time_zone_converter");
     if (selectedCities.find(c => c.name.toLowerCase() === cityName.toLowerCase())) {
       toast.info(`${cityName} is already added`);
       setCitySearch("");
@@ -610,7 +611,7 @@ export default function TimeConverter({ aiDispatch }) {
   };
 
   return (
-    <div className="space-y-6" data-testid="time-converter">
+    <div className="space-y-6" data-testid="time-converter" onInputCapture={() => markToolUsed("time_zone_converter")}>
       {queryAnswer && <div role="status" className="rounded-xl bg-gem-gold/15 p-5 text-ink leading-relaxed">{queryAnswer}</div>}
       <label className="flex flex-wrap items-center gap-3 text-ink text-sm mb-4">Meeting date (UTC)
         <input type="date" value={meetingDate || new Date().toISOString().slice(0,10)} onChange={event => setMeetingDate(event.target.value)} className="bg-paper border border-line rounded-lg p-2" />
