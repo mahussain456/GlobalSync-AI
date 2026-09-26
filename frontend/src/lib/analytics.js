@@ -14,3 +14,15 @@ export function fireAnalyticsEvent(eventName, params = {}) {
   }
   } catch { /* Optional measurement must never interrupt a tool. */ }
 }
+
+const toolsUsed = new Set();
+/**
+ * The paid-traffic conversion: a visitor did something real with a tool.
+ * Fires once per tool per page load, on the first genuine interaction — never
+ * on page load, or every visitor would count as a user.
+ */
+export function markToolUsed(tool) {
+  if (toolsUsed.has(tool)) return;
+  toolsUsed.add(tool);
+  fireAnalyticsEvent('tool_used', { tool });
+}

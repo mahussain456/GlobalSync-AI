@@ -42,6 +42,35 @@ export function findMeetingSlots(plan) {
   return slots;
 }
 
+const addDays = (date, days) => {
+  const day = new Date(`${date}T12:00:00Z`);
+  day.setUTCDate(day.getUTCDate() + days);
+  return day.toISOString().slice(0, 10);
+};
+
+// A calendar date's weekday doesn't depend on any time zone; noon UTC just
+// keeps the arithmetic away from midnight.
+export const isWeekendDate = date => [0, 6].includes(new Date(`${date}T12:00:00Z`).getUTCDay());
+
+/** The date itself if it is Monday–Friday, otherwise the following Monday. */
+export const nextWeekday = date => {
+  const day = new Date(`${date}T12:00:00Z`).getUTCDay();
+  return day === 6 ? addDays(date, 2) : day === 0 ? addDays(date, 1) : date;
+};
+
+/**
+ * The first later date (within a week) that has at least one valid slot with
+ * the plan's current cities, hours and weekday rule, or null if none does.
+ */
+export function nextDateWithSlots(plan, maxDays = 7) {
+  for (let i = 1; i <= maxDays; i++) {
+    const candidate = { ...plan, date: addDays(plan.date, i) };
+    try { if (findMeetingSlots(candidate).length) return candidate.date; }
+    catch { return null; }
+  }
+  return null;
+}
+
 export function meetingSummary(plan, slot) {
   return [`GlobalSync AI meeting · ${plan.duration} minutes`, ...plan.cities.map(city => {
     const date = new Intl.DateTimeFormat('en-US', { timeZone: city.timezone, weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).format(slot.start);

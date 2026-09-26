@@ -2,17 +2,29 @@ import { useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CalendarDays, Copy, Download, Share2, X } from 'lucide-react';
 import { CITY_TIMEZONES } from '@/lib/cityTimezones';
-import { DURATIONS, toMinutes, timeInput, findMeetingSlots, meetingSummary, calendarFile, googleCalendarLink, serializePlan, readSharedPlan } from '@/lib/meetingPlanner';
-import { fireAnalyticsEvent } from '@/lib/analytics';
+import { DURATIONS, toMinutes, timeInput, findMeetingSlots, meetingSummary, calendarFile, googleCalendarLink, serializePlan, readSharedPlan, isWeekendDate, nextDateWithSlots } from '@/lib/meetingPlanner';
+import { fireAnalyticsEvent, markToolUsed } from '@/lib/analytics';
 
 const inputClass = 'w-full min-w-0 h-12 rounded-lg border border-line bg-paper px-3 text-base text-ink';
 const actionClass = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-line px-4 py-3 text-sm font-medium text-ink hover:bg-surface disabled:opacity-40';
 const city = name => ({ name, timezone: CITY_TIMEZONES[name], start: 540, end: 1020 });
 const PRESETS = [['New York', 'London'], ['London', 'Berlin', 'Dubai'], ['New York', 'Mumbai'], ['Sydney', 'Auckland']];
 const CITY_NAMES = Object.keys(CITY_TIMEZONES).filter(name => name.length > 2 && !['NYC', 'New York City', 'Bengaluru', 'India', 'Hawaii', 'Sao Paulo'].includes(name)).sort();
-function initialState(search) {
+const dayLabel = date => new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'long', month: 'short', day: 'numeric' }).format(new Date(`${date}T12:00:00Z`));
+// Every ad promises a time that works. On a weekend "today" has none, so a new
+// visitor would open onto "No shared working time" on about 2 days in 7.
+// Start on the next date that actually has a shared time, and say so.
+function defaultPlan() {
   const parts = Object.fromEntries(new Intl.DateTimeFormat('en', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date()).map(p => [p.type, p.value]));
-  const fallback = { plan: { date: `${parts.year}-${parts.month}-${parts.day}`, duration: 30, weekdays: true, cities: [city('New York'), city('London')] }, selectedStart: '' };
+  const plan = { date: `${parts.year}-${parts.month}-${parts.day}`, duration: 30, weekdays: true, cities: [city('New York'), city('London')] };
+  if (findMeetingSlots(plan).length) return { plan, selectedStart: '' };
+  const next = nextDateWithSlots(plan);
+  if (!next) return { plan, selectedStart: '' };
+  const why = isWeekendDate(plan.date) ? `It's the weekend in ${plan.cities[0].name}, so` : 'Today has no shared working time left, so';
+  return { plan: { ...plan, date: next }, selectedStart: '', notice: `${why} this plan starts on ${dayLabel(next)}. Change the date above to plan another day.` };
+}
+function initialState(search) {
+  const fallback = defaultPlan();
   try { return readSharedPlan(search, CITY_TIMEZONES) || fallback; }
   catch (error) { return { ...fallback, notice: error.message }; }
 }
@@ -32,12 +44,19 @@ function PlannerForm({ search }) {
     catch (error) { return { slots: [], error: error.message }; }
   }, [plan]);
   const slot = computed.slots.find(s => s.start.toISOString() === selectedStart) || computed.slots[0];
+  const emptyHelp = useMemo(() => {
+    if (computed.error || computed.slots.length) return null;
+    let weekendOnly = false;
+    try { weekendOnly = plan.weekdays && findMeetingSlots({ ...plan, weekdays: false }).length > 0; } catch { /* keep default */ }
+    return { weekendOnly, next: nextDateWithSlots(plan) };
+  }, [plan, computed]);
   const reference = plan.cities[0];
   const format = (instant, timeZone, includeDate = false) => new Intl.DateTimeFormat('en-US', {
     timeZone, hour: 'numeric', minute: '2-digit', hour12, timeZoneName: 'short',
     ...(includeDate ? { weekday: 'short', month: 'short', day: 'numeric' } : {})
   }).format(instant);
-  const update = patch => { setPlan(current => ({ ...current, ...patch })); setSelectedStart(''); setNotice(''); setCopyFallback(''); };
+  const markUsed = () => markToolUsed('meeting_planner');
+  const update = patch => { markUsed(); setPlan(current => ({ ...current, ...patch })); setSelectedStart(''); setNotice(''); setCopyFallback(''); };
   const changeHours = (index, field, value) => update({ cities: plan.cities.map((c, i) => i === index ? { ...c, [field]: toMinutes(value) } : c) });
   const copy = async (value, message) => {
     try { await navigator.clipboard.writeText(value); setNotice(message); setCopyFallback(''); }
@@ -76,9 +95,9 @@ function PlannerForm({ search }) {
     </div>
     <div className="flex flex-wrap gap-2 mb-7" aria-label="Meeting presets">{PRESETS.map(names => <button type="button" key={names.join()} onClick={() => update({ cities: names.map(city) })} className="text-sm text-quiet underline underline-offset-4 px-2 py-2 hover:text-pine">{names.join(' + ')}</button>)}</div>
     {computed.error ? <p role="alert" className="text-amber-800 py-4">{computed.error}</p> : <div className="border-t border-line pt-6">
-      <div role="status" className="mb-4"><h2 className="font-heading text-2xl font-semibold">{slot ? 'Choose a time that fits' : 'No shared working time'}</h2><p className="text-sm text-quiet mt-2">{slot ? `${computed.slots.length} start times fit the full ${plan.duration}-minute meeting. Times are offered every 15 minutes.` : 'Try a shorter meeting, another date, or working hours your team agrees to. An asynchronous update may work better.'}</p></div>
+      <div role="status" className="mb-4"><h2 className="font-heading text-2xl font-semibold">{slot ? 'Choose a time that fits' : emptyHelp?.weekendOnly ? 'This date is a weekend' : 'No shared working time'}</h2><p className="text-sm text-quiet mt-2">{slot ? `${computed.slots.length} start times fit the full ${plan.duration}-minute meeting. Times are offered every 15 minutes.` : emptyHelp?.weekendOnly ? 'It falls on a Saturday or Sunday for at least one city, and the planner is set to Monday–Friday.' : 'Try a shorter meeting, another date, or working hours your team agrees to. An asynchronous update may work better.'}</p>{!slot && emptyHelp?.next && <button type="button" onClick={() => update({ date: emptyHelp.next })} className={`${actionClass} mt-4 bg-gem-gold !text-gem-forest !border-line hover:!bg-gem-gold/90`}>Show {dayLabel(emptyHelp.next)}</button>}</div>
       {slot && <>
-        <label className="block text-sm text-quiet space-y-2 max-w-md mb-5">Start time in {reference.name}<select aria-label="Meeting start time" value={slot.start.toISOString()} onChange={e => { setSelectedStart(e.target.value); setNotice(''); }} className={inputClass}>{computed.slots.map(s => <option key={s.start.toISOString()} value={s.start.toISOString()}>{format(s.start, reference.timezone)} – {format(s.end, reference.timezone)}</option>)}</select></label>
+        <label className="block text-sm text-quiet space-y-2 max-w-md mb-5">Start time in {reference.name}<select aria-label="Meeting start time" value={slot.start.toISOString()} onChange={e => { markUsed(); setSelectedStart(e.target.value); setNotice(''); }} className={inputClass}>{computed.slots.map(s => <option key={s.start.toISOString()} value={s.start.toISOString()}>{format(s.start, reference.timezone)} – {format(s.end, reference.timezone)}</option>)}</select></label>
         <ul className="divide-y divide-line mb-6" aria-label="Selected meeting in each city">{plan.cities.map(c => <li key={c.name} className="py-3 flex flex-col sm:flex-row sm:justify-between gap-1"><span className="font-medium">{c.name}</span><span className="text-quiet text-sm tabular-nums">{format(slot.start, c.timezone, true)} – {format(slot.end, c.timezone)}</span></li>)}</ul>
         <div className="flex flex-wrap gap-3">
           <button type="button" onClick={download} className={`${actionClass} bg-gem-gold !text-gem-forest !border-line hover:!bg-gem-gold/90`}><Download className="w-4 h-4" /> Download calendar file</button>

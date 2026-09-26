@@ -1,4 +1,4 @@
-import { fireAnalyticsEvent } from "@/lib/analytics";
+import { fireAnalyticsEvent, markToolUsed } from "@/lib/analytics";
 import { getExchangeRate } from "@/lib/exchangeRates";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
@@ -106,7 +106,9 @@ export default function CurrencyConverter({ aiDispatch }) {
     setLoading(false); setLoadingTrend(false);
   };
 
-  const handleConvert = async (amt = amount, from = fromCurrency, to = toCurrency) => {
+  // userInitiated is false only for the automatic conversion on mount: that one
+  // must not count as a visitor using the tool.
+  const handleConvert = async (amt = amount, from = fromCurrency, to = toCurrency, userInitiated = true) => {
     invalidateResult();
     const numAmt = Number(amt);
     if (String(amt).trim() === '' || !Number.isFinite(numAmt) || numAmt < 0) { setErrorMsg("Enter an amount of zero or more, then convert again."); return; }
@@ -126,6 +128,7 @@ export default function CurrencyConverter({ aiDispatch }) {
       if (version !== requestVersion.current) return;
       const converted = numAmt * data.rate;
       fireAnalyticsEvent("calculation_succeeded", {tool: "currency", cached: data.isFallback});
+      if (userInitiated) markToolUsed("currency");
       setResult({ from: fromUpper, to: toUpper, amount: numAmt, rate: data.rate,
         converted, date: data.source + " · " + data.date, is_fallback: data.isFallback,
         formatted: `${numAmt.toLocaleString()} ${fromUpper} = ${converted.toLocaleString()} ${toUpper}` });
@@ -188,7 +191,7 @@ export default function CurrencyConverter({ aiDispatch }) {
       setAmount(String(amt ?? 1));
       handleConvert(String(amt ?? 1), cleanFrom, cleanTo);
     } else {
-      handleConvert(amount, fromCurrency, toCurrency);
+      handleConvert(amount, fromCurrency, toCurrency, false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aiDispatch]);

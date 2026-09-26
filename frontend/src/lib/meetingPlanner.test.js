@@ -1,4 +1,4 @@
-import { findMeetingSlots, calendarFile, googleCalendarLink, serializePlan, readSharedPlan, validatePlan } from './meetingPlanner';
+import { findMeetingSlots, isWeekendDate, nextWeekday, nextDateWithSlots, calendarFile, googleCalendarLink, serializePlan, readSharedPlan, validatePlan } from './meetingPlanner';
 import { CITY_TIMEZONES } from './cityTimezones';
 
 const city = (name, start = 540, end = 1020) => ({ name, timezone: CITY_TIMEZONES[name], start, end });
@@ -49,4 +49,34 @@ test('calendar exports and Google draft contain the exact UTC interval', () => {
   expect(ics).toContain('\\nLondon:');
   ics.split('\r\n').forEach(line => expect(Buffer.byteLength(line, 'utf8')).toBeLessThanOrEqual(75));
   expect(new URL(googleCalendarLink(original, slot)).searchParams.get('dates')).toBe('20260916T130000Z/20260916T133000Z');
+});
+
+const ny = { name: 'New York', timezone: 'America/New_York', start: 540, end: 1020 };
+const london = { name: 'London', timezone: 'Europe/London', start: 540, end: 1020 };
+const auckland = { name: 'Auckland', timezone: 'Pacific/Auckland', start: 540, end: 1020 };
+
+test('weekend dates move to the following Monday; weekdays stay put', () => {
+  expect(isWeekendDate('2026-09-26')).toBe(true);   // Saturday
+  expect(isWeekendDate('2026-09-28')).toBe(false);  // Monday
+  expect(nextWeekday('2026-09-26')).toBe('2026-09-28');
+  expect(nextWeekday('2026-09-27')).toBe('2026-09-28');
+  expect(nextWeekday('2026-09-25')).toBe('2026-09-25'); // Friday
+  expect(nextWeekday('2026-12-26')).toBe('2026-12-28'); // across a month end
+});
+
+test('the default New York + London plan is empty on a Saturday and has times on Monday', () => {
+  const saturday = { date: '2026-09-26', duration: 30, weekdays: true, cities: [ny, london] };
+  expect(findMeetingSlots(saturday)).toHaveLength(0);
+  expect(nextDateWithSlots(saturday)).toBe('2026-09-28');
+  expect(findMeetingSlots({ ...saturday, date: nextWeekday(saturday.date) }).length).toBeGreaterThan(0);
+});
+
+test('a weekday in the first city can still be a weekend elsewhere', () => {
+  // Friday afternoon in New York is already Saturday in Auckland, so moving to
+  // the next weekday is not enough; nextDateWithSlots finds the real next date.
+  const friday = { date: '2026-09-25', duration: 30, weekdays: true, cities: [ny, auckland] };
+  expect(nextWeekday(friday.date)).toBe('2026-09-25');
+  const next = nextDateWithSlots(friday);
+  expect(next).not.toBeNull();
+  expect(findMeetingSlots({ ...friday, date: next }).length).toBeGreaterThan(0);
 });

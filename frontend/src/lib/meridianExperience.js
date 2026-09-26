@@ -1,4 +1,5 @@
-import { fireAnalyticsEvent } from './analytics';
+import { fireAnalyticsEvent, markToolUsed } from './analytics';
+import { nextWeekday } from './meetingPlanner';
 export function initializeMeridian(root) {
   const controller=new AbortController();
   const listen=(target,...args)=>target.addEventListener(args[0],args[1],{...(args[2]||{}),signal:controller.signal});
@@ -11,7 +12,8 @@ export function initializeMeridian(root) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let group='atlantic', tick=52, duration=30, paused=reduced.matches;
   const dateInput=$('[name=meeting-date]');
-  dateInput.value=new Date().toISOString().slice(0,10);
+  // On a weekend, "today" would suggest a Saturday meeting. Default to the next weekday.
+  dateInput.value=nextWeekday(new Date().toISOString().slice(0,10));
   let selectedDate=dateInput.value;
   const formatters = new Map();
   const local=(d,tz)=>{
@@ -47,6 +49,7 @@ export function initializeMeridian(root) {
   listen($('[name=duration]'),'change',e=>{duration=Number(e.target.value);update()});
   listen(dateInput,'change',()=>{if(!dateInput.checkValidity()){dateInput.reportValidity();return}selectedDate=dateInput.value;update()});
   listen($('.find-time'),'click',()=>{
+    markToolUsed('homepage_planner');
     if(!dateInput.checkValidity()){dateInput.reportValidity();return}
     const candidates=Array.from({length:96},(_,i)=>i).sort((a,b)=>Math.abs(a-tick)-Math.abs(b-tick));
     const found=candidates.find(step=>groups[group].every(([,tz])=>works(tz,step)));

@@ -13,3 +13,16 @@ test('blocked browser storage never breaks the tool', () => {
   expect(window.gtag).not.toHaveBeenCalled();
   read.mockRestore();
 });
+
+test('tool_used fires once per tool, and only after consent', () => {
+  const { markToolUsed } = require('./analytics');
+  window.gtag = jest.fn();
+  localStorage.setItem('gs_cookie_consent', 'accepted');
+  markToolUsed('meeting_planner');
+  markToolUsed('meeting_planner');
+  markToolUsed('currency');
+  expect(window.gtag.mock.calls.filter(c => c[1] === 'tool_used')).toEqual([
+    ['event', 'tool_used', { tool: 'meeting_planner' }],
+    ['event', 'tool_used', { tool: 'currency' }],
+  ]);
+});
