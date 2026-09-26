@@ -1,3 +1,4 @@
+import { rotateBySeed } from "@/lib/linkSpread";
 // ─── Programmatic SEO Data ────────────────────────────────────────────────────
 // City + currency metadata and pair-specific content for all programmatic pages.
 
@@ -390,11 +391,18 @@ export const getRelatedCityPairs = (slug, limit = 6) => {
     const p = CITY_PAIRS[s];
     return p && (cities.has(p.from) || cities.has(p.to));
   });
+  // 反向页永远排第一：用户最常做的就是把方向倒过来，而且这保证每一页
+  // 至少多一条来自兄弟页的入链。
+  const reverse = ALL_CITY_PAIR_SLUGS.find(s => {
+    const p = CITY_PAIRS[s];
+    return p && p.from === pair.to && p.to === pair.from;
+  });
   const merged = [
+    ...(reverse ? [reverse] : []),
     ...(pair.related || []),
-    ...sameFrom,
-    ...sameTo,
-    ...sharedCity,
+    ...rotateBySeed(sameFrom, slug),
+    ...rotateBySeed(sameTo, slug),
+    ...rotateBySeed(sharedCity, slug),
   ];
   return Array.from(new Set(merged)).slice(0, limit);
 };
@@ -418,11 +426,18 @@ export const getRelatedCurrencyPairs = (slug, limit = 6) => {
     const p = CURRENCY_PAIRS[s];
     return p && (codes.has(p.from) || codes.has(p.to));
   });
+  // 反向页永远排第一：用户最常做的就是把方向倒过来，而且这保证每一页
+  // 至少多一条来自兄弟页的入链。
+  const reverse = ALL_CURRENCY_PAIR_SLUGS.find(s => {
+    const p = CURRENCY_PAIRS[s];
+    return p && p.from === pair.to && p.to === pair.from;
+  });
   const merged = [
+    ...(reverse ? [reverse] : []),
     ...(pair.related || []),
-    ...sameFrom,
-    ...sameTo,
-    ...sharedCode,
+    ...rotateBySeed(sameFrom, slug),
+    ...rotateBySeed(sameTo, slug),
+    ...rotateBySeed(sharedCode, slug),
   ];
   return Array.from(new Set(merged)).slice(0, limit);
 };

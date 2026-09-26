@@ -8,8 +8,20 @@ const BUILD_DIR = path.join(__dirname, '../build');
 const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8'));
 const routes = (pkg.reactSnap && pkg.reactSnap.include) || [];
 
-// Retrieve key from environment variable (do not hardcode)
-const indexNowKey = process.env.INDEXNOW_KEY;
+if (process.env.VERCEL_ENV !== 'production') {
+  console.log(`[IndexNow] Skipped: VERCEL_ENV is ${process.env.VERCEL_ENV || 'unset'}, not production.`);
+  process.exit(0);
+}
+
+// Key comes from INDEXNOW_KEY. Failing that, use a key file already committed to
+// public/ — IndexNow keys are public by design (they are served at /<key>.txt for
+// the ownership check), so the file is not a secret, just the source of truth.
+const PUBLIC_DIR = path.join(__dirname, '../public');
+const committedKey = fs.readdirSync(PUBLIC_DIR)
+  .filter(f => /^[0-9a-f]{32}\.txt$/.test(f))
+  .map(f => path.basename(f, '.txt'))
+  .find(k => fs.readFileSync(path.join(PUBLIC_DIR, `${k}.txt`), 'utf8').trim() === k);
+const indexNowKey = process.env.INDEXNOW_KEY || committedKey;
 
 if (!indexNowKey) {
   console.log('\n[IndexNow] No INDEXNOW_KEY environment variable found.');
@@ -56,7 +68,7 @@ const options = {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json; charset=utf-8',
-    'Content-Length': data.length
+    'Content-Length': Buffer.byteLength(data)
   }
 };
 
@@ -64,7 +76,7 @@ const req = https.request(options, (res) => {
   let body = '';
   res.on('data', (chunk) => body += chunk);
   res.on('end', () => {
-    if (res.statusCode === 200) {
+    if (res.statusCode === 200 || res.statusCode === 202) {
       console.log('[IndexNow] URLs submitted successfully!');
     } else {
       console.error(`[IndexNow] Submission failed with status code ${res.statusCode}:`, body);

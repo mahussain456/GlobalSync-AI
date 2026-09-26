@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
 import { DollarSign, ArrowRight, Calculator, CheckCircle2, ShieldAlert, CreditCard, ChevronDown, ChevronUp } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import { rotateBySeed } from "@/lib/linkSpread";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import AdBanner from "@/components/AdBanner";
@@ -84,7 +85,7 @@ export default function FreelanceRatePage() {
   const exampleW2 = exampleGrossSource * 0.78;
 
   // Sibling corridors
-  const siblingCorridors = CORRIDORS.filter(c => c.slug !== corridor).slice(0, 4);
+  const siblingCorridors = rotateBySeed(CORRIDORS.filter(c => c.slug !== corridor), corridor).slice(0, 4);
 
   // Schemas
   const breadcrumbSchema = {

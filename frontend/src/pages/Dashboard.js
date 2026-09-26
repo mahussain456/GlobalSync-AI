@@ -58,7 +58,8 @@ export default function Dashboard() {
           "url": "https://www.globalsync-ai.com/dashboard",
           "applicationCategory": "UtilitiesApplication",
           "operatingSystem": "All",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          "isAccessibleForFree": true,
+          "publisher": { "@id": "https://www.globalsync-ai.com/#org" }
         }}
       />
       {showOnboarding && <OnboardingModal onComplete={handleOnboardingComplete} />}

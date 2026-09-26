@@ -1,10 +1,12 @@
 # GlobalSync AI robots.txt
 # Allow all search engines and AI agents by default
+# /dashboard is intentionally crawlable: it serves noindex,follow so it stays
+# out of the index while still passing link equity back out. Blocking it here
+# would hide the noindex tag and strand every link pointing at it.
 
 User-agent: *
 Allow: /
 Disallow: /admin
-Disallow: /dashboard
 Disallow: /private
 Disallow: /.git/
 Disallow: /.env
@@ -13,43 +15,36 @@ Disallow: /.env
 User-agent: GPTBot
 Allow: /
 Disallow: /admin
-Disallow: /dashboard
 Disallow: /private
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /admin
-Disallow: /dashboard
 Disallow: /private
 
 User-agent: Google-Extended
 Allow: /
 Disallow: /admin
-Disallow: /dashboard
 Disallow: /private
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /admin
-Disallow: /dashboard
 Disallow: /private
 
 User-agent: Bytespider
 Allow: /
 Disallow: /admin
-Disallow: /dashboard
 Disallow: /private
 
 User-agent: Applebot-Extended
 Allow: /
 Disallow: /admin
-Disallow: /dashboard
 Disallow: /private
 
 User-agent: Amazonbot
 Allow: /
 Disallow: /admin
-Disallow: /dashboard
 Disallow: /private
 
 # Sitemap location for all crawlers

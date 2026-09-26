@@ -19,6 +19,13 @@ const LOGO_URL  = `${BASE_URL}/meridian/logo-original-icon.png`;
 // Person 节点，而不是指向同一个实体 —— 首页已经在用 `/#org`，其余对齐它。
 const ORG_ID    = `${BASE_URL}/#org`;
 const PERSON_ID = `${BASE_URL}/authors/ahmed-hussain#person`;
+const WEBSITE_ID = `${BASE_URL}/#website`;
+
+// 社交档案只在这里维护一处。可见链接和 sameAs 不一致，本身就是个弱信号。
+const SAME_AS = [
+  "https://x.com/GlobalSyncAI",
+  "https://www.linkedin.com/company/globalsync-ai",
+];
 
 // 信任页的编辑修订日期。页面内容有实质更新时手动改这里。
 // 部署日期不是编辑日期，所以不从构建时间推导。
@@ -45,11 +52,7 @@ export const buildPersonSchema = () => ({
     "https://x.com/GlobalSyncAI"
   ],
   "jobTitle": "Founder",
-  "worksFor": {
-    "@type": "Organization",
-    "name": BRAND,
-    "url": BASE_URL
-  },
+  "worksFor": { "@id": ORG_ID },
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Karachi",
@@ -64,11 +67,24 @@ export const buildOrganizationSchema = () => ({
   "name": BRAND,
   "url": BASE_URL,
   "logo": { "@type": "ImageObject", "url": LOGO_URL },
-  "sameAs": [
-    "https://x.com/GlobalSyncAI",
-    "https://www.linkedin.com/company/globalsync-ai"
-  ]
+  "sameAs": SAME_AS,
 });
+
+/**
+ * 每一页都应该带上的基础实体。SEOHead 会按 @id 去重后合并进 @graph，
+ * 所以页面自己再发一次 Organization 也不会重复。
+ */
+export const buildSiteBaseGraph = () => [
+  buildOrganizationSchema(),
+  {
+    "@type": "WebSite",
+    "@id": WEBSITE_ID,
+    "name": BRAND,
+    "url": BASE_URL,
+    "inLanguage": "en",
+    "publisher": { "@id": ORG_ID },
+  },
+];
 
 export const buildWebSiteSchema = () => ({
   "@type": "WebSite",
@@ -89,7 +105,8 @@ export const buildWebApplicationSchema = ({ name, path, description, category = 
   "applicationCategory": category,
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript. Requires HTML5.",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "isAccessibleForFree": true,
+  "publisher": { "@id": ORG_ID },
 });
 
 export const buildSoftwareApplicationSchema = ({ name, path, description, category = "UtilitiesApplication" }) => ({
@@ -99,8 +116,8 @@ export const buildSoftwareApplicationSchema = ({ name, path, description, catego
   "applicationCategory": category,
   "operatingSystem": "Web",
   "description": description,
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "publisher": { "@id": `${BASE_URL}/#org` }
+  "isAccessibleForFree": true,
+  "publisher": { "@id": ORG_ID },
 });
 
 export const buildWebPageSchema = ({ name, path, description, crumbs }) => ({
@@ -174,12 +191,6 @@ export const buildExchangeRateSchema = (fromCode, toCode, snapshot) => {
       },
       ...(validFrom ? { validFrom, validThrough } : {}),
     },
-    "provider": { "@id": ORG_ID },
-    "isBasedOn": {
-      "@type": "Dataset",
-      "name": "ECB-benchmarked reference rates via ExchangeRate-API",
-      "url": `${BASE_URL}/data-sources`,
-    },
     "disambiguatingDescription": "Dated reference rate for planning and estimation. Not a live mid-market quote, and not the final transfer rate offered by a payment provider.",
   };
 };
@@ -244,8 +255,8 @@ export const getHomepageSEO = ({ faqs = [] } = {}) => {
     ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     structuredData: [
       {
-        "@type": "Organization",
-        "@id": `${BASE_URL}/#org`,
+        "@type": ["Organization", "OnlineBusiness"],
+        "@id": ORG_ID,
         "name": BRAND,
         "url": BASE_URL,
         "logo": {
@@ -255,35 +266,24 @@ export const getHomepageSEO = ({ faqs = [] } = {}) => {
           "height": 512
         },
         "description": "Free AI-powered time zone, meeting planner, and currency tools for remote teams and freelancers.",
-        "sameAs": [
-          "https://www.linkedin.com/company/globalsync-ai",
-          "https://x.com/GlobalSyncAI"
-        ]
+        "founder": { "@id": PERSON_ID },
+        "knowsAbout": [
+          "Time zone conversion",
+          "Daylight saving time",
+          "Foreign exchange reference rates",
+          "Remote team scheduling",
+          "Freelance invoicing",
+        ],
+        "sameAs": SAME_AS,
       },
-      {
-        "@type": "OnlineBusiness",
-        "@id": `${BASE_URL}/#business`,
-        "name": BRAND,
-        "url": BASE_URL,
-        "logo": LOGO_URL,
-        "description": "GlobalSync AI provides free online tools for time zone conversion, currency exchange calculations, and remote team meeting planning.",
-        "sameAs": [
-          "https://www.linkedin.com/company/globalsync-ai",
-          "https://x.com/GlobalSyncAI"
-        ]
-      },
+      buildPersonSchema(),
       {
         "@type": "WebSite",
-        "@id": `${BASE_URL}/#site`,
+        "@id": WEBSITE_ID,
         "url": BASE_URL,
         "name": BRAND,
-        "publisher": { "@id": `${BASE_URL}/#org` },
-        "inLanguage": "en-US",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": { "@type": "EntryPoint", "urlTemplate": `${BASE_URL}/dashboard?q={search_term_string}` },
-          "query-input": "required name=search_term_string"
-        }
+        "publisher": { "@id": ORG_ID },
+        "inLanguage": "en",
       },
       buildWebApplicationSchema({
         name: BRAND,
@@ -442,16 +442,33 @@ export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData, rateSnaps
     ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     noIndex: !pairData,
     structuredData: [
-      buildWebPageSchema({
-        name: `${fromMeta.code} to ${toMeta.code} Live Exchange Rate`,
-        path: `/currency/${pair}`,
-        description: desc,
-        crumbs: [
-          { name: "Home", path: "/" },
-          { name: "Currency Converter", path: "/currency-converter" },
-          { name: `${fromMeta.code} to ${toMeta.code}`, path: `/currency/${pair}` },
-        ]
-      }),
+      {
+        ...buildWebPageSchema({
+          name: `${fromMeta.code} to ${toMeta.code} Live Exchange Rate`,
+          path: `/currency/${pair}`,
+          description: desc,
+          crumbs: [
+            { name: "Home", path: "/" },
+            { name: "Currency Converter", path: "/currency-converter" },
+            { name: `${fromMeta.code} to ${toMeta.code}`, path: `/currency/${pair}` },
+          ]
+        }),
+        "@id": `${BASE_URL}/currency/${pair}#webpage`,
+        ...(toISO(rateSnapshot?.date) ? { "dateModified": toISO(rateSnapshot.date) } : {}),
+        "author": { "@id": PERSON_ID },
+        "publisher": { "@id": ORG_ID },
+        "isBasedOn": {
+          "@type": "Dataset",
+          "name": "ECB-benchmarked reference rates via ExchangeRate-API",
+          "url": `${BASE_URL}/data-sources`,
+        },
+        "citation": {
+          "@type": "CreativeWork",
+          "name": "GlobalSync AI Methodology",
+          "url": `${BASE_URL}/methodology`,
+        },
+        "mainEntity": { "@id": `${BASE_URL}/currency/${pair}#rate` },
+      },
       buildSoftwareApplicationSchema({
         name: `${fromMeta.code} to ${toMeta.code} Currency Converter`,
         path: `/currency/${pair}`,
@@ -459,19 +476,6 @@ export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData, rateSnaps
         category: "FinanceApplication"
       }),
       buildExchangeRateSchema(fromMeta.code, toMeta.code, rateSnapshot),
-      {
-        "@type": "WebPage",
-        "@id": `${BASE_URL}/currency/${pair}#webpage`,
-        "url": `${BASE_URL}/currency/${pair}`,
-        ...(toISO(rateSnapshot?.date) ? { "dateModified": toISO(rateSnapshot.date) } : {}),
-        "author": { "@id": PERSON_ID },
-        "publisher": { "@id": ORG_ID },
-        "citation": {
-          "@type": "CreativeWork",
-          "name": "GlobalSync AI Methodology",
-          "url": `${BASE_URL}/methodology`,
-        },
-      },
       buildOrganizationSchema(),
       buildPersonSchema(),
       ...(pairData?.faqs?.length ? [buildFAQSchema(pairData.faqs)] : []),

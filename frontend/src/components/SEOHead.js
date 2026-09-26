@@ -1,14 +1,20 @@
 /**
  * SEOHead — Universal metadata component for GlobalSync AI
  *
- * Uses react-helmet-async (not React 19 native metadata hoisting) so that
- * react-snap pre-rendered tags get properly deduplicated on hydrateRoot.
+ * Every tag rendered here carries data-seo="". That marker is the contract with
+ * src/index.js, which strips the pre-rendered set before React writes a fresh
+ * one. Without it you get two of everything.
  *
- * Root cause of the 572 Ahrefs duplicate-tag errors (286 title + 286 description):
- *   React 19's native <title>/<meta> hoisting baked tags into the pre-rendered HTML,
- *   then hydrateRoot injected them AGAIN — two identical tags per page.
- *   react-helmet-async marks every tag with data-rh="true" and strips the old set
- *   before writing the new one, giving exactly one tag per type after hydration.
+ * Worth recording, because this bug has now been "fixed" twice:
+ *   React 19 hoists <title>, <meta> and <link> into <head> on its own. It does
+ *   that even when they are written as children of another component, so
+ *   react-helmet-async never saw them and never stamped them with data-rh.
+ *   index.js was cleaning up [data-rh="true"], which matched nothing, so the
+ *   pre-rendered tags survived and React appended a second copy on top —
+ *   758 duplicate-tag errors over 379 pages, invisible to curl because the
+ *   duplicate only exists once JavaScript has run.
+ *   Helmet is gone now; React 19 does this natively. Verify by counting tags
+ *   in a rendered DOM, never in the HTML source.
  *
  * Props:
  *   rawTitle    {string}  — Complete, final <title>. Skips brand auto-suffix.
@@ -16,11 +22,12 @@
  *   description {string}  — Meta description
  *   canonical   {string}  — Path portion only e.g. "/time/new-york-to-london"
  *   keywords    {string}  — Comma-separated keyword list
- *   ogType      {string}  — OG type (default: "website", use "article" for blog posts)
+ *   ogType      {string}  — OG type (default: "website", "article" for posts)
  *   structuredData        — Single schema object OR array (rendered as @graph)
- *   noIndex     {bool}    — Emits noindex,nofollow robots tag when true (default: false)
+ *   noIndex     {bool}    — Emits noindex when true (default: false)
  */
-import { Helmet } from "react-helmet-async";
+
+import { buildSiteBaseGraph } from "@/lib/seo";
 
 const BASE_URL      = "https://www.globalsync-ai.com";
 const BRAND         = "GlobalSync AI";
@@ -76,54 +83,67 @@ export default function SEOHead({
   const twitterTitleText = formatCharLength(twitterTitle || fullTitle, 55);
   const twitterDescriptionText = formatCharLength(twitterDescription || normalizedDescription, 125);
   const fullCanonical = canonical ? new URL(canonical, BASE_URL).href : `${BASE_URL}/`;
-  structuredData = structuredData || schema;
+  const data = structuredData || schema;
 
-  const schemaOutput = structuredData
-    ? Array.isArray(structuredData)
-      ? { "@context": "https://schema.org", "@graph": structuredData }
-      : structuredData
-    : null;
+  // Organization and WebSite are referenced by @id from publisher/author all over
+  // the site, so every page has to actually define them or those references
+  // dangle. The page's own nodes come first and win on @id; the base graph only
+  // fills what is missing, so a page that already describes the Organization in
+  // more detail keeps its richer version.
+  let schemaOutput = null;
+  if (data) {
+    const pageNodes = (Array.isArray(data) ? data : [data]).filter(Boolean);
+    const present = new Set(pageNodes.map(n => n["@id"]).filter(Boolean));
+    const base = buildSiteBaseGraph().filter(n => !present.has(n["@id"]));
+    schemaOutput = { "@context": "https://schema.org", "@graph": [...pageNodes, ...base] };
+  }
 
   const socialImage = `${BASE_URL}/globalsync-ai-logo-1600x400.png`;
+  const imageAlt = `${BRAND} — Free Time Zone & Currency Converter`;
 
   return (
-    <Helmet
-      script={schemaOutput ? [
-        {
-          type: "application/ld+json",
-          innerHTML: JSON.stringify(schemaOutput),
-        }
-      ] : []}
-    >
-      <title>{fullTitle}</title>
-      <meta name="description" content={normalizedDescription} />
-      {keywords && <meta name="keywords" content={keywords} />}
-      {author  && <meta name="author"   content={author}   />}
-      <link rel="canonical" href={fullCanonical} />
+    <>
+      <title data-seo="">{fullTitle}</title>
+      <meta data-seo="" name="description" content={normalizedDescription} />
+      {keywords && <meta data-seo="" name="keywords" content={keywords} />}
+      {author  && <meta data-seo="" name="author"   content={author}   />}
+      <link data-seo="" rel="canonical" href={fullCanonical} />
 
-      <meta property="og:title"        content={ogTitleText}           />
-      <meta property="og:description"  content={ogDescText}            />
-      <meta property="og:type"         content={ogType}          />
-      <meta property="og:url"          content={fullCanonical}   />
-      <meta property="og:site_name"    content={BRAND}           />
-      <meta property="og:image"        content={socialImage}  />
-      <meta property="og:image:width"  content="1600"         />
-      <meta property="og:image:height" content="400"          />
-      <meta property="og:image:alt"    content={`${BRAND} — Free Time Zone & Currency Converter`} />
-      <meta property="og:locale"       content="en_US"           />
+      <meta data-seo="" property="og:title"        content={ogTitleText}   />
+      <meta data-seo="" property="og:description"  content={ogDescText}    />
+      <meta data-seo="" property="og:type"         content={ogType}        />
+      <meta data-seo="" property="og:url"          content={fullCanonical} />
+      <meta data-seo="" property="og:site_name"    content={BRAND}         />
+      <meta data-seo="" property="og:image"        content={socialImage}   />
+      <meta data-seo="" property="og:image:width"  content="1600"          />
+      <meta data-seo="" property="og:image:height" content="400"           />
+      <meta data-seo="" property="og:image:alt"    content={imageAlt}      />
+      <meta data-seo="" property="og:locale"       content="en_US"         />
 
-      <meta name="twitter:card"        content="summary_large_image" />
-      <meta name="twitter:site"        content="@GlobalSyncAI"       />
-      <meta name="twitter:creator"     content="@GlobalSyncAI"       />
-      <meta name="twitter:title"       content={twitterTitleText}     />
-      <meta name="twitter:description" content={twitterDescriptionText} />
-      <meta name="twitter:image"       content={socialImage}         />
-      <meta name="twitter:image:alt"   content={`${BRAND} — Free Time Zone & Currency Converter`} />
+      <meta data-seo="" name="twitter:card"        content="summary_large_image" />
+      <meta data-seo="" name="twitter:site"        content="@GlobalSyncAI"       />
+      <meta data-seo="" name="twitter:creator"     content="@GlobalSyncAI"       />
+      <meta data-seo="" name="twitter:title"       content={twitterTitleText}    />
+      <meta data-seo="" name="twitter:description" content={twitterDescriptionText} />
+      <meta data-seo="" name="twitter:image"       content={socialImage}         />
+      <meta data-seo="" name="twitter:image:alt"   content={imageAlt}            />
 
       {noIndex
-        ? <meta name="robots" content="noindex, nofollow" />
-        : <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        ? <meta data-seo="" name="robots" content="noindex, follow" />
+        : <meta data-seo="" name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
       }
-    </Helmet>
+
+      {schemaOutput && (
+        <script
+          data-seo=""
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            // The payload sits inside a <script>, so "<" is the only character
+            // that can break out of it. Escaping it keeps the JSON valid.
+            __html: JSON.stringify(schemaOutput).replace(/</g, "\u003c"),
+          }}
+        />
+      )}
+    </>
   );
 }

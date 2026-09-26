@@ -160,9 +160,10 @@ export default function ZonePairPage() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": `${from} to ${to} Time Zone Converter`,
-    "applicationCategory": "UtilityApplication",
+    "applicationCategory": "UtilitiesApplication",
     "operatingSystem": "Web",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "isAccessibleForFree": true,
+    "publisher": { "@id": "https://www.globalsync-ai.com/#org" },
     "url": `https://www.globalsync-ai.com/convert/${pair}`,
   };
 

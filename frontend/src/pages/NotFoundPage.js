@@ -52,7 +52,7 @@ export default function NotFoundPage() {
           </Link>
           <Link
             to="/dashboard"
-            rel="nofollow"
+           
             className="glass-dark inline-flex items-center gap-2 rounded-2xl px-7 py-3 font-semibold text-sm text-quiet hover:text-ink transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> Open Dashboard

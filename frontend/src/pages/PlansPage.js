@@ -20,7 +20,7 @@ export default function PlansPage() {
           <tr className="border-b border-line"><th className="py-4 font-normal">Custom branding and Pro extras</th><td>Unavailable for new upgrades</td></tr>
         </tbody>
       </table>
-      <Link to="/dashboard" rel="nofollow" className="btn-primary inline-flex">Open workspace</Link>
+      <Link to="/dashboard" className="btn-primary inline-flex">Open workspace</Link>
       <p className="mt-6 text-sm text-quiet">For product questions, <Link to="/contact" className="underline">contact us</Link>.</p>
     </main>
     <SiteFooter />

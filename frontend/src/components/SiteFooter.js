@@ -36,7 +36,7 @@ export default function SiteFooter() {
             <li><Link to="/convert" className="text-sm text-gem-gold font-medium hover:underline transition-colors">Zone Pair Converters Hub</Link></li>
             <li><Link to="/freelance-rate" className="text-sm text-gem-gold font-medium hover:underline transition-colors">Freelance Rate Hub</Link></li>
             <li><Link to="/meeting-overlap" className="text-sm text-gem-gold font-medium hover:underline transition-colors">Meeting Overlap Hub</Link></li>
-            <li><Link to="/dashboard" className="text-sm hover:text-gem-gold transition-colors" rel="nofollow">Open workspace</Link></li>
+            <li><Link to="/dashboard" className="text-sm hover:text-gem-gold transition-colors">Open workspace</Link></li>
           </ul>
         </div>
 

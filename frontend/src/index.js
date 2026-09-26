@@ -1,24 +1,26 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { HelmetProvider } from "react-helmet-async";
 import "@/index.css";
 import App from "@/App";
 
-// HelmetProvider is required for react-helmet-async (used by SEOHead).
-// It must wrap the entire app so every SEOHead can register with the same context.
 const app = (
   <React.StrictMode>
-    <HelmetProvider>
-      <App />
-    </HelmetProvider>
+    <App />
   </React.StrictMode>
 );
 
 const rootElement = document.getElementById("root");
 
-// The build snapshot remains useful without JavaScript. Replace it on startup;
+// The build snapshot stays useful without JavaScript. Replace it on startup;
 // never hydrate a hand-built or time-dependent DOM as if it were a React tree.
-// Remove only snapshot-owned head tags before Helmet takes ownership.
-document.head.querySelectorAll('[data-rh="true"], [data-react-helmet="true"]').forEach(node => node.remove());
+//
+// React 19 hoists <title>, <meta> and <link> into <head> itself, and it does
+// not adopt the equivalents the pre-renderer already baked in — it appends a
+// second copy. So every tag SEOHead owns is marked data-seo and removed here
+// before React writes its own. Dropping this line puts two titles, two meta
+// descriptions and two canonicals on all 379 pages, and none of it is visible
+// to curl, because the duplicate only appears once this script has run.
+document.querySelectorAll("[data-seo]").forEach(node => node.remove());
+
 rootElement.replaceChildren();
 createRoot(rootElement).render(app);

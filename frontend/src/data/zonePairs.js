@@ -1,3 +1,4 @@
+import { rotateBySeed } from "@/lib/linkSpread";
 /**
  * zonePairs.js
  * All 40 timezone abbreviation pairs from the SEO spec.
@@ -254,11 +255,11 @@ export function getPriorityPairs(priority) {
 export function getRelatedPairs(currentSlug, limit = 6) {
   const current = getZonePair(currentSlug);
   if (!current) return [];
-  return ZONE_PAIRS
-    .filter(p =>
-      p.slug !== currentSlug &&
-      (p.from === current.from || p.to === current.to ||
-       p.from === current.to  || p.to === current.from)
-    )
-    .slice(0, limit);
+  const reverse = ZONE_PAIRS.find(p => p.from === current.to && p.to === current.from);
+  const siblings = ZONE_PAIRS.filter(p =>
+    p.slug !== currentSlug && p !== reverse &&
+    (p.from === current.from || p.to === current.to ||
+     p.from === current.to  || p.to === current.from)
+  );
+  return [...(reverse ? [reverse] : []), ...rotateBySeed(siblings, currentSlug)].slice(0, limit);
 }

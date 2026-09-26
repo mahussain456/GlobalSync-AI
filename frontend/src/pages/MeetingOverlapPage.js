@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
 import { Calendar, Clock, ArrowRight, CheckCircle2, AlertTriangle, Users, ChevronDown, ChevronUp } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import { rotateBySeed } from "@/lib/linkSpread";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import AdBanner from "@/components/AdBanner";
@@ -47,7 +48,7 @@ export default function MeetingOverlapPage() {
   const recommendedWindow = overlap.recommendation;
   const overlapType = overlap.hasOverlap ? overlap.durationStr + " of shared 09:00–17:00 hours" : "No shared 09:00–17:00 hours";
 
-  const siblingCorridors = MEETING_CORRIDORS.filter(c => c.slug !== corridor).slice(0, 4);
+  const siblingCorridors = rotateBySeed(MEETING_CORRIDORS.filter(c => c.slug !== corridor), corridor).slice(0, 4);
 
   // Schemas
   const breadcrumbSchema = {
