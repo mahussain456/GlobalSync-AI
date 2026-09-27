@@ -122,6 +122,11 @@
   ],
   "redirects": [
     {
+      "source": "/download",
+      "destination": "/world-clock-widget",
+      "permanent": false
+    },
+    {
       "source": "/sitemap",
       "destination": "/sitemap.xml",
       "permanent": true
