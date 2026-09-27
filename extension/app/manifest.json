@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "GlobalSync Time Lens",
+  "short_name": "Time Lens",
+  "version": "1.0.0",
+  "description": "Select any time on a page, like “Thursday 3pm EST”, and see it in your cities, with who's at work. Private and tiny.",
+  "homepage_url": "https://www.globalsync-ai.com/world-clock-widget",
+  "icons": { "16": "icons/16.png", "32": "icons/32.png", "48": "icons/48.png", "128": "icons/128.png" },
+  "action": {
+    "default_title": "Time Lens",
+    "default_popup": "popup.html",
+    "default_icon": { "16": "icons/16.png", "32": "icons/32.png" }
+  },
+  "background": { "service_worker": "background.js" },
+  "permissions": ["storage", "contextMenus"],
+  "content_scripts": [
+    { "matches": ["http://*/*", "https://*/*"], "js": ["core.js", "content.js"], "run_at": "document_idle" }
+  ],
+  "commands": {
+    "_execute_action": { "suggested_key": { "default": "Alt+Shift+T" }, "description": "Open Time Lens" }
+  },
+  "minimum_chrome_version": "110"
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Welcome to Time Lens</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --forest: #0E2A1F; --pine: #1B4D3E; --ivory: #F4EFE6; --gold: #C8A96A; --quiet: #526659; --line: #CFD5CA; --surface: #FFFCF7; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--ivory); color: var(--forest); font: 16px/1.6 "DM Sans", "Segoe UI", system-ui, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 64px 24px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+  .brand img { width: 36px; height: 36px; border-radius: 9px; }
+  h1 { font: 500 clamp(36px, 6vw, 56px)/1.08 "Playfair Display", Georgia, serif; letter-spacing: -.02em; margin: 34px 0 12px; }
+  h1 em { color: var(--pine); }
+  .lead { color: var(--quiet); max-width: 560px; }
+  ol { list-style: none; margin: 36px 0; display: grid; gap: 14px; }
+  li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; grid-template-columns: 36px 1fr; gap: 12px; }
+  li b.n { font: italic 500 26px/1 "Playfair Display", Georgia, serif; color: var(--pine); }
+  li strong { display: block; }
+  li span { color: var(--quiet); font-size: 15px; }
+  .demo { background: var(--forest); color: var(--ivory); border-radius: 12px; padding: 18px 20px; }
+  .demo p { color: #A7BFAE; font-size: 14px; margin-bottom: 6px; }
+  .demo mark { background: #b8d5ff; color: #111; padding: 1px 3px; border-radius: 3px; }
+  .demo q { font-size: 18px; quotes: none; }
+  .more { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--quiet); font-size: 15px; }
+  .more a { color: var(--pine); font-weight: 600; }
+  kbd { font: inherit; font-size: 13px; border: 1px solid var(--line); border-radius: 5px; padding: 0 6px; background: var(--surface); }
+</style></head>
+<body><main>
+  <div class="brand"><img src="icons/128.png" alt="">GlobalSync Time Lens</div>
+  <h1>Times, <em>in your cities.</em></h1>
+  <p class="lead">Time Lens is ready. It stays out of the way until you select a time, then shows it in your four cities, with who's at work.</p>
+  <ol>
+    <li><b class="n">1</b><div><strong>Select a time on any page</strong><span>Like “Thursday 3pm EST” or “15:00 London”. A small clock button appears beside it. Click it for the conversion.</span></div></li>
+    <li><b class="n">2</b><div><strong>Or right-click it</strong><span>Choose “Convert with Time Lens”. This also works for times without a zone, which are read as your home city's time.</span></div></li>
+    <li><b class="n">3</b><div><strong>Pin it and pick your cities</strong><span>Click the puzzle icon in your toolbar and pin Time Lens. Open it (or press <kbd>Alt+Shift+T</kbd>) to convert typed times, choose your cities, or switch on the floating mini clock.</span></div></li>
+  </ol>
+  <div class="demo"><p>Try it here: select the highlighted text.</p><q>Can we do the kick-off on <mark>Thursday at 3pm EST</mark>?</q></div>
+  <p class="more">Private by design: Time Lens converts on your device and never sends what you select anywhere.<br>
+  Want your clocks outside the browser too? <a href="https://www.globalsync-ai.com/world-clock-widget?ref=time-lens-welcome" target="_blank" rel="noopener">Get the free desktop widget →</a></p>
+</main>
+<script src="core.js"></script>
+<script src="content.js"></script>
+</body></html>

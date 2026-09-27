@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>store asset</title>
+<style>
+@font-face { font-family: "DM Sans"; font-weight: 400; src: url(dm-sans-latin-400-normal.woff2); }
+@font-face { font-family: "DM Sans"; font-weight: 600; src: url(dm-sans-latin-600-normal.woff2); }
+@font-face { font-family: "Playfair Display"; font-weight: 500; src: url(playfair-display-latin-500-normal.woff2); }
+@font-face { font-family: "Playfair Display"; font-weight: 500; font-style: italic; src: url(playfair-display-latin-500-italic.woff2); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { width: var(--w); height: var(--h); overflow: hidden; font-family: "DM Sans", sans-serif; -webkit-font-smoothing: antialiased; }
+.s { position: relative; width: 100%; height: 100%; overflow: hidden; color: #F4EFE6;
+  background: radial-gradient(90% 70% at 90% 0%, rgba(200,169,106,.16), transparent 55%), radial-gradient(80% 70% at 0% 100%, rgba(27,77,62,.9), transparent 60%), linear-gradient(160deg, #133528, #0A1F17 60%, #07150F); }
+.mer { position: absolute; inset: 0; opacity: .22; }
+.brand { position: absolute; display: flex; align-items: center; gap: 12px; font-weight: 600; letter-spacing: .02em; }
+.brand img { border-radius: 10px; }
+.kick { font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #C8A96A; }
+h1 { font-family: "Playfair Display", serif; font-weight: 500; letter-spacing: -.025em; line-height: 1.05; }
+h1 em { font-style: italic; color: #E3C68B; }
+p.sub { color: rgba(244,239,230,.78); line-height: 1.5; }
+.shot { position: absolute; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 40px 90px rgba(0,0,0,.5), 0 0 0 1px rgba(200,169,106,.3); }
+.shot .bar { height: 30px; background: #e8eaed; display: flex; align-items: center; gap: 7px; padding: 0 12px; }
+.shot .bar i { width: 10px; height: 10px; border-radius: 50%; background: #c4c7cc; }
+.shot .bar span { margin-left: 12px; background: #fff; border-radius: 999px; padding: 3px 14px; font-size: 11px; color: #5f6368; }
+.shot img { display: block; }
+.plain { position: absolute; border-radius: 16px; overflow: hidden; box-shadow: 0 40px 90px rgba(0,0,0,.5), 0 0 0 1px rgba(200,169,106,.3); }
+.plain img { display: block; }
+.facts { display: grid; gap: 22px; }
+.fact { display: grid; grid-template-columns: 54px 1fr; gap: 18px; align-items: center; font-size: 26px; }
+.fact b { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; background: rgba(200,169,106,.16); color: #E3C68B; font-size: 24px; }
+</style></head>
+<body><div class="s" id="s"></div>
+<script>
+const P = new URLSearchParams(location.search), kind = P.get('k') || 's1';
+const [W, H] = (P.get('size') || '1280x800').split('x').map(Number);
+document.body.style.setProperty('--w', W + 'px'); document.body.style.setProperty('--h', H + 'px');
+const MER = `<svg class="mer" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="#C8A96A" stroke-width="1.2"><ellipse cx="800" cy="200" rx="430" ry="430"/><ellipse cx="800" cy="200" rx="300" ry="300"/><path d="M40 900 C 300 700, 640 720, 980 470" stroke-dasharray="3 9"/></g></svg>`;
+const brand = (x, y, s = 1) => `<div class="brand" style="left:${x}px;top:${y}px;font-size:${20 * s}px"><img src="icon128.png" width="${40 * s}" height="${40 * s}">GlobalSync Time Lens</div>`;
+const text = (x, y, w, kick, h, sub, hs = 64) => `<div style="position:absolute;left:${x}px;top:${y}px;width:${w}px">
+  <div class="kick" style="font-size:15px;margin-bottom:18px">${kick}</div><h1 style="font-size:${hs}px">${h}</h1>${sub ? `<p class="sub" style="font-size:21px;margin-top:22px">${sub}</p>` : ''}</div>`;
+const browser = (x, y, w, img, crop, url) => `<div class="shot" style="left:${x}px;top:${y}px;width:${w}px"><div class="bar"><i></i><i></i><i></i><span>${url}</span></div>
+  <div style="width:${w}px;height:${crop.h}px;overflow:hidden;position:relative"><img src="captures/${img}" style="width:${crop.iw}px;position:absolute;left:${-crop.x}px;top:${-crop.y}px"></div></div>`;
+const S = {
+  s1: () => MER + brand(64, 56) + text(64, 190, 440, 'Select · convert', 'Any time on the page. <em>In your cities.</em>', 'Select “Thursday at 3pm EST” in an email or doc. A small clock appears. One click shows it in your cities, with who’s at work.')
+        + browser(560, 150, 660, 'lens_2_card.png', { iw: 1100, x: 70, y: 0, h: 460 }, 'mail.example.com/inbox'),
+  s2: () => MER + brand(64, 56) + text(64, 210, 520, 'Type it', 'Or just type it.', '“9:30am IST tomorrow”, “15:00 London Fri”, “noon PT”. The toolbar popup converts anything, with a Copy button for your invite.')
+        + `<div class="plain" style="left:760px;top:100px;width:330px"><img src="captures/lens_6_popup.png" style="width:330px"></div>`,
+  s3: () => MER + brand(64, 56) + text(64, 210, 460, 'Optional', 'A clock that stays <em>out of your way.</em>', 'Switch on the floating mini clock and drag it anywhere. It fades back until you hover and hides for full-screen video.')
+        + browser(560, 300, 660, 'mini_crop.png', { iw: 660, x: 0, y: 0, h: 113 }, 'any site') + `<div style="position:absolute;left:560px;top:460px;width:660px;color:rgba(244,239,230,.7);font-size:17px;text-align:right">Hover to bring it forward · click for details · × to hide</div>`,
+  s4: () => MER + brand(64, 56) + text(64, 210, 520, 'Yours', 'Your cities. <em>Your hours.</em>', 'Pick up to four of 160+ cities, set your home city, 12 or 24-hour time, work hours and theme. Settings sync across your devices.')
+        + `<div class="plain" style="left:760px;top:84px;width:330px"><img src="captures/lens_7_settings.png" style="width:330px"></div>`,
+  s5: () => MER + brand(64, 56) + text(64, 170, 1100, 'Private by design', 'Nothing you select <em>ever leaves your browser.</em>', null, 70)
+        + `<div class="facts" style="position:absolute;left:64px;top:430px;width:1100px">
+            <div class="fact"><b>✓</b>Converts on your device, with no servers and no account.</div>
+            <div class="fact"><b>✓</b>No analytics, no trackers, no ads.</div>
+            <div class="fact"><b>✓</b>41 KB, idle until you select text, and off per site with one switch.</div></div>`,
+  tile: () => MER + `<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center">
+            <img src="icon128.png" width="84" height="84" style="border-radius:20px;box-shadow:0 14px 30px rgba(0,0,0,.4)">
+            <h1 style="font-size:34px">Time Lens</h1><p class="sub" style="font-size:16px">Any time on the page, <em style="font-family:'Playfair Display';color:#E3C68B">in your cities.</em></p></div>`,
+  marquee: () => MER + brand(80, 64, 1.1) + text(80, 180, 620, 'Free for Chrome, Edge & Firefox', 'Any time on the page. <em>In your cities.</em>', 'Select a time, see who’s at work. Private and tiny.', 62)
+        + browser(760, 90, 560, 'lens_2_card.png', { iw: 960, x: 60, y: 0, h: 390 }, 'mail.example.com/inbox'),
+};
+document.getElementById('s').innerHTML = S[kind]();
+document.fonts.ready.then(() => Promise.all([...document.images].map(i => i.complete ? 1 : new Promise(r => { i.onload = i.onerror = r; })))).then(() => { document.body.dataset.ready = '1'; });
+</script></body></html>

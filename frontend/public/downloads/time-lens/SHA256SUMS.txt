@@ -1,0 +1,2 @@
+a23e9be6b62774ff2f153bbeb080c0803d97b5bbaac298d83d4c0aaee5e1f699 *GlobalSync-Time-Lens-1.0.0-chrome.zip
+88c4cc2441accef2a90818e899f41ec33c182f101794f5df4aa090ecfb6085d8 *GlobalSync-Time-Lens-1.0.0-firefox.zip

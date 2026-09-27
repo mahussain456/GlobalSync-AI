@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Time Lens</title><link rel="stylesheet" href="popup.css"></head>
+<body>
+<main id="app" class="ui">
+  <header>
+    <img src="icons/32.png" width="22" height="22" alt="">
+    <h1>Time Lens</h1>
+    <button id="to-settings" class="ic" title="Settings" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+  </header>
+
+  <section id="view-main">
+    <input id="q" type="text" placeholder="Convert… 3pm EST · 15:00 London Fri" autocomplete="off" spellcheck="false" aria-label="Convert a time">
+    <p id="title" class="title">Now</p>
+    <div id="rows" class="rows"></div>
+    <div class="actions"><span id="fit" class="fit"></span><button id="copy" class="copy">Copy</button></div>
+    <div class="toggles">
+      <label class="tg"><span>Floating mini clock</span><input type="checkbox" id="mini"><i></i></label>
+      <label class="tg"><span id="site-label">Turn off on this site</span><input type="checkbox" id="site"><i></i></label>
+    </div>
+    <p class="tip">Select a time on any page, or right-click it, to convert. Shortcut: <kbd id="kbd">Alt+Shift+T</kbd></p>
+  </section>
+
+  <section id="view-settings" hidden>
+    <p class="label">Your cities <small>(up to 4 · ★ = home)</small></p>
+    <div id="cities" class="cities"></div>
+    <div class="add"><input id="add-q" type="text" placeholder="Add a city or country…" autocomplete="off" spellcheck="false" aria-label="Add a city"><div id="add-res" class="add-res"></div></div>
+    <div class="set"><span>Clock</span><span class="seg" data-k="hour12"><button data-v="true">12h</button><button data-v="false">24h</button></span></div>
+    <div class="set"><span>On selecting a time</span><span class="seg" data-k="lens"><button data-v="pill">Button</button><button data-v="auto">Card</button><button data-v="off">Off</button></span></div>
+    <div class="set"><span>Theme</span><span class="seg" data-k="theme"><button data-v="forest">Forest</button><button data-v="paper">Paper</button><button data-v="auto">Auto</button></span></div>
+    <div class="set"><span>Work hours</span><span><select id="ws"></select> – <select id="we"></select></span></div>
+    <button id="back" class="back">← Done</button>
+  </section>
+
+  <footer><a href="https://www.globalsync-ai.com/world-clock-widget?ref=time-lens" target="_blank" rel="noopener">Get the free desktop widget →</a></footer>
+</main>
+<script src="core.js"></script>
+<script src="popup.js"></script>
+</body></html>
