@@ -8,9 +8,9 @@
     "sha256": "d7dcba15c6c25ee36813197daf45148d8491e76e092ddba7f6c5ccde5e3eb3e2"
   },
   "mac": {
-    "href": null,
-    "size": "≈ 5 MB",
+    "href": "/downloads/world-clock/mac/GlobalSync-World-Clock-1.1.0-macOS.dmg",
+    "size": "4.1 MB",
     "requires": "macOS 11 Big Sur or later · Intel and Apple Silicon",
-    "sha256": null
+    "sha256": "4cd97c0c6212b6243cd00176d0c7b0eca7cfc12490e10dfa418dc01e6734b411"
   }
 }
