@@ -12,6 +12,7 @@ transfer rate your payment provider will give you.
 ## Tools
 - [Time Zone Converter](https://www.globalsync-ai.com/time-zone-converter): Compare live time across 25+ cities, with DST handled via the IANA database.
 - [Meeting Planner](https://www.globalsync-ai.com/meeting-planner): Find fair overlap hours for distributed teams and export or share the slot.
+- [Desktop World Clock Widget](https://www.globalsync-ai.com/world-clock-widget): Free 1.6 MB world clock widget for Windows and Mac with four live city clocks, call-time status and meeting-time preview.
 - [Currency Converter](https://www.globalsync-ai.com/currency-converter): Estimate amounts across 160+ currencies using dated reference rates, with the source and date shown on every result.
 - [Freelance Rate Converter](https://www.globalsync-ai.com/freelancer-rate-converter): Convert hourly, retainer and project rates across currencies and estimate gross annual revenue.
 - [Invoice Builder](https://www.globalsync-ai.com/invoice): Turn rates and client details into an invoice.

@@ -622,6 +622,12 @@ const STATIC_META = {
     canonical: "/global-meeting-planner-for-remote-teams",
     keywords: "remote teams meeting planner, group meeting time finder, multi zone meeting scheduler",
   },
+  "world-clock-widget": {
+    rawTitle: `Free World Clock Widget for Windows & Mac | GlobalSync AI`,
+    description: `Download a free desktop world clock widget for Windows and Mac. Four cities with live skies, call-time status and meeting-time preview. 1.6 MB, no account.`,
+    canonical: "/world-clock-widget",
+    keywords: "world clock widget, desktop world clock, world clock for windows, world clock for mac, time zone widget, remote team clock",
+  },
   "us-india-meeting-time": {
     rawTitle: `US & India Meeting Times Guide | GlobalSync AI`,
     description: `Find the best meeting times between the United States and India. Convert EST and PST to IST, and check business hour overlaps.`,

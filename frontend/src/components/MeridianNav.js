@@ -3,7 +3,7 @@ import {Link,useLocation} from 'react-router-dom';
 import {ArrowRight,Menu,X} from 'lucide-react';
 import SavedTeamsPanel from './SavedTeamsPanel';
 import '@/styles/meridian-brand.css';
-const links=[['Time zones','/time-zone-converter'],['Meeting planner','/meeting-planner'],['Currency','/currency-converter'],['Freelance rates','/freelancer-rate-converter'],['Invoices','/invoice'],['Guides','/blog']];
+const links=[['Time zones','/time-zone-converter'],['Meeting planner','/meeting-planner'],['Currency','/currency-converter'],['Freelance rates','/freelancer-rate-converter'],['Invoices','/invoice'],['Desktop app','/world-clock-widget'],['Guides','/blog']];
 export default function MeridianNav(){
  const [open,setOpen]=useState(false),[scrolled,setScrolled]=useState(false);
  const {pathname}=useLocation(),button=useRef(null),header=useRef(null);
