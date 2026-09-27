@@ -4,6 +4,7 @@ import { Clock, ArrowRight, Users, CheckCircle2 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import DesktopAppCTA from "@/components/DesktopAppCTA";
 import AdBanner from "@/components/AdBanner";
 import { CITIES, CITY_PAIRS, getCityPair, getRelatedCityPairs, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
 import { getCityPairSEO } from "@/lib/seo";
@@ -392,6 +393,7 @@ export default function CityPairPage() {
         </section>
       </article>
 
+      <DesktopAppCTA placement="city_pair" />
       <SiteFooter />
     </div>
   );

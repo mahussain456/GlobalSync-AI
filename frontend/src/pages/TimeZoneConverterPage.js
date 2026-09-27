@@ -5,6 +5,7 @@ import SEOHead from "@/components/SEOHead";
 import AdBanner from "@/components/AdBanner";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import DesktopAppCTA from "@/components/DesktopAppCTA";
 import { CITIES, CITY_PAIRS, getCityPair, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
 
 import { getTimeZoneHubSEO } from "@/lib/seo";
@@ -276,6 +277,7 @@ export default function TimeZoneConverterPage() {
           </div>
         </section>
       </article>
+      <DesktopAppCTA placement="time_zone_converter" />
       <SiteFooter />
     </div>
   );

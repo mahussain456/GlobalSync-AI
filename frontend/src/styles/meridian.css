@@ -45,3 +45,4 @@
 @keyframes atlas-node{0%,100%{opacity:.45}50%{opacity:1}}
 @media(max-width:600px){.meridian-home .more-tools h2{font-size:32px}.meridian-home .more-tools form>div{flex-direction:column}.meridian-home .more-tools button{justify-content:center}.meridian-home .hero-art{mask-image:none}.meridian-home .picture-frame{border-radius:22px}}
 @media(prefers-reduced-motion:reduce){.meridian-home .atlas-routes,.meridian-home .hero-art,.meridian-home .atlas-route,.meridian-home .atlas-node{animation:none!important;transform:none!important}}
+.meridian-home .desktop-visual{padding-bottom:34px;overflow:visible}.meridian-home .desktop-visual img{width:170px;height:auto;transform:rotate(-3deg) translateY(4px);transition:transform .5s var(--ease);filter:drop-shadow(0 16px 26px #0e2a1f33)}.meridian-home .tool-feature:hover .desktop-visual img{transform:rotate(0) translateY(-4px)}@media(prefers-reduced-motion:reduce){.meridian-home .desktop-visual img{transition:none}}

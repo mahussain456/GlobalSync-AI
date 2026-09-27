@@ -4,13 +4,13 @@
 # and fills in the "mac" entry of frontend/src/data/worldClockRelease.json, which switches
 # the /world-clock-widget page's Mac card from "Coming soon" to a download button.
 #
-# Runs when anything under widget/ changes on main, or on demand from the Actions tab.
+# Runs when the app's source changes on main (not scripts/docs), or on demand from the Actions tab.
 name: world-clock-mac
 
 on:
   push:
     branches: [main]
-    paths: ['widget/**', '.github/workflows/world-clock-mac.yml']
+    paths: ['widget/src/**', 'widget/src-tauri/**', 'widget/package.json', 'widget/package-lock.json', '.github/workflows/world-clock-mac.yml']
   workflow_dispatch:
 
 permissions:

@@ -4,6 +4,7 @@ import { ArrowRight, Clock } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import DesktopAppCTA from "@/components/DesktopAppCTA";
 import { getStaticPageSEO } from "@/lib/seo";
 
 export default function USIndiaMeetingTimePage() {
@@ -60,6 +61,7 @@ export default function USIndiaMeetingTimePage() {
           </div>
         </div>
       </main>
+      <DesktopAppCTA placement="us_india_meeting_time" />
       <SiteFooter />
     </div>
   );

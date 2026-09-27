@@ -4,6 +4,7 @@ import { ArrowRight, Users, Clock } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import DesktopAppCTA from "@/components/DesktopAppCTA";
 import { getStaticPageSEO } from "@/lib/seo";
 
 export default function RemoteTeamsMeetingPlannerPage() {
@@ -57,6 +58,7 @@ export default function RemoteTeamsMeetingPlannerPage() {
           </div>
         </div>
       </main>
+      <DesktopAppCTA placement="remote_teams_meeting_planner" />
       <SiteFooter />
     </div>
   );

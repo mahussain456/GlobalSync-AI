@@ -3,6 +3,7 @@ import { Calendar, ArrowRight, Users, Globe, Clock } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import DesktopAppCTA from "@/components/DesktopAppCTA";
 import { MEETING_CORRIDORS } from "@/data/meetingCorridors";
 
 const breadcrumbSchema = {
@@ -108,6 +109,7 @@ export default function MeetingOverlapHubPage() {
         </section>
       </div>
 
+      <DesktopAppCTA placement="meeting_overlap_hub" />
       <SiteFooter />
     </div>
   );

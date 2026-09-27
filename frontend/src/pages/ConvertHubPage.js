@@ -3,6 +3,7 @@ import { Clock, ArrowRight, Globe } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import DesktopAppCTA from "@/components/DesktopAppCTA";
 import { ZONE_PAIRS, getPriorityPairs } from "@/data/zonePairs";
 
 // Group pairs by "from" zone for the hub grid
@@ -154,6 +155,7 @@ export default function ConvertHubPage() {
 
       </div>
 
+      <DesktopAppCTA placement="convert_hub" />
       <SiteFooter />
     </div>
   );

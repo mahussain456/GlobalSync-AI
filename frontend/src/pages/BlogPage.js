@@ -3,6 +3,7 @@ import { ArrowRight, Clock, BookOpen } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import DesktopAppCTA from "@/components/DesktopAppCTA";
 import { BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
 import { getBlogIndexSEO } from "@/lib/seo";
 
@@ -87,6 +88,7 @@ export default function BlogPage() {
         </section>
       </div>
 
+      <DesktopAppCTA placement="blog_index" />
       <SiteFooter />
     </div>
   );

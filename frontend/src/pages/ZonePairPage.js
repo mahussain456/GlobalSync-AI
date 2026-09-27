@@ -5,6 +5,7 @@ import { Clock, ArrowRight, AlertCircle, CheckCircle2, Sun, Moon, ChevronDown, C
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import DesktopAppCTA from "@/components/DesktopAppCTA";
 import AdBanner from "@/components/AdBanner";
 import { getZonePair, getRelatedPairs, ZONE_META } from "@/data/zonePairs";
 import { getPairContext } from "@/data/pairContext";
@@ -453,6 +454,7 @@ export default function ZonePairPage() {
 
       </article>
 
+      <DesktopAppCTA placement="zone_pair" />
       <SiteFooter />
     </div>
   );

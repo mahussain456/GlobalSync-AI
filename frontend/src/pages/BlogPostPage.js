@@ -5,6 +5,7 @@ import SEOHead from "@/components/SEOHead";
 import AdBanner from "@/components/AdBanner";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import DesktopAppCTA from "@/components/DesktopAppCTA";
 import { getBlogPost, BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
 import { getBlogPostSEO } from "@/lib/seo";
 import ToolCTA from "@/components/ToolCTA";
@@ -209,6 +210,7 @@ export default function BlogPostPage() {
           </Link>
         </div>
       </article>
+      <DesktopAppCTA placement="blog_post" />
       <SiteFooter />
     </div>
   );

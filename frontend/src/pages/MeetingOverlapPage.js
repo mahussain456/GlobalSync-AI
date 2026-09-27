@@ -5,6 +5,7 @@ import SEOHead from "@/components/SEOHead";
 import { rotateBySeed } from "@/lib/linkSpread";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import DesktopAppCTA from "@/components/DesktopAppCTA";
 import AdBanner from "@/components/AdBanner";
 import { getMeetingCorridor, MEETING_CORRIDORS } from "@/data/meetingCorridors";
 import { generate24hTable, computeBusinessOverlap } from "@/lib/timezoneUtils";
@@ -272,6 +273,7 @@ export default function MeetingOverlapPage() {
         </div>
       </article>
 
+      <DesktopAppCTA placement="meeting_overlap" />
       <SiteFooter />
     </div>
   );

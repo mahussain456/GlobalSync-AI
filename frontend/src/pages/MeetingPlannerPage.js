@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
+import DesktopAppCTA from "@/components/DesktopAppCTA";
 import MeetingPlanner from '@/components/MeetingPlanner';
 import { getMeetingPlannerSEO } from '@/lib/seo';
 
@@ -25,6 +26,7 @@ export default function MeetingPlannerPage() {
         <div className="divide-y divide-line">{FAQ.map(({ q, a }) => <details key={q} className="py-5"><summary className="cursor-pointer font-medium text-ink py-1">{q}</summary><p className="text-quiet mt-3 leading-relaxed">{a}</p></details>)}</div>
       </section>
       <nav aria-label="Continue your client workflow" className="mt-12 border-t border-line pt-6 flex flex-wrap gap-5 text-sm text-pine"><Link className="underline underline-offset-4" to="/time-zone-converter">Compare world clocks</Link><Link className="underline underline-offset-4" to="/freelancer-rate-converter">Set a freelance rate</Link><Link className="underline underline-offset-4" to="/invoice">Create an invoice</Link></nav>
-    </main><SiteFooter />
+    </main><DesktopAppCTA placement="meeting_planner" />
+<SiteFooter />
   </div>;
 }
