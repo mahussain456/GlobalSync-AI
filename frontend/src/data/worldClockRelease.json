@@ -1,0 +1,16 @@
+{
+  "version": "1.1.0",
+  "date": "2026-09-27",
+  "windows": {
+    "href": "/downloads/world-clock/windows/GlobalSync-World-Clock-1.1.0-Windows-Setup.exe",
+    "size": "1.6 MB",
+    "requires": "Windows 10 or 11 (64-bit)",
+    "sha256": "d7dcba15c6c25ee36813197daf45148d8491e76e092ddba7f6c5ccde5e3eb3e2"
+  },
+  "mac": {
+    "href": null,
+    "size": "≈ 5 MB",
+    "requires": "macOS 11 Big Sur or later · Intel and Apple Silicon",
+    "sha256": null
+  }
+}

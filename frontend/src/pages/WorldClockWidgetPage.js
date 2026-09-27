@@ -9,23 +9,9 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { getStaticPageSEO } from "@/lib/seo";
 import { fireAnalyticsEvent, markToolUsed } from "@/lib/analytics";
-
-// One place to update when a new build ships. Set mac.href once the .dmg is in /downloads/world-clock/mac/.
-const RELEASE = {
-  version: "1.1.0",
-  date: "2026-09-27",
-  windows: {
-    href: "/downloads/world-clock/windows/GlobalSync-World-Clock-1.1.0-Windows-Setup.exe",
-    size: "1.6 MB",
-    requires: "Windows 10 or 11 (64-bit)",
-    sha256: "d7dcba15c6c25ee36813197daf45148d8491e76e092ddba7f6c5ccde5e3eb3e2",
-  },
-  mac: {
-    href: null,
-    size: "≈ 5 MB",
-    requires: "macOS 10.15 Catalina or later · Intel and Apple Silicon",
-  },
-};
+// Release details live in a data file so the macOS build job (.github/workflows/world-clock-mac.yml)
+// can fill in the "mac" entry automatically when it publishes a new .dmg.
+import RELEASE from "@/data/worldClockRelease.json";
 
 const FEATURES = [
   { icon: Sunrise, title: "A live sky for every city", body: "Each clock shows its city's real sky right now: dawn, daylight, golden hour or a starry night. Thirteen cities have hand-drawn landmarks, from the Golden Gate to the Charminar." },
@@ -144,7 +130,7 @@ function PlatformCard({ kind, highlighted }) {
           </a>
         </div>
       )}
-      {!isMac && (
+      {r.href && r.sha256 && (
         <details className="mt-4 text-xs text-quiet">
           <summary className="cursor-pointer hover:text-ink">Verify the download (SHA-256)</summary>
           <code className="block mt-2 break-all bg-wash rounded-md p-2 text-ink">{r.sha256}</code>
@@ -163,7 +149,7 @@ export default function WorldClockWidgetPage() {
     "@type": "SoftwareApplication",
     name: "GlobalSync World Clock",
     applicationCategory: "UtilitiesApplication",
-    operatingSystem: "Windows 10, Windows 11, macOS 10.15+",
+    operatingSystem: "Windows 10, Windows 11, macOS 11+",
     softwareVersion: RELEASE.version,
     datePublished: RELEASE.date,
     fileSize: RELEASE.windows.size,
@@ -293,7 +279,7 @@ export default function WorldClockWidgetPage() {
               {[
                 ["Version", `${RELEASE.version} (${RELEASE.date})`],
                 ["Download size", `Windows ${RELEASE.windows.size} · macOS ${RELEASE.mac.size}`],
-                ["Platforms", "Windows 10 / 11 (64-bit) · macOS 10.15+ (Intel & Apple Silicon)"],
+                ["Platforms", `${RELEASE.windows.requires} · ${RELEASE.mac.requires}`],
                 ["Price", "Free, no account required"],
                 ["Privacy", "Settings stay on your device. No analytics, no network requests."],
                 ["Time data", "IANA time zone database built into your operating system; daylight saving handled automatically"],

@@ -1,0 +1,94 @@
+# Builds the GlobalSync World Clock macOS installer (universal .dmg: Intel + Apple Silicon)
+# on GitHub's Mac runners, then publishes it to the website:
+#   frontend/public/downloads/world-clock/mac/GlobalSync-World-Clock-<version>-macOS.dmg
+# and fills in the "mac" entry of frontend/src/data/worldClockRelease.json, which switches
+# the /world-clock-widget page's Mac card from "Coming soon" to a download button.
+#
+# Runs when anything under widget/ changes on main, or on demand from the Actions tab.
+name: world-clock-mac
+
+on:
+  push:
+    branches: [main]
+    paths: ['widget/**', '.github/workflows/world-clock-mac.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: world-clock-mac
+  cancel-in-progress: true
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: widget
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: 'widget/src-tauri -> target'
+
+      - name: Install
+        run: npm ci
+
+      - name: Build universal .dmg
+        run: npx tauri build --target universal-apple-darwin --bundles dmg
+
+      - name: Keep a copy as a build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-clock-macos-dmg
+          path: widget/src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg
+          if-no-files-found: error
+
+      - name: Publish the .dmg to the website
+        run: |
+          set -euo pipefail
+          VERSION=$(node -p "require('./src-tauri/tauri.conf.json').version")
+          SRC=$(ls src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg | head -1)
+          NAME="GlobalSync-World-Clock-${VERSION}-macOS.dmg"
+          OUT=../frontend/public/downloads/world-clock/mac
+          mkdir -p "$OUT"
+          rm -f "$OUT"/*.dmg "$OUT"/README.md
+          cp "$SRC" "$OUT/$NAME"
+          (cd "$OUT" && shasum -a 256 "$NAME" > SHA256SUMS.txt && cat SHA256SUMS.txt)
+          NAME="$NAME" OUT="$OUT" node -e '
+            const fs = require("fs");
+            const file = "../frontend/src/data/worldClockRelease.json";
+            const rel = JSON.parse(fs.readFileSync(file, "utf8"));
+            const dmg = `${process.env.OUT}/${process.env.NAME}`;
+            rel.mac.href = `/downloads/world-clock/mac/${process.env.NAME}`;
+            rel.mac.size = (fs.statSync(dmg).size / 1048576).toFixed(1) + " MB";
+            rel.mac.sha256 = fs.readFileSync(`${process.env.OUT}/SHA256SUMS.txt`, "utf8").split(/\s+/)[0];
+            fs.writeFileSync(file, JSON.stringify(rel, null, 2) + "\n");
+            console.log(rel.mac);
+          '
+
+      - name: Commit to main (Vercel redeploys the site)
+        run: |
+          set -euo pipefail
+          cd ..
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add frontend/public/downloads/world-clock/mac frontend/src/data/worldClockRelease.json
+          if git diff --cached --quiet; then echo "Nothing new to publish"; exit 0; fi
+          git commit -m "Publish GlobalSync World Clock macOS installer"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep 5
+          done
+          exit 1
