@@ -1,4 +1,4 @@
-// GlobalSync Time Lens — toolbar popup: live clocks, a converter, quick switches and settings.
+// GlobalSync World Clock — toolbar popup: live clocks, a converter, quick switches and settings.
 (() => {
   'use strict';
   const $ = s => document.querySelector(s);

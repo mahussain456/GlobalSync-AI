@@ -1,8 +1,8 @@
-"""Packages GlobalSync Time Lens.
+"""Packages GlobalSync World Clock.
 
-python build.py  ->  dist/GlobalSync-Time-Lens-<v>-chrome.zip   (Chrome Web Store · Edge Add-ons · Opera · Brave/Arc/Vivaldi)
-                     dist/GlobalSync-Time-Lens-<v>-firefox.zip  (Firefox Add-ons)
-                     dist/GlobalSync-Time-Lens-<v>-unpacked/    (Load unpacked / developer mode)
+python build.py  ->  dist/GlobalSync-World-Clock-Extension-<v>-chrome.zip   (Chrome Web Store · Edge Add-ons · Opera · Brave/Arc/Vivaldi)
+                     dist/GlobalSync-World-Clock-Extension-<v>-firefox.zip  (Firefox Add-ons)
+                     dist/GlobalSync-World-Clock-Extension-<v>-unpacked/    (Load unpacked / developer mode)
 """
 import json, shutil, zipfile
 from pathlib import Path
@@ -24,17 +24,17 @@ def pack(name, mf):
 
 
 DIST.mkdir(exist_ok=True)
-pack(f"GlobalSync-Time-Lens-{V}-chrome.zip", manifest)
+pack(f"GlobalSync-World-Clock-Extension-{V}-chrome.zip", manifest)
 
 ff = json.loads(json.dumps(manifest))
 ff["background"] = {"scripts": ["core.js", "background.js"]}          # Firefox MV3 uses event pages
 ff.pop("minimum_chrome_version", None)
-ff["browser_specific_settings"] = {"gecko": {"id": "time-lens@globalsync-ai.com", "strict_min_version": "140.0",
+ff["browser_specific_settings"] = {"gecko": {"id": "world-clock@globalsync-ai.com", "strict_min_version": "140.0",
                                              "data_collection_permissions": {"required": ["none"]}},
                                 "gecko_android": {"strict_min_version": "142.0"}}
-pack(f"GlobalSync-Time-Lens-{V}-firefox.zip", ff)
+pack(f"GlobalSync-World-Clock-Extension-{V}-firefox.zip", ff)
 
-unpacked = DIST / f"GlobalSync-Time-Lens-{V}-unpacked"
+unpacked = DIST / f"GlobalSync-World-Clock-Extension-{V}-unpacked"
 shutil.rmtree(unpacked, ignore_errors=True)
 shutil.copytree(APP, unpacked)
 print("unpacked:", unpacked.name)

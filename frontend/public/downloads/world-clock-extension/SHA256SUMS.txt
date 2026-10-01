@@ -1,0 +1,2 @@
+b3ce648c643ff4eefcef36693db5050ec0c377c362c5589b4fd7fb9fd7f081ca *GlobalSync-World-Clock-Extension-1.0.0-chrome.zip
+835bab2608c5d164b92979ce7268b298aa2fc3d06545800c1735ccf55c68a520 *GlobalSync-World-Clock-Extension-1.0.0-firefox.zip

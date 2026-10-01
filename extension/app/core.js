@@ -1,4 +1,4 @@
-// GlobalSync Time Lens — shared engine (popup, content script, service worker).
+// GlobalSync World Clock — shared engine (popup, content script, service worker).
 // No network, no dependencies: time zones come from the browser's built-in Intl data.
 (function (g) {
   'use strict';

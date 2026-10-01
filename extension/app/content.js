@@ -1,9 +1,9 @@
-// GlobalSync Time Lens — page script. Idle until you select text; renders inside a closed shadow root
+// GlobalSync World Clock — page script. Idle until you select text; renders inside a closed shadow root
 // so it can't be restyled by (or restyle) the page. Makes no network requests.
 (() => {
   'use strict';
-  if (window.__gsTimeLens || !globalThis.TL) return;
-  window.__gsTimeLens = true;
+  if (window.__gsWorldClock || !globalThis.TL) return;
+  window.__gsWorldClock = true;
   const TL = globalThis.TL;
   const api = globalThis.chrome?.storage ? globalThis.chrome : null;   // null when previewed outside the extension
   const HOST = location.hostname;
@@ -60,7 +60,7 @@
   let root, shadow, ui, pill, card, mini;
   function ensureRoot() {
     if (root?.isConnected) return;
-    root = document.createElement('gs-time-lens');
+    root = document.createElement('gs-world-clock');
     root.style.cssText = 'all:initial;position:fixed;left:0;top:0;width:0;height:0;z-index:2147483647;';
     shadow = root.attachShadow({ mode: 'closed' });
     shadow.innerHTML = `<style>${CSS}</style><div class="ui"></div>`;
@@ -100,7 +100,7 @@
   function showPill(rect) {
     ensureRoot(); hidePill();
     pill = document.createElement('button');
-    pill.className = 'pill'; pill.title = 'Convert with Time Lens'; pill.setAttribute('aria-label', 'Convert this time with Time Lens');
+    pill.className = 'pill'; pill.title = 'Convert with World Clock'; pill.setAttribute('aria-label', 'Convert this time with World Clock');
     pill.innerHTML = ICON;
     // Float just above the end of the selection so it never covers the text being read.
     pill.style.left = clampX(rect.right - 10, 24) + 'px';
@@ -115,9 +115,9 @@
   function showCard(r, rect, note) {
     ensureRoot(); hidePill(); closeCard();
     card = document.createElement('div');
-    card.className = 'card'; card.setAttribute('role', 'dialog'); card.setAttribute('aria-label', 'Time Lens');
+    card.className = 'card'; card.setAttribute('role', 'dialog'); card.setAttribute('aria-label', 'World Clock');
     if (!r) {
-      card.innerHTML = `<div class="hd"><span>${ICON}</span><b>Time Lens</b><span class="sp"></span><button class="ic close" aria-label="Close">×</button></div>
+      card.innerHTML = `<div class="hd"><span>${ICON}</span><b>World Clock</b><span class="sp"></span><button class="ic close" aria-label="Close">×</button></div>
         <div class="note">${esc(note || 'No time found.')} Try something like “3pm EST” or “15:00 London”.</div>`;
     } else {
       const rows = TL.rowsAt(r.at, prefs), k = TL.clock(r.h, r.m, prefs.hour12);
@@ -178,7 +178,7 @@
     ensureRoot(); applyTheme();
     if (!mini) {
       mini = document.createElement('div');
-      mini.className = 'mini'; mini.title = 'Time Lens · drag to move · click for details';
+      mini.className = 'mini'; mini.title = 'World Clock · drag to move · click for details';
       ui.appendChild(mini);
       makeDraggable(mini, mini, null, () => {
         const r = mini.getBoundingClientRect();

@@ -33,7 +33,7 @@ const P = new URLSearchParams(location.search), kind = P.get('k') || 's1';
 const [W, H] = (P.get('size') || '1280x800').split('x').map(Number);
 document.body.style.setProperty('--w', W + 'px'); document.body.style.setProperty('--h', H + 'px');
 const MER = `<svg class="mer" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="#C8A96A" stroke-width="1.2"><ellipse cx="800" cy="200" rx="430" ry="430"/><ellipse cx="800" cy="200" rx="300" ry="300"/><path d="M40 900 C 300 700, 640 720, 980 470" stroke-dasharray="3 9"/></g></svg>`;
-const brand = (x, y, s = 1) => `<div class="brand" style="left:${x}px;top:${y}px;font-size:${20 * s}px"><img src="icon128.png" width="${40 * s}" height="${40 * s}">GlobalSync Time Lens</div>`;
+const brand = (x, y, s = 1) => `<div class="brand" style="left:${x}px;top:${y}px;font-size:${20 * s}px"><img src="icon128.png" width="${40 * s}" height="${40 * s}">GlobalSync World Clock</div>`;
 const text = (x, y, w, kick, h, sub, hs = 64) => `<div style="position:absolute;left:${x}px;top:${y}px;width:${w}px">
   <div class="kick" style="font-size:15px;margin-bottom:18px">${kick}</div><h1 style="font-size:${hs}px">${h}</h1>${sub ? `<p class="sub" style="font-size:21px;margin-top:22px">${sub}</p>` : ''}</div>`;
 const browser = (x, y, w, img, crop, url) => `<div class="shot" style="left:${x}px;top:${y}px;width:${w}px"><div class="bar"><i></i><i></i><i></i><span>${url}</span></div>
@@ -54,7 +54,7 @@ const S = {
             <div class="fact"><b>✓</b>41 KB, idle until you select text, and off per site with one switch.</div></div>`,
   tile: () => MER + `<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center">
             <img src="icon128.png" width="84" height="84" style="border-radius:20px;box-shadow:0 14px 30px rgba(0,0,0,.4)">
-            <h1 style="font-size:34px">Time Lens</h1><p class="sub" style="font-size:16px">Any time on the page, <em style="font-family:'Playfair Display';color:#E3C68B">in your cities.</em></p></div>`,
+            <h1 style="font-size:34px">World Clock</h1><p class="sub" style="font-size:16px">Any time on the page, <em style="font-family:'Playfair Display';color:#E3C68B">in your cities.</em></p></div>`,
   marquee: () => MER + brand(80, 64, 1.1) + text(80, 180, 620, 'Free for Chrome, Edge & Firefox', 'Any time on the page. <em>In your cities.</em>', 'Select a time, see who’s at work. Private and tiny.', 62)
         + browser(760, 90, 560, 'lens_2_card.png', { iw: 960, x: 60, y: 0, h: 390 }, 'mail.example.com/inbox'),
 };
