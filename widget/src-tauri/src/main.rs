@@ -117,8 +117,8 @@ fn place(w: &WebviewWindow, p: &Prefs) {
 }
 
 /// After a move settles: snap the card (not the transparent margin) to nearby screen edges, then remember the spot.
-fn snap_and_save(app: &AppHandle) {
-    let Some(w) = main_window(app) else { return };
+fn snap_and_save(app: &AppHandle, label: &str) {
+    let Some(w) = app.get_webview_window(label) else { return };
     let (Ok(pos), Ok(size), Ok(Some(mon))) = (w.outer_position(), w.outer_size(), w.current_monitor()) else { return };
     let (sf, a) = (mon.scale_factor(), mon.work_area());
     let (pad, snap, inset) = ((PAD * sf) as i32, (SNAP * sf) as i32, (8.0 * sf) as i32);
@@ -137,8 +137,8 @@ fn snap_and_save(app: &AppHandle) {
     dbg(format!("snap {:?} -> {x},{y} (work {:?})", pos, a));
     let state = app.state::<AppState>();
     if let Ok(mut p) = state.prefs.lock() {
-        p.px = Some(x);
-        p.py = Some(y);
+        if label == "pocket" { p.pocket_px = Some(x); p.pocket_py = Some(y); }
+        else { p.px = Some(x); p.py = Some(y); }
     }
     save_prefs(&state);
 }
@@ -166,6 +166,7 @@ fn fit(window: WebviewWindow, width: f64, height: f64) {
 /// First paint is ready: show the window (it starts hidden so it never flashes at the wrong size).
 #[tauri::command]
 fn ready(window: WebviewWindow) {
+    if window.label() == "pocket" && !pocket::should_show(window.app_handle()) { return; }
     let _ = window.show();
 }
 
@@ -178,6 +179,9 @@ fn drag(window: WebviewWindow) {
 #[tauri::command]
 fn hide(window: WebviewWindow) {
     let _ = window.hide();
+    if window.label() == "main" {
+        if let Some(p) = window.app_handle().get_webview_window("pocket") { let _ = p.hide(); }
+    }
 }
 
 #[tauri::command]
@@ -289,6 +293,7 @@ fn main() {
                     }
                     "stopwatch" => { let _ = pocket::pocket_action(app.clone(), "add".into(), None); toggle(app, true); },
                     "reset" => {
+                        if let Some(p) = app.get_webview_window("pocket") { place(&p, &Prefs::default()); }
                         if let Some(w) = main_window(app) {
                             place(&w, &Prefs::default());
                             toggle(app, true);
