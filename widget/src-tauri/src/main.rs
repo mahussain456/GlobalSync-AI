@@ -3,6 +3,8 @@
 // The UI in ../src is plain HTML/JS; it talks to this file through the commands below.
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod pocket;
+
 use std::{
     fs,
     path::PathBuf,
@@ -37,12 +39,17 @@ struct Prefs {
     px: Option<i32>,
     py: Option<i32>,
     always_on_top: bool,
+    #[serde(default)]
+    pocket_px: Option<i32>,
+    #[serde(default)]
+    pocket_py: Option<i32>,
 }
 
 struct AppState {
     prefs: Mutex<Prefs>,
     file: PathBuf,
     move_gen: Arc<AtomicU64>,
+    pocket_move_gen: Arc<AtomicU64>,
 }
 
 fn save_prefs(state: &AppState) {
@@ -63,8 +70,10 @@ fn toggle(app: &AppHandle, force_show: bool) {
         if force_show || !w.is_visible().unwrap_or(false) {
             let _ = w.show();
             let _ = w.set_focus();
+            if pocket::should_show(app) { if let Some(p) = app.get_webview_window("pocket") { let _ = p.show(); } }
         } else {
             let _ = w.hide();
+            if let Some(p) = app.get_webview_window("pocket") { let _ = p.hide(); }
         }
     }
 }
@@ -185,6 +194,7 @@ fn get_os(app: AppHandle) -> serde_json::Value {
 fn set_os(app: AppHandle, window: WebviewWindow, always_on_top: Option<bool>, open_at_login: Option<bool>) {
     if let Some(v) = always_on_top {
         let _ = window.set_always_on_top(v);
+        if let Some(p) = app.get_webview_window("pocket") { let _ = p.set_always_on_top(v); }
         let state = app.state::<AppState>();
         if let Ok(mut p) = state.prefs.lock() {
             p.always_on_top = v;
@@ -227,8 +237,13 @@ fn main() {
 
             let file = app.path().app_config_dir()?.join("window.json");
             let prefs: Prefs = fs::read_to_string(&file).ok().and_then(|s| serde_json::from_str(&s).ok()).unwrap_or_default();
-            app.manage(AppState { prefs: Mutex::new(prefs.clone()), file, move_gen: Arc::new(AtomicU64::new(0)) });
+            app.manage(AppState { prefs: Mutex::new(prefs.clone()), file, move_gen: Arc::new(AtomicU64::new(0)), pocket_move_gen: Arc::new(AtomicU64::new(0)) });
 
+            app.manage(pocket::PocketStore::load(app.path().app_config_dir()?.join("stopwatch.json")));
+            if let Some(p) = app.get_webview_window("pocket") {
+                let mut location = prefs.clone(); location.px = prefs.pocket_px; location.py = prefs.pocket_py;
+                place(&p, &location); let _ = p.set_always_on_top(prefs.always_on_top);
+            }
             let win = app.get_webview_window("main").expect("main window");
             let _ = win.set_always_on_top(prefs.always_on_top);
             place(&win, &prefs);
@@ -247,6 +262,7 @@ fn main() {
                     &item("toggle", "Show / hide widget")?,
                     &item("add", "Add a city…")?,
                     &item("settings", "Settings…")?,
+                    &item("stopwatch", "Add / dock stopwatch")?,
                     &PredefinedMenuItem::separator(app)?,
                     &item("reset", "Reset position")?,
                     &PredefinedMenuItem::separator(app)?,
@@ -271,6 +287,7 @@ fn main() {
                         toggle(app, true);
                         let _ = app.emit_to("main", "ui:open", id);
                     }
+                    "stopwatch" => { let _ = pocket::pocket_action(app.clone(), "add".into(), None); toggle(app, true); },
                     "reset" => {
                         if let Some(w) = main_window(app) {
                             place(&w, &Prefs::default());
@@ -296,21 +313,27 @@ fn main() {
             Ok(())
         })
         .on_window_event(|window, event| {
+            if let WindowEvent::CloseRequested { api, .. } = event {
+                api.prevent_close();
+                if window.label() == "pocket" { let _ = pocket::pocket_action(window.app_handle().clone(), "mode".into(), Some("docked".into())); }
+                else { let _ = window.hide(); if let Some(p) = window.app_handle().get_webview_window("pocket") { let _ = p.hide(); } }
+            }
             // Moves arrive in a stream while dragging; act once they've been quiet for 350 ms.
             if let WindowEvent::Moved(_) = event {
                 let app = window.app_handle().clone();
-                let counter = app.state::<AppState>().move_gen.clone();
+                let label = window.label().to_string();
+                let counter = if label == "pocket" { app.state::<AppState>().pocket_move_gen.clone() } else { app.state::<AppState>().move_gen.clone() };
                 let gen = counter.fetch_add(1, SeqCst) + 1;
                 thread::spawn(move || {
                     thread::sleep(Duration::from_millis(350));
                     if counter.load(SeqCst) == gen {
                         let a = app.clone();
-                        let _ = app.run_on_main_thread(move || snap_and_save(&a));
+                        let _ = app.run_on_main_thread(move || snap_and_save(&a, &label));
                     }
                 });
             }
         })
-        .invoke_handler(tauri::generate_handler![fit, ready, drag, hide, get_os, set_os, open_site])
+        .invoke_handler(tauri::generate_handler![fit, ready, drag, hide, get_os, set_os, open_site, pocket::pocket_action])
         .run(tauri::generate_context!())
         .expect("error while running GlobalSync World Clock");
 }

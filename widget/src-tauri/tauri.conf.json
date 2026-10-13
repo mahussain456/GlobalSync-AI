@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "GlobalSync World Clock",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "identifier": "com.globalsyncai.worldclock",
   "build": {
     "frontendDist": "../src"
@@ -25,6 +25,23 @@
         "visible": false,
         "alwaysOnTop": false,
         "additionalBrowserArgs": "--disable-features=msWebOOUI,msPdfOOUI,msSmartScreenProtection --disable-gpu"
+      },
+      {
+        "label": "pocket",
+        "title": "GlobalSync Stopwatch",
+        "width": 348,
+        "height": 185,
+        "decorations": false,
+        "transparent": true,
+        "shadow": false,
+        "resizable": false,
+        "maximizable": false,
+        "minimizable": false,
+        "skipTaskbar": true,
+        "visible": false,
+        "alwaysOnTop": false,
+        "additionalBrowserArgs": "--disable-features=msWebOOUI,msPdfOOUI,msSmartScreenProtection --disable-gpu",
+        "url": "pocket.html"
       }
     ],
     "security": {

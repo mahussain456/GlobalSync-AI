@@ -145,11 +145,11 @@
   }
 
   function pill(x) {
-    const s = x.st, you = x.isHome;
-    if (s.k === 'work') return `<span class="pill work">${you ? ICON.clock : ICON.phone}${you ? (s.left <= 60 ? `Wrapping up · ${fmtDur(s.left)}` : 'Your work hours') : (s.left <= 60 ? `Ends in ${fmtDur(s.left)}` : 'Good time to call')}</span>`;
-    if (s.k === 'edge') return `<span class="pill edge">${ICON.clock}${s.before ? `Starts in ${fmtDur(s.before)}` : 'After hours'}</span>`;
-    if (s.k === 'weekend') return `<span class="pill weekend">${ICON.leaf}${you ? 'Your weekend' : 'Weekend'}</span>`;
-    return `<span class="pill sleep">${ICON.moon}${you ? 'Your night' : 'Asleep'}</span>`;
+    const s = x.st;
+    if (s.k === 'work') return '<span class="pill work">' + ICON.clock + 'Within work hours</span>';
+    if (s.k === 'weekend') return '<span class="pill weekend">' + ICON.leaf + 'Weekend</span>';
+    if (x.hf < 6 || x.hf >= 21) return '<span class="pill sleep">' + ICON.moon + 'Nighttime</span>';
+    return '<span class="pill edge">' + ICON.clock + 'Outside work hours</span>';
   }
 
   // ---------- rows ----------
@@ -158,7 +158,7 @@
       <div class="scene"></div><div class="scrim"></div>
       <span class="grip" title="Drag to reorder">${ICON.grip}</span>
       <div class="info">
-        <div class="name"><span class="star" hidden>${ICON.star}</span><span class="nm"></span></div>
+        <div class="name"><span class="star" hidden>${ICON.star}</span><button class="nm" data-act="details" aria-expanded="false" title="Show city details"></button></div>
         <div class="sub"></div>
         <div class="pw"></div>
       </div>
@@ -198,7 +198,7 @@
       row.querySelector('.t').textContent = t.t;
       row.querySelector('.ap').textContent = t.ap;
       const rel = x.dd === 1 ? 'Tomorrow' : x.dd === -1 ? 'Yesterday' : '';
-      row.querySelector('.d').innerHTML = `${rel ? `${DAYS[x.dow]} · <b>${rel}</b>` : x.date}${x.isHome ? '' : ` · ${fmtDelta(x.diff)}`}`;
+      row.querySelector('.d').textContent = rel || (x.dd ? x.date : '');
       row.querySelector('.ring').innerHTML = ring(x);
       row.setAttribute('aria-label', `${c.name}: ${t.t} ${t.ap}, ${x.date}`);
       const svg = window.drawScene(c, x.hf, card.dataset.theme);
@@ -276,9 +276,10 @@
   list.addEventListener('click', e => {
     const b = e.target.closest('[data-act]'); if (!b) return;
     const row = b.closest('.row'), id = row.dataset.id;
+    if (b.dataset.act === 'details') { const open = row.classList.toggle('expanded'); b.setAttribute('aria-expanded', String(open)); b.title = open ? 'Hide city details' : 'Show city details'; }
     if (b.dataset.act === 'home') setHome(id);
     if (b.dataset.act === 'remove') removeCity(id);
-    if (b.dataset.act === 'rename') rename(row);
+    if (b.dataset.act === 'rename') { row.classList.add('expanded'); row.querySelector('.nm').setAttribute('aria-expanded','true'); rename(row); }
   });
   list.addEventListener('dblclick', e => { const row = e.target.closest('.row'); if (row && e.target.closest('.info')) rename(row); });
 
@@ -308,7 +309,7 @@
   });
 
   // ---------- move the widget: grab anywhere that isn't a control ----------
-  const NO_DRAG = 'button, input, select, a, .grip, .scrub, .panel, .tools, .rename, .toast';
+  const NO_DRAG = 'button, input, select, a, .grip, .scrub, .panel, .tools, .rename, .toast, .pocket';
   card.addEventListener('pointerdown', e => {
     if (e.button !== 0 || e.target.closest(NO_DRAG)) return;
     card.setPointerCapture(e.pointerId);
@@ -540,3 +541,4 @@
     document.fonts?.ready.then(() => { const r = card.getBoundingClientRect(); desk.fit(r.width, r.height); });
   });
 })();
+
