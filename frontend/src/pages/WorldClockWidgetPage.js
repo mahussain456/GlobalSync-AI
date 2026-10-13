@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  ArrowRight, Download, Sunrise, PhoneCall, History, Globe2, Move, Feather,
+  ArrowRight, Download, Sunrise, PhoneCall, Timer, Globe2, Move, Feather,
   ShieldCheck, Keyboard, Monitor, CheckCircle2, Mail,
 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
@@ -15,30 +15,29 @@ import RELEASE from "@/data/worldClockRelease.json";
 
 const FEATURES = [
   { icon: Sunrise, title: "A live sky for every city", body: "Each clock shows its city's real sky right now: dawn, daylight, golden hour or a starry night. Thirteen cities have hand-drawn landmarks, from the Golden Gate to the Charminar." },
-  { icon: PhoneCall, title: "Know when to call", body: "Every city carries a plain status: Good time to call, Starts in 40m, After hours, Asleep or Weekend. Weekends follow each country's working week." },
-  { icon: History, title: "Preview any time", body: "Drag the timeline to see all four clocks at a future time, then copy the times as a ready-to-paste list for your invite. It returns to live time after 90 seconds." },
+  { icon: PhoneCall, title: "Know when to call", body: "See whether a city is within work hours, outside work hours, at nighttime or on a weekend. Set your preferred work hours in Settings." },
+  { icon: Timer, title: "Pocket Bar stopwatch", body: "Add a stopwatch when you need one. Start, pause, reset and record laps. Keep it inside the widget or detach it into a small bar you can drag anywhere on your desktop." },
   { icon: Globe2, title: "Four clocks, 160+ cities", body: "Search by city, country or airport code, plus every official time zone. Star your home city, reorder by dragging, and add a teammate's name to any clock." },
   { icon: Move, title: "Stays out of your way", body: "Grab it anywhere and put it anywhere. It snaps to screen edges, remembers its spot across monitors, and hides or reappears with Ctrl+Alt+Shift+W (⌘⌥⇧W on Mac)." },
-  { icon: Feather, title: "Tiny, private, offline", body: "A 1.6 MB download that uses your system's own browser engine. No account, no tracking, and nothing leaves your computer. It works with no internet connection." },
+  { icon: Feather, title: "Tiny, private, offline", body: "A lightweight app that uses your system's own browser engine. No account, no tracking, and nothing leaves your computer. It works with no internet connection." },
 ];
 
 const SHOTS = [
-  { src: "/world-clock/world-clock-forest.webp", w: 780, h: 1066, title: "Forest theme", caption: "Four cities at a glance, each under its own live sky." },
-  { src: "/world-clock/world-clock-paper.webp", w: 769, h: 1047, title: "Paper theme", caption: "A light theme styled after the GlobalSync paper atlas." },
-  { src: "/world-clock/world-clock-preview.webp", w: 780, h: 1124, title: "Time preview", caption: "Drag the timeline to preview any time, then copy it." },
-  { src: "/world-clock/world-clock-add.webp", w: 780, h: 1469, title: "Add a city", caption: "Search 160+ cities by name, country or airport code." },
-  { src: "/world-clock/world-clock-landmarks.webp", w: 780, h: 1066, title: "Landmark skylines", caption: "Dubai, Hyderabad, Singapore and Sydney after dark." },
-  { src: "/world-clock/world-clock-compact.webp", w: 780, h: 858, title: "Compact layout", caption: "A slimmer layout for smaller screens." },
-  { src: "/world-clock/world-clock-settings.webp", w: 780, h: 1648, title: "Settings", caption: "Theme, 12/24h, size, work hours, opacity and launch at login." },
+  { src: "/world-clock/pocket-forest.png", w: 384, h: 493, title: "Forest theme", caption: "Clear city times with Pocket Bar docked underneath." },
+  { src: "/world-clock/pocket-paper.png", w: 384, h: 493, title: "Paper theme", caption: "The same quiet layout in a warm, light palette." },
+  { src: "/world-clock/pocket-detached.png", w: 348, h: 154, title: "Pocket Bar, detached", caption: "A compact stopwatch you can move independently on your desktop." },
 ];
 
 const FAQS = [
+  { q: "How do I add or remove Pocket Bar?", a: "Click Add stopwatch beneath your cities, or choose Add / dock stopwatch from the tray menu. Use the × on the stopwatch to remove it. Removing it pauses the timer and keeps your time and laps for when you add it again." },
+  { q: "Can I move the stopwatch outside the widget?", a: "Yes. Click Detach, then drag the Stopwatch title to move the small bar anywhere on your desktop. Click Dock to return it to the widget. Your elapsed time and laps stay with you, even while the timer is running." },
+  { q: "Does Pocket Bar remember my session?", a: "Yes. Your timer, laps and placement are saved locally. A running timer continues counting elapsed time while the app is closed; pause it first if you want it to stop. Reset clears the elapsed time and laps when paused." },
   { q: "Is the GlobalSync World Clock free?", a: "Yes. The widget is free to download and use, with no account, trial or ads." },
   { q: "Does the widget collect any data?", a: "No. Your cities and settings are stored only on your computer. The widget sends no analytics and makes no network requests. The only exception is opening globalsync-ai.com when you click its link." },
   { q: "Why does Windows or macOS show a warning the first time?", a: "The app is new and not yet code-signed, so Windows SmartScreen may say \"Windows protected your PC\". Choose More info, then Run anyway. On a Mac, right-click the app, choose Open, then Open again. You only need to do this once." },
-  { q: "How many clocks can I show?", a: "Up to four at a time. To swap one, hover over a clock, press ×, then add another. Removing a clock can be undone." },
+  { q: "How many clocks can I show?", a: "Up to four at a time. To swap one, click its city name to reveal the controls, press ×, then add another. Removing a clock can be undone." },
   { q: "Does it handle daylight saving time?", a: "Yes. Times come from the official IANA time zone database built into your operating system, so daylight saving changes and half-hour offsets such as India (UTC+5:30) are always correct." },
-  { q: "How do I move or hide it?", a: "Drag any part of the widget except the buttons and the timeline. Press Ctrl+Alt+Shift+W (⌘⌥⇧W on Mac), or use the tray or menu-bar icon, to hide it or bring it back." },
+  { q: "How do I move or hide it?", a: "Drag any part of the widget except interactive controls. Press Ctrl+Alt+Shift+W (⌘⌥⇧W on Mac), or use the tray or menu-bar icon, to hide it or bring it back." },
   { q: "How do I uninstall it?", a: "Windows: Settings → Apps → Installed apps → GlobalSync World Clock → Uninstall. Mac: quit it from the menu-bar icon and drag the app from Applications to the Trash." },
 ];
 
@@ -171,7 +170,7 @@ export default function WorldClockWidgetPage() {
             <p className="text-xs font-semibold uppercase tracking-[.14em] text-pine mb-5">Free desktop app · Windows &amp; Mac</p>
             <h1 className="mb-6">A world clock that lives on <em className="text-pine">your desktop.</em></h1>
             <p className="text-lg text-quiet max-w-xl mb-8">
-              Keep four cities in view, see at a glance who's at work and who's asleep, and preview any meeting time before you send the invite. It's a small, calm widget that stays in the corner of your screen.
+              Keep four cities in view and check their local working hours at a glance. Add Pocket Bar to time a task or a call: dock it beneath your clocks, or detach the stopwatch and place it anywhere on your desktop.
             </p>
             <div className="flex flex-wrap items-start gap-4">
               <PrimaryDownload os={os} />
@@ -192,8 +191,16 @@ export default function WorldClockWidgetPage() {
           </div>
           <div className="relative flex justify-center">
             <div aria-hidden="true" className="absolute inset-x-6 top-10 bottom-4 rounded-[28px] bg-wash" />
-            <img src={SHOTS[0].src} width={390} height={533} alt="GlobalSync World Clock widget showing San Francisco, New York, London and Tokyo with live skies and call status"
+            <img src={SHOTS[0].src} width={384} height={493} alt="GlobalSync World Clock with Los Angeles, New York, London and Dubai, and the Pocket Bar stopwatch docked below"
               className="relative w-[340px] sm:w-[390px] h-auto" fetchPriority="high" />
+          </div>
+        </section>
+
+        <section className="border-t border-line bg-wash">
+          <div className="max-w-6xl mx-auto px-6 py-10">
+            <p className="text-xs font-semibold uppercase tracking-[.14em] text-pine mb-3">New in 1.2 · Pocket Bar</p>
+            <h2 className="text-3xl md:text-4xl mb-3">Your clocks. Your stopwatch. Your space.</h2>
+            <p className="text-quiet max-w-2xl">Click <strong>Add stopwatch</strong> to get started. Use <strong>Detach</strong> to give it its own place on your desktop, then <strong>Dock</strong> to bring it back. Time a session, record laps, or remove the Mod when you want just your clocks.</p>
           </div>
         </section>
 
@@ -218,12 +225,12 @@ export default function WorldClockWidgetPage() {
         <section id="screenshots" className="bg-wash border-y border-line scroll-mt-28">
           <div className="max-w-6xl mx-auto px-6 py-16">
             <h2 className="text-3xl md:text-5xl mb-3">See it on the desktop</h2>
-            <p className="text-quiet max-w-2xl mb-10">Real screenshots from the app. Two themes, a compact layout, and a sky for every hour.</p>
-            <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 lg:grid-cols-4 md:overflow-visible">
+            <p className="text-quiet max-w-2xl mb-10">Explore the updated interface: two matching themes, clearer clocks, and an optional stopwatch that fits your workspace.</p>
+            <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:overflow-visible">
               {SHOTS.map(s => (
                 <figure key={s.src} className="snap-start shrink-0 w-[260px] md:w-auto">
                   <div className="bg-surface border border-line rounded-xl p-3 flex items-start justify-center h-[380px] overflow-hidden">
-                    <img src={s.src} width={s.w / 2} height={s.h / 2} alt={`${s.title}: ${s.caption}`} loading="lazy" decoding="async"
+                    <img src={s.src} width={s.w} height={s.h} alt={`${s.title}: ${s.caption}`} loading="lazy" decoding="async"
                       className="max-h-full w-auto object-contain object-top" />
                   </div>
                   <figcaption className="mt-3">

@@ -6,7 +6,7 @@ A lightweight desktop world-clock widget for remote teams, in the globalsync-ai 
 
 | | |
 |---|---|
-| Windows installer | **1.6 MB** (`GlobalSync World Clock_1.1.0_x64-setup.exe`) |
+| Windows installer | See the [download page](https://www.globalsync-ai.com/world-clock-widget) for current sizes (v1.2.0) |
 | Installed size | about 4 MB |
 | Memory while running | about 140 MB private (uses the system browser engine: WebView2 on Windows, WebKit on Mac) |
 | Admin rights needed | None. Installs per user |
@@ -20,12 +20,13 @@ A lightweight desktop world-clock widget for remote teams, in the globalsync-ai 
 
 ## What it does
 - **Up to 4 clocks**, each with a live sky for that city's local time. 13 cities have hand-drawn landmarks.
-- **Call status**: *Good time to call*, *Starts in 40m*, *After hours*, *Asleep*, *Weekend* (each country's own weekend).
-- **Time preview**: drag the bottom timeline or use the arrow keys. Preview times are shown in gold italics with dashed borders, and snap back to live after 90 seconds. **Copy times** gives you a ready-to-paste list.
-- **Move it anywhere**: grab any part of the widget except the buttons and the timeline. It snaps to screen edges and remembers its spot, including across monitors with different scaling.
+- **Local working-hour status**: *Within work hours*, *Outside work hours*, *Nighttime*, *Weekend* (each country's own weekend).
+- **Pocket Bar stopwatch**: click Add stopwatch, then start/pause, reset while paused, or record laps. Detach into an independently movable desktop window, or dock it beneath your cities. Removing the Mod pauses and saves the session; adding it restores the time and laps. Sessions and both window positions persist locally.
+- **City details on demand**: click a city name to reveal time-zone metadata and controls.
+- **Move it anywhere**: grab any part of the widget except the buttons and interactive controls. It snaps to screen edges and remembers its spot, including across monitors with different scaling.
 - Themes: Forest, Paper or Auto. Sizes S/M/L, Scenic or Compact layout, opacity, always-on-top, launch at login.
 - Tray / menu-bar icon plus a hotkey to show or hide: **Ctrl+Alt+Shift+W** (⌘⌥⇧W on Mac).
-- Footer link: *Free meeting planner → globalsync-ai.com* (`?ref=world-clock`).
+- Footer link: *globalsync-ai.com* (`?ref=world-clock`).
 
 ## Build
 Needs Node 18+ and Rust (install with [rustup](https://rustup.rs)).
@@ -35,7 +36,9 @@ npm run dev         # run it with live reload
 npm run build:win   # → src-tauri/target/release/bundle/nsis/*.exe
 npm run build:mac   # on a Mac → src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg
 ```
-**No Mac? Use GitHub.** Push this folder to a GitHub repo, then push a tag (`git tag v1.1.0 && git push --tags`). `.github/workflows/release.yml` builds the Windows `.exe` and the universal macOS `.dmg`, then attaches both to a draft Release.
+**Automatic builds:** `.github/workflows/world-clock-mac.yml` tests and builds both platforms, then publishes installers and checksums to the website download directory.
+
+**Tagged releases:** Push this folder to a GitHub repo, then push a tag (`git tag v1.1.0 && git push --tags`). `.github/workflows/release.yml` builds the Windows `.exe` and the universal macOS `.dmg`, then attaches both to a draft Release.
 
 This Windows machine builds with the GNU Rust toolchain (no Visual Studio needed). `dlltool`/`as` come from a portable WinLibs MinGW in `~/.winlibs/mingw64/bin`, which must be on `PATH` when building.
 
