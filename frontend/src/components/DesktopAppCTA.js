@@ -20,7 +20,7 @@ export default function DesktopAppCTA({ placement = "tool", className = "" }) {
             Keep these clocks <em className="text-pine">on your desktop.</em>
           </h2>
           <p className="text-quiet max-w-xl mb-6">
-            GlobalSync World Clock shows four cities with live call status, so you can see who&rsquo;s at work before you message. 1.6&nbsp;MB, no account.
+            Keep four cities and their local working hours in view. Now with Pocket Bar: an optional stopwatch you can dock inside the widget or move anywhere on your desktop. Free, no account.
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <Link to="/world-clock-widget#download" onClick={track}
@@ -34,7 +34,7 @@ export default function DesktopAppCTA({ placement = "tool", className = "" }) {
           </div>
         </div>
         <div className="hidden md:flex justify-center items-end self-stretch pt-8 pr-6 overflow-hidden" aria-hidden="true">
-          <img src="/world-clock/world-clock-forest.webp" alt="" width="240" height="328" loading="lazy" decoding="async"
+          <img src="/world-clock/pocket-forest.png" alt="" width="384" height="493" loading="lazy" decoding="async"
             className="w-[240px] h-auto translate-y-10 rotate-[3deg]" />
         </div>
       </div>
