@@ -624,7 +624,7 @@ const STATIC_META = {
   },
   "world-clock-widget": {
     rawTitle: `Free World Clock Widget for Windows & Mac | GlobalSync AI`,
-    description: `Download a free desktop world clock widget for Windows and Mac. Four cities with live skies, call-time status and meeting-time preview. 1.6 MB, no account.`,
+    description: `Free desktop world clock for Windows and Mac with four cities, local working hours and Pocket Bar, a stopwatch you can dock or move anywhere. No account.`,
     canonical: "/world-clock-widget",
     keywords: "world clock widget, desktop world clock, world clock for windows, world clock for mac, time zone widget, remote team clock",
   },
