@@ -1,1 +1,1 @@
-e418cf0eaecd4c90d34d0c37d5acf6efc874fa737f034a3479d795fff462c072  GlobalSync-World-Clock-1.2.0-Windows-Setup.exe
+11cd1111c6dc7152017aeb27b4e745ad71eaa703cf07c02b157c0a8b60e6bd31  GlobalSync-World-Clock-1.2.0-Windows-Setup.exe

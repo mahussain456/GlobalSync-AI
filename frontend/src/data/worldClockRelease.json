@@ -5,12 +5,12 @@
     "href": "/downloads/world-clock/windows/GlobalSync-World-Clock-1.2.0-Windows-Setup.exe",
     "size": "1.5 MB",
     "requires": "Windows 10 or 11 (64-bit)",
-    "sha256": "e418cf0eaecd4c90d34d0c37d5acf6efc874fa737f034a3479d795fff462c072"
+    "sha256": "11cd1111c6dc7152017aeb27b4e745ad71eaa703cf07c02b157c0a8b60e6bd31"
   },
   "mac": {
     "href": "/downloads/world-clock/mac/GlobalSync-World-Clock-1.2.0-macOS.dmg",
     "size": "4.2 MB",
     "requires": "macOS 11 Big Sur or later · Intel and Apple Silicon",
-    "sha256": "8513e10d9e381e401334f88a6fd51547181dc180e6be1a421f4cb3c7a3e18ff3"
+    "sha256": "46ea19c036b760d76ee24f73ff8c5b40abf5782cc3e86bc733ae185b71d5b3b8"
   }
 }

@@ -1,1 +1,1 @@
-8513e10d9e381e401334f88a6fd51547181dc180e6be1a421f4cb3c7a3e18ff3  GlobalSync-World-Clock-1.2.0-macOS.dmg
+46ea19c036b760d76ee24f73ff8c5b40abf5782cc3e86bc733ae185b71d5b3b8  GlobalSync-World-Clock-1.2.0-macOS.dmg
