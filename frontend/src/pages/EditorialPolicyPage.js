@@ -68,7 +68,7 @@ export default function EditorialPolicyPage() {
           </p>
           <ul className="list-disc list-outside ml-5 space-y-2">
             <li><strong className="text-ink">Time zone database:</strong> We build directly on the official IANA Time Zone Database (TZDB), which regulates all global timezone boundaries, historical transitions, and upcoming Daylight Saving Time (DST) switches.</li>
-            <li><strong className="text-ink">Live exchange rates:</strong> We use timestamped ExchangeRate-API reference snapshots. The browser caches a snapshot for up to one hour and labels any dated build snapshot used when the provider is unavailable. </li>
+            <li><strong className="text-ink">Live exchange rates:</strong> We use live market rates refreshed every minute, each checked against ExchangeRate-API daily reference rates. Every result shows the time it was taken, and any dated build snapshot used when both feeds are down is labeled. </li>
             <li><strong className="text-ink">Automated logic verification:</strong> All tool logic runs through continuous unit testing scripts to prevent compounding rounding errors and guarantee mathematical consistency across all currency and timezone calculations.</li>
           </ul>
           <p className="mt-3">

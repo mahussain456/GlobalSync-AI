@@ -27,12 +27,12 @@ export default function DataSourcesPage() {
 
           <h2 className="text-xl font-bold text-ink mt-8 mb-3">Currency Exchange Rate Sources</h2>
           <p>
-            Currency conversions use a shared <strong className="text-ink">ExchangeRate-API</strong> reference snapshot. Each result shows the provider update time. A reference rate does not include transfer-provider fees or guarantee the amount received.
+            Currency conversions use live market rates (Coinbase public rate feed), each checked against <strong className="text-ink">ExchangeRate-API</strong> daily reference rates. Each result shows the time it was taken. A reference rate does not include transfer-provider fees or guarantee the amount received.
           </p>
 
           <h2 className="text-xl font-bold text-ink mt-8 mb-3">Data Refresh Rates and Update Schedules</h2>
           <p>
-            Converters use ExchangeRate-API reference snapshots with provider timestamps, cached for up to one hour per browser session. Dated build snapshots are labeled when used offline. Time zone rules come from your browser’s Intl implementation; keep your browser and operating system up to date. Historical rate data for trend charts is updated once daily.
+            Live rates refresh every minute. A live quote more than 3% away from the daily reference is ignored and the reference is shown instead. Dated build snapshots are labeled when used offline. Live clocks are synced to our server clock, so a wrong device clock does not skew them. Time zone rules come from your browser’s Intl implementation; keep your browser and operating system up to date. Historical rate data for trend charts is updated once daily.
           </p>
 
           <h2 className="text-xl font-bold text-ink mt-8 mb-3">Accuracy and Limitations</h2>

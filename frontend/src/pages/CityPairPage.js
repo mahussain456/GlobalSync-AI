@@ -8,6 +8,7 @@ import DesktopAppCTA from "@/components/DesktopAppCTA";
 import AdBanner from "@/components/AdBanner";
 import { CITIES, CITY_PAIRS, getCityPair, getRelatedCityPairs, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
 import { getCityPairSEO } from "@/lib/seo";
+import { trueNow, syncClock } from "@/lib/trueTime";
 
 // ─── Live clock ───────────────────────────────────────────────────────────────
 function LiveClock({ timezone, city, country, abbr }) {
@@ -16,11 +17,12 @@ function LiveClock({ timezone, city, country, abbr }) {
 
   useEffect(() => {
     const tick = () => {
-      const now = new Date();
+      const now = trueNow();
       setTime(now.toLocaleTimeString("en-US", { timeZone: timezone, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true }));
       setDate(now.toLocaleDateString("en-US", { timeZone: timezone, weekday: "short", month: "short", day: "numeric" }));
     };
     tick();
+    syncClock().then(tick);
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, [timezone]);
@@ -347,8 +349,8 @@ export default function CityPairPage() {
             <p className="text-xs text-quiet">How to schedule meetings fairly, handle DST, and build async habits.</p>
           </div>
           <div className="mt-6 flex flex-col sm:flex-row items-center gap-3 justify-center">
-            <Link to="/blog/remote-team-world-clock-best-practices" className="text-sm font-semibold text-pine hover:text-pine transition-colors flex items-center gap-1">
-              Read: World Clock best practices <ArrowRight className="w-3.5 h-3.5" />
+            <Link to="/guides/schedule-meetings-across-time-zones" className="text-sm font-semibold text-pine hover:text-pine transition-colors flex items-center gap-1">
+              Read: How to schedule across time zones <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </section>

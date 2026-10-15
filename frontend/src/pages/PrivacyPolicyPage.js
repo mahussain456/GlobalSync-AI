@@ -82,7 +82,7 @@ export default function PrivacyPolicyPage() {
             <ul className="list-disc pl-5 space-y-2 text-sm mt-3">
               <li><strong className="text-ink">Google Analytics (Google LLC):</strong> Aggregated site measurement. <a href="https://policies.google.com/privacy" className="text-pine hover:underline" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
               <li><strong className="text-ink">PostHog Analytics:</strong> Product interaction flow tracking. <a href="https://posthog.com/privacy" className="text-pine hover:underline" target="_blank" rel="noopener noreferrer">PostHog Privacy Policy</a></li>
-              <li><strong className="text-ink">ExchangeRate-API & ECB Feeds:</strong> Financial exchange rate data. No personal user identifiers are transmitted.</li>
+              <li><strong className="text-ink">Coinbase public rate feed, ExchangeRate-API & ECB Feeds:</strong> Financial exchange rate data, requested directly by your browser. No personal user identifiers are transmitted.</li>
               <li><strong className="text-ink">Anthropic (Claude AI):</strong> Natural language query understanding. User search prompts sent to the assistant console are processed transiently and are not retained for model training under our enterprise API terms.</li>
             </ul>
           </section>

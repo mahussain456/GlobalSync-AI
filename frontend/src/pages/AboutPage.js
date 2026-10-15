@@ -129,7 +129,8 @@ export default function AboutPage() {
           </p>
           <ul className="space-y-3">
             {[
-              ["ExchangeRate-API", "Live currency exchange rates for 160+ currencies, updated daily from global forex market data."],
+              ["Coinbase market data", "Live exchange rates for 140+ currencies, refreshed every minute."],
+              ["ExchangeRate-API", "Daily reference rates for 160+ currencies. Every live quote is checked against them."],
               ["Frankfurter API (European Central Bank)", "7-day historical rate trend data for 31 major ECB-tracked currency pairs."],
               ["IANA Time Zone Database", "Industry-standard time zone data used by browsers worldwide for accurate, DST-aware time conversions."],
               ["Claude AI (Anthropic)", "Natural language processing to understand and parse free-text queries, extracting cities, currencies, and intent."],

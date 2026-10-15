@@ -1,6 +1,7 @@
 import { CITY_TIMEZONES } from "@/lib/cityTimezones";
 import { fireAnalyticsEvent, markToolUsed } from "@/lib/analytics";
 import { meetingWindows, resolveWallTime } from "@/lib/timeCalculations";
+import { trueNow, syncClock } from "@/lib/trueTime";
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Clock, Plus, X, Users, AlertCircle, CheckCircle2, Share2, Copy, Star, Sun, Moon, Sunrise, Sunset, RefreshCw } from "lucide-react";
@@ -460,10 +461,11 @@ export default function TimeConverter({ aiDispatch }) {
   // Maintain real-world clock updates
   useEffect(() => {
     // Set initial time immediately on mount (client-only)
-    setLiveTime(new Date());
+    setLiveTime(trueNow());
     setSelectedCities(cities => cities.map(city => ({...city, utc_offset: getNormalizedUtcOffset(city.timezone_id)})));
+    syncClock().then(() => setLiveTime(trueNow()));
     const timer = setInterval(() => {
-      setLiveTime(new Date());
+      setLiveTime(trueNow());
     }, 1000);
     return () => clearInterval(timer);
   }, []);

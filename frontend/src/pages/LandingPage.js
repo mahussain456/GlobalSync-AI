@@ -18,7 +18,7 @@ const HOME_FAQS=[
 {q:'Where do GlobalSync AI’s time zone rules come from?',
  a:'Time zone rules, including daylight saving transitions, come from the IANA Time Zone Database, the reference dataset used by most operating systems. Full details are published on the GlobalSync AI data sources page.'},
 {q:'Are the currency rates live?',
- a:'They are dated reference rates, not live mid-market quotes. Pricing feeds are aligned with benchmark rates published by the European Central Bank and institutional liquidity pools via ExchangeRate-API. Each result shows its source and date. Use the figure for estimating and planning, and check your payment provider for the final transfer rate.'},
+ a:'They are live mid-market rates, refreshed every minute and cross-checked against ExchangeRate-API daily reference rates, so one bad quote can never reach you. Each result shows its source and the time it was taken. Use the figure for estimating and planning, and check your payment provider for the final transfer rate.'},
 ];
 export default function LandingPage(){
 const root=useRef(null);
@@ -47,6 +47,6 @@ return <div className="meridian-home" ref={root}><SEOHead {...getHomepageSEO({fa
 <section className="faq" id="questions"><h2>A little clarity.<br/>A better start.</h2><div>{HOME_FAQS.map(f=><details key={f.q}><summary>{f.q}<svg><path d="M12 4v16M4 12h16"/></svg></summary><p>{f.a}</p></details>)}</div></section></div>
 <section className="closing"><div className="shell"><h2>A smaller world.<br/><em>A bigger possibility.</em></h2><a className="primary" href="#planner">Bring your world together <ArrowRight aria-hidden="true" /></a></div></section>
 </main>
-<section className="shell more-tools"><h2>Your next step, made simpler.</h2><nav aria-label="More GlobalSync tools"><a href="/time-zone-converter">World clocks and time zones</a><a href="/world-clock-widget">Desktop world clock app</a><a href="/freelancer-rate-converter">Freelancer rate calculator</a><a href="/dashboard">Open your workspace</a><a href="/blog">Guides for working globally</a></nav><form action="/dashboard"><label htmlFor="home-question">Ask about a time or currency conversion</label><div><input id="home-question" name="q" placeholder="What time is 3 PM New York in London?" required maxLength={500}/><button type="submit">Find an answer <ArrowRight aria-hidden="true"/></button></div></form></section>
+<section className="shell more-tools"><h2>Your next step, made simpler.</h2><nav aria-label="More GlobalSync tools"><a href="/time-zone-converter">World clocks and time zones</a><a href="/world-clock-widget">Desktop world clock app</a><a href="/freelancer-rate-converter">Freelancer rate calculator</a><a href="/dashboard">Open your workspace</a><a href="/guides">Guides for working globally</a></nav><form action="/dashboard"><label htmlFor="home-question">Ask about a time or currency conversion</label><div><input id="home-question" name="q" placeholder="What time is 3 PM New York in London?" required maxLength={500}/><button type="submit">Find an answer <ArrowRight aria-hidden="true"/></button></div></form></section>
 <div className="shell motion-row"><button className="motion-toggle" aria-pressed="false">Pause motion</button></div><SiteFooter/></div>;
 }

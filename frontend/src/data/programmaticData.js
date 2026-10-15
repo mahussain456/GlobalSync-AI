@@ -179,7 +179,7 @@ export const CURRENCY_PAIRS = {
       { q: "How do I find the real USD to PHP rate?", a: "Start from the reference rate on this page, which is aligned with benchmark rates and carries the date it was taken. That is the mid-point before anyone adds a margin. The rate a bank or remittance service gives you will be lower, so use this as your baseline for comparison rather than the amount that will arrive." },
       { q: "Why does the remittance rate differ from the rate shown here?", a: "Remittance providers quote a rate that already includes their margin, and may add a separate transfer fee on top. Two providers quoting the same headline rate can still deliver different amounts once fees are applied. Compare the final pesos received." },
       { q: "When is the best time to send money from the US to the Philippines?", a: "There is no reliably best time. USD/PHP moves on US interest rate decisions, Philippine inflation and central bank policy, and seasonal remittance demand that rises toward the end of the year. Rather than timing the market, compare the total amount received across providers on the day you send." },
-      { q: "How often does the USD to PHP rate change?", a: "The underlying market rate moves continuously during trading hours. The reference rate shown here is a dated snapshot, and the date is displayed with the figure so you know how current it is." },
+      { q: "How often does the USD to PHP rate change?", a: "The underlying market rate moves continuously during trading hours. The rate shown here refreshes every minute while the page is open, and the time it was taken is shown with the figure." },
     ],
     related: ["usd-to-inr", "usd-to-pkr", "usd-to-ngn", "php-to-usd"],
   },

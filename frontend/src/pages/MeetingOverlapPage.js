@@ -9,6 +9,7 @@ import DesktopAppCTA from "@/components/DesktopAppCTA";
 import AdBanner from "@/components/AdBanner";
 import { getMeetingCorridor, MEETING_CORRIDORS } from "@/data/meetingCorridors";
 import { generate24hTable, computeBusinessOverlap } from "@/lib/timezoneUtils";
+import { trueNow } from "@/lib/trueTime";
 
 function FAQItem({ question, answer }) {
   const [open, setOpen] = useState(false);
@@ -40,7 +41,7 @@ export default function MeetingOverlapPage() {
   const ianaA = corridorData?.ianaA ?? "America/New_York";
   const ianaB = corridorData?.ianaB ?? "Asia/Kolkata";
 
-  const table24h = useMemo(() => generate24hTable(ianaA, ianaB, new Date()), [ianaA, ianaB]);
+  const table24h = useMemo(() => generate24hTable(ianaA, ianaB, trueNow()), [ianaA, ianaB]);
 
   if (!corridorData) return <Navigate to="/meeting-overlap" replace />;
 
@@ -269,7 +270,7 @@ export default function MeetingOverlapPage() {
           <span className="text-quiet">·</span>
           <Link to="/time-zone-converter" className="text-pine hover:underline">Time Zone Converter</Link>
           <span className="text-quiet">·</span>
-          <Link to="/blog/async-first-remote-team-operating-system" className="text-pine hover:underline">Async Operating System Guide</Link>
+          <Link to="/guides/schedule-meetings-across-time-zones" className="text-pine hover:underline">Scheduling across time zones guide</Link>
         </div>
       </article>
 

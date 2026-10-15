@@ -24,7 +24,7 @@ const PAIRS = [
 ];
 
 const FAQ = [
-  { q: "How often are the exchange rates updated?", a: "The converter uses ExchangeRate-API reference data. Each result shows its source and provider date. If the provider is unavailable, a dated offline snapshot may be shown and is labeled as cached." },
+  { q: "How often are the exchange rates updated?", a: "Every minute. The converter uses live market rates and checks each one against ExchangeRate-API daily reference rates. Each result shows its source and the time it was taken. If the live feed is unavailable, the daily reference rate is shown with its date, and an offline snapshot is labeled as cached." },
   { q: "What is the mid-market exchange rate?", a: "The mid-market rate is the midpoint between buy and sell prices. Our reference estimate is not a transfer quote: your payment provider determines the rate, fees and final amount received." },
   { q: "How many currencies do you support?", a: "We support over 160 global currencies, including USD, EUR, GBP, INR, PKR, and NGN, covering almost every circulating currency in the world." },
   { q: "Are there any hidden fees for using the currency converter?", a: "No. GlobalSync AI's currency converter is 100% free. We don't take a cut, and we don't charge any subscription or conversion fees." }
@@ -134,7 +134,7 @@ export default function CurrencyConverterPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
               ["160+ Currencies", "From USD, EUR, GBP to PKR, AED, NGN, BDT, KWD and 150+ more worldwide currencies."],
-              ["Dated Reference Rates", "Each result identifies ExchangeRate-API and its provider date, with cached rates clearly labeled."],
+              ["Live Rates", "Refreshed every minute, cross-checked against ExchangeRate-API, with the time shown on every result."],
               ["Historical Context", "See recent history when available for your currency pair. Unavailable history is labeled clearly."],
               ["AI Natural Language", 'Just type "convert 500 dollars to euros" — the AI handles the rest automatically.'],
             ].map(([title, desc]) => (

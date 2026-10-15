@@ -1,4 +1,4 @@
-import { getExchangeRate, getCachedRate } from "@/lib/exchangeRates";
+import { getExchangeRate, getCachedRate, LIVE_CACHE_MS, LIVE_SOURCE } from "@/lib/exchangeRates";
 import { useState, useEffect, useRef } from "react";
 
 import { useParams, Navigate, Link } from "react-router-dom";
@@ -40,7 +40,7 @@ function LiveRateWidget({ from, to, fromMeta, toMeta, rate, loading, refreshedSt
     <div className="bg-surface  rounded-xl border border-line text-ink p-6" data-testid="live-rate-widget">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <div className="text-xs text-zinc-400 mb-1">Reference Exchange Rate</div>
+          <div className="text-xs text-zinc-400 mb-1">{refreshedStr?.startsWith(LIVE_SOURCE) ? "Live exchange rate · refreshes every minute" : "Reference exchange rate"}</div>
           {/* isFallback badge only renders after client mount (controlled by parent), so no prerender mismatch */}
           {isFallback && (
             <div className="inline-flex items-center gap-1 bg-amber-500/20 text-amber-800 rounded-full px-2 py-0.5 text-[10px] font-semibold border border-amber-500/30 mb-2">
@@ -315,11 +315,17 @@ export default function CurrencyPairPage() {
     let active = true;
     setRate(null);
     setRateLoading(true);
-    getExchangeRate(fromMeta.code, toMeta.code).then(data => {
+    const apply = data => {
       if (!active) return;
       setRate(data.rate); setRefreshedStr(data.source + " · " + data.date); setRateDateRaw(data.date); setIsFallback(data.isFallback);
-    }).catch(() => { if (active) setRate(null); }).finally(() => { if (active) setRateLoading(false); });
-    return () => { active = false; };
+    };
+    getExchangeRate(fromMeta.code, toMeta.code).then(apply)
+      .catch(() => { if (active) setRate(null); }).finally(() => { if (active) setRateLoading(false); });
+    // Keep the number live while the page is open. A failed refresh keeps the last good rate.
+    const timer = setInterval(() => {
+      if (document.visibilityState === "visible") getExchangeRate(fromMeta.code, toMeta.code).then(apply).catch(() => {});
+    }, LIVE_CACHE_MS);
+    return () => { active = false; clearInterval(timer); };
   }, [fromMeta, toMeta, refreshVersion]);
   const handleRefresh = () => setRefreshVersion(v => v + 1);
 
@@ -474,9 +480,9 @@ export default function CurrencyPairPage() {
             <p className="text-sm font-semibold text-quiet mb-0.5">Which currency should you invoice in?</p>
             <p className="text-xs text-quiet">A practical guide for freelancers working internationally.</p>
           </div>
-          <Link to="/blog/mid-market-exchange-rate-freelancers"
+          <Link to="/guides/invoicing-international-clients-currency-guide"
             className="shrink-0 text-sm font-semibold text-pine hover:text-pine transition-colors whitespace-nowrap flex items-center gap-1">
-            Read guide: Freelancer Currency Pricing <ArrowRight className="w-3.5 h-3.5" />
+            Read guide: Invoicing international clients <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </section>
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import { readSharedTeam } from "@/lib/sharedTeam";
+import { trueNow, syncClock } from "@/lib/trueTime";
 import {
   Users, Clock, ArrowRight, CheckCircle2, AlertCircle, Copy, Share2, Calendar, ShieldCheck, Heart
 } from "lucide-react";
@@ -155,9 +156,10 @@ export default function TeamWorkspacePage() {
   // Clock tick timer
   useEffect(() => {
     // Set initial time immediately on mount (client-only), avoiding SSR #418 mismatch
-    setLiveTime(new Date());
+    setLiveTime(trueNow());
+    syncClock().then(() => setLiveTime(trueNow()));
     const timer = setInterval(() => {
-      setLiveTime(new Date());
+      setLiveTime(trueNow());
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -212,7 +214,7 @@ export default function TeamWorkspacePage() {
 
     try {
       // Determine the meeting date and hour in UTC
-      const baseDate = new Date();
+      const baseDate = trueNow();
       // If we are looking at custom slider, shift to that hour, else current hour
       const baseMember = team.members.find(m => m.name === baseCityName) || team.members[0];
       const baseOffset = parseOffset(baseMember.utc_offset);
