@@ -33,3 +33,10 @@ test('the planning day is always the coming Thursday', () => {
   expect(nextThursday(new Date('2026-10-15T10:00:00Z'))).toBe('2026-10-22');
   expect(nextThursday(new Date('2026-10-19T10:00:00Z'))).toBe('2026-10-22');
 });
+
+test('UK to India slots move by an hour when BST ends (India has no DST)', () => {
+  expect(timeIn('2026-10-22', 'Europe/London@10:00>Asia/Kolkata')).toBe('2:30 PM'); // BST
+  expect(timeIn('2026-10-29', 'Europe/London@10:00>Asia/Kolkata')).toBe('3:30 PM'); // GMT
+  expect(timeIn('2026-10-29', 'Europe/London@11:30>Asia/Kolkata')).toBe('5:00 PM'); // winter window ends
+  expect(zoneAbbr('2026-10-29', 'Europe/London')).toBe('GMT');
+});

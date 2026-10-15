@@ -32,6 +32,77 @@ const NY_730_LONDON = "{t:America/New_York@07:30>Europe/London}";
 const NY_730_MUMBAI = "{t:America/New_York@07:30>Asia/Kolkata}";
 
 export const GUIDES = [
+  // ─── 10 ─────────────────────────────────────────────────────────────────────
+  {
+    slug: "best-meeting-time-uk-india",
+    title: "Best Meeting Time for UK and India Teams (Live, With the BST Switch)",
+    metaTitle: "Best Meeting Time UK and India (Live Overlap Table) | GlobalSync AI",
+    metaDescription:
+      "UK and India share a working window every weekday: 3.5 hours in summer, 2.5 in winter. Here are the best slots, live for this week, and the dates they change.",
+    keywords:
+      "best meeting time UK and India, UK India overlap hours, London India meeting time, GMT to IST meeting, BST to IST, UK India time difference",
+    excerpt:
+      "Unlike the US, the UK and India do share a working day, but how much of it depends on the season. Here are the best slots for this week and the two dates a year they move.",
+    category: "Scheduling",
+    categoryColor: "blue",
+    publishDate: "October 2026",
+    ...AUTHOR,
+    ctaUrl: "/meeting-overlap/uk-india",
+    ctaText: "See the full UK to India overlap table",
+    links: ["planner", "timeZones", "widget"],
+    content: [
+      { type: "h2", text: "The short answer" },
+      { type: "p", text: "Book the call between **9:30 and 11:00 AM in London**. This week that's {t:Europe/London@09:30>Asia/Kolkata} to {t:Europe/London@11:00>Asia/Kolkata} in India: mid-morning for the UK side, mid-to-late afternoon for India, and inside a normal 9-to-5 for both." },
+      { type: "p", text: "That's the big difference from US to India scheduling: there's a real shared window, so nobody has to start early or stay late. The [Meeting Planner](/meeting-planner) shows it for any date and any UK or Indian city." },
+
+      { type: "h2", text: "London to India, hour by hour" },
+      { type: "p", text: "Worked out live for {day}. London is on {abbr:Europe/London} this week; India is always on IST." },
+      { type: "table",
+        headers: ["London ({abbr:Europe/London})", "India (IST)", "How it lands"],
+        rows: [
+          ["8:00 AM", "{t:Europe/London@08:00>Asia/Kolkata}", "Early in the UK. India is just after lunch."],
+          ["9:00 AM", "{t:Europe/London@09:00>Asia/Kolkata}", "UK starts the day. India is in the afternoon."],
+          ["9:30 AM", "{t:Europe/London@09:30>Asia/Kolkata}", "**A good default.** Both sides are settled into the day."],
+          ["10:00 AM", "{t:Europe/London@10:00>Asia/Kolkata}", "**Also a good default.**"],
+          ["11:00 AM", "{t:Europe/London@11:00>Asia/Kolkata}", "Fine, but India is getting near the end of the day."],
+          ["12:00 PM", "{t:Europe/London@12:00>Asia/Kolkata}", "Lunch in the UK, late in India. Use only if you must."],
+          ["1:00 PM", "{t:Europe/London@13:00>Asia/Kolkata}", "After hours in India."],
+        ],
+        note: "Times update automatically. When the UK changes its clocks, every India time in this table moves by an hour.",
+      },
+
+      { type: "h2", text: "How much overlap you actually get" },
+      { type: "p", text: "India doesn't use daylight saving. The UK does. So the size of your shared window changes twice a year, on the UK dates:" },
+      { type: "table",
+        headers: ["UK clocks", "India is ahead by", "Shared 9-to-5 window (London time)", "Same window in India"],
+        rows: [
+          ["British Summer Time (BST, UTC+1), late March to late October", "4 hours 30 minutes", "9:00 AM to 12:30 PM (3.5 hours)", "1:30 PM to 5:00 PM"],
+          ["Greenwich Mean Time (GMT, UTC+0), late October to late March", "5 hours 30 minutes", "9:00 AM to 11:30 AM (2.5 hours)", "2:30 PM to 5:00 PM"],
+        ],
+      },
+      { type: "p", text: "The UK changes on the **last Sunday of March and the last Sunday of October**. In 2026 the clocks go back on **Sunday 25 October**; in 2027 they go forward on **Sunday 28 March**. If your weekly call sits at 12:00 PM London in summer, it falls outside India's working day as soon as the UK goes back to GMT. Move it to 11:00 AM or earlier before the switch." },
+
+      { type: "h2", text: "Other UK and Indian cities" },
+      { type: "p", text: "Every city in Great Britain and Northern Ireland uses the same time as London, and all of India uses one time zone, IST. So Manchester to Bengaluru, Edinburgh to Chennai or Belfast to Pune all work exactly like the table above. You don't need a separate check for each office." },
+
+      { type: "h2", text: "For a recurring call" },
+      { type: "ol", items: [
+        { title: "Default to 10:00 AM London.", desc: "That's {t:Europe/London@10:00>Asia/Kolkata} in India this week, and it stays inside India's working day all year." },
+        { title: "Keep it under 90 minutes.", desc: "In winter the window is only 2.5 hours. Long workshops belong in the morning, London time." },
+        { title: "Set a reminder for late October and late March.", desc: "Those are the weeks the India time moves. A calendar file from the planner handles it for you, but anyone who wrote the time down by hand will be an hour off." },
+      ]},
+
+      { type: "h2", text: "Copy this invite" },
+      { type: "pre", text: "Weekly sync · {day}\nLondon ({abbr:Europe/London}): 10:00 AM · India (IST): {t:Europe/London@10:00>Asia/Kolkata}\nDuration: 45 min" },
+      { type: "p", text: "The [Meeting Planner](/meeting-planner) writes this for any cities and downloads a calendar file that adjusts for the UK clock change on its own. For a quick one-off check, use the [London to Mumbai clock](/time/london-to-mumbai) or the [GMT to IST converter](/convert/gmt-to-ist)." },
+    ],
+    faqs: [
+      { q: "What is the best meeting time for UK and India?", a: "Between 9:30 and 11:00 AM London time. That's mid-to-late afternoon in India ({t:Europe/London@09:30>Asia/Kolkata} to {t:Europe/London@11:00>Asia/Kolkata} IST this week) and inside a normal working day for both sides. The [Meeting Planner](/meeting-planner) checks any date for you." },
+      { q: "How many hours ahead is India from the UK?", a: "India is 4 hours 30 minutes ahead of the UK while the UK is on British Summer Time (late March to late October), and 5 hours 30 minutes ahead while the UK is on GMT. India doesn't change its clocks, so the difference only moves on the UK dates." },
+      { q: "How many working hours do the UK and India share?", a: "With a 9-to-5 day on both sides, about 3.5 hours in summer (9:00 AM to 12:30 PM London) and about 2.5 hours in winter (9:00 to 11:30 AM London). Plan long meetings for the UK morning so they fit in both seasons." },
+    ],
+  },
+
   // ─── 7 ──────────────────────────────────────────────────────────────────────
   {
     slug: "best-time-meeting-est-ist",
