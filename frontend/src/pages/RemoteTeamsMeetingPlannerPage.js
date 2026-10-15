@@ -52,7 +52,7 @@ export default function RemoteTeamsMeetingPlannerPage() {
             <h3 className="text-xl font-semibold text-ink mt-8 mb-3">Related resources</h3>
             <ul>
               <li><Link to="/us-india-meeting-time" className="text-pine hover:text-pine">Best time for US and India meetings</Link></li>
-              <li><Link to="/blog/remote-team-world-clock-best-practices" className="text-pine hover:text-pine">Remote team world clock best practices</Link></li>
+              <li><Link to="/guides/best-timezone-tools-remote-teams-2026" className="text-pine hover:text-pine">Best time zone tools for remote teams</Link></li>
               <li><Link to="/methodology" className="text-pine hover:text-pine">How our overlap recommendations work</Link></li>
             </ul>
           </div>

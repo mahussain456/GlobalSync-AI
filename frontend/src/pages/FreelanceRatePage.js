@@ -380,7 +380,7 @@ export default function FreelanceRatePage() {
           <span className="text-quiet">·</span>
           <Link to="/currency-converter" className="text-pine hover:underline">Currency Converter</Link>
           <span className="text-quiet">·</span>
-          <Link to="/blog/mid-market-exchange-rate-freelancers" className="text-pine hover:underline">Mid-Market Rate Guide</Link>
+          <Link to="/guides/freelancer-rates-international-clients-currency" className="text-pine hover:underline">Pricing international clients guide</Link>
         </div>
       </article>
 

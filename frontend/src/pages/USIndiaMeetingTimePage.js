@@ -56,7 +56,7 @@ export default function USIndiaMeetingTimePage() {
             <ul>
               <li><Link to="/meeting-planner" className="text-pine hover:text-pine">Use the live meeting planner</Link></li>
               <li><Link to="/time/new-york-to-london" className="text-pine hover:text-pine">Compare another major meeting overlap page</Link></li>
-              <li><Link to="/blog/time-zone-converter-guide-international-meetings" className="text-pine hover:text-pine">Read our time zone converter guide</Link></li>
+              <li><Link to="/guides/schedule-meetings-across-time-zones" className="text-pine hover:text-pine">Read our guide to scheduling across time zones</Link></li>
             </ul>
           </div>
         </div>

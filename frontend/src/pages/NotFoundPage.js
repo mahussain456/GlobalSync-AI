@@ -66,7 +66,7 @@ export default function NotFoundPage() {
             { label: "Time Zone Converter", to: "/time-zone-converter" },
             { label: "Meeting Planner",     to: "/meeting-planner"     },
             { label: "Currency Converter",  to: "/currency-converter"  },
-            { label: "Blog",               to: "/blog"                },
+            { label: "Guides",             to: "/guides"              },
           ].map(({ label, to }) => (
             <Link
               key={to}

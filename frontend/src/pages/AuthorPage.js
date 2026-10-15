@@ -4,7 +4,7 @@ import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { getStaticPageSEO } from "@/lib/seo";
-import { BLOG_POSTS, CATEGORY_STYLES } from "@/data/blogData";
+import { GUIDES, CATEGORY_STYLES } from "@/data/guidesData";
 
 const AUTHORS = {
   "ahmed-hussain": {
@@ -19,7 +19,7 @@ export default function AuthorPage() {
   const { slug } = useParams();
   const author = AUTHORS[slug];
 
-  if (!author) return <Navigate to="/blog" replace />;
+  if (!author) return <Navigate to="/guides" replace />;
 
   const seo = getStaticPageSEO(`author-${slug}`) || {
     rawTitle: `${author.name} | Author at GlobalSync AI`,
@@ -45,7 +45,7 @@ export default function AuthorPage() {
     ]
   };
 
-  const authorPosts = BLOG_POSTS.filter(post => post.authorName === author.name);
+  const authorPosts = GUIDES.filter(post => post.authorName === author.name);
 
   return (
     <div className="min-h-screen bg-paper text-ink relative">
@@ -93,7 +93,7 @@ export default function AuthorPage() {
         </div>
 
         <h2 className="font-heading text-2xl font-bold text-ink mb-6 flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-pine" /> Articles by {author.name}
+          <BookOpen className="w-5 h-5 text-pine" /> Guides by {author.name}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -102,7 +102,7 @@ export default function AuthorPage() {
             return (
               <Link
                 key={post.slug}
-                to={`/blog/${post.slug}`}
+                to={`/guides/${post.slug}`}
                 className="bg-surface  rounded-xl border border-line p-6 hover:border-line transition-all group flex flex-col h-full"
               >
                 <div className="mb-4">
@@ -120,8 +120,8 @@ export default function AuthorPage() {
         </div>
 
         <div className="mt-10 pt-6 border-t border-line">
-          <Link to="/blog" className="flex items-center gap-2 text-sm text-quiet hover:text-ink transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Back to all articles
+          <Link to="/guides" className="flex items-center gap-2 text-sm text-quiet hover:text-ink transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Back to all guides
           </Link>
         </div>
       </article>

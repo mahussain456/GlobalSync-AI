@@ -217,7 +217,7 @@ export const postDates = (post) => {
 };
 
 export const buildArticleSchema = (post) => ({
-  "@type": "BlogPosting",
+  "@type": "Article",
   "headline": post.title,
   "description": post.metaDescription,
   "keywords": post.keywords,
@@ -225,8 +225,8 @@ export const buildArticleSchema = (post) => ({
   ...(postDates(post).modified ? { "dateModified": postDates(post).modified } : {}),
   "author": { "@id": PERSON_ID },
   "publisher": { "@id": ORG_ID },
-  "mainEntityOfPage": { "@type": "WebPage", "@id": `${BASE_URL}/blog/${post.slug}` },
-  "url": `${BASE_URL}/blog/${post.slug}`,
+  "mainEntityOfPage": { "@type": "WebPage", "@id": `${BASE_URL}/guides/${post.slug}` },
+  "url": `${BASE_URL}/guides/${post.slug}`,
   "image": `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
 });
 
@@ -330,7 +330,7 @@ export const getCurrencyHubSEO = ({ faqs = [] } = {}) => {
   const title = `Free Currency Converter | 160+ Rates | ${BRAND}`;
   return {
     rawTitle: title,
-    description: `Estimate amounts across 160+ currencies with dated reference rates, clear sources and labeled offline snapshots. Free, no signup.`,
+    description: `Convert 160+ currencies at live mid-market rates, refreshed every minute, with the source and time on every result. Free, no signup.`,
     canonical: "/currency-converter",
     keywords: "currency converter, reference exchange rates, USD to INR, EUR to GBP, free currency converter, 160 currencies, dated rates",
     ogType: "website",
@@ -339,7 +339,7 @@ export const getCurrencyHubSEO = ({ faqs = [] } = {}) => {
       buildSoftwareApplicationSchema({
         name: "Free Currency Converter",
         path: "/currency-converter",
-        description: "Estimate amounts across 160+ currencies with dated reference rates, clear sources and labeled offline snapshots. Free, no signup.",
+        description: "Convert 160+ currencies at live mid-market rates, refreshed every minute, with the source and time on every result. Free, no signup.",
         category: "FinanceApplication",
       }),
       buildBreadcrumbSchema([
@@ -459,7 +459,7 @@ export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData, rateSnaps
         "publisher": { "@id": ORG_ID },
         "isBasedOn": {
           "@type": "Dataset",
-          "name": "ECB-benchmarked reference rates via ExchangeRate-API",
+          "name": "Live market rates cross-checked with ExchangeRate-API daily reference rates",
           "url": `${BASE_URL}/data-sources`,
         },
         "citation": {
@@ -484,71 +484,65 @@ export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData, rateSnaps
 };
 
 /**
- * Blog index page — /blog
+ * Guides index — /guides
  */
-export const getBlogIndexSEO = ({ posts = [] } = {}) => {
-  const title = `GlobalSync AI: Expert Guides for Global Remote Work`;
+export const getGuidesIndexSEO = ({ guides = [] } = {}) => {
+  const title = "Guides for Remote Teams & Freelancers | GlobalSync AI";
   return {
     rawTitle: title,
-    description: `Practical guides for remote teams, freelancers, and digital nomads. Learn to schedule meetings across time zones and manage multi-currency income.`,
-    canonical: "/blog",
-    keywords: "remote work blog, time zone tips, currency converter guide, digital nomad tools, remote team scheduling, freelancer currency, best meeting time",
+    description: "Practical guides for freelancers and remote teams: scheduling across time zones, invoicing international clients, pricing your work and choosing the right tools.",
+    canonical: "/guides",
+    keywords: "remote work guides, schedule meetings across time zones, invoice international clients, freelance rates international clients, time zone tools for remote teams",
     ogType: "website",
     ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
     structuredData: [
       buildBreadcrumbSchema([
         { name: "Home", path: "/" },
-        { name: "Blog", path: "/blog" },
+        { name: "Guides", path: "/guides" },
       ]),
       buildOrganizationSchema(),
       buildPersonSchema(),
       {
-        "@type": "Blog",
-        "@id": `${BASE_URL}/blog#blog`,
+        "@type": "CollectionPage",
+        "@id": `${BASE_URL}/guides#guides`,
         "name": title,
-        "url": `${BASE_URL}/blog`,
+        "url": `${BASE_URL}/guides`,
         "inLanguage": "en",
         "publisher": { "@id": ORG_ID },
-        ...(posts.length ? {
-          "blogPost": posts.map(post => ({
-            "@type": "BlogPosting",
-            "headline": post.title,
-            "url": `${BASE_URL}/blog/${post.slug}`,
-            ...(postDates(post).published ? { "datePublished": postDates(post).published } : {}),
-            ...(postDates(post).modified ? { "dateModified": postDates(post).modified } : {}),
-            "author": { "@id": PERSON_ID },
-          })),
-        } : {}),
+        "hasPart": guides.map((g) => ({
+          "@type": "Article",
+          "headline": g.title,
+          "url": `${BASE_URL}/guides/${g.slug}`,
+          ...(postDates(g).published ? { "datePublished": postDates(g).published } : {}),
+          "author": { "@id": PERSON_ID },
+        })),
       },
     ],
   };
 };
 
 /**
- * Blog post page — /blog/:slug
- * @param {object} post — full BLOG_POSTS entry
+ * Guide — /guides/:slug
+ * FAQPage JSON-LD is rendered at the bottom of the article by GuidePage, not here.
  */
-export const getBlogPostSEO = ({ post }) => {
-  const title = post.metaTitle ? post.metaTitle : `${post.title} | ${BRAND}`;
-  return {
-    rawTitle: title,
-    description: post.metaDescription,
-    canonical: `/blog/${post.slug}`,
-    keywords: post.keywords,
-    ogType: "article",
-    ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
-    structuredData: [
-      buildArticleSchema(post),
-      buildOrganizationSchema(),
-      buildPersonSchema(),
-      buildBreadcrumbSchema([
-        { name: "Home", path: "/" },
-        { name: "Blog", path: "/blog" },
-        { name: post.title, path: `/blog/${post.slug}` },
-      ]),
-    ],
-  };
-};
+export const getGuideSEO = ({ guide }) => ({
+  rawTitle: guide.metaTitle || `${guide.title} | ${BRAND}`,
+  description: guide.metaDescription,
+  canonical: `/guides/${guide.slug}`,
+  keywords: guide.keywords,
+  ogType: "article",
+  ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
+  structuredData: [
+    buildArticleSchema(guide),
+    buildOrganizationSchema(),
+    buildPersonSchema(),
+    buildBreadcrumbSchema([
+      { name: "Home", path: "/" },
+      { name: "Guides", path: "/guides" },
+      { name: guide.title, path: `/guides/${guide.slug}` },
+    ]),
+  ],
+});
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Static Pages  (About, Contact, Legal, Trust)
@@ -682,7 +676,7 @@ const buildDataSourceDatasets = () => {
       "@type": "Dataset",
       "@id": `${BASE_URL}/data-sources#fx`,
       "name": "Currency reference rates used by GlobalSync AI",
-      "description": "Dated reference exchange rates for 160+ currencies, aligned with benchmark rates published by the European Central Bank and institutional liquidity pools via ExchangeRate-API. Estimates for planning, not final transfer rates.",
+      "description": "Live mid-market exchange rates for 160+ currencies, refreshed every minute and cross-checked against ExchangeRate-API daily reference rates. Not final transfer rates.",
       "url": `${BASE_URL}/data-sources`,
       "creator": { "@id": ORG_ID },
       "temporalCoverage": modified,

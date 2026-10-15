@@ -63,8 +63,9 @@ const PrivacyPolicyPage = React.lazy(() => import("@/pages/PrivacyPolicyPage"));
 const TermsOfServicePage = React.lazy(() => import("@/pages/TermsOfServicePage"));
 const EditorialPolicyPage = React.lazy(() => import("@/pages/EditorialPolicyPage"));
 const MethodologyPage = React.lazy(() => import("@/pages/MethodologyPage"));
-const BlogPage = React.lazy(() => import("@/pages/BlogPage"));
-const BlogPostPage = React.lazy(() => import("@/pages/BlogPostPage"));
+const GuidesPage = React.lazy(() => import("@/pages/GuidesPage"));
+const GuidePage = React.lazy(() => import("@/pages/GuidePage"));
+const LegacyBlogRedirect = React.lazy(() => import("@/pages/LegacyBlogRedirect"));
 const CityPairPage = React.lazy(() => import("@/pages/CityPairPage"));
 const CurrencyPairPage = React.lazy(() => import("@/pages/CurrencyPairPage"));
 const DataSourcesPage = React.lazy(() => import("@/pages/DataSourcesPage"));
@@ -115,7 +116,7 @@ function App() {
       import("@/pages/MeetingPlannerPage");
       import("@/pages/FreelancerRateConverterPage");
       import("@/pages/InvoicePage");
-      import("@/pages/BlogPage");
+      import("@/pages/GuidesPage");
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
@@ -133,8 +134,10 @@ function App() {
               <Route path="/time-zone-converter" element={<TimeZoneConverterPage />} />
               <Route path="/currency-converter" element={<CurrencyConverterPage />} />
               <Route path="/meeting-planner" element={<MeetingPlannerPage />} />
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/blog/:slug" element={<BlogPostPage />} />
+              <Route path="/guides" element={<GuidesPage />} />
+              <Route path="/guides/:slug" element={<GuidePage />} />
+              <Route path="/blog" element={<Navigate to="/guides" replace />} />
+              <Route path="/blog/:slug" element={<LegacyBlogRedirect />} />
               <Route path="/time/:pair" element={<CityPairPage />} />
               <Route path="/currency/:pair" element={<CurrencyPairPage />} />
               <Route path="/about" element={<AboutPage />} />

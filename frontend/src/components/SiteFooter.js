@@ -45,7 +45,7 @@ export default function SiteFooter() {
         <div>
           <p className="text-gem-stone font-bold uppercase tracking-wider text-xs mb-4">Resources</p>
           <ul className="space-y-3">
-            <li><Link to="/blog" className="text-sm hover:text-gem-gold transition-colors">Blog & Guides</Link></li>
+            <li><Link to="/guides" className="text-sm hover:text-gem-gold transition-colors">Guides</Link></li>
             <li><Link to="/freelancer-rate-converter" className="text-sm hover:text-gem-gold transition-colors">Freelancer Rates</Link></li>
             <li><Link to="/global-meeting-planner-for-remote-teams" className="text-sm hover:text-gem-gold transition-colors">Global Meeting Planner</Link></li>
             <li><Link to="/us-india-meeting-time" className="text-sm hover:text-gem-gold transition-colors">US–India Meeting Time</Link></li>
