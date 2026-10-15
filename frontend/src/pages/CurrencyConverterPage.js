@@ -220,7 +220,7 @@ export default function CurrencyConverterPage() {
               <Clock className="w-9 h-9 text-pine bg-gem-gold/20 rounded-lg p-2" />
               <div>
                 <div className="font-medium text-ink text-sm">Free World Time Zone Converter</div>
-                <div className="text-xs text-quiet">Live clocks for 25+ cities, updated every second</div>
+                <div className="text-xs text-quiet">Live clocks for 85+ cities, updated every second</div>
               </div>
             </Link>
             <Link to="/freelancer-rate-converter" className="bg-surface  rounded-xl p-4 border border-line hover:border-line transition-all flex items-center gap-3">

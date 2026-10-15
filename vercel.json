@@ -13,16 +13,8 @@
           "value": "nosniff"
         },
         {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        },
-        {
           "key": "X-XSS-Protection",
           "value": "0"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; upgrade-insecure-requests"
         },
         {
           "key": "Cross-Origin-Opener-Policy",
@@ -39,6 +31,28 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=3600, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/((?!embed/).*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests; form-action 'self' https://buttondown.com https://app.kit.com https://app.convertkit.com https://*.list-manage.com"
+        }
+      ]
+    },
+    {
+      "source": "/embed/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors *; base-uri 'self'; object-src 'none'; upgrade-insecure-requests; form-action 'self'"
         }
       ]
     },
@@ -149,14 +163,46 @@
       "destination": "/freelancer-rate-converter",
       "permanent": true
     },
-    { "source": "/blog", "destination": "/guides", "permanent": true },
-    { "source": "/blog/async-first-remote-team-operating-system", "destination": "/guides/schedule-meetings-across-time-zones", "permanent": true },
-    { "source": "/blog/time-zone-converter-guide-international-meetings", "destination": "/guides/schedule-meetings-across-time-zones", "permanent": true },
-    { "source": "/blog/remote-team-world-clock-best-practices", "destination": "/guides/best-timezone-tools-remote-teams-2026", "permanent": true },
-    { "source": "/blog/digital-nomad-currency-timezone-stack", "destination": "/guides/best-timezone-tools-remote-teams-2026", "permanent": true },
-    { "source": "/blog/mid-market-exchange-rate-freelancers", "destination": "/guides/invoicing-international-clients-currency-guide", "permanent": true },
-    { "source": "/blog/remote-freelancer-retainer-pricing-guide", "destination": "/guides/freelancer-rates-international-clients-currency", "permanent": true },
-    { "source": "/blog/:slug*", "destination": "/guides", "permanent": true }
+    {
+      "source": "/blog",
+      "destination": "/guides",
+      "permanent": true
+    },
+    {
+      "source": "/blog/async-first-remote-team-operating-system",
+      "destination": "/guides/schedule-meetings-across-time-zones",
+      "permanent": true
+    },
+    {
+      "source": "/blog/time-zone-converter-guide-international-meetings",
+      "destination": "/guides/schedule-meetings-across-time-zones",
+      "permanent": true
+    },
+    {
+      "source": "/blog/remote-team-world-clock-best-practices",
+      "destination": "/guides/best-timezone-tools-remote-teams-2026",
+      "permanent": true
+    },
+    {
+      "source": "/blog/digital-nomad-currency-timezone-stack",
+      "destination": "/guides/best-timezone-tools-remote-teams-2026",
+      "permanent": true
+    },
+    {
+      "source": "/blog/mid-market-exchange-rate-freelancers",
+      "destination": "/guides/invoicing-international-clients-currency-guide",
+      "permanent": true
+    },
+    {
+      "source": "/blog/remote-freelancer-retainer-pricing-guide",
+      "destination": "/guides/freelancer-rates-international-clients-currency",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:slug*",
+      "destination": "/guides",
+      "permanent": true
+    }
   ],
   "rewrites": [
     {

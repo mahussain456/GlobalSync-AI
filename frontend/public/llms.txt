@@ -11,10 +11,11 @@ rates, not the final transfer rate your payment provider will give you.
 ## Tools
 - [Time Zone Converter](https://www.globalsync-ai.com/time-zone-converter): Compare live time across 25+ cities, with DST handled via the IANA database.
 - [Meeting Planner](https://www.globalsync-ai.com/meeting-planner): Find fair overlap hours for distributed teams and export or share the slot.
-- [Desktop World Clock Widget](https://www.globalsync-ai.com/world-clock-widget): Free 1.6 MB world clock widget for Windows and Mac with four live city clocks, call-time status and meeting-time preview.
+- [Desktop World Clock Widget](https://www.globalsync-ai.com/world-clock-widget): Free world clock app for Windows (1.5 MB) and Mac (4.2 MB) with four live city clocks, call-time status and meeting-time preview.
 - [Currency Converter](https://www.globalsync-ai.com/currency-converter): Convert 160+ currencies at live mid-market rates, refreshed every minute, with the source and time shown on every result.
 - [Freelance Rate Converter](https://www.globalsync-ai.com/freelancer-rate-converter): Convert hourly, retainer and project rates across currencies and estimate gross annual revenue.
 - [Invoice Builder](https://www.globalsync-ai.com/invoice): Turn rates and client details into an invoice.
+- [World Clock Widget for Websites](https://www.globalsync-ai.com/embed): Free embeddable world clock for any site (iframe, up to 4 cities, no cookies).
 
 ## Reference
 - [Data Sources](https://www.globalsync-ai.com/data-sources): Every upstream provider, what it supplies, and how often it updates.
@@ -23,6 +24,9 @@ rates, not the final transfer rate your payment provider will give you.
 - [About](https://www.globalsync-ai.com/about): Who builds this.
 
 ## Guides
+- [Best Time to Schedule a Meeting Between EST and IST](https://www.globalsync-ai.com/guides/best-time-meeting-est-ist): The two realistic New York to India windows, live for this week, and when the gap changes.
+- [How to Invoice a US Client From Pakistan](https://www.globalsync-ai.com/guides/invoice-us-client-from-pakistan): Payment routes that work from Pakistan (PayPal does not), their costs, and the invoice fields that prevent delays.
+- [USD to INR Freelance Rate Conversion](https://www.globalsync-ai.com/guides/usd-to-inr-freelance-rate-conversion): What USD hourly rates come to in rupees at today's rate, fees, and GST on export invoices.
 - [How to Schedule Meetings Across Time Zones Without Doing Any Math](https://www.globalsync-ai.com/guides/schedule-meetings-across-time-zones): A five-step routine for finding a shared working window, checking local calling hours and sending one multi-city invite.
 - [World Time Buddy Alternatives for Remote Teams](https://www.globalsync-ai.com/guides/worldtimebuddy-alternative-remote-teams): What World Time Buddy does well, where the workflow stops, and a feature-by-feature comparison with GlobalSync AI.
 - [Invoicing International Clients: Currencies, FX Fees and Timing](https://www.globalsync-ai.com/guides/invoicing-international-clients-currency-guide): Choosing a billing currency, what Wise, PayPal, Payoneer and SWIFT really cost, and the five fields every international invoice needs.

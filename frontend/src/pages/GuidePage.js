@@ -7,6 +7,7 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import DesktopAppCTA from "@/components/DesktopAppCTA";
 import ToolCTA from "@/components/ToolCTA";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import { getGuide, GUIDES, CATEGORY_STYLES, TOOL_LINKS, plainText } from "@/data/guidesData";
 import { getGuideSEO, buildFAQSchema } from "@/lib/seo";
 import { useLiveFacts, fillDeep, fillText, hasLiveTokens } from "@/lib/liveFacts";
@@ -263,6 +264,8 @@ function GuideBody({ source }) {
             {guide.ctaText} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
+
+        <NewsletterSignup placement="guide" className="mt-10" />
 
         <AdBanner slot="rectangle" className="mt-8" />
 

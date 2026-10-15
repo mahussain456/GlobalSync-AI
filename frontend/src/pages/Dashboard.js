@@ -47,7 +47,7 @@ export default function Dashboard() {
     <>
       <SEOHead
         rawTitle="GlobalSync AI Dashboard | Time Zone & Currency Converter"
-        description="Convert time zones, plan meetings across cities, and check live currency rates for 160+ currencies. Free AI-powered dashboard — no signup required."
+        description="Convert time zones, plan meetings across cities, and check live currency rates for 160+ currencies. Free dashboard, no signup required."
         canonical="/dashboard"
         keywords="time zone converter, currency converter, meeting planner, world clock, live exchange rates"
         noIndex={true}
@@ -83,9 +83,9 @@ export default function Dashboard() {
           {/* Stats Row */}
           <div className="grid grid-cols-3 gap-3 mb-6">
             {[
-              { icon: Globe,      label: "25+ Cities",       sub: "Time Zones",       color: "text-pine",   bg: "bg-surface"   },
+              { icon: Globe,      label: "85+ Cities",       sub: "Time Zones",       color: "text-pine",   bg: "bg-surface"   },
               { icon: TrendingUp, label: "160+ Currencies",  sub: "Live Rates",        color: "text-pine",bg: "bg-surface"},
-              { icon: Sparkles,   label: "AI-Powered",       sub: "Natural Language",  color: "text-pine", bg: "bg-surface" },
+              { icon: Sparkles,   label: "Plain-English",    sub: "Questions (AI)",  color: "text-pine", bg: "bg-surface" },
             ].map(({ icon: Icon, label, sub, color, bg }) => (
               <div key={label} className="dash-stat-card">
                 <div className={`w-9 h-9 ${bg} rounded-lg flex items-center justify-center flex-shrink-0`}>

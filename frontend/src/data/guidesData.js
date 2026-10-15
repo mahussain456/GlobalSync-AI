@@ -32,6 +32,208 @@ const NY_730_LONDON = "{t:America/New_York@07:30>Europe/London}";
 const NY_730_MUMBAI = "{t:America/New_York@07:30>Asia/Kolkata}";
 
 export const GUIDES = [
+  // ─── 7 ──────────────────────────────────────────────────────────────────────
+  {
+    slug: "best-time-meeting-est-ist",
+    title: "Best Time to Schedule a Meeting Between EST and IST (Live Times)",
+    metaTitle: "Best Time for a Meeting Between EST and IST (Live Table) | GlobalSync AI",
+    metaDescription:
+      "There's no 9-to-5 overlap between New York and India. Here are the two windows that work, live for this week, plus the dates the gap changes.",
+    keywords:
+      "best time to schedule a meeting between EST and IST, EST to IST meeting time, US India meeting overlap, New York India call time, EST IST overlap hours",
+    excerpt:
+      "New York and India never share a full working day. Here are the two windows that do work, worked out live for this week, and the two dates a year when they move.",
+    category: "Scheduling",
+    categoryColor: "blue",
+    publishDate: "October 2026",
+    ...AUTHOR,
+    ctaUrl: "/meeting-overlap/us-india",
+    ctaText: "See the full US to India overlap table",
+    links: ["planner", "timeZones", "widget"],
+    content: [
+      { type: "h2", text: "The short answer" },
+      { type: "p", text: "Book the call at **8:00 AM in New York**. That's {t:America/New_York@08:00>Asia/Kolkata} in India this week: early for the US side, end of the day for the India side, and inside everyone's waking hours. If India can stay a little later, 9:00 AM New York ({t:America/New_York@09:00>Asia/Kolkata} in India) gives the US side a normal start." },
+      { type: "p", text: "There is no time when both sides are inside a 9-to-5 day. You have to choose who stretches, and the [Meeting Planner](/meeting-planner) shows you exactly how far." },
+
+      { type: "h2", text: "New York to India, hour by hour" },
+      { type: "p", text: "Worked out live for {day}. New York is on {abbr:America/New_York} this week; India is always on IST." },
+      { type: "table",
+        headers: ["New York ({abbr:America/New_York})", "India (IST)", "How it lands"],
+        rows: [
+          ["6:00 AM", "{t:America/New_York@06:00>Asia/Kolkata}", "Too early for most US people. India is mid-afternoon."],
+          ["7:00 AM", "{t:America/New_York@07:00>Asia/Kolkata}", "Early start in the US. India is in its last working hours."],
+          ["7:30 AM", "{t:America/New_York@07:30>Asia/Kolkata}", "A good slot if the US side can start early."],
+          ["8:00 AM", "{t:America/New_York@08:00>Asia/Kolkata}", "**The usual best choice.** Both sides awake, India finishing up."],
+          ["9:00 AM", "{t:America/New_York@09:00>Asia/Kolkata}", "Normal US start. India is into the evening."],
+          ["10:00 AM", "{t:America/New_York@10:00>Asia/Kolkata}", "Late evening in India. Fine once in a while, not weekly."],
+          ["9:30 PM", "{t:America/New_York@21:30>Asia/Kolkata}", "The other window: India's morning, the US side's late evening."],
+        ],
+        note: "Times update automatically. When the US changes its clocks, every India time in this table moves by an hour.",
+      },
+
+      { type: "h2", text: "Why the gap is sometimes 9.5 hours and sometimes 10.5" },
+      { type: "p", text: "India doesn't use daylight saving. The US does. So the difference between New York and India changes twice a year, on the US dates only:" },
+      { type: "ul", items: [
+        "From the second Sunday in March to the first Sunday in November, New York is on EDT (UTC-4) and India is **9 hours 30 minutes ahead**.",
+        "The rest of the year New York is on EST (UTC-5) and India is **10 hours 30 minutes ahead**.",
+        "In 2026 the US clocks go back on **Sunday 1 November**. In 2027 they go forward on **Sunday 14 March**.",
+      ]},
+      { type: "p", text: "That's why a weekly 8:00 AM New York call lands an hour later in India for the winter months. People often say \"EST\" all year, but in summer New York is actually on EDT. If you write times as \"9:00 AM New York time\" instead of \"9:00 AM EST\", nobody gets the wrong hour." },
+
+      { type: "h2", text: "West Coast and India" },
+      { type: "p", text: "From San Francisco or Los Angeles there's even less room. 7:00 AM Pacific is {t:America/Los_Angeles@07:00>Asia/Kolkata} in India this week, so a West Coast call almost always means a very early start on the US side or a late night in India. If the team spans both US coasts and India, the [Meeting Planner](/meeting-planner) will tell you plainly that there's no shared working time, and show the least-bad slot." },
+
+      { type: "h2", text: "For a recurring call, rotate who stretches" },
+      { type: "p", text: "If you meet every week, don't make India stay late forever. A simple rule that holds up:" },
+      { type: "ol", items: [
+        { title: "Default to the US early slot.", desc: "8:00 AM New York ({t:America/New_York@08:00>Asia/Kolkata} in India) for routine check-ins." },
+        { title: "Once a month, flip it.", desc: "9:30 PM New York ({t:America/New_York@21:30>Asia/Kolkata} in India) so the India side gets a morning call." },
+        { title: "Move status updates to writing.", desc: "Keep live calls for decisions. Everything else can wait for the other side's morning." },
+      ]},
+
+      { type: "h2", text: "Copy this invite" },
+      { type: "pre", text: "Weekly sync · {day}\nNew York ({abbr:America/New_York}): 8:00 AM · India (IST): {t:America/New_York@08:00>Asia/Kolkata}\nDuration: 30 min" },
+      { type: "p", text: "The [Meeting Planner](/meeting-planner) writes this for any cities and downloads a calendar file, so the event shows the right time in everyone's calendar. For a quick check without planning, the [Time Zone Converter](/time-zone-converter) and the [EST to IST converter](/convert/est-to-ist) do it in one step." },
+    ],
+    faqs: [
+      { q: "What is the best time for a meeting between EST and IST?", a: "8:00 AM New York time is usually best: early for the US side and the end of the working day in India ({t:America/New_York@08:00>Asia/Kolkata} IST this week). There's no time when both sides are inside a 9-to-5 day, so someone always stretches. The [Meeting Planner](/meeting-planner) shows the options for your exact cities." },
+      { q: "How many hours ahead is India from EST?", a: "India is 10 hours 30 minutes ahead of New York while the US is on standard time (EST, roughly November to March), and 9 hours 30 minutes ahead while the US is on daylight time (EDT). India doesn't change its clocks, so the gap only moves on the US dates." },
+      { q: "Is there any overlap between US and India business hours?", a: "Not between a 9-to-5 day on both sides. The closest fits are the US early morning (India's late afternoon or evening) and the US late evening (India's morning). Rotating between the two keeps one side from always taking the inconvenient hour." },
+    ],
+  },
+
+  // ─── 8 ──────────────────────────────────────────────────────────────────────
+  {
+    slug: "invoice-us-client-from-pakistan",
+    title: "How to Invoice a US Client From Pakistan (and Actually Get Paid in Full)",
+    metaTitle: "How to Invoice a US Client From Pakistan (2026) | GlobalSync AI",
+    metaDescription:
+      "PayPal doesn't work in Pakistan. Here's how to invoice US clients, which payment routes do work, what each costs, and the invoice fields that prevent delays.",
+    keywords:
+      "how to invoice a US client from Pakistan, receive payment from USA in Pakistan, Pakistani freelancer invoice USD, Payoneer vs bank transfer Pakistan, USD to PKR freelancer payment",
+    excerpt:
+      "PayPal isn't an option from Pakistan, so the payment route has to be on your invoice from day one. Here's what works, what it costs, and how to write the invoice.",
+    category: "Invoicing",
+    categoryColor: "emerald",
+    publishDate: "October 2026",
+    ...AUTHOR,
+    ctaUrl: "/invoice",
+    ctaText: "Create a USD invoice with a PKR reference line",
+    links: ["invoice", "currency", "rates", "timeZones"],
+    content: [
+      { type: "h2", text: "Start with the payment route, not the template" },
+      { type: "p", text: "Most invoice advice assumes your client can \"just PayPal you\". From Pakistan they can't: PayPal doesn't let Pakistani residents open an account or withdraw to a local bank. So before you send anything, decide how the money will reach you, and put those details on the invoice. The [Invoice Builder](/invoice) has a field for exactly that." },
+
+      { type: "h2", text: "Routes that work from Pakistan, and what they cost" },
+      { type: "table",
+        headers: ["Route", "What the US client does", "Typical cost (approximate)", "Watch out for"],
+        rows: [
+          ["Payoneer", "Pays your Payoneer payment request by US bank debit (ACH) or card", "About 1% by ACH or about 3% by card, then up to about 2% above mid-market when you withdraw to a PKR bank account", "Ask clients to pay by ACH, not card. Payoneer also has an annual account fee that's waived above a yearly receiving threshold."],
+          ["Direct bank transfer (SWIFT)", "Wires USD to your Pakistani bank account", "Sender fee of roughly $25 to $50, an intermediary fee of $10 to $30, then your bank's conversion rate", "Ask your bank for the rate it applies and for a Proceeds Realization Certificate (PRC) as proof of the remittance."],
+          ["Client pays through Wise", "Sends from their Wise account to your PKR bank account", "Roughly 0.5% to 1%, shown to the client before sending", "You don't need your own Wise account for this. Opening one as a Pakistan resident may not be possible, so check Wise's current country list."],
+          ["PayPal", "Not possible", "", "PayPal doesn't serve Pakistan-based accounts."],
+        ],
+        note: "Fees change often and differ by account. Check each provider's current pricing before you quote. Approximate as of October 2026.",
+      },
+      { type: "p", text: "On a $2,500 invoice, the gap between the cheapest and the most expensive route can easily be $75 or more. At today's rate that's about PKR {fxamt:75:USD:PKR}, so pick the route before you set your price, and build its cost into the quote. The [Freelance Rate Calculator](/freelancer-rate-converter) helps with that." },
+
+      { type: "h2", text: "Bill in USD, show the rupees as a reference" },
+      { type: "p", text: "US clients pay in USD, and their accounts team approves USD. Keep the invoice in USD and add one clearly labelled line so you both know what it's worth locally:" },
+      { type: "pre", text: "Total due: USD 2,500.00\nReference only: approximately PKR {fxamt:2500:USD:PKR} at {fx:USD:PKR}/USD on {fxday}.\nPayment due in USD as stated above." },
+      { type: "p", text: "The [Invoice Builder](/invoice) adds this line for you using the live rate, and the [USD to PKR page](/currency/usd-to-pkr) shows the rate on its own if you just want to check." },
+
+      { type: "h2", text: "The fields that stop payment delays" },
+      { type: "table",
+        headers: ["Field", "What to write"],
+        rows: [
+          ["Currency, spelled out", "\"USD 2,500.00\", never just \"$2,500\""],
+          ["Payment details", "Your Payoneer payment link, or your bank's name, SWIFT/BIC, IBAN and the account title exactly as the bank has it"],
+          ["Your details", "Full legal name, address in Pakistan, email. Add your NTN if you have one."],
+          ["Client details", "Company name and billing address in the US, plus the person who approves invoices"],
+          ["Terms", "\"Net 14. Payment due by [date].\" Count from the date you send it."],
+        ],
+      },
+
+      { type: "h2", text: "Taxes: use the banking channel" },
+      { type: "p", text: "Pakistan has a reduced final tax rate on IT and IT-enabled export income received through banking channels. Several tax guides put it at 0.25% for exporters registered with the Pakistan Software Export Board (PSEB) and 1% otherwise. Rates and conditions change with each budget, so confirm the current figures with the FBR or a tax adviser. What is consistent: money that arrives through a bank or an approved channel, with a PRC to prove it, is what qualifies. Cash, crypto or a friend's foreign account won't." },
+
+      { type: "h2", text: "Send it at a sensible hour" },
+      { type: "p", text: "A New York client's workday starts in your evening. Send the invoice so it's at the top of their inbox when they start: 9:00 AM in New York is {t:America/New_York@09:00>Asia/Karachi} in Karachi this week. The [Time Zone Converter](/time-zone-converter) shows it for any city, and the [US to Pakistan meeting guide](/meeting-overlap/us-pakistan) helps if you need a call first." },
+    ],
+    faqs: [
+      { q: "How can I receive payment from a US client in Pakistan?", a: "The common routes are Payoneer (the client pays your payment request by bank debit or card), a direct SWIFT bank transfer in USD to your Pakistani bank account, or the client sending money through Wise to your PKR bank account. PayPal doesn't work for Pakistan-based accounts. Put your chosen route on the invoice so the client doesn't have to ask." },
+      { q: "Should I invoice a US client in USD or PKR?", a: "Invoice in USD. It's what the client pays and approves. Add a reference line with the PKR equivalent (for example \"approximately PKR {fxamt:2500:USD:PKR} at {fx:USD:PKR}/USD on {fxday}\") so both sides know the local value. GlobalSync AI's free [Invoice Builder](/invoice) adds that line automatically." },
+      { q: "What is the cheapest way to get paid from the USA in Pakistan?", a: "It depends on how the client pays. A client paying through Wise to your PKR bank account usually costs the least, followed by Payoneer with the client paying by ACH. Card payments and SWIFT transfers cost more because of card fees, wire fees and the bank's conversion rate. Check each provider's current fees before you quote." },
+    ],
+  },
+
+  // ─── 9 ──────────────────────────────────────────────────────────────────────
+  {
+    slug: "usd-to-inr-freelance-rate-conversion",
+    title: "USD to INR Freelance Rate Conversion: What Your Hourly Rate Is Really Worth",
+    metaTitle: "USD to INR Freelance Rate Conversion (Live Table) | GlobalSync AI",
+    metaDescription:
+      "Convert your USD freelance rate to INR at today's rate, see the monthly totals, what fees take off, and how GST works on export invoices.",
+    keywords:
+      "USD to INR freelance rate conversion, dollar hourly rate in rupees, freelance rate in INR, how much is $25 an hour in INR, USD freelancer India income",
+    excerpt:
+      "What a USD hourly rate comes to in rupees, per hour and per month, at today's rate. Plus what payment fees take off and how GST works when you bill a foreign client.",
+    category: "Freelance Rates",
+    categoryColor: "orange",
+    publishDate: "October 2026",
+    ...AUTHOR,
+    ctaUrl: "/freelance-rate/usd-to-inr",
+    ctaText: "Open the USD to INR rate calculator",
+    links: ["rates", "currency", "invoice"],
+    content: [
+      { type: "h2", text: "Your rate in rupees, at today's rate" },
+      { type: "p", text: "Today 1 USD = ₹{fx:USD:INR} (live mid-market rate as of {fxdate}). Here's what common hourly rates come to, per hour and over a month of 120 billable hours, which is a realistic full-time month once you leave room for admin, sales and gaps between projects:" },
+      { type: "table",
+        headers: ["Your rate", "Per hour in INR", "120 hours in USD", "120 hours in INR"],
+        rows: [
+          ["$15/hr", "₹{fxamt:15:USD:INR:1}", "$1,800", "₹{fxamt:1800:USD:INR}"],
+          ["$25/hr", "₹{fxamt:25:USD:INR:1}", "$3,000", "₹{fxamt:3000:USD:INR}"],
+          ["$40/hr", "₹{fxamt:40:USD:INR:1}", "$4,800", "₹{fxamt:4800:USD:INR}"],
+          ["$60/hr", "₹{fxamt:60:USD:INR:1}", "$7,200", "₹{fxamt:7200:USD:INR}"],
+          ["$100/hr", "₹{fxamt:100:USD:INR:1}", "$12,000", "₹{fxamt:12000:USD:INR}"],
+        ],
+        note: "Mid-market rate, before fees. Monthly figures are rounded to the nearest ₹100.",
+      },
+      { type: "p", text: "For your own numbers (any rate, any hours, a yearly total), use the [USD to INR rate calculator](/freelance-rate/usd-to-inr) or the general [Freelance Rate Calculator](/freelancer-rate-converter)." },
+
+      { type: "h2", text: "What reaches your bank account" },
+      { type: "p", text: "The table above is the mid-market rate. What lands in your account depends on how you're paid:" },
+      { type: "table",
+        headers: ["How you're paid", "Rough total cost", "On $3,000"],
+        rows: [
+          ["Client pays through Wise to your INR account", "About 0.5% to 1%", "About ₹{fxamt:15:USD:INR} to ₹{fxamt:30:USD:INR}"],
+          ["Payoneer, client pays by ACH, withdrawn to INR", "About 1% plus up to about 2% on conversion", "Up to about ₹{fxamt:90:USD:INR}"],
+          ["SWIFT bank transfer", "Wire and intermediary fees plus 1% to 3% on the bank's rate", "About ₹{fxamt:60:USD:INR} to ₹{fxamt:120:USD:INR}"],
+          ["PayPal", "About 4.4% to receive plus a conversion margin", "Often ₹{fxamt:200:USD:INR} or more"],
+        ],
+        note: "Approximate, October 2026. Check each provider's current fees.",
+      },
+
+      { type: "h2", text: "GST on foreign clients: zero-rated, if you file an LUT" },
+      { type: "p", text: "Services you provide to a client outside India, paid in foreign currency, usually count as an export of services. Exports are zero-rated for GST, but only if you've filed a **Letter of Undertaking (LUT)** on the GST portal before you raise the invoice. Without one, you charge 18% IGST and claim it back as a refund later, which ties up your cash." },
+      { type: "ul", items: [
+        "You need GST registration to file an LUT. Registration becomes compulsory above ₹20 lakh of turnover a year (₹10 lakh in some special category states).",
+        "The LUT is filed once per financial year, so renew it before 1 April.",
+        "Keep the bank's inward remittance proof (FIRC or bank credit advice) for every export invoice.",
+      ]},
+      { type: "p", text: "This is the general rule, not tax advice. Confirm your situation with a chartered accountant." },
+
+      { type: "h2", text: "Setting a USD rate from the rupees you need" },
+      { type: "p", text: "Work backwards. If you need ₹1,50,000 a month from 120 billable hours, that's ₹1,250 an hour, which is about ${fxamt:1250:INR:USD:1} an hour at today's rate. Add 20% for fees, currency moves and unbilled admin and you get about ${fxamt:1500:INR:USD:1} an hour. That's your floor, not your price: what clients in your market pay for your skills sets the ceiling." },
+      { type: "p", text: "When you invoice, bill in USD and add a reference line with the rupee amount. The [Invoice Builder](/invoice) adds it using the live rate, and the [USD to INR page](/currency/usd-to-inr) shows the rate on its own." },
+    ],
+    faqs: [
+      { q: "How much is $25 an hour in INR?", a: "At today's rate, $25 an hour is about ₹{fxamt:25:USD:INR:1} an hour, or about ₹{fxamt:3000:USD:INR} for a 120-hour month, before payment fees. The [USD to INR rate calculator](/freelance-rate/usd-to-inr) works it out for any rate and number of hours." },
+      { q: "Do Indian freelancers pay GST on foreign clients?", a: "Usually not, because services exported to a client outside India and paid in foreign currency are zero-rated. To invoice without GST you need to be registered and have a Letter of Undertaking (LUT) filed for the financial year before you raise the invoice. Without an LUT you charge 18% IGST and claim a refund. Check your case with a chartered accountant." },
+      { q: "What is the cheapest way for a US client to pay me in India?", a: "A client paying through Wise straight to your INR bank account is usually cheapest, at roughly 0.5% to 1% in total. Payoneer with ACH payment is next. PayPal and SWIFT transfers typically cost more once conversion margins and wire fees are counted." },
+    ],
+  },
+
   // ─── 1 ──────────────────────────────────────────────────────────────────────
   {
     slug: "schedule-meetings-across-time-zones",
@@ -155,7 +357,7 @@ export const GUIDES = [
       { type: "table",
         headers: ["Feature", "World Time Buddy", "GlobalSync AI"],
         rows: [
-          ["Multi-city live clocks", "Yes", "Yes, 100+ cities, no signup"],
+          ["Multi-city live clocks", "Yes", "Yes, 85+ cities, no signup"],
           ["Shared working-window finder", "Yes", "Yes, with a “No shared working time” warning when there isn't one"],
           ["Local day and work-hours status", "Day/night shading", "Day of week, plus work hours, evening and night status"],
           ["Copy the time for every city in one click", "Yes", "Yes (“Copy local times”)"],
@@ -185,7 +387,7 @@ export const GUIDES = [
       ]},
     ],
     faqs: [
-      { q: "Is there a free alternative to World Time Buddy?", a: "Yes, for seeing many cities at once and finding the overlap. GlobalSync AI's [Meeting Planner](/meeting-planner) is free, needs no signup and covers 100+ cities. It also shows business hours and weekends, and copies the meeting time for every city in one click. If you need currency conversion or invoices in the same flow, that's where it goes further than World Time Buddy." },
+      { q: "Is there a free alternative to World Time Buddy?", a: "Yes, for seeing many cities at once and finding the overlap. GlobalSync AI's [Meeting Planner](/meeting-planner) is free, needs no signup and covers 85+ cities. It also shows business hours and weekends, and copies the meeting time for every city in one click. If you need currency conversion or invoices in the same flow, that's where it goes further than World Time Buddy." },
       { q: "What is better than World Time Buddy for international freelancers?", a: "For a plain time check, World Time Buddy is still a solid choice. But if your work also involves invoicing in other currencies, checking a client's business hours (not just their clock) or seeing your rate in another currency, a tool that puts scheduling, currency and invoicing together saves a lot of tab-switching. GlobalSync AI is built for that, and you don't have to pay for team software to use it." },
       { q: "Does World Time Buddy have an invoice builder?", a: "No. World Time Buddy is about time zones and meeting times. You'd need a separate invoicing tool (FreshBooks or Wave, for example) plus a currency converter. If you want scheduling, hours, conversion and invoicing in one place with no account, GlobalSync AI's free [Invoice Builder](/invoice) covers it." },
     ],
@@ -237,7 +439,7 @@ export const GUIDES = [
         headers: ["Payment method", "Typical total cost to you (fees + spread)", "Notes"],
         rows: [
           ["Wise Business (USD to INR, PKR or EUR)", "About 0.5 to 1 percent", "Close to the mid-market rate, and the fee is shown before sending. Good if you receive under $10k a month."],
-          ["PayPal (receive USD, then withdraw to a local bank)", "About 4.4 percent plus a fixed fee to receive from abroad, then another 2 to 3 percent to withdraw to an INR or PKR account", "The “free” option usually costs the most. Check the withdrawal rate separately from the transfer."],
+          ["PayPal (receive USD, then withdraw to a local bank)", "About 4.4 percent plus a fixed fee to receive from abroad, then another 2 to 3 percent to withdraw to an INR account", "The “free” option usually costs the most. Not available for Pakistan-based accounts. Check the withdrawal rate separately from the transfer."],
           ["Payoneer (USD to local currency)", "About 1 to 2 percent depending on the country, plus your bank's incoming-wire fee", "Popular with freelancers serving US clients. Fees vary a lot by country."],
           ["SWIFT bank transfer ($5k+, company to person)", "Sender: a $25 to $75 wire fee. You: a $10 to $30 correspondent fee, plus 1 to 3 percent below mid-market on the rate", "Fine for big amounts, but the rate your bank applies is the hardest to see. Ask your bank before promising a date."],
           ["Deel or Remote (employer-of-record payroll)", "The employer covers currency costs and you get the net local amount", "No currency risk for you, but it's overkill for one-off invoices."],
@@ -317,7 +519,7 @@ export const GUIDES = [
       },
 
       { type: "h2", text: "#1: GlobalSync AI (best for freelancers and small remote teams working across countries)" },
-      { type: "p", text: "**Free version:** no signup. 100+ cities with live clocks, a [meeting overlap planner](/meeting-planner) that warns you when there's no shared working time, work-hours and night status for each city, one-click meeting times, a [desktop world clock](/world-clock-widget) for Windows (1.5 MB) and Mac (4.2 MB) that works offline, a [currency converter](/currency-converter) with live rates for 160+ currencies, and a multi-currency [invoice PDF builder](/invoice) with three free invoices a month." },
+      { type: "p", text: "**Free version:** no signup. 85+ cities with live clocks, a [meeting overlap planner](/meeting-planner) that warns you when there's no shared working time, work-hours and night status for each city, one-click meeting times, a [desktop world clock](/world-clock-widget) for Windows (1.5 MB) and Mac (4.2 MB) that works offline, a [currency converter](/currency-converter) with live rates for 160+ currencies, and a multi-currency [invoice PDF builder](/invoice) with three free invoices a month." },
       { type: "p", text: `**Why it's first:** it's the only tool here that treats finding the time as the start of the job, not the whole job. Once you've confirmed your 7:30 AM New York / ${NY_730_MUMBAI} Mumbai slot, the next steps are right there. Convert the invoice amount, pick USD or INR and make the PDF, without leaving the site or signing up anywhere.` },
       { type: "p", text: "**Where it falls short:** on mobile it's web-only for now (iOS and Android apps are coming). You can share a link to a team workspace, but a link for one specific meeting time isn't as good as World Time Buddy's yet. There's no recurring calendar view." },
 
@@ -370,7 +572,7 @@ export const GUIDES = [
       { type: "p", text: "That “and then” is the part this whole category has ignored, and it's why I start with GlobalSync. It doesn't beat World Time Buddy or timeanddate at every single thing. But it covers the whole morning in one place, and that's worth more to me than being a little better at one step." },
     ],
     faqs: [
-      { q: "What is the best free time zone converter for remote teams in 2026?", a: "For seeing many cities and finding the overlap, GlobalSync AI's [Meeting Planner](/meeting-planner) is the most complete free option in this guide (no signup, 100+ cities). It shows live clocks with work-hours status, warns you when there's no shared working time and copies the meeting time for every city in one click. If you also need currency conversion or multi-currency invoices, it's the only tool here that does both without a second account." },
+      { q: "What is the best free time zone converter for remote teams in 2026?", a: "For seeing many cities and finding the overlap, GlobalSync AI's [Meeting Planner](/meeting-planner) is the most complete free option in this guide (no signup, 85+ cities). It shows live clocks with work-hours status, warns you when there's no shared working time and copies the meeting time for every city in one click. If you also need currency conversion or multi-currency invoices, it's the only tool here that does both without a second account." },
       { q: "Is there a time zone tool that also handles invoices and currency for international freelancers?", a: "Yes. GlobalSync AI covers the whole routine: schedule across time zones, check your client's local hours, convert the amount (160+ currencies with live rates) and make a multi-currency invoice PDF. The free version includes three invoices a month with no signup." },
       { q: "Can I use a time zone tool offline or without an account?", a: "Yes. GlobalSync's [desktop world clock](/world-clock-widget) for Windows (1.5 MB) and Mac (4.2 MB) works fully offline using your computer's clock, with no login. The web tools need an internet connection but no signup." },
     ],
@@ -396,8 +598,8 @@ export const GUIDES = [
     links: ["rates", "currency", "invoice", "timeZones"],
     content: [
       { type: "h2", text: "What you quote isn't what you get" },
-      { type: "p", text: "Say a US client agrees to pay $4,500 for a website. You're in Karachi, and you use PayPal because it's easiest. A few weeks later, about PKR {fxamt:4185:USD:PKR:1} lands in your account. At today's mid-market rate ({fx:USD:PKR} rupees to the dollar), it should have been about PKR {fxamt:4500:USD:PKR:1}." },
-      { type: "p", text: "So where did PKR {fxamt:315:USD:PKR:1}, roughly $315, go? PayPal's international receiving fee (around 4.4 percent), its conversion margin when you withdraw, and your bank's charge, one on top of the other. None of it was in the $4,500 your client approved." },
+      { type: "p", text: "Say a US client agrees to pay $4,500 for a website. You're in Karachi, where PayPal isn't available, so you send a Payoneer payment request and the client pays it by card because that's easiest for them. A few weeks later, about PKR {fxamt:4185:USD:PKR:1} lands in your account. At today's mid-market rate ({fx:USD:PKR} rupees to the dollar), it should have been about PKR {fxamt:4500:USD:PKR:1}." },
+      { type: "p", text: "So where did PKR {fxamt:315:USD:PKR:1}, roughly $315, go? The card payment fee (around 3 percent), the conversion margin when you withdraw to your PKR bank account (up to about 2 percent), and your bank's charges, one on top of the other. None of it was in the $4,500 your client approved." },
       { type: "p", text: "This guide covers what to charge before those fees hit, how your choice of currency changes what you keep, and how to check your rate so you're not leaving 15 percent on the table or pricing yourself out of the renewal." },
 
       { type: "h2", text: "Part A: Where the money goes" },
@@ -405,8 +607,8 @@ export const GUIDES = [
       { type: "table",
         headers: ["How you get paid", "Fees and spread (approximate)", "What you end up with"],
         rows: [
-          ["PayPal, then withdraw to a PKR account", "4.4% to receive + about 1% to 2% on the withdrawal rate + bank charges, so roughly 6% to 7% in total", "About $4,650 worth of PKR"],
-          ["Wise Business, USD to PKR", "About 0.5% to 1% in total, close to mid-market, so roughly $25 to $50", "About $4,950 worth of PKR"],
+          ["Payoneer, client pays by card, withdrawn to a PKR account", "About 3% card fee + up to about 2% on the withdrawal rate + bank charges, so roughly 5% to 7% in total", "About $4,650 to $4,750 worth of PKR"],
+          ["Client pays through Wise to your PKR bank account", "About 0.5% to 1% in total, close to mid-market, so roughly $25 to $50", "About $4,950 worth of PKR"],
           ["SWIFT wire (company to your bank)", "Sender pays a $30 to $75 wire fee. Your bank charges $10 to $30 plus 1% to 3% on the rate, so roughly 2% to 4% in total", "About $4,800 worth of PKR (varies a lot by bank)"],
         ],
         note: "Approximate, October 2026. Providers change their fees, so check current pricing before you quote.",
@@ -476,7 +678,7 @@ export const GUIDES = [
     faqs: [
       { q: "How do I price my freelance work for international clients in USD?", a: "Start with what you'd charge a local client for similar work at your level. Add 10 to 15 percent to cover cross-border fees (PayPal's roughly 4.4 percent plus its withdrawal margin, or wire fees on both ends). Then add about 5 percent for time zone overhead if you get fewer than eight good working hours with the client. For a mid-level developer in South Asia billing US clients, that usually lands around $600 to $800 a day. The work isn't worth more because of where you are. You're just covering real costs." },
       { q: "Should I charge extra for international clients just because they are in a different currency zone?", a: "Not as a visible surcharge. That feels random to clients and can cost you the renewal. Build it into your rate instead (a currency and fee buffer, plus time zone overhead), so the number rests on real costs. If a client asks why you cost more than someone local, you can point to specific fees and scheduling limits, which is much easier than saying “because you're abroad”." },
-      { q: "What is the best way to invoice a US client from India or Pakistan without losing money on fees?", a: "Bill in USD, which keeps approval simple on their side, and suggest Wise Business for the payment. It uses close to the mid-market rate and costs roughly 0.5 to 1 percent in total, compared with PayPal's roughly 4.4 percent plus a withdrawal margin. Put both amounts on the invoice: USD as the official figure, plus a labelled local-currency reference at today's rate. GlobalSync AI's free [Invoice Builder](/invoice) adds both lines and takes about 90 seconds from blank form to PDF." },
+      { q: "What is the best way to invoice a US client from India or Pakistan without losing money on fees?", a: "Bill in USD, which keeps approval simple on their side, and suggest the client pays through Wise. It uses close to the mid-market rate and costs roughly 0.5 to 1 percent in total. From India, PayPal works but costs roughly 4.4 percent plus a withdrawal margin; from Pakistan, PayPal isn't available, so Payoneer or a bank transfer are the usual alternatives (see [how to invoice a US client from Pakistan](/guides/invoice-us-client-from-pakistan)). Put both amounts on the invoice: USD as the official figure, plus a labelled local-currency reference at today's rate. GlobalSync AI's free [Invoice Builder](/invoice) adds both lines and takes about 90 seconds from blank form to PDF." },
     ],
   },
 

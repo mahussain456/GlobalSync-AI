@@ -87,6 +87,8 @@ const MeetingOverlapHubPage = React.lazy(() => import("@/pages/MeetingOverlapHub
 const MeetingOverlapPage = React.lazy(() => import("@/pages/MeetingOverlapPage"));
 const ComparisonPage = React.lazy(() => import("@/pages/ComparisonPage"));
 const WorldClockWidgetPage = React.lazy(() => import("@/pages/WorldClockWidgetPage"));
+const EmbedPage = React.lazy(() => import("@/pages/EmbedPage"));
+const EmbedWorldClock = React.lazy(() => import("@/pages/EmbedWorldClock"));
 
 
 
@@ -99,6 +101,12 @@ const SuspenseFallback = () => (
 function PageTheme({ children }) {
   const { pathname } = useLocation();
   return <div className={pathname === '/' ? 'meridian-root' : 'meridian-interior'}>{children}</div>;
+}
+
+// The embed is shown inside other sites' iframes: no cookie banner there.
+function SiteConsent() {
+  const { pathname } = useLocation();
+  return pathname.startsWith("/embed/") ? null : <CookieConsent />;
 }
 
 function RoutePosition() {
@@ -170,6 +178,8 @@ function App() {
               {/* Tool Comparisons (PR 6) */}
               <Route path="/compare/:slug" element={<ComparisonPage />} />
               <Route path="/world-clock-widget" element={<WorldClockWidgetPage />} />
+              <Route path="/embed" element={<EmbedPage />} />
+              <Route path="/embed/world-clock" element={<EmbedWorldClock />} />
               <Route path="/download" element={<Navigate to="/world-clock-widget" replace />} />
               <Route path="*" element={<NotFoundPage />} />
 
@@ -177,7 +187,7 @@ function App() {
           </React.Suspense>
           </PageTheme>
           <Toaster position="top-right" richColors />
-          <CookieConsent />
+          <SiteConsent />
         </BrowserRouter>
       </div>
     </ErrorBoundary>

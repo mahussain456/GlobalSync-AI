@@ -20,11 +20,11 @@ export default function AboutPage() {
             About GlobalSync AI: Free Tools for Remote Teams
           </h1>
           <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-pine rounded-full px-3 py-1 text-xs font-medium mb-4 border border-line">
-            <Globe className="w-3.5 h-3.5" /> Free · AI-Powered · No Signup
+            <Globe className="w-3.5 h-3.5" /> Free · No Signup
           </div>
 
           <p className="text-lg text-quiet max-w-2xl leading-relaxed">
-            A free, AI-powered toolkit built for remote teams, freelancers, and global workers who work across time zones every day.
+            A free toolkit for remote teams, freelancers and global workers who work across time zones every day. One feature, the question box in the workspace, uses AI to understand plain-English questions; every answer is calculated by the tools themselves.
           </p>
         </header>
 
@@ -42,12 +42,12 @@ export default function AboutPage() {
         </section>
 
         <section className="mb-10">
-          <h2 className="font-heading text-2xl font-bold text-ink mb-6">Our Suite of Free AI-Powered Productivity Tools</h2>
+          <h2 className="font-heading text-2xl font-bold text-ink mb-6">Our Suite of Free Productivity Tools</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              { icon: Clock, color: "blue", title: "Time Zone Converter", desc: "See live local clocks for 25+ cities worldwide. Compare time zones side by side and identify who is in the office right now.", link: "/time-zone-converter" },
+              { icon: Clock, color: "blue", title: "Time Zone Converter", desc: "See live local clocks for 85+ cities worldwide. Compare time zones side by side and identify who is in the office right now.", link: "/time-zone-converter" },
               { icon: TrendingUp, color: "emerald", title: "Currency Converter", desc: "Get live exchange rates for 160+ currencies worldwide — from USD, EUR, GBP, and JPY to INR, PKR, AED, NGN, and beyond.", link: "/currency-converter" },
-              { icon: Users, color: "orange", title: "Meeting Planner", desc: "Automatically find the business hour overlap between up to 5 cities. Get the best meeting time displayed in every city's local time.", link: "/meeting-planner" },
+              { icon: Users, color: "orange", title: "Meeting Planner", desc: "Automatically find the business-hour overlap between up to 5 cities. Get the best meeting time displayed in every city's local time.", link: "/meeting-planner" },
             ].map(({ icon: Icon, color, title, desc, link }) => {
               const styles = {
                 blue: { borderHover: "hover:border-line", bg: "bg-gem-sage/10", text: "text-quiet" },

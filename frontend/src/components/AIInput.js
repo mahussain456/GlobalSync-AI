@@ -104,6 +104,11 @@ export default function AIInput({ onResult, initialQuery = "", autoSubmit = fals
         </div>
       </div>
 
+      <p className="mt-2 text-xs text-quiet" data-testid="ai-disclosure">
+        AI (Anthropic Claude Haiku) only reads your question and picks the tool. The answer is calculated by that tool, not written by AI.
+        Don&rsquo;t type private information. <a href="/methodology" className="underline text-pine">How it works</a>
+      </p>
+
       {intentMeta && (
         <div className="mt-2.5 flex items-center gap-2" data-testid="ai-intent-badge">
           <span className={`text-xs font-medium border rounded-full px-3 py-1 ${intentMeta.color}`}>

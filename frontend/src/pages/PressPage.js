@@ -29,7 +29,7 @@ export default function PressPage() {
           <div>
             <h2 className="font-heading text-xl font-bold text-ink mb-3">Product Description & Mission Statement</h2>
             <p className="text-quiet leading-relaxed">
-              GlobalSync AI is a free, web-based utility toolkit designed for remote teams, freelancers, and global businesses. By combining high-performance world clocks, calendar overlap planners, live mid-market exchange rate indices, and deterministically verified AI search panels, GlobalSync AI acts as a calm control center that resolves the daily friction of cross-border operations.
+              GlobalSync AI is a free, web-based utility toolkit designed for remote teams, freelancers, and global businesses. By combining high-performance world clocks, calendar overlap planners, live mid-market exchange rates and invoice tools, GlobalSync AI acts as a calm control center that resolves the daily friction of cross-border operations.
             </p>
           </div>
 
@@ -48,31 +48,39 @@ export default function PressPage() {
           </div>
         </section>
 
-        <section className="mb-10">
-          <h2 className="font-heading text-2xl font-bold text-ink mb-4">Brand Assets & Guidance</h2>
-          <p className="text-sm text-quiet mb-6 leading-relaxed">
-            Please use our logos and assets as provided. Do not modify the colors, alter the aspect ratios, or overlay busy background patterns behind the marks. A minimum clear space of 10% around all logo boundaries is recommended for optimal legibility.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-surface  rounded-xl border border-line p-5 flex items-center justify-between group">
-              <div>
-                <h3 className="font-semibold text-ink mb-1">High-Res Logo (Light)</h3>
-                <p className="text-sm text-quiet">For dark backgrounds (PNG)</p>
-              </div>
-              <a href="/globalsync-ai-logo-512x128.png" download className="text-pine group-hover:text-ink transition-colors p-2 bg-gem-gold/10 rounded-lg">
-                <Download className="w-5 h-5" />
-              </a>
-            </div>
-            <div className="bg-surface  rounded-xl border border-line p-5 flex items-center justify-between group">
-              <div>
-                <h3 className="font-semibold text-ink mb-1">Brand Icon</h3>
-                <p className="text-sm text-quiet">Standalone logomark (PNG)</p>
-              </div>
-              <a href="/favicon-512.png" download className="text-pine group-hover:text-ink transition-colors p-2 bg-gem-gold/10 rounded-lg">
-                <Download className="w-5 h-5" />
-              </a>
-            </div>
+        <section className="mb-10" aria-labelledby="media-kit">
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
+            <h2 id="media-kit" className="font-heading text-2xl font-bold text-ink">Media Kit</h2>
+            <a href="/media-kit/globalsync-ai-media-kit.zip" download className="inline-flex items-center gap-2 bg-pine text-paper font-bold rounded-xl px-5 py-2.5 text-sm hover:opacity-90" data-testid="media-kit-download">
+              <Download className="w-4 h-4" aria-hidden="true" /> Download the media kit (.zip, 0.6 MB)
+            </a>
           </div>
+          <p className="text-sm text-quiet mb-6 leading-relaxed">
+            Logos, app icons, brand colours, founder bio and a one-paragraph company description. Use the logos as provided: don&rsquo;t
+            recolour, stretch or add effects, and leave clear space of at least 10% of the logo&rsquo;s width around them.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+            {[["logo-wordmark.png","Wordmark","Transparent PNG, for light backgrounds"],["logo-wordmark-on-dark.png","Wordmark on forest","PNG, for dark layouts"],["icon-512.png","App icon","Ivory g on forest green, 512 px"],["icon-light-512.png","App icon (light)","Forest g on ivory, 512 px"],["brand-colors.png","Colour swatches","PNG"],["README.txt","Fact sheet","Company description, founder bio, colours, fonts"]].map(([file, title, desc]) => (
+              <a key={file} href={`/media-kit/${file}`} download className="bg-surface rounded-xl border border-line p-4 flex items-center justify-between gap-3 group">
+                <span><span className="block font-semibold text-ink">{title}</span><span className="block text-sm text-quiet">{desc}</span></span>
+                <Download className="w-5 h-5 text-pine shrink-0" aria-label={`Download ${title}`} />
+              </a>
+            ))}
+          </div>
+          <h3 className="font-heading text-lg font-bold text-ink mb-3">Brand colours</h3>
+          <ul className="flex flex-wrap gap-3 mb-8">
+            {[["Forest","#0E2A1F"],["Pine","#1B4D3E"],["Ivory","#F4EFE6"],["Gold","#C8A96A"],["Sage","#A7BFAE"]].map(([name, hex]) => (
+              <li key={hex} className="flex items-center gap-2 text-sm text-quiet">
+                <span className="w-8 h-8 rounded-md border border-line" style={{ background: hex }} aria-hidden="true" />
+                <span><span className="text-ink font-semibold">{name}</span> {hex}</span>
+              </li>
+            ))}
+          </ul>
+          <h3 className="font-heading text-lg font-bold text-ink mb-2">Founder bio</h3>
+          <p className="text-quiet leading-relaxed">
+            Ahmed Hussain is the founder of GlobalSync AI. With over a decade of experience in software engineering and managing distributed
+            international teams, he designs free, data-driven tools that resolve the daily friction of working across multiple time zones and currencies.
+          </p>
         </section>
 
         <section className="bg-wash rounded-2xl border border-line p-7">

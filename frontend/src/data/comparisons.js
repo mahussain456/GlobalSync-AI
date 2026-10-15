@@ -48,7 +48,7 @@ export const COMPARISONS = [
       'Tailored specifically for remote teams, digital nomads, and global freelancers rather than almanac reference.',
       'Crosses timezone conversion with live currency rates and freelance income calculations.',
       'Fast, lightweight UI without cluttered multi-banner ad layouts or legacy desktop tables.',
-      'AI-powered natural language prompt parser for instant conversion.'
+      'Type a question in plain English (an AI model picks the tool; the tools calculate the answer).'
     ],
     verdict: 'Timeanddate.com is the world\'s premiere astronomical and historical time database. GlobalSync AI is built for speed, remote workflow collaboration, and combining time zone and currency tools in one modern application.',
     faqs: [
@@ -95,7 +95,7 @@ export const COMPARISONS = [
     ],
     globalSyncStrengths: [
       'All-in-one suite combining time zone conversion, meeting overlap planning, live currency exchange, and freelance rate math.',
-      'AI-powered natural language routing to minimize manual dropdown selections.',
+      'Plain-English questions in the workspace: an AI model picks the right tool so you skip the dropdowns.',
       'Built specifically for the modern remote work stack (Slack, Notion, Zoom, Wise).'
     ],
     verdict: 'The best tool depends on your primary workflow: Timeanddate leads for deep astronomical data, World Time Buddy for classic grids, Every Time Zone for visual sliders, and GlobalSync AI for an all-in-one remote team hub combining time, currency, and AI parsing.',

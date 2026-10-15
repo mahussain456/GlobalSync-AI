@@ -34,7 +34,7 @@ export default function DesktopAppCTA({ placement = "tool", className = "" }) {
           </div>
         </div>
         <div className="hidden md:flex justify-center items-end self-stretch pt-8 pr-6 overflow-hidden" aria-hidden="true">
-          <img src="/world-clock/pocket-forest.png" alt="" width="384" height="493" loading="lazy" decoding="async"
+          <img src="/world-clock/pocket-forest.png" alt="GlobalSync desktop world clock app showing live city times" width="384" height="493" loading="lazy" decoding="async"
             className="w-[240px] h-auto translate-y-10 rotate-[3deg]" />
         </div>
       </div>

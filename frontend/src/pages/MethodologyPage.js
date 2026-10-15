@@ -61,7 +61,7 @@ export default function MethodologyPage() {
           </div>
 
           <p className="text-quiet text-lg leading-relaxed">
-            Transparency matters. This page explains exactly where GlobalSync AI gets its data, how our AI assistant generates answers, what our update frequencies are, and what limitations users should understand.
+            Transparency matters. This page explains exactly where GlobalSync AI gets its data, what our one AI feature does and doesn't do, what our update frequencies are, and what limitations users should understand.
           </p>
           <p className="text-xs text-quiet mt-4">Last updated: April 2026</p>
         </header>
@@ -72,7 +72,7 @@ export default function MethodologyPage() {
           <div className="space-y-3">
             <InfoCard label="Time Zones" value="IANA Time Zone Database (TZDB) — the global standard used by all major operating systems" />
             <InfoCard label="Exchange Rates" value="Live market rates, refreshed every minute and cross-checked against ExchangeRate-API" />
-            <InfoCard label="AI Engine" value="Anthropic Claude (claude-3-5-sonnet) — used for natural language queries in the AI assistant" />
+            <InfoCard label="AI" value="Anthropic Claude Haiku 4.5, only to read plain-English questions in the workspace. It never calculates or writes answers." />
             <InfoCard label="Rate Updates" value="Currency rates: real-time on every query. Time zone rules: on every IANA TZDB release." />
           </div>
         </div>
@@ -114,23 +114,37 @@ export default function MethodologyPage() {
           </div>
         </Section>
 
-        <Section icon={Cpu} color="violet" title="AI-Generated Answers">
+        <Section icon={Cpu} color="violet" title="What the AI Does (and Doesn't Do)">
           <p>
-            GlobalSync AI's natural language assistant is powered by{" "}
-            <strong className="text-ink">Anthropic Claude (claude-3-5-sonnet)</strong>, a large language model developed by Anthropic. When you ask a question in natural language — such as "What time is 3 PM New York in Tokyo?" or "Convert 500 USD to INR" — the AI processes your query and generates a response.
+            AI is used in exactly one place: the plain-English question box in the{" "}
+            <a href="/dashboard" className="text-pine underline">workspace</a>. Everything else on GlobalSync AI (every converter, the meeting
+            planner, the rate calculator and the invoice builder) is ordinary, deterministic code with no AI involved.
           </p>
           <p>
-            <strong className="text-ink">How it works:</strong> The AI receives your query along with current time zone and exchange rate context from our backend, and generates a natural language answer. For simple conversions, the answer is computed directly from live data. For more complex questions, the AI uses its training knowledge to provide context and guidance.
+            <strong className="text-ink">Model:</strong> Anthropic Claude Haiku 4.5 (<code>claude-haiku-4-5</code>), called from our server.
           </p>
           <p>
-            <strong className="text-ink">Limitations you must understand:</strong>
+            <strong className="text-ink">What it does:</strong> it reads your question, for example &ldquo;What time is 3 PM New York in London?&rdquo;
+            or &ldquo;Convert 750 USD to GBP&rdquo;, and returns only which tool you meant and its inputs (cities, a time, an amount, two currency codes).
+            Our server checks that output against a fixed list of allowed tools and values and discards anything else.
           </p>
-          <ul className="list-disc list-outside ml-5 space-y-2">
-            <li>AI responses can occasionally be inaccurate, especially for edge cases involving unusual time zones, newly changed DST rules, or complex multi-currency scenarios.</li>
-            <li>AI answers are generated per query and are not reviewed by our editorial team before display. Always cross-check important answers with our dedicated converter tools or a trusted external source.</li>
-            <li>The AI assistant has a knowledge cutoff date and may not be aware of very recent changes to currency policies, government regulations, or DST rule changes.</li>
-            <li>AI responses are informational only and do not constitute financial, legal, or professional advice of any kind.</li>
-          </ul>
+          <p>
+            <strong className="text-ink">What it does not do:</strong> it does not write the answer. The time or amount you see is calculated by the
+            same converter you can use directly, from the IANA time zone database and our live exchange rates. The AI has no access to your
+            account (there isn&rsquo;t one), your history or anything outside the question you typed.
+          </p>
+          <p>
+            <strong className="text-ink">When the AI is unavailable</strong> or returns something unusable, a simple rule-based reader parses the
+            question instead, so the box keeps working.
+          </p>
+          <p>
+            <strong className="text-ink">Your data:</strong> the text of your question is sent to Anthropic to be read. Don&rsquo;t type anything
+            private into it. We don&rsquo;t store questions on our server.
+          </p>
+          <p>
+            <strong className="text-ink">Limits:</strong> the AI can misread an ambiguous question (for example a city name that exists in two
+            countries). Always check that the tool it opened shows the cities and amounts you meant.
+          </p>
         </Section>
 
         <Section icon={Binary} color="blue" title="Decimal Precision, Rounding Rules, and System Reliability">

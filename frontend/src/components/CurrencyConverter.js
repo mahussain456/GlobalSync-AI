@@ -1,4 +1,5 @@
 import { fireAnalyticsEvent, markToolUsed } from "@/lib/analytics";
+import prebuiltRates from "@/data/prebuiltRates.json";
 import { getExchangeRate } from "@/lib/exchangeRates";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
@@ -10,7 +11,7 @@ import CurrencySelect from "@/components/CurrencySelect";
 
 const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
-const CURRENCIES = [
+const CURATED_CURRENCIES = [
   // Major / Most Used
   { code: "USD", name: "US Dollar", symbol: "$", region: "Americas" },
   { code: "EUR", name: "Euro", symbol: "€", region: "Europe" },
@@ -77,6 +78,16 @@ const CURRENCIES = [
   { code: "RUB", name: "Russian Ruble", symbol: "₽", region: "Europe" },
   { code: "UAH", name: "Ukrainian Hryvnia", symbol: "₴", region: "Europe" },
   { code: "ISK", name: "Icelandic Króna", symbol: "kr", region: "Europe" },
+];
+
+// Every other currency the rate feed covers (166 in total), so "160+" is what you can actually pick.
+const currencyNames = typeof Intl.DisplayNames === "function" ? new Intl.DisplayNames(["en"], { type: "currency" }) : null;
+const CURRENCIES = [
+  ...CURATED_CURRENCIES,
+  ...Object.keys(prebuiltRates.USD?.rates || {})
+    .filter(code => !CURATED_CURRENCIES.some(c => c.code === code))
+    .map(code => ({ code, name: currencyNames?.of(code) || code, symbol: code, region: "More currencies" }))
+    .sort((x, y) => x.name.localeCompare(y.name)),
 ];
 
 const CustomTooltip = ({ active, payload, label }) => {
@@ -301,7 +312,7 @@ export default function CurrencyConverter({ aiDispatch }) {
                 </div>
                 <div className="text-xs text-quiet mt-1.5 flex items-center gap-1">
                   <RefreshCw className="w-3 h-3" />
-                  1 {result.from} = {result.rate} {result.to} · {result.date}
+                  1 {result.from} = {Number(result.rate.toPrecision(6)).toLocaleString("en-US", { maximumFractionDigits: 6 })} {result.to} · {result.date}
                 </div>
               </div>
               <div className="flex flex-col items-end gap-2">

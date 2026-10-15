@@ -115,3 +115,6 @@ credentials.json
 
 # local fallback data written by the API in dev
 frontend/api/local_*.json
+
+# The press-page media kit is a real download, not a build artifact.
+!frontend/public/media-kit/globalsync-ai-media-kit.zip

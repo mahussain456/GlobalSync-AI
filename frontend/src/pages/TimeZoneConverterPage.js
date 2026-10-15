@@ -24,7 +24,7 @@ const CONVERSIONS = [
 const FAQ = [
   { q: "How does GlobalSync AI handle Daylight Saving Time?", a: "We use the IANA time zone database, the same source used by Linux, macOS, and most server infrastructure. DST shifts are applied automatically based on each region's official rules." },
   { q: "Is the time zone converter free?", a: "Yes. Core time conversion is free without signup. Saved teams and invoice exports have separate limits shown in each tool." },
-  { q: "How many cities and time zones are supported?", a: "You can compare live time across 25+ pre-set major cities and 160+ countries. The full IANA database (~600 zones) is available via search." },
+  { q: "How many cities and time zones are supported?", a: "You can search and compare 85+ cities covering 60+ time zones, up to five at once. Every city uses the IANA time zone database, so daylight saving changes are applied on the right dates." },
   { q: "Can I find a meeting time that works for all my team members?", a: "Yes — use the Meeting Planner. It overlays each team member's local working hours (default 9 AM–5 PM) and highlights the fairest overlap windows." },
   { q: "How accurate is the converter near DST transitions?", a: "The IANA database is updated multiple times per year. Our build picks up the latest release on every deploy, so transitions like the EU's last-Sunday-in-March rule are applied to the second." }
 ];
@@ -48,11 +48,11 @@ export default function TimeZoneConverterPage() {
           </h1>
           <p className="text-pine text-sm font-semibold mb-2">Last updated: May 2026</p>
           <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-pine rounded-full px-3 py-1 text-xs font-medium mb-4 border border-line ">
-            <Clock className="w-3.5 h-3.5 text-pine" /> Live Clocks · 25+ Major Cities · 100% Free
+            <Clock className="w-3.5 h-3.5 text-pine" /> Live Clocks · 85+ Cities · 100% Free
           </div>
 
           <p className="text-lg text-quiet max-w-2xl leading-relaxed">
-            Free AI-powered time zone converter for remote teams and global workers. Compare live time across major hubs, adjust base hours instantly, and map business-hour overlaps seamlessly.
+            Free time zone converter for remote teams and global workers. Compare live time across major hubs, adjust base hours instantly, and map business-hour overlaps seamlessly.
           </p>
           <div className="mt-8">
             <TimeConverter />

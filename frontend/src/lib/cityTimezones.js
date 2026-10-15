@@ -38,3 +38,11 @@ export const CITY_TIMEZONES = {
   "Brisbane": "Australia/Brisbane", "Perth": "Australia/Perth",
   "Auckland": "Pacific/Auckland", "Honolulu": "Pacific/Honolulu", "Hawaii": "Pacific/Honolulu",
 };
+
+// Display list: one entry per real city. CITY_TIMEZONES also holds search aliases
+// (abbreviations, "New York City", alternate spellings, a country), which must not
+// be shown twice or counted as cities. 87 cities as of October 2026 ("85+" in copy).
+const ALIASES = new Set(["India", "Sao Paulo", "Bangalore", "Hawaii", "Delhi"]);
+export const CITY_NAMES = Object.keys(CITY_TIMEZONES)
+  .filter((name) => !/^[A-Z]{2,4}$/.test(name) && !/ City$/.test(name) && !ALIASES.has(name))
+  .sort((a, b) => a.localeCompare(b));

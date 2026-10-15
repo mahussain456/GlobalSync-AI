@@ -1,21 +1,6 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <!-- Canonical domain redirect: push emergent.host visitors to www.globalsync-ai.com -->
-        <script>
-          (function() {
-            var h = window.location.hostname;
-            if (h.endsWith('emergent.host') &&
-                !/HeadlessChrome/.test(navigator.userAgent)) {
-              window.location.replace(
-                'https://www.globalsync-ai.com' +
-                window.location.pathname +
-                window.location.search +
-                window.location.hash
-              );
-            }
-          })();
-        </script>
         <!-- Google tag (gtag.js) deferred -->
         <script>
           (function() {
@@ -38,14 +23,15 @@
         <!-- Google Search Console Verification -->
         <meta name="google-site-verification" content="cbZyUzSBcFh03u7_3Y7uIbTWU_Z3iz_q1aIC3sxqrJA" />
         <!-- Google AdSense loaded dynamically by AdBanner.js -->
-        <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
-        <link rel="icon" type="image/png" sizes="32x32"   href="/favicon-512.png" />
-        <link rel="icon" type="image/png" sizes="16x16"   href="/favicon-512.png" />
-        <link rel="shortcut icon"         type="image/png" href="/favicon-512.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/favicon-512.png" />
+        <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#050816" />
+        <title data-seo="">GlobalSync AI: Free Time Zone Converter, Meeting Planner &amp; Currency Tools</title>
         
         <!-- SEO tags (title, description, canonical, og:*, twitter:*) are injected
              per-page by react-helmet-async and captured by react-snap.
@@ -94,13 +80,15 @@
                 })(document, window.posthog || []);
                 posthog.init("phc_xAvL2Iq4tFmANRE7kzbKwaSqp1HJjN7x48s3vr0CMjs", { api_host: "https://us.i.posthog.com", person_profiles: "identified_only", session_recording: { recordCrossOriginIframes: true, capturePerformance: false } });
               }
-              if (window.addEventListener) {
-                window.addEventListener('load', function() {
-                  setTimeout(loadPostHog, 2000);
-                });
-              } else {
-                window.onload = loadPostHog;
+              // Same rule as GA4: nothing loads until the visitor accepts optional cookies.
+              function maybeLoadPostHog() {
+                try { if (localStorage.getItem('gs_cookie_consent') !== 'accepted') return; } catch (e) { return; }
+                if (window.__gsPostHogLoaded) return;
+                window.__gsPostHogLoaded = true;
+                loadPostHog();
               }
+              window.addEventListener('gs-consent-changed', maybeLoadPostHog);
+              window.addEventListener('load', function() { setTimeout(maybeLoadPostHog, 2000); });
             })();
         </script>
     </body>

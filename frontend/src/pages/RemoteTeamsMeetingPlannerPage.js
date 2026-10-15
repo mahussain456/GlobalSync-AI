@@ -21,7 +21,7 @@ export default function RemoteTeamsMeetingPlannerPage() {
             Global Meeting Planner for Remote Teams
           </h1>
           <p className="text-quiet text-lg max-w-2xl mx-auto">
-            Stop guessing and start scheduling fair meetings. Our AI-powered overlap calculator protects your team from time zone burnout.
+            Stop guessing and start scheduling fair meetings. Our overlap calculator checks every city's working hours, so nobody is booked at 2 AM.
           </p>
           <Link
             to="/meeting-planner"

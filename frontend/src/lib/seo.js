@@ -90,7 +90,7 @@ export const buildWebSiteSchema = () => ({
   "@type": "WebSite",
   "name": BRAND,
   "url": BASE_URL,
-  "description": `Free AI-powered time zone converter, meeting planner, and live currency converter for remote teams.`,
+  "description": `Free time zone converter, meeting planner and live currency converter for remote teams and freelancers.`,
   "potentialAction": {
     "@type": "SearchAction",
     "target": { "@type": "EntryPoint", "urlTemplate": `${BASE_URL}/dashboard?q={search_term_string}` },
@@ -240,16 +240,16 @@ export const buildArticleSchema = (post) => ({
  * Homepage — /
  */
 export const getHomepageSEO = ({ faqs = [] } = {}) => {
-  const title = "Sync Global Teams: Free Time Zone & Currency Tools";
-  const desc  = "Free AI tools for global remote teams. Synchronize time zones, convert 160+ currencies, and plan team meetings effortlessly. No signup required.";
+  const title = "Free Time Zone Converter, Meeting Planner & Currency Tools | GlobalSync AI";
+  const desc  = "Convert a time across 85+ cities, find a meeting slot inside everyone's working hours, convert 160+ currencies at live rates and build an invoice. Free, no signup.";
   return {
     rawTitle: title,
     description: desc,
     canonical: "/",
     keywords: "time zone converter, world clock, currency converter, meeting planner, business hours overlap, remote team scheduling, free currency converter 160 currencies, city to city time conversion",
     ogType: "website",
-    ogTitle: "Sync Global Teams: Free Time Zone & Currency Tools",
-    ogDescription: "Sync your global team effortlessly! Free AI-powered time zone, meeting, and currency tools.",
+    ogTitle: "Free Time Zone Converter, Meeting Planner & Currency Tools",
+    ogDescription: "Free time zone, meeting planner and live currency tools for remote teams. No signup.",
     twitterTitle: "GlobalSync: Free Time Zone & Currency Tools for Teams!",
     twitterDescription: "Sync global teams easily! Free time zone, world clock, & currency converter. No signup needed.",
     ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
@@ -265,7 +265,7 @@ export const getHomepageSEO = ({ faqs = [] } = {}) => {
           "width": 512,
           "height": 512
         },
-        "description": "Free AI-powered time zone, meeting planner, and currency tools for remote teams and freelancers.",
+        "description": "Free time zone converter, meeting planner and live currency converter for remote teams and freelancers.",
         "founder": { "@id": PERSON_ID },
         "knowsAbout": [
           "Time zone conversion",
@@ -288,7 +288,7 @@ export const getHomepageSEO = ({ faqs = [] } = {}) => {
       buildWebApplicationSchema({
         name: BRAND,
         path: "/",
-        description: "Free AI-powered world clock, time zone converter, meeting planner, and live currency converter for remote teams.",
+        description: "Free world clock, time zone converter, meeting planner and live currency converter for remote teams.",
       }),
       ...(faqs.length ? [buildFAQSchema(faqs)] : []),
     ],
@@ -302,7 +302,7 @@ export const getTimeZoneHubSEO = ({ faqs = [] } = {}) => {
   const title = `Free Time Zone Converter | World Clock | ${BRAND}`;
   return {
     rawTitle: title,
-    description: `Compare live time across 25+ cities instantly. Convert any time zone, find business hour overlaps, and plan meetings across continents. Free.`,
+    description: `Compare live time across 85+ cities instantly. Convert any time zone, find business hour overlaps, and plan meetings across continents. Free.`,
     canonical: "/time-zone-converter",
     keywords: "time zone converter, world clock, city time comparison, international time zones, business hour overlap, EST to IST, GMT to PST, free world clock online",
     ogType: "website",
@@ -311,7 +311,7 @@ export const getTimeZoneHubSEO = ({ faqs = [] } = {}) => {
       buildSoftwareApplicationSchema({
         name: "Free Time Zone Converter",
         path: "/time-zone-converter",
-        description: "Compare live time across 25+ cities instantly. Convert any time zone, find business hour overlaps, and plan meetings across continents.",
+        description: "Compare live time across 85+ cities instantly. Convert any time zone, find business hour overlaps, and plan meetings across continents.",
         category: "UtilitiesApplication",
       }),
       buildBreadcrumbSchema([
@@ -576,7 +576,7 @@ const STATIC_META = {
   },
   "editorial-policy": {
     rawTitle: `GlobalSync AI: Our Editorial Standards and Accuracy Policy`,
-    description: `Learn how GlobalSync AI creates, reviews, and corrects content. Our editorial standards are transparent, independent, and publicly documented.`,
+    description: `Learn how GlobalSync AI creates, reviews and corrects content, and how we disclose our own product in comparisons.`,
     canonical: "/editorial-policy",
     keywords: "GlobalSync AI editorial policy, content standards",
   },
@@ -606,9 +606,9 @@ const STATIC_META = {
   },
   press: {
     rawTitle: `Press & Media Resources | GlobalSync AI`,
-    description: `Get the latest press releases, media kits, brand assets, and media contact information for GlobalSync AI time zone, currency, and meeting tools.`,
+    description: `Download the GlobalSync AI media kit: logos, brand colors, founder bio and company description, plus the press contact.`,
     canonical: "/press",
-    keywords: "GlobalSync AI press, media kit, press release, brand assets",
+    keywords: "GlobalSync AI press, media kit, brand assets, logo download",
   },
   "global-meeting-planner-for-remote-teams": {
     rawTitle: `Remote Team Meeting Planner | GlobalSync AI`,
@@ -660,7 +660,7 @@ const buildDataSourceDatasets = () => {
       "@type": "Dataset",
       "@id": `${BASE_URL}/data-sources#tzdata`,
       "name": "Time zone rules used by GlobalSync AI",
-      "description": "Time zone offsets and daylight saving transition rules for 25+ cities, sourced from the IANA Time Zone Database.",
+      "description": "Time zone offsets and daylight saving transition rules for 85+ cities, sourced from the IANA Time Zone Database.",
       "url": `${BASE_URL}/data-sources`,
       "license": "https://www.iana.org/time-zones",
       "isBasedOn": {

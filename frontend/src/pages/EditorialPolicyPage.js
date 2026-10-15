@@ -87,6 +87,14 @@ export default function EditorialPolicyPage() {
           </ul>
         </Section>
 
+        <Section icon={FileText} title="Comparisons and Our Own Product">
+          <p className="text-quiet leading-relaxed">
+            GlobalSync AI does not publish product reviews. Some guides compare our tools with others (World Time Buddy, timeanddate.com and
+            similar). Those guides are written by the founder of GlobalSync AI, rank our own product, and say so in a disclosure at the top of the
+            page. We have no paid placements or affiliate deals with any tool we compare. If that changes, the affected guide will say so.
+          </p>
+        </Section>
+
         <Section icon={RefreshCw} title="Correction & Update Policy">
           <p>
             The global regulatory landscape for currencies and time zones is dynamic. To keep our database accurate and responsive to real-world shifts, we implement the following update schedule:

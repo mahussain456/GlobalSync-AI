@@ -46,3 +46,59 @@
 @media(max-width:600px){.meridian-home .more-tools h2{font-size:32px}.meridian-home .more-tools form>div{flex-direction:column}.meridian-home .more-tools button{justify-content:center}.meridian-home .hero-art{mask-image:none}.meridian-home .picture-frame{border-radius:22px}}
 @media(prefers-reduced-motion:reduce){.meridian-home .atlas-routes,.meridian-home .hero-art,.meridian-home .atlas-route,.meridian-home .atlas-node{animation:none!important;transform:none!important}}
 .meridian-home .desktop-visual{padding-bottom:34px;overflow:visible}.meridian-home .desktop-visual img{width:170px;height:auto;transform:rotate(-3deg) translateY(4px);transition:transform .5s var(--ease);filter:drop-shadow(0 16px 26px #0e2a1f33)}.meridian-home .tool-feature:hover .desktop-visual img{transform:rotate(0) translateY(-4px)}@media(prefers-reduced-motion:reduce){.meridian-home .desktop-visual img{transition:none}}
+
+/* ── Hero quick converter (first-screen tool) ─────────────────────────────── */
+.meridian-home .hero-tool{align-self:center;background:var(--forest);color:var(--ivory);border:1px solid #a7bfae50;border-radius:12px;padding:26px;display:flex;flex-direction:column;gap:16px;box-shadow:0 24px 60px #0e2a1f26}
+.meridian-home .hero-tool-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.meridian-home .hero-tool-head h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:500;margin:0;color:var(--ivory)}
+.meridian-home .hero-tool-head span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.meridian-home .hero-tool-from{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.meridian-home .hero-tool-from label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--sage);flex:1 1 140px}
+.meridian-home .hero-tool select,.meridian-home .hero-tool input[type=time]{background:var(--pine);color:var(--ivory);border:1px solid #a7bfae60;border-radius:5px;min-height:44px;padding:0 10px;font:inherit;font-size:15px;width:100%;color-scheme:dark}
+.meridian-home .hero-tool-rows{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.meridian-home .hero-tool-rows li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"city time remove" "day day day";align-items:center;gap:4px 12px;padding:10px 12px;background:#153c2e;border-radius:8px}
+.meridian-home .hero-tool-rows select{grid-area:city;background:transparent;border-color:transparent;padding:0;min-height:36px;font-size:15px}
+.meridian-home .hero-tool-rows strong{grid-area:time;font-family:'Playfair Display',serif;font-size:26px;font-weight:500;font-variant-numeric:tabular-nums}
+.meridian-home .hero-tool-rows small{grid-area:day;font-size:11px;color:var(--sage);display:flex;gap:8px;align-items:center}
+.meridian-home .hero-tool-rows em{font-style:normal;padding:1px 8px;border-radius:99px;font-size:10px}
+.meridian-home .tone-on{background:#c8a96a33;color:var(--gold)}.meridian-home .tone-mid{background:#a7bfae22;color:var(--sage)}.meridian-home .tone-off{background:#00000033;color:#a7bfaecc}
+.meridian-home .hero-tool-remove{grid-area:remove;background:none;border:0;color:var(--sage);width:32px;height:32px;display:grid;place-items:center;cursor:pointer}
+.meridian-home .hero-tool-remove svg{width:16px;height:16px}
+.meridian-home .hero-tool-actions{display:flex;gap:10px;flex-wrap:wrap}
+.meridian-home .hero-tool-actions button,.meridian-home .hero-tool-reset{min-height:40px;padding:0 14px;border-radius:5px;border:1px solid #a7bfae60;background:transparent;color:var(--ivory);font-size:13px;display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.meridian-home .hero-tool-actions svg{width:14px;height:14px}
+.meridian-home .hero-tool-copy{background:var(--gold)!important;color:var(--forest)!important;border-color:var(--gold)!important;font-weight:600}
+.meridian-home .hero-tool-next{font-size:13px;color:var(--sage);display:flex;gap:8px;align-items:center;text-decoration:underline;text-underline-offset:3px}
+.meridian-home .hero-tool-next svg{width:14px;height:14px;flex:none}
+.meridian-home .hero-tool :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media (max-width:900px){.meridian-home .hero-tool{width:100%;margin-top:24px;padding:20px}}
+
+/* ── Social proof ─────────────────────────────────────────────────────────── */
+.meridian-home .social-proof{padding:90px 0 40px;border-top:1px solid #0e2a1f25}
+.meridian-home .proof-heading{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:end;margin-bottom:36px}
+.meridian-home .proof-heading h2{font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(32px,4vw,48px);margin:0;color:var(--forest)}
+.meridian-home .proof-heading p{color:#4a6051;margin:0}
+.meridian-home .proof-facts,.meridian-home .proof-stats{list-style:none;margin:0 0 24px;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.meridian-home .proof-stats{grid-template-columns:repeat(3,1fr)}
+.meridian-home .proof-facts li,.meridian-home .proof-stats li{border:1px solid #0e2a1f25;border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:4px}
+.meridian-home .proof-facts strong,.meridian-home .proof-stats strong{font-family:'Playfair Display',serif;font-weight:500;font-size:34px;color:var(--forest)}
+.meridian-home .proof-facts span,.meridian-home .proof-stats span{font-size:13px;color:#4a6051}
+.meridian-home .proof-quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+.meridian-home .proof-quotes figure{margin:0;border-left:2px solid var(--gold);padding:6px 16px}
+.meridian-home .proof-quotes blockquote{margin:0 0 10px;font-family:'Playfair Display',serif;font-size:18px;color:var(--forest)}
+.meridian-home .proof-quotes figcaption{font-size:13px;font-weight:600;color:var(--forest);display:flex;flex-direction:column}
+.meridian-home .proof-quotes figcaption span{font-weight:400;color:#4a6051}
+.meridian-home .sp-placeholder{border:2px dashed #b4532a;background:#b4532a0d;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:6px;height:100%}
+.meridian-home .sp-placeholder>span{font-size:10px;font-weight:700;letter-spacing:.12em;color:#b4532a}
+.meridian-home .sp-placeholder small{font-size:11px;color:#7a4a2a}
+.meridian-home .proof-screens{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.meridian-home .proof-screen{display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--forest);text-decoration:none}
+.meridian-home .proof-screen img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border:1px solid #0e2a1f25;border-radius:8px;background:#fff}
+.meridian-home .proof-screen:hover span{text-decoration:underline}
+.meridian-home .home-newsletter{padding:10px 0 30px;max-width:760px}
+@media (max-width:900px){.meridian-home .proof-heading{grid-template-columns:1fr;gap:10px}.meridian-home .proof-facts,.meridian-home .proof-screens{grid-template-columns:repeat(2,1fr)}.meridian-home .proof-stats,.meridian-home .proof-quotes{grid-template-columns:1fr}.meridian-home .social-proof{padding:60px 0 30px}}
+/* The H1 now names the tools (longer than the old two-word line), so it runs smaller. */
+.meridian-home .hero h1{font-size:clamp(40px,4.4vw,64px);line-height:1.06;letter-spacing:-.025em;width:auto;max-width:620px}
+@media (max-width:600px){.meridian-home .hero h1{font-size:clamp(34px,9vw,44px)}}
+/* Phones: pull the converter up so its first result clears the cookie bar on a first visit. */
+@media (max-width:600px){.meridian-home .hero .caption{display:none}.meridian-home .hero-copy{margin:18px 0 20px}.meridian-home .hero-tool{margin-top:16px}}

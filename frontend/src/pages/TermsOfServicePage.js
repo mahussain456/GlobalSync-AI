@@ -39,7 +39,7 @@ export default function TermsOfServicePage() {
               <li>Currency conversion with live, timestamped mid-market rates across 160+ world currencies</li>
               <li>Interactive meeting time planner and working-hour overlap calculations for up to 5 cities</li>
               <li>Freelancer hourly-to-salary equivalent calculator and invoice building utilities</li>
-              <li>AI-powered natural language query processing for instant scheduling calculations</li>
+              <li>A plain-English question box that uses an AI model (Anthropic Claude Haiku) to route questions to the right tool</li>
             </ul>
             <p className="mt-3">The Service is provided free of charge for individual and organizational use and does not require account creation or mandatory payment.</p>
           </section>
