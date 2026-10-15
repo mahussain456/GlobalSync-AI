@@ -67,7 +67,7 @@ class PublicTeams(unittest.IsolatedAsyncioTestCase):
     async def test_legacy_public_read_excludes_private_fields(self):
         legacy = dict(slug='old', name='Example', email='private@example.invalid', opt_in=True, members=[{'name':'Designer', 'email':'private@example.invalid'}])
         db = types.SimpleNamespace(teams=types.SimpleNamespace(find_one=AsyncMock(return_value=legacy)))
-        result = await load_routes(db)['get_team']('old')
+        result = await load_routes(db)['get_team']('old', None)
         self.assertNotIn('email', result)
         self.assertNotIn('opt_in', result)
         self.assertNotIn('email', result['members'][0])

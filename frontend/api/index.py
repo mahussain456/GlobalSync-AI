@@ -5,7 +5,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-import os, logging, pytz, requests, uuid, json, re, asyncio, resend
+import os, logging, pytz, requests, uuid, json, re, asyncio, resend, base64, binascii, math, hashlib
+from pymongo import ReturnDocument
+from html import escape
 import httpx
 import xml.etree.ElementTree as ET
 import anthropic
@@ -27,8 +29,24 @@ if mongo_url and db_name:
     client = AsyncIOMotorClient(mongo_url)
     db = client[db_name]
 
-app = FastAPI()
-limiter = Limiter(key_func=get_remote_address)
+app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
+
+
+def client_ip(request: Request) -> str:
+    """Real visitor IP behind Vercel's proxy (request.client is the proxy hop).
+
+    Vercel sets x-vercel-forwarded-for / x-real-ip itself, so clients can't spoof them.
+    """
+    for header in ("x-vercel-forwarded-for", "x-real-ip", "x-forwarded-for"):
+        value = request.headers.get(header)
+        if value:
+            return value.split(",")[0].strip()
+    return get_remote_address(request)
+
+
+# In-memory limits apply per serverless instance — a speed bump, not a wall.
+# Add a Vercel Firewall rate-limit rule on /api/* for a global limit.
+limiter = Limiter(key_func=client_ip)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 api_router = APIRouter(prefix="/api")
@@ -128,19 +146,45 @@ def parse_time_str(time_str: str) -> tuple:
         return h, mi
     return None, None
 
+# ============= Input validation =============
+EMAIL_RE = re.compile(r"^[^@\s<>\"',;]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,24}$")
+CURRENCY_RE = re.compile(r"^[A-Z]{3}$")
+INVOICE_NO_RE = re.compile(r"^[A-Za-z0-9_-]{1,40}$")
+MAX_PDF_BYTES = 2 * 1024 * 1024
+
+
+def valid_email(value: str) -> str:
+    value = (value or "").strip()
+    if len(value) > 254 or not EMAIL_RE.match(value):
+        raise HTTPException(status_code=422, detail="Enter a valid email address.")
+    return value
+
+
+def valid_currency(value: str) -> str:
+    code = (value or "").strip().upper()
+    if not CURRENCY_RE.match(code):
+        raise HTTPException(status_code=422, detail="Use a 3-letter currency code, e.g. USD.")
+    return code
+
+
+def one_line(value: str) -> str:
+    """Collapse whitespace so user text can't break email headers or layouts."""
+    return re.sub(r"\s+", " ", value or "").strip()
+
+
 # ============= Models =============
 class AIParseRequest(BaseModel):
-    query: str
+    query: str = Field(..., min_length=1, max_length=300)
 
 class CityTimeRequest(BaseModel):
-    cities: List[str]
-    from_time: Optional[str] = None
-    from_city: Optional[str] = None
+    cities: List[str] = Field(..., max_length=20)
+    from_time: Optional[str] = Field(default=None, max_length=20)
+    from_city: Optional[str] = Field(default=None, max_length=100)
 
 class MeetingOverlapRequest(BaseModel):
-    cities: List[str]
-    business_start_hour: int = 9
-    business_end_hour: int = 17
+    cities: List[str] = Field(..., max_length=20)
+    business_start_hour: int = Field(default=9, ge=0, le=23)
+    business_end_hour: int = Field(default=17, ge=1, le=23)
 
 class HistoryCreate(BaseModel):
     query: str
@@ -148,10 +192,10 @@ class HistoryCreate(BaseModel):
     result: Dict[str, Any]
 
 class TeamMemberModel(BaseModel):
-    name: str
-    city: str
-    timezone_id: str
-    utc_offset: str
+    name: str = Field(..., max_length=100)
+    city: str = Field(..., max_length=100)
+    timezone_id: str = Field(..., max_length=64)
+    utc_offset: str = Field(..., max_length=16)
 
 class TeamCreateRequest(BaseModel):
     name: str
@@ -162,11 +206,12 @@ class TeamCreateRequest(BaseModel):
     is_paid: bool = False
 
 class InvoiceSendRequest(BaseModel):
-    sender_email: str
-    client_email: str
-    client_name: str
-    invoice_number: str
-    pdf_base64: str
+    sender_email: str = Field(..., max_length=254)
+    client_email: str = Field(..., max_length=254)
+    client_name: str = Field(..., max_length=100)
+    invoice_number: str = Field(..., max_length=40)
+    # base64 of a PDF up to MAX_PDF_BYTES (4/3 expansion + slack)
+    pdf_base64: str = Field(..., max_length=2_900_000)
 
 class UpgradeCheckoutRequest(BaseModel):
     email: str
@@ -243,8 +288,32 @@ async def root():
 def list_popular_cities():
     return {"cities": POPULAR_CITIES}
 
+ALLOWED_INTENTS = {"time_conversion", "meeting_overlap", "currency_conversion"}
+
+
+def sanitize_intent(result: Any) -> Optional[dict]:
+    """Keep only the shape the frontend expects — model output is untrusted (prompt injection)."""
+    if not isinstance(result, dict) or result.get("intent") not in ALLOWED_INTENTS:
+        return None
+    ent = result.get("entities") if isinstance(result.get("entities"), dict) else {}
+    short = lambda v: v.strip()[:100] if isinstance(v, str) and v.strip() else None
+    cities = lambda v: [c.strip()[:100] for c in v if isinstance(c, str) and c.strip()][:10] if isinstance(v, list) else []
+    if result["intent"] == "time_conversion":
+        clean = {"from_city": short(ent.get("from_city")), "to_cities": cities(ent.get("to_cities")), "time": short(ent.get("time"))}
+    elif result["intent"] == "meeting_overlap":
+        clean = {"cities": cities(ent.get("cities"))}
+    else:
+        amount = ent.get("amount", 1.0)
+        amount = float(amount) if isinstance(amount, (int, float)) and math.isfinite(amount) and abs(amount) <= 1e12 else 1.0
+        codes = [str(ent.get(k) or "").strip().upper() for k in ("from_currency", "to_currency")]
+        if not all(CURRENCY_RE.match(c) for c in codes):
+            return None
+        clean = {"amount": amount, "from_currency": codes[0], "to_currency": codes[1]}
+    return {"intent": result["intent"], "entities": clean}
+
+
 @api_router.post("/ai/parse")
-@limiter.limit("20/minute")
+@limiter.limit("20/minute;300/day")
 async def parse_ai_intent(req: AIParseRequest, request: Request):
     client_ai = _get_anthropic()
     if not client_ai:
@@ -259,14 +328,14 @@ async def parse_ai_intent(req: AIParseRequest, request: Request):
         clean = msg.content[0].text.strip()
         if clean.startswith("```"):
             clean = re.sub(r"```(?:json)?\n?", "", clean).strip().rstrip("`").strip()
-        result = json.loads(clean)
-        return result
+        return sanitize_intent(json.loads(clean)) or fallback_parse(req.query)
     except Exception as e:
         logger.error(f"AI parse error: {e}")
         return fallback_parse(req.query)
 
 @api_router.post("/timezone/convert")
-def get_city_times(req: CityTimeRequest):
+@limiter.limit("60/minute")
+def get_city_times(request: Request, req: CityTimeRequest):
     cities_data = []
     now_utc = datetime.now(pytz.utc)
     today = now_utc.date()
@@ -312,7 +381,10 @@ def get_city_times(req: CityTimeRequest):
     return result
 
 @api_router.post("/timezone/overlap")
-def get_meeting_overlap(req: MeetingOverlapRequest):
+@limiter.limit("60/minute")
+def get_meeting_overlap(request: Request, req: MeetingOverlapRequest):
+    if req.business_end_hour <= req.business_start_hour:
+        raise HTTPException(status_code=422, detail="Business hours must end after they start.")
     now_utc = datetime.now(pytz.utc)
     today = now_utc.date()
     city_ranges = []
@@ -457,10 +529,13 @@ def convert_currency(
     from_currency: str = Query(...),
     to_currency: str = Query(...)
 ):
-    from_c = from_currency.strip().upper()
-    to_c = to_currency.strip().upper()
+    # codes go into upstream URLs — allow exactly three letters, nothing else
+    from_c = valid_currency(from_currency)
+    to_c = valid_currency(to_currency)
     if from_c == to_c:
         raise HTTPException(status_code=422, detail="From and to currencies must be different")
+    if not math.isfinite(amount) or abs(amount) > 1e12:
+        raise HTTPException(status_code=422, detail="Enter an amount below 1 trillion.")
     
     # Try fetching live rate
     try:
@@ -530,8 +605,8 @@ def convert_currency(
 @api_router.get("/currency/trend")
 @limiter.limit("30/minute")
 def get_currency_trend(request: Request, from_currency: str = Query(...), to_currency: str = Query(...)):
-    from_c = from_currency.strip().upper()
-    to_c = to_currency.strip().upper()
+    from_c = valid_currency(from_currency)
+    to_c = valid_currency(to_currency)
     # Trend data only available for ECB-supported pairs via Frankfurter
     if from_c not in FRANKFURTER_SUPPORTED or to_c not in FRANKFURTER_SUPPORTED:
         return {
@@ -586,13 +661,14 @@ async def clear_history():
     raise HTTPException(status_code=410, detail="Clear query history from the History tab in your browser.")
 
 class UserLead(BaseModel):
-    name: str
-    email: str
+    name: str = Field(..., max_length=100)
+    email: str = Field(..., max_length=254)
 
 @api_router.post("/users/register")
-async def register_user(req: UserLead):
+@limiter.limit("5/minute;30/day")
+async def register_user(request: Request, req: UserLead):
+    email_lower = valid_email(req.email).lower()
     if db is None: return {"success": True, "message": "Welcome!", "new": True}
-    email_lower = req.email.strip().lower()
     existing = await db.users.find_one({"email": email_lower})
     if not existing:
         user = {
@@ -611,14 +687,18 @@ async def get_all_users():
     raise HTTPException(status_code=403, detail="Authenticated administrative access is required.")
 
 class ContactForm(BaseModel):
-    name: str
-    email: str
-    subject: str = "General Feedback"
-    message: str
+    name: str = Field(..., min_length=1, max_length=100)
+    email: str = Field(..., max_length=254)
+    subject: str = Field(default="General Feedback", max_length=150)
+    message: str = Field(..., min_length=1, max_length=5000)
 
 @api_router.post("/contact")
-@limiter.limit("5/minute")
+@limiter.limit("5/minute;20/day")
 async def submit_contact(form: ContactForm, request: Request):
+    reply_to = valid_email(form.email)
+    # every user-supplied value is escaped: this HTML lands in the owner's inbox
+    name, subject, message = escape(one_line(form.name)), escape(one_line(form.subject)), escape(form.message.strip())
+    email_html = escape(reply_to, quote=True)
     html = f"""
     <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#f9fafb;border-radius:12px;">
       <div style="background:#1d4ed8;padding:16px 24px;border-radius:8px 8px 0 0;">
@@ -626,13 +706,13 @@ async def submit_contact(form: ContactForm, request: Request):
       </div>
       <div style="background:#fff;padding:24px;border-radius:0 0 8px 8px;border:1px solid #e5e7eb;">
         <table style="width:100%;border-collapse:collapse;">
-          <tr><td style="padding:8px 0;color:#6b7280;font-size:14px;width:100px;"><strong>Name</strong></td><td style="padding:8px 0;color:#111827;font-size:14px;">{form.name}</td></tr>
-          <tr><td style="padding:8px 0;color:#6b7280;font-size:14px;"><strong>Email</strong></td><td style="padding:8px 0;font-size:14px;"><a href="mailto:{form.email}" style="color:#1d4ed8;">{form.email}</a></td></tr>
-          <tr><td style="padding:8px 0;color:#6b7280;font-size:14px;"><strong>Subject</strong></td><td style="padding:8px 0;color:#111827;font-size:14px;">{form.subject}</td></tr>
+          <tr><td style="padding:8px 0;color:#6b7280;font-size:14px;width:100px;"><strong>Name</strong></td><td style="padding:8px 0;color:#111827;font-size:14px;">{name}</td></tr>
+          <tr><td style="padding:8px 0;color:#6b7280;font-size:14px;"><strong>Email</strong></td><td style="padding:8px 0;font-size:14px;"><a href="mailto:{email_html}" style="color:#1d4ed8;">{email_html}</a></td></tr>
+          <tr><td style="padding:8px 0;color:#6b7280;font-size:14px;"><strong>Subject</strong></td><td style="padding:8px 0;color:#111827;font-size:14px;">{subject}</td></tr>
         </table>
         <hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0;">
         <p style="color:#6b7280;font-size:13px;margin:0 0 8px;">Message:</p>
-        <p style="color:#111827;font-size:15px;line-height:1.6;white-space:pre-wrap;background:#f9fafb;padding:12px;border-radius:6px;">{form.message}</p>
+        <p style="color:#111827;font-size:15px;line-height:1.6;white-space:pre-wrap;background:#f9fafb;padding:12px;border-radius:6px;">{message}</p>
         <hr style="border:none;border-top:1px solid #e5e7eb;margin:16px 0;">
         <p style="color:#9ca3af;font-size:12px;margin:0;">Sent from globalsync-ai.com contact form</p>
       </div>
@@ -642,8 +722,8 @@ async def submit_contact(form: ContactForm, request: Request):
         params = {
             "from": "GlobalSync AI <onboarding@resend.dev>",
             "to": [CONTACT_RECIPIENT_EMAIL],
-            "reply_to": form.email,
-            "subject": f"[GlobalSync AI] {form.subject} — from {form.name}",
+            "reply_to": reply_to,
+            "subject": f"[GlobalSync AI] {one_line(form.subject)[:150]} — from {one_line(form.name)[:100]}",
             "html": html,
         }
         result = await asyncio.to_thread(resend.Emails.send, params)
@@ -712,7 +792,8 @@ async def save_or_update_team(request: Request, req: TeamCreateRequest):
     return {"success": True, "slug": slug, "team": public_team(team)}
 
 @api_router.get("/teams/{slug}")
-async def get_team(slug: str):
+@limiter.limit("60/minute")
+async def get_team(slug: str, request: Request):
     if db is None:
         raise HTTPException(status_code=503, detail="Workspace storage is temporarily unavailable.")
     team = await db.teams.find_one({"slug": slug.lower().strip()}, {"_id": 0})
@@ -753,19 +834,27 @@ def save_local_team_all(teams: dict):
 
 # ============= Invoice & Upgrade Endpoints =============
 @api_router.get("/invoices/next-number")
-async def get_next_invoice_number(email: str = Query(...)):
-    email_clean = email.strip().lower()
+@limiter.limit("20/minute;200/day")
+async def get_next_invoice_number(request: Request, email: str = Query(..., max_length=254)):
+    email_clean = valid_email(email).lower()
     current_year = datetime.now(timezone.utc).year
     
     seq = 1
     if db is not None:
-        doc_id = f"{email_clean}-{current_year}"
-        doc = await db.invoices_seq.find_one({"_id": doc_id})
-        if doc:
-            seq = doc["seq"] + 1
-            await db.invoices_seq.update_one({"_id": doc_id}, {"$set": {"seq": seq}})
-        else:
-            await db.invoices_seq.insert_one({"_id": doc_id, "email": email_clean, "year": current_year, "seq": 1})
+        # Store a one-way hash, never the address, and increment atomically so two
+        # tabs can't get the same number.
+        doc_id = f"{hashlib.sha256(email_clean.encode()).hexdigest()}-{current_year}"
+        # One-time move of a counter stored under the raw address, so numbering continues.
+        legacy = await db.invoices_seq.find_one_and_delete({"_id": f"{email_clean}-{current_year}"})
+        if legacy:
+            await db.invoices_seq.update_one({"_id": doc_id}, {"$max": {"seq": legacy.get("seq", 0)}}, upsert=True)
+        doc = await db.invoices_seq.find_one_and_update(
+            {"_id": doc_id},
+            {"$inc": {"seq": 1}, "$setOnInsert": {"year": current_year}},
+            upsert=True,
+            return_document=ReturnDocument.AFTER,
+        )
+        seq = doc["seq"]
     else:
         seqs = load_local_invoices_seq()
         key = f"{email_clean}-{current_year}"
@@ -778,27 +867,48 @@ async def get_next_invoice_number(email: str = Query(...)):
     return {"invoice_number": invoice_number, "seq": seq}
 
 @api_router.post("/invoices/send")
-async def send_invoice(req: InvoiceSendRequest):
+@limiter.limit("3/hour;10/day")
+async def send_invoice(request: Request, req: InvoiceSendRequest):
+    # This endpoint emails a file to an arbitrary address, so it is the most abusable
+    # thing the API does (spam, phishing, malware). Everything is validated.
+    sender = valid_email(req.sender_email)
+    recipient = valid_email(req.client_email)
+    invoice_no = req.invoice_number.strip()
+    if not INVOICE_NO_RE.match(invoice_no):
+        raise HTTPException(status_code=422, detail="Invoice numbers may use letters, digits, - and _ only.")
+    try:
+        pdf = base64.b64decode(req.pdf_base64, validate=True)
+    except (binascii.Error, ValueError):
+        raise HTTPException(status_code=422, detail="The attachment must be the generated PDF.")
+    if not pdf.startswith(b"%PDF-") or len(pdf) > MAX_PDF_BYTES:
+        raise HTTPException(status_code=422, detail="The attachment must be a PDF under 2 MB.")
+    client_name = escape(one_line(req.client_name)) or "there"
+    sender_html, invoice_html = escape(sender), escape(invoice_no)
+
     if resend.api_key:
         try:
             attachments = [
                 {
                     "content": req.pdf_base64,
-                    "filename": f"{req.invoice_number}.pdf",
+                    "filename": f"{invoice_no}.pdf",
                 }
             ]
-            
+
             html = f"""
             <div style="font-family:'Inter', sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#f9fafb;color:#1A1A1A;border-radius:24px;border:1px solid #e5e7eb;">
-              <h2 style="font-size:22px;font-weight:700;color:#0E2A1F;margin-top:0;">Invoice {req.invoice_number}</h2>
+              <h2 style="font-size:22px;font-weight:700;color:#0E2A1F;margin-top:0;">Invoice {invoice_html}</h2>
               <p style="font-size:15px;line-height:1.6;color:#4A4A4A;">
-                Hello {req.client_name},
+                Hello {client_name},
               </p>
               <p style="font-size:15px;line-height:1.6;color:#4A4A4A;">
-                Please find attached invoice <strong>{req.invoice_number}</strong> sent from <strong>{req.sender_email}</strong>.
+                Please find attached invoice <strong>{invoice_html}</strong> from <strong>{sender_html}</strong>.
               </p>
               <p style="font-size:15px;line-height:1.6;color:#4A4A4A;">
                 If you have any questions, you can reply directly to this email to contact the sender.
+              </p>
+              <p style="font-size:12px;line-height:1.5;color:#6B7280;">
+                GlobalSync delivered this on behalf of {sender_html}. We don't verify sender addresses &mdash;
+                if you weren't expecting this invoice, don't open the attachment or pay it.
               </p>
               
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;">
@@ -811,18 +921,19 @@ async def send_invoice(req: InvoiceSendRequest):
             
             params = {
                 "from": "GlobalSync AI <onboarding@resend.dev>",
-                "to": [req.client_email.strip()],
-                "reply_to": req.sender_email.strip(),
-                "subject": f"Invoice {req.invoice_number} from {req.sender_email}",
+                "to": [recipient],
+                "reply_to": sender,
+                "subject": f"Invoice {invoice_no} from {sender}",
                 "html": html,
                 "attachments": attachments
             }
-            
+
             await asyncio.to_thread(resend.Emails.send, params)
-            return {"success": True, "message": f"Invoice email dispatched to {req.client_email}."}
+            return {"success": True, "message": f"Invoice email dispatched to {recipient}."}
         except Exception as e:
             logger.error(f"Resend error in send_invoice: {e}")
-            raise HTTPException(status_code=500, detail=f"Resend dispatch failed: {str(e)}")
+            # provider errors can include account details — never echo them to the browser
+            raise HTTPException(status_code=502, detail="Email delivery failed. Download the PDF and send it from your email app.")
     else:
         logger.info("Invoice email delivery unavailable: provider is not configured")
         raise HTTPException(status_code=503, detail="Email delivery is unavailable. Download the PDF and send it using your email app.")
@@ -896,9 +1007,17 @@ async def _fetch_rss(url: str, source_name: str) -> List[Dict]:
         logger.error(f"RSS fetch error {source_name}: {e}")
         return []
 
+_news_cache = {"at": 0.0, "data": None}
+NEWS_CACHE_SECONDS = 600
+
 @api_router.get("/news/feed")
-async def get_news_feed():
+@limiter.limit("20/minute")
+async def get_news_feed(request: Request):
     """Ultra-fast proxy to fetch RSS without triggering adblockers, no Anthropic used."""
+    # Each uncached call fans out to 4 upstream feeds, so cache to stop amplification.
+    now_ts = datetime.now(timezone.utc).timestamp()
+    if _news_cache["data"] and now_ts - _news_cache["at"] < NEWS_CACHE_SECONDS:
+        return _news_cache["data"]
     tasks = []
     for f in RSS_FEEDS["ai_news"]: tasks.append(_fetch_rss(f["url"], f["source"]))
     for f in RSS_FEEDS["tips"]: tasks.append(_fetch_rss(f["url"], f["source"]))
@@ -917,99 +1036,26 @@ async def get_news_feed():
     ai_articles.sort(key=sort_fn, reverse=True)
     tips_articles.sort(key=sort_fn, reverse=True)
 
-    return {
+    data = {
         "ai_news": {"articles": ai_articles[:10], "last_updated": datetime.now(timezone.utc).isoformat()},
         "tips": {"articles": tips_articles[:10], "last_updated": datetime.now(timezone.utc).isoformat()}
     }
-
-import sys as _sys
-
-@api_router.get("/build-info")
-async def api_build_info():
-    """
-    Deployment diagnostic endpoint.
-    Returns build metadata, react-snap status, and per-route pre-rendered titles.
-    Cache-Control: no-store so Cloudflare never serves a stale response.
-    """
-    BUILD_DIR = Path("/app/frontend/build")
-    SKIP_DIRS = {"static", "media", "fonts", "icons"}
-
-    def extract_title(html_path: Path):
-        if not html_path.exists():
-            return None
-        try:
-            content = html_path.read_text(encoding="utf-8", errors="ignore")
-            m = re.search(r"<title>([^<]*)</title>", content, re.IGNORECASE)
-            return m.group(1) if m else None
-        except Exception:
-            return None
-
-    def count_pages(directory: Path, is_root: bool = True) -> int:
-        count = 1 if is_root and (directory / "index.html").exists() else 0
-        try:
-            for entry in directory.iterdir():
-                if entry.is_dir() and entry.name not in SKIP_DIRS:
-                    if (entry / "index.html").exists():
-                        count += 1
-                    count += count_pages(entry, is_root=False)
-        except Exception:
-            pass
-        return count
-
-    ROUTES = [
-        "/",
-        "/time-zone-converter",
-        "/currency-converter",
-        "/meeting-planner",
-        "/time/new-york-to-london",
-        "/currency/usd-to-inr",
-        "/blog/best-free-time-zone-converter-remote-teams-2026",
-        "/blog/remote-work-time-zones-productivity-guide",
-        "/blog/best-currency-to-invoice-freelancers-usd-eur-gbp",
-    ]
-
-    build_info_data = None
-    try:
-        build_info_data = json.loads((BUILD_DIR / "BUILD_INFO.json").read_text())
-    except Exception:
-        pass
-
-    per_route_titles = {}
-    for route in ROUTES:
-        html_path = (
-            BUILD_DIR / "index.html"
-            if route == "/"
-            else BUILD_DIR / route.lstrip("/") / "index.html"
-        )
-        per_route_titles[route] = extract_title(html_path)
-
-    payload = {
-        "now": datetime.now(timezone.utc).isoformat(),
-        "build_timestamp": build_info_data.get("build_timestamp") if build_info_data else None,
-        "git_commit_sha": build_info_data.get("git_commit_sha") if build_info_data else None,
-        "react_snap_ran": build_info_data.get("react_snap_ran") if build_info_data else None,
-        "react_snap_exit_code": build_info_data.get("react_snap_exit_code") if build_info_data else None,
-        "react_snap_page_count": count_pages(BUILD_DIR),
-        "per_route_titles": per_route_titles,
-        "server_process_argv": " ".join(_sys.argv),
-        "server_script_path": str(Path(__file__).resolve()),
-        "node_version": "N/A — Python FastAPI",
-        "python_version": _sys.version,
-    }
-
-    from fastapi.responses import JSONResponse as _JSONResponse
-    return _JSONResponse(
-        content=payload,
-        headers={"Cache-Control": "no-store, max-age=0"},
-    )
+    if ai_articles or tips_articles:
+        _news_cache.update(at=now_ts, data=data)
+    return data
 
 app.include_router(api_router)
+# The site calls /api from its own origin, so browsers need no CORS grant at all.
+# Only the listed origins (plus any in CORS_ORIGINS) may call it cross-site, and
+# never with cookies. A "*" in CORS_ORIGINS is ignored on purpose.
+DEFAULT_ORIGINS = ["https://www.globalsync-ai.com", "https://globalsync-ai.com"]
+extra_origins = [o.strip() for o in os.environ.get("CORS_ORIGINS", "").split(",") if o.strip() and o.strip() != "*"]
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_credentials=False,
+    allow_origins=DEFAULT_ORIGINS + extra_origins,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
 )
 
 @app.on_event("shutdown")

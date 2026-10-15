@@ -301,7 +301,7 @@ export const GUIDES = [
     links: ["timeZones", "planner", "currency", "invoice", "widget", "rates", "guides"],
     content: [
       { type: "h2", text: "How I tested these" },
-      { type: "p", text: "I work with clients in New York, London and Mumbai at the same time. I used every tool below for at least three real scheduling rounds, not a quick demo. Some held up. Some fell apart by the second week." },
+      { type: "p", text: "I judged every tool below against one realistic setup: a weekly call between New York, London and Mumbai, plus the invoice that follows it. Some tools handle that well. Others leave most of the work to you." },
       { type: "p", text: "Here's how I scored them:" },
       { type: "table",
         headers: ["Question", "Weight"],
@@ -361,7 +361,7 @@ export const GUIDES = [
       },
 
       { type: "h2", text: "A real freelancer morning, tool by tool" },
-      { type: "p", text: "Here's a real Tuesday. It's 7 AM in London. You need to make sure your 9 AM New York client call doesn't clash with your Mumbai teammate's standup. Then you need to send last month's invoice in USD with an INR reference line, so their finance team can approve it without ringing the bank." },
+      { type: "p", text: "Picture a typical Tuesday. It's 7 AM in London. You need to make sure your 9 AM New York client call doesn't clash with your Mumbai teammate's standup. Then you need to send last month's invoice in USD with an INR reference line, so their finance team can approve it without ringing the bank." },
       { type: "ul", items: [
         "**World Time Buddy** finds the overlap well. After that you open three more tabs for currency, invoicing and rates.",
         "**timeanddate** shows the times. The meeting planner works but is basic. You open more tabs too.",
