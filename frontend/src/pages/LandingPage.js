@@ -30,26 +30,20 @@ const root=useRef(null);
 useEffect(()=>initializeMeridian(root.current),[]);
 return <div className="meridian-home" ref={root}><SEOHead {...getHomepageSEO({faqs:HOME_FAQS})}/><SiteNav/>
 <main id="main-content">
-<div className="shell"><section className="hero hero-staged">
+<div className="shell">
+<section className="hero hero-staged">
 <div className="hero-intro"><h1>Free time zone converter, meeting planner <em>&amp; currency tools.</em></h1><p className="hero-copy">Every tool, ready to use right here. Slide through them, or open the full version. Free, no signup.</p></div>
 <ToolStage/>
-<div className="hero-bottom"><span>Thoughtfully made for work across borders.</span><a href="#rhythm">Explore together <svg><path d="M10 2v16m-5-5 5 5 5-5"/></svg></a></div>
-</section></div>
-<section className="dark-section" id="rhythm"><div className="shell"><div className="dark-heading"><h2>A city changes.<br/>Your rhythm stays.</h2><p>Morning in one city. Afternoon in another.<br/>Slide through a day to see how three teams line up. <a href="/meeting-planner">Plan with your own cities →</a></p></div>
-<div className="city-tabs" aria-label="Choose a team"><button data-group="atlantic" aria-pressed="true">Across the Atlantic</button><button data-group="asia" aria-pressed="false">Europe to Asia</button><button data-group="pacific" aria-pressed="false">Across the Pacific</button></div><div className="city-readout" data-clock-row></div>
-<div className="day-band"><div className="band-title">Bring your day into focus.<small>Slide through a day, together.</small></div><div><div className="slider-head"><label htmlFor="meridian-day" data-date-label></label><output data-utc></output></div><input className="range" id="meridian-day" type="range" min="0" max="95" defaultValue="52" aria-label="Time of day in 15-minute steps" /><div className="time-ticks"><span>00:00 UTC</span><span>06:00</span><span>12:00</span><span>18:00</span><span>23:45</span></div></div></div></div></section>
-<div className="shell"><section className="story" id="tools"><h2>Less coordination.<br/>More connection.</h2><div className="story-copy"><p>Find a meeting time that fits. Understand an amount in another currency. Put the details into an invoice. Keep the small things simple, so the work can move forward.</p><a className="secondary" href="/meeting-planner">Plan your next conversation <ArrowRight aria-hidden="true" /></a></div></section>
-<div className="tool-collection">
-<a className="tool-feature" href="/meeting-planner"><div><h3>Time, on your side.</h3><p>Compare local times and find room in everyone’s day.</p><span className="tool-action">Explore the meeting planner <ArrowRight aria-hidden="true" /></span></div><div className="tool-visual time-visual" aria-hidden="true"><span>NEW YORK<b>09:00</b></span><i></i><span>LONDON<b>14:00</b></span><small>One moment. Two perspectives.</small></div></a>
-<a className="tool-feature" href="/currency-converter"><div><h3>A clearer exchange.</h3><p>Put an international amount into a currency you know.</p><span className="tool-action">Open currency converter <ArrowRight aria-hidden="true" /></span></div><div className="tool-visual currency-visual" aria-hidden="true"><span>USD</span><svg viewBox="0 0 100 32"><path d="M0 10h96l-8-8M100 22H4l8 8"/></svg><span>EUR</span><small>See the amount from both sides.</small></div></a>
-<a className="tool-feature" href="/invoice"><div><h3>The details, together.</h3><p>Bring your work, rates and client details into one invoice.</p><span className="tool-action">Open invoice builder <ArrowRight aria-hidden="true" /></span></div><div className="tool-visual invoice-visual" aria-hidden="true"><span>INVOICE</span><div><i></i><i></i><i></i></div><b>Work. Ready to send.</b></div></a>
-<a className="tool-feature" href="/world-clock-widget"><div><h3>Your world, on your desktop.</h3><p>A free world clock for Windows and Mac. Four cities, live skies and a quiet signal for who&rsquo;s at work.</p><span className="tool-action">Get the desktop app <ArrowRight aria-hidden="true" /></span></div><div className="tool-visual desktop-visual" aria-hidden="true"><img src="/world-clock/world-clock-paper.webp" alt="GlobalSync desktop world clock showing four city clocks with live skies" width="200" height="272" loading="lazy" decoding="async"/><small>Windows &amp; Mac · No account · Works offline</small></div></a>
-</div>
+</section>
 <SocialProof/>
-<section className="faq" id="questions"><h2>A little clarity.<br/>A better start.</h2><div>{HOME_FAQS.map(f=><details key={f.q}><summary>{f.q}<svg><path d="M12 4v16M4 12h16"/></svg></summary><p>{f.a}</p></details>)}</div></section></div>
-<section className="closing"><div className="shell"><h2>A smaller world.<br/><em>A bigger possibility.</em></h2><a className="primary" href="/meeting-planner">Bring your world together <ArrowRight aria-hidden="true" /></a></div></section>
+<section className="faq" id="questions">
+<div className="faq-side"><h2>Questions,<br/>answered.</h2>
+<form className="home-ask" action="/dashboard"><label htmlFor="home-question">Or ask in plain English <small>An AI model reads your question; the tools calculate the answer.</small></label><div className="home-ask-row"><input id="home-question" name="q" placeholder="What time is 3 PM New York in London?" required maxLength={500}/><button type="submit" className="btn btn-primary">Ask <ArrowRight aria-hidden="true"/></button></div></form>
+</div>
+<div>{HOME_FAQS.map(f=><details key={f.q}><summary>{f.q}<svg><path d="M12 4v16M4 12h16"/></svg></summary><p>{f.a}</p></details>)}</div>
+</section>
+</div>
 </main>
-<section className="shell more-tools"><h2>Your next step, made simpler.</h2><nav aria-label="More GlobalSync tools"><a href="/time-zone-converter">World clocks and time zones</a><a href="/world-clock-widget">Desktop world clock app</a><a href="/freelancer-rate-converter">Freelancer rate calculator</a><a href="/dashboard">Open your workspace</a><a href="/guides">Guides for working globally</a></nav><form action="/dashboard"><label htmlFor="home-question">Ask about a time or currency conversion <small>(AI reads your question; the tools calculate the answer)</small></label><div><input id="home-question" name="q" placeholder="What time is 3 PM New York in London?" required maxLength={500}/><button type="submit">Find an answer <ArrowRight aria-hidden="true"/></button></div></form></section>
 <div className="shell home-newsletter"><NewsletterSignup placement="home"/></div>
-<div className="shell motion-row"><button className="motion-toggle" aria-pressed="false">Pause motion</button></div><SiteFooter/></div>;
+<SiteFooter/></div>;
 }

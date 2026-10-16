@@ -5,6 +5,7 @@ import SiteFooter from '@/components/SiteFooter';
 import DesktopAppCTA from "@/components/DesktopAppCTA";
 import MeetingPlanner from '@/components/MeetingPlanner';
 import { getMeetingPlannerSEO } from '@/lib/seo';
+import { ToolHero } from '@/components/tool/ToolPage';
 
 const FAQ = [
   { q: 'How does the meeting planner find a time?', a: 'Choose two to five cities, a date, a meeting length and local working hours. The planner checks every 15-minute start time and only offers meetings that fit entirely within everyone’s selected hours. The date is the local date in the first city.' },
@@ -17,15 +18,18 @@ const FAQ = [
 export default function MeetingPlannerPage() {
   return <div className="min-h-screen bg-paper text-ink">
     <SEOHead {...getMeetingPlannerSEO({ faqs: FAQ })} /><SiteNav />
-    <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-16">
-      <header className="max-w-3xl mb-8"><h1 className="font-heading text-4xl sm:text-5xl font-semibold leading-tight mb-4">Find a meeting time that works across borders.</h1><p className="text-lg text-quiet leading-relaxed">Choose a date, compare your team's working hours, and take a shared time straight to your calendar.</p></header>
-      <MeetingPlanner />
+    <main>
+      <ToolHero title="Find a meeting time that works across borders." intro="Choose a date, compare your team's working hours, and take a shared time straight to your calendar.">
+        <MeetingPlanner />
+      </ToolHero>
+      <div className="tool-shell tool-body">
       <section className="mt-14 max-w-3xl" aria-labelledby="meeting-help">
         <h2 id="meeting-help" className="font-heading text-2xl font-semibold mb-6">Plan with everyone's local day in view</h2>
         <p className="text-quiet leading-relaxed mb-6">A time that fits two cities may fall outside working hours in a third. Start with the hours your team actually works, then review every local date before you send an invitation.</p>
         <div className="divide-y divide-line">{FAQ.map(({ q, a }) => <details key={q} className="py-5"><summary className="cursor-pointer font-medium text-ink py-1">{q}</summary><p className="text-quiet mt-3 leading-relaxed">{a}</p></details>)}</div>
       </section>
       <nav aria-label="Continue your client workflow" className="mt-12 border-t border-line pt-6 flex flex-wrap gap-5 text-sm text-pine"><Link className="underline underline-offset-4" to="/time-zone-converter">Compare world clocks</Link><Link className="underline underline-offset-4" to="/freelancer-rate-converter">Set a freelance rate</Link><Link className="underline underline-offset-4" to="/invoice">Create an invoice</Link></nav>
+      </div>
     </main><DesktopAppCTA placement="meeting_planner" />
 <SiteFooter />
   </div>;

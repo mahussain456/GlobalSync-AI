@@ -10,6 +10,7 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { toast } from "sonner";
 import { fireAnalyticsEvent, markToolUsed } from "@/lib/analytics";
+import { ToolHero } from "@/components/tool/ToolPage";
 
 const API = (process.env.REACT_APP_BACKEND_URL && process.env.NODE_ENV !== "production") ? `${process.env.REACT_APP_BACKEND_URL}/api` : "/api";
 
@@ -417,21 +418,8 @@ export default function InvoicePage() {
 
       <SiteNav />
 
-      <main className="flex-1 max-w-6xl mx-auto px-6 pt-16 pb-12 w-full z-10 space-y-6">
-
-        {/* Title */}
-        <header className="mb-4 text-center sm:text-left"><h1 className="font-heading text-4xl md:text-5xl font-bold text-ink leading-tight mb-2">
-            Invoice Builder
-          </h1>
-          <div className="inline-flex items-center gap-1.5 bg-gem-gold/10 text-pine rounded-full px-3 py-1 text-xs font-medium mb-3 border border-line">
-            <FileText className="w-3.5 h-3.5" /> Multi-Currency PDF builder
-          </div>
-
-          <p className="text-sm text-quiet max-w-2xl leading-relaxed">
-            Prepare a clear client invoice with a billing total, a reference currency conversion and a downloadable PDF.
-          </p>
-        </header>
-
+      <main className="flex-1 w-full">
+      <ToolHero wide title="Invoice Builder" intro="Prepare a clear client invoice with a billing total, a reference line in your client's currency at the live rate, and a downloadable PDF. Three free a month, no account.">
         {/* Builder Workspace Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
@@ -757,7 +745,7 @@ export default function InvoicePage() {
           </div>
 
         </div>
-
+      </ToolHero>
       </main>
 
       <SiteFooter />

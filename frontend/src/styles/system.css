@@ -1,0 +1,125 @@
+/* ── GlobalSync design system ────────────────────────────────────────────────
+   One type scale (7 steps), one corner radius, two button styles, two families
+   (Playfair Display for headings, DM Sans for everything else). Interior pages map
+   their Tailwind utilities onto these tokens so the whole site reads as one. */
+:root{
+  --gs-forest:#0e2a1f;--gs-pine:#1b4d3e;--gs-ivory:#f4efe6;--gs-gold:#c8a96a;--gs-sage:#a7bfae;
+  --gs-ink:#0e2a1f;--gs-quiet:#526659;--gs-line:#cfd5ca;--gs-surface:#fffcf7;--gs-brass:#80612d;
+  --t-xs:12px;--t-sm:14px;--t-base:16px;--t-lg:20px;--t-xl:26px;--t-2xl:36px;--t-display:clamp(38px,4.6vw,60px);
+  --r:10px;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+
+/* Type scale on interior pages */
+.meridian-interior :is(.text-\[9px\],.text-\[10px\],.text-\[11px\],.text-xs){font-size:var(--t-xs);line-height:1.5}
+.meridian-interior :is(.text-\[13px\],.text-sm){font-size:var(--t-sm);line-height:1.6}
+.meridian-interior :is(.text-\[15px\],.text-base){font-size:var(--t-base);line-height:1.7}
+.meridian-interior :is(.text-lg,.text-xl){font-size:var(--t-lg);line-height:1.45}
+.meridian-interior :is(.text-2xl,.text-3xl){font-size:var(--t-xl);line-height:1.25}
+.meridian-interior .text-4xl{font-size:var(--t-2xl);line-height:1.15}
+.meridian-interior :is(.text-5xl,.text-6xl,.text-7xl){font-size:var(--t-display);line-height:1.08}
+.meridian-interior h1{font-size:var(--t-display)}
+.meridian-interior h2{font-size:var(--t-xl)}
+
+/* One radius */
+.meridian-interior :is(.rounded,.rounded-md,.rounded-lg,.rounded-xl,.rounded-2xl,.rounded-3xl){border-radius:var(--r)}
+.meridian-interior :is(.card-dark,.card-light,.glass-dark,.glass-light,.clock-card,.onboarding-card){border-radius:var(--r)}
+
+/* Two buttons: primary (filled) and secondary (outline). Legacy classes map onto them. */
+.btn,.meridian-interior :is(.btn-primary,.btn-gradient,.btn-secondary){display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:var(--t-sm);font-weight:600;text-decoration:none;cursor:pointer;transition:background .25s var(--ease),border-color .25s var(--ease),color .25s var(--ease),transform .25s var(--ease)}
+.btn svg{width:16px;height:16px;transition:transform .25s var(--ease)}
+.btn-primary,.meridian-interior .btn-gradient{background:var(--gs-forest);color:var(--gs-ivory);border:1px solid var(--gs-forest)}
+.btn-primary:hover:not(:disabled),.meridian-interior .btn-gradient:hover{background:var(--gs-pine);border-color:var(--gs-pine)}
+.btn-primary:hover:not(:disabled) svg:last-child{transform:translateX(3px)}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed}
+.btn-secondary{background:transparent;color:var(--gs-forest);border:1px solid #0e2a1f40}
+.btn-secondary:hover{border-color:var(--gs-forest);background:#0e2a1f08}
+
+/* ── Tool pages ─────────────────────────────────────────────────────────── */
+.tool-shell{max-width:1040px;margin:0 auto;padding:0 24px}
+.tool-hero{position:relative;isolation:isolate;overflow:hidden;padding:56px 0 52px;border-bottom:1px solid #0e2a1f14}
+.tool-hero.is-wide .tool-shell{max-width:1240px}
+.tool-hero-backdrop{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.tool-hero-backdrop img{position:absolute;left:50%;top:58%;width:max(1500px,120%);height:auto;transform:translate(-50%,-50%);opacity:.5;-webkit-mask-image:radial-gradient(ellipse 60% 65% at 50% 55%,#000 25%,transparent 75%);mask-image:radial-gradient(ellipse 60% 65% at 50% 55%,#000 25%,transparent 75%)}
+.tool-hero-backdrop .orb{position:absolute;border-radius:50%;filter:blur(64px);opacity:.5;animation:tool-orb 24s ease-in-out infinite alternate}
+.tool-hero-backdrop .orb.a{width:420px;height:420px;left:-80px;top:10%;background:radial-gradient(circle,#c8a96a 0%,#c8a96a00 70%)}
+.tool-hero-backdrop .orb.b{width:480px;height:480px;right:-120px;bottom:-10%;background:radial-gradient(circle,#1b4d3e 0%,#1b4d3e00 70%);animation-direction:alternate-reverse}
+@keyframes tool-orb{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,-24px) scale(1.08)}}
+.tool-hero-head{max-width:760px;margin-bottom:28px}
+.tool-hero-head h1{margin:0 0 14px;color:var(--gs-ink)}
+.tool-hero-head p{margin:0;font-size:var(--t-lg);line-height:1.55;color:#405647;max-width:62ch}
+.tool-glass{position:relative;padding:24px;border-radius:calc(var(--r) * 2);background:#fffcf79e;-webkit-backdrop-filter:blur(22px) saturate(150%);backdrop-filter:blur(22px) saturate(150%);border:1px solid #ffffffb3;box-shadow:inset 0 1px 0 #ffffff,0 40px 80px -42px #0e2a1f73,0 10px 24px -18px #0e2a1f40}
+.tool-glass::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(110% 60% at 0% 0%,#ffffff8c 0%,#ffffff00 50%)}
+.tool-glass>*{position:relative}
+.tool-glass :is(.bg-surface,.card-dark,.card-light,.clock-card){background:#fffcf7cc}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.tool-glass{background:var(--gs-surface)}}
+
+.tool-body{padding-top:44px;padding-bottom:64px}
+.tool-section{margin:0 0 56px}
+.tool-section h2{margin:0 0 8px;font-size:var(--t-2xl);line-height:1.15;color:var(--gs-ink)}
+.tool-section-intro{margin:0 0 22px;font-size:var(--t-base);color:var(--gs-quiet);max-width:62ch}
+.quick-pairs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+
+.link-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));column-gap:28px;border-top:1px solid var(--gs-line)}
+.link-list a{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"label icon" "desc icon";align-items:center;column-gap:12px;padding:14px 2px;border-bottom:1px solid var(--gs-line);color:var(--gs-ink);text-decoration:none}
+.link-list a span{grid-area:label;font-size:var(--t-base);font-weight:500}
+.link-list a small{grid-area:desc;font-size:var(--t-xs);color:var(--gs-quiet)}
+.link-list a svg{grid-area:icon;width:16px;height:16px;color:var(--gs-quiet);transition:transform .25s var(--ease),color .25s var(--ease)}
+.link-list a:hover span{color:var(--gs-pine)}
+.link-list a:hover svg{transform:translateX(3px);color:var(--gs-pine)}
+
+.browse-all{margin-top:28px;padding:20px;border:1px solid var(--gs-line);border-radius:var(--r);background:var(--gs-surface)}
+.browse-all label{display:block;margin-bottom:10px;font-size:var(--t-sm);font-weight:600;color:var(--gs-ink)}
+.browse-all label span{font-weight:400;color:var(--gs-quiet)}
+.browse-all-row{position:relative;display:flex;gap:10px}
+.browse-all-row>svg{position:absolute;left:14px;top:50%;width:18px;height:18px;transform:translateY(-50%);color:var(--gs-quiet);pointer-events:none}
+.browse-all input{flex:1;min-width:0;min-height:48px;padding:0 14px 0 42px;border:1px solid #0e2a1f40;border-radius:var(--r);background:#fff;font-size:var(--t-base);color:var(--gs-ink)}
+.browse-all input:focus{outline:none;border-color:var(--gs-forest);box-shadow:0 0 0 3px #80612d40}
+.browse-all .btn{min-height:48px}
+
+.tool-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 40px}
+.tool-steps li{display:flex;flex-direction:column;gap:6px;padding-top:16px;border-top:1px solid var(--gs-line)}
+.tool-steps strong{font-size:var(--t-base);color:var(--gs-ink)}
+.tool-steps span{font-size:var(--t-sm);line-height:1.65;color:var(--gs-quiet)}
+
+.tool-faq{border-top:1px solid var(--gs-line)}
+.tool-faq details{border-bottom:1px solid var(--gs-line)}
+.tool-faq summary{display:flex;justify-content:space-between;gap:16px;padding:18px 2px;cursor:pointer;list-style:none;font-size:var(--t-base);font-weight:600;color:var(--gs-ink)}
+.tool-faq summary::-webkit-details-marker{display:none}
+.tool-faq summary::after{content:"+";font-size:var(--t-lg);line-height:1;color:var(--gs-quiet);transition:transform .3s var(--ease)}
+.tool-faq details[open] summary::after{transform:rotate(45deg)}
+.tool-faq p{margin:0 0 18px;max-width:72ch;font-size:var(--t-base);color:var(--gs-quiet)}
+
+.related-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;padding-top:24px;border-top:1px solid var(--gs-line);font-size:var(--t-sm)}
+.related-tools span{font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--gs-quiet)}
+.related-tools a{color:var(--gs-pine);text-decoration:underline;text-underline-offset:4px;text-decoration-color:#1b4d3e66}
+.related-tools a:hover{text-decoration-color:currentColor}
+
+@media (max-width:700px){
+  .tool-hero{padding:34px 0 30px}
+  .tool-shell{padding:0 16px}
+  .tool-hero-head p{font-size:var(--t-base)}
+  .tool-glass{padding:12px;border-radius:calc(var(--r) * 1.6)}
+  .tool-steps{grid-template-columns:1fr}
+  .tool-section h2{font-size:var(--t-xl)}
+  .browse-all-row{flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){.tool-hero-backdrop .orb{animation:none}}
+
+/* ── Homepage: FAQ with the plain-English ask box, stage controls ──────── */
+.meridian-home .faq summary{font-size:var(--t-base);font-weight:500}
+.meridian-home .faq details p{font-size:var(--t-sm)}
+.faq-side{display:flex;flex-direction:column;gap:34px;align-self:start}
+.faq-side h2{margin:0}
+.home-ask{display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid #0e2a1f24;border-radius:var(--r);background:#fffcf7b3;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.home-ask label{font-size:var(--t-sm);font-weight:600;color:var(--gs-ink)}
+.home-ask small{font-size:var(--t-xs);color:var(--gs-quiet)}
+.home-ask-row{display:flex;gap:8px}
+.home-ask input{flex:1;min-width:0;min-height:46px;padding:0 14px;border:1px solid #0e2a1f40;border-radius:var(--r);background:#fff;font-size:var(--t-base);color:var(--gs-ink)}
+.home-ask input:focus{outline:none;border-color:var(--gs-forest);box-shadow:0 0 0 3px #80612d40}
+.meridian-home .stage-controls{display:flex;align-items:center;gap:18px}
+.meridian-home .stage-controls .motion-toggle{position:static;min-height:36px;padding:0 14px;border:1px solid #0e2a1f30;border-radius:var(--r);background:transparent;box-shadow:none;color:var(--gs-ink);font-size:var(--t-xs);font-weight:600;cursor:pointer}
+.meridian-home .stage-controls .motion-toggle:hover{border-color:var(--gs-forest)}
+.home-ask label small{display:block;margin-top:4px;font-weight:400}
+.meridian-home .btn-primary{color:var(--gs-ivory)}
+.meridian-home .btn-secondary{color:var(--gs-forest)}
