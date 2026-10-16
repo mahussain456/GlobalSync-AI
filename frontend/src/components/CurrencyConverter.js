@@ -152,11 +152,11 @@ export default function CurrencyConverter({ aiDispatch }) {
     setLoadingTrend(true);
     const fromUpper = (from || "USD").toUpperCase();
     const toUpper = (to || "EUR").toUpperCase();
+    // A cold serverless start plus the ECB feed can take several seconds: allow it,
+    // and retry once before giving up.
+    const get = () => axios.get(`${API}/currency/trend`, { params: { from_currency: fromUpper, to_currency: toUpper }, timeout: 9000 });
     try {
-      const res = await axios.get(`${API}/currency/trend`, {
-        params: { from_currency: fromUpper, to_currency: toUpper },
-        timeout: 2500
-      });
+      const res = await get().catch(get);
       if (version === requestVersion.current) setTrend(res.data);
     } catch {
       if (version === requestVersion.current) setTrend({ available: false, message: 'Historical rates are unavailable for this pair right now.' });
@@ -348,8 +348,8 @@ export default function CurrencyConverter({ aiDispatch }) {
         )}
       </div>
 
-      {/* Trend Chart */}
-      {(trend || loadingTrend) && (
+      {/* Trend Chart: shown while loading or when there is data; never as an empty box */}
+      {(loadingTrend || trend?.trend?.length > 0) && (
         <div className="bg-surface  rounded-xl border border-line p-5  fade-in-up" data-testid="trend-chart">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-heading font-semibold text-ink">7-Day Rate Trend</h3>

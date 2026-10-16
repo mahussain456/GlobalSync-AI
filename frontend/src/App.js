@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { Toaster } from "sonner";
 import CookieConsent from "@/components/MeridianConsent";
 import "@/styles/meridian-pages.css";
+import "@/styles/system.css";
 
 
 // Global error boundary — prevents any render crash from leaving a blank screen

@@ -29,6 +29,7 @@ export default function ToolStage() {
   const [active, setActive] = useState(0);
   const [auto, setAuto] = useState(false); // starts after mount, and only without reduced motion
   const [paused, setPaused] = useState(false);
+  const [tick, setTick] = useState(0); // re-arms the timer while the page is paused
   const drag = useRef(null);
   const n = TOOLS.length;
 
@@ -47,9 +48,12 @@ export default function ToolStage() {
   // and when the page's own "Pause motion" button is on.
   useEffect(() => {
     if (!auto || paused) return undefined;
-    const id = setTimeout(() => { if (!document.querySelector(".meridian-home.pause")) go(active + 1); }, AUTOPLAY_MS);
+    const id = setTimeout(() => {
+      if (document.querySelector(".meridian-home.pause")) setTick((t) => t + 1);
+      else go(active + 1);
+    }, AUTOPLAY_MS);
     return () => clearTimeout(id);
-  }, [auto, paused, active, go]);
+  }, [auto, paused, active, go, tick]);
 
   const onPointerDown = (e) => {
     // Never steal gestures from the tool's own fields and buttons.
@@ -118,10 +122,13 @@ export default function ToolStage() {
       </dl>
       <div className="stage-foot">
         <a className="primary" href={tool.href}>{tool.cta} <ArrowRight aria-hidden="true" /></a>
-        <div className="stage-progress" aria-hidden="true">
-          {TOOLS.map((t, i) => (
-            <span key={t.key} className={i < active ? "done" : i === active ? (auto && !paused ? "run" : "now") : ""} style={{ "--ms": `${AUTOPLAY_MS}ms` }} />
-          ))}
+        <div className="stage-controls">
+          <button type="button" className="motion-toggle" aria-pressed="false">Pause motion</button>
+          <div className="stage-progress" aria-hidden="true">
+            {TOOLS.map((t, i) => (
+              <span key={t.key} className={i < active ? "done" : i === active ? (auto && !paused ? "run" : "now") : ""} style={{ "--ms": `${AUTOPLAY_MS}ms` }} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,282 +1,104 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { Clock, ArrowRight, Globe, Users, CheckCircle2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import AdBanner from "@/components/AdBanner";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import DesktopAppCTA from "@/components/DesktopAppCTA";
-import { CITIES, CITY_PAIRS, getCityPair, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
-
-import { getTimeZoneHubSEO } from "@/lib/seo";
 import TimeConverter from "@/components/TimeConverter";
+import { ToolHero, ToolSection, BrowseAll, LinkList, ToolFaq, RelatedTools } from "@/components/tool/ToolPage";
+import { CITIES, CITY_PAIRS, ALL_CITY_PAIR_SLUGS } from "@/data/programmaticData";
+import { getTimeZoneHubSEO } from "@/lib/seo";
 
+const QUICK = [
+  { from: "New York", to: "London" },
+  { from: "San Francisco", to: "Tokyo" },
+  { from: "London", to: "Dubai" },
+  { from: "New York", to: "Mumbai" },
+  { from: "Dubai", to: "Mumbai" },
+  { from: "Hong Kong", to: "New York" },
+];
 
-const CONVERSIONS = [
-  { from: "New York", to: "London", fromTz: "EST", toTz: "GMT" },
-  { from: "San Francisco", to: "Tokyo", fromTz: "PST", toTz: "JST" },
-  { from: "London", to: "Dubai", fromTz: "GMT", toTz: "GST" },
-  { from: "New York", to: "Mumbai", fromTz: "EST", toTz: "IST" },
-  { from: "Dubai", to: "Mumbai", fromTz: "GST", toTz: "IST" },
-  { from: "Hong Kong", to: "New York", fromTz: "HKT", toTz: "EDT" }
+const POPULAR = [
+  { to: "/time/new-york-to-london", label: "New York to London", desc: "EST to GMT" },
+  { to: "/time/london-to-tokyo", label: "London to Tokyo", desc: "GMT to JST" },
+  { to: "/time/san-francisco-to-new-york", label: "San Francisco to New York", desc: "PST to EST" },
+  { to: "/time/dubai-to-mumbai", label: "Dubai to Mumbai", desc: "GST to IST" },
+  { to: "/us-india-meeting-time", label: "US and India meeting times", desc: "Overlap guide" },
+  { to: "/global-meeting-planner-for-remote-teams", label: "Meeting planner for remote teams", desc: "Fair scheduling" },
+];
+
+const HOW = [
+  ["Pick the cities, not the abbreviations", "Search for the actual cities. “EST” is only correct in winter; a city always follows its own daylight-saving rules."],
+  ["Mind the half-hour zones", "India (UTC+5:30), Nepal (UTC+5:45) and parts of Australia aren’t on whole hours. 9 AM in New York in winter is 7:30 PM in India."],
+  ["Watch the transition weeks", "The US, UK and EU change clocks on different Sundays in March and October, so gaps shift by an hour for a week or two."],
+  ["Write times with a city", "“3 PM New York time” can’t be misread. Copy the times from the converter straight into your invite."],
 ];
 
 const FAQ = [
-  { q: "How does GlobalSync AI handle Daylight Saving Time?", a: "We use the IANA time zone database, the same source used by Linux, macOS, and most server infrastructure. DST shifts are applied automatically based on each region's official rules." },
-  { q: "Is the time zone converter free?", a: "Yes. Core time conversion is free without signup. Saved teams and invoice exports have separate limits shown in each tool." },
-  { q: "How many cities and time zones are supported?", a: "You can search and compare 85+ cities covering 60+ time zones, up to five at once. Every city uses the IANA time zone database, so daylight saving changes are applied on the right dates." },
-  { q: "Can I find a meeting time that works for all my team members?", a: "Yes — use the Meeting Planner. It overlays each team member's local working hours (default 9 AM–5 PM) and highlights the fairest overlap windows." },
-  { q: "How accurate is the converter near DST transitions?", a: "The IANA database is updated multiple times per year. Our build picks up the latest release on every deploy, so transitions like the EU's last-Sunday-in-March rule are applied to the second." }
+  { q: "How does GlobalSync AI handle daylight saving time?", a: "Every city uses the IANA time zone database built into your browser and operating system, the same source as Linux, macOS and most servers. Daylight-saving changes are applied on each region's official dates." },
+  { q: "Is the time zone converter free?", a: "Yes. The converter is free with no signup. Saved teams and invoice exports have separate limits shown in each tool." },
+  { q: "How many cities and time zones are supported?", a: "You can search and compare 85+ cities covering 60+ time zones, up to five at once." },
+  { q: "Can I find a meeting time that works for everyone?", a: "Yes. The Meeting Planner checks each city's working hours (9 AM to 5 PM by default, adjustable) and shows the shared windows, or tells you when there aren't any." },
+  { q: "How accurate is the converter near daylight-saving changes?", a: "It uses the time zone rules in your browser, which update with your browser and operating system. Keep them up to date and transitions are applied on the right day." },
 ];
+
+const GUIDE_OPTIONS = ALL_CITY_PAIR_SLUGS.map((slug) => {
+  const pair = CITY_PAIRS[slug];
+  const from = CITIES[pair.from], to = CITIES[pair.to];
+  return from && to ? { value: slug, label: `${from.name} to ${to.name}`, href: `/time/${slug}` } : null;
+}).filter(Boolean);
 
 export default function TimeZoneConverterPage() {
   const navigate = useNavigate();
   const seo = getTimeZoneHubSEO({ faqs: FAQ });
-  const [selectedPair, setSelectedPair] = useState("");
 
   return (
     <div className="min-h-screen bg-paper text-ink relative">
       <SEOHead {...seo} />
-
-
       <SiteNav />
 
-      <article className="max-w-4xl mx-auto px-6 pt-16 pb-8">
-        {/* H1 */}
-        <header className="mb-10 text-center md:text-left"><h1 className="font-heading text-4xl md:text-5xl font-bold text-ink leading-tight mb-4">
-            Free Time Zone Converter & World Clock
-          </h1>
-          <p className="text-pine text-sm font-semibold mb-2">Last updated: May 2026</p>
-          <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-pine rounded-full px-3 py-1 text-xs font-medium mb-4 border border-line ">
-            <Clock className="w-3.5 h-3.5 text-pine" /> Live Clocks · 85+ Cities · 100% Free
-          </div>
+      <ToolHero
+        title="Free Time Zone Converter & World Clock"
+        intro="Compare live times in 85+ cities, slide to any hour, and see who is inside working hours. Daylight saving handled for every city. Free, no signup."
+      >
+        <TimeConverter />
+      </ToolHero>
 
-          <p className="text-lg text-quiet max-w-2xl leading-relaxed">
-            Free time zone converter for remote teams and global workers. Compare live time across major hubs, adjust base hours instantly, and map business-hour overlaps seamlessly.
-          </p>
-          <div className="mt-8">
-            <TimeConverter />
-          </div>
-        </header>
-
-        {/* Ad — below hero */}
+      <div className="tool-shell tool-body">
         <AdBanner slot="leaderboard" className="mb-8" />
 
-        <section className="mb-12">
-          <h2 className="font-heading text-2xl font-bold text-ink mb-2">Popular Time Zone Conversions</h2>
-          <p className="text-quiet mb-5 text-sm">Click any pair to open it instantly in the dashboard.</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {CONVERSIONS.map(c => (
-              <button
-                key={`${c.from}-${c.to}`}
-                onClick={() => navigate(`/dashboard?q=time in ${c.to} when it is 9 AM in ${c.from}`)}
-                onMouseEnter={() => import("@/pages/Dashboard")}
-                className="text-left bg-surface  rounded-xl border border-line p-4 hover:border-line cursor-pointer active:scale-[0.98] transition-all duration-100 group"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-medium text-ink text-sm">{c.from} <span className="text-quiet">→</span> {c.to}</div>
-                    <div className="text-xs text-quiet mt-0.5">{c.fromTz} to {c.toTz}</div>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-quiet group-hover:text-pine transition-colors" />
-                </div>
+        <ToolSection id="tz-popular" title="Popular conversions" intro="Open a pair in the converter, or go to its dedicated page with live clocks and overlap hours.">
+          <div className="quick-pairs">
+            {QUICK.map((c) => (
+              <button key={`${c.from}-${c.to}`} type="button" className="btn btn-secondary"
+                onClick={() => navigate(`/dashboard?q=time in ${c.to} when it is 9 AM in ${c.from}`)}>
+                {c.from} <ArrowRight aria-hidden="true" /> {c.to}
               </button>
             ))}
           </div>
-        </section>
+          <LinkList links={POPULAR} />
+          <BrowseAll label="Find any city pair" placeholder="Type a city, e.g. Karachi" options={GUIDE_OPTIONS} testId="city-pair-search" />
+        </ToolSection>
 
-        {/* City-to-City Dropdown Selector */}
-        <section className="mb-12 bg-surface  rounded-xl border border-line p-6">
-          <h2 className="font-heading text-2xl font-bold text-ink mb-2">City-to-City Time Zone Converters</h2>
-          <p className="text-quiet mb-6 text-sm">
-            Select a dedicated guide for popular international city pairs to view live clocks, meeting overlap windows, and tailored FAQs.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center gap-4 max-w-xl">
-            <div className="relative w-full">
-              <select
-                value={selectedPair}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setSelectedPair(val);
-                  if (val) {
-                    navigate(`/time/${val}`);
-                  }
-                }}
-                className="w-full h-12 pl-4 pr-10 rounded-xl border border-line bg-paper text-ink text-sm outline-none focus:border-line transition-all appearance-none cursor-pointer font-medium"
-                data-testid="city-pair-select"
-              >
-                <option value="" className="text-quiet bg-paper">-- Choose a city-to-city timezone guide --</option>
-                {ALL_CITY_PAIR_SLUGS.map(slug => {
-                  const pair = CITY_PAIRS[slug];
-                  const from = CITIES[pair.from];
-                  const to   = CITIES[pair.to];
-                  return (
-                    <option key={slug} value={slug} className="text-ink bg-paper font-medium">
-                      {from.name} to {to.name} Time ({from.abbr} → {to.abbr})
-                    </option>
-                  );
-                })}
-              </select>
-              <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-pine">
-                ▼
-              </div>
-            </div>
-          </div>
-        </section>
+        <ToolSection id="tz-how" title="How to convert time zones without mistakes">
+          <ol className="tool-steps">
+            {HOW.map(([t, d]) => <li key={t}><strong>{t}</strong><span>{d}</span></li>)}
+          </ol>
+        </ToolSection>
 
-        {/* How to Convert Time Zones */}
-        <section className="mb-12 bg-surface  rounded-xl border border-line p-7">
-          <h2 className="font-heading text-2xl font-bold text-ink mb-6">How to Convert Time Zones</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              ["EST to IST Converter", "Use our EST to IST converter to find the best time to call India from the USA. EST (UTC−5) is 10 hrs 30 min behind IST (UTC+5:30). So 9 AM EST = 7:30 PM IST."],
-              ["PST to IST Converter", "Check PST to IST for US West Coast to India calls. PST (UTC−8) is 13 hrs 30 min behind IST. So 8 AM PST = 9:30 PM IST."],
-              ["New York to London Time", "Find the time difference between New York and London easily. EST is 5 hours behind GMT. The city gap is normally 5 hours and briefly narrows to 4 during the US/UK daylight-saving transition mismatch."],
-              ["AI Natural Language", 'Ask "What time is 3 PM in New York in India?" or "What time is it in Dubai right now?" and get an instant, accurate answer.'],
-            ].map(([title, desc]) => (
-              <div key={title} className="flex gap-3">
-                <CheckCircle2 className="w-5 h-5 text-pine shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-semibold text-ink text-sm mb-0.5">{title}</h3>
-                  <p className="text-sm text-quiet">{desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        <ToolFaq faqs={FAQ} id="tz-faq" />
 
-        {/* Editorial — Understanding Time Zones */}
-        <section className="mb-12 bg-surface  rounded-xl border border-line p-7">
-          <h2 className="font-heading text-2xl font-bold text-ink mb-5">Surviving Time Zones: Real Talk for Remote Teams</h2>
-          <div className="space-y-4 text-quiet text-[15px] leading-relaxed">
-            <p>
-              Let's be honest: working across multiple time zones is exhausting. It's not just about knowing that London is 5 hours ahead of New York. It's about remembering that for three weeks in March, that gap suddenly shrinks to 4 hours because the US springs forward before Europe does. It’s about the sheer panic of staring at a Google Calendar invite and trying to figure out if your 2 PM call is <em>their</em> 2 PM or <em>your</em> 2 PM. We built this tool because we were tired of doing the mental gymnastics required just to schedule a quick sync.
-            </p>
-            <p>
-              <strong className="text-ink">The Daylight Saving trap.</strong> If you manage a global team, DST is your worst nightmare. Roughly 70 countries observe it, but they all seem to pick different weekends to change their clocks. Meanwhile, massive hubs like India, the UAE, and Japan don't change their clocks at all. If you have a standing weekly meeting with a developer in Mumbai and a designer in Berlin, your recurring calendar invite is guaranteed to break twice a year. Using a live converter that automatically tracks these local quirks is the only way to stay sane. During the chaotic transition weeks in March and October, never assume the time difference has remained the same. Always double-check using a live, IANA-backed database.
-            </p>
-            <p>
-              <strong className="text-ink">The 30-minute curveball.</strong> If you've never worked with an Indian team before, the IST (India Standard Time) offset is going to catch you off guard. Instead of a clean hourly gap, India is UTC+5:30. That means if you're in New York, you're not adding 10 hours or 11 hours to your clock—you're adding 10 and a half. It sounds like a minor detail, but it's the number one reason people show up exactly 30 minutes late to cross-continental calls. Don't try to calculate it in your head; just plug it into the AI.
-            </p>
-            <p>
-              <strong className="text-ink">How the best remote teams actually operate.</strong> After watching hundreds of distributed companies, we've noticed a pattern among the ones that don't burn out. First, they operate "async-first"—meaning they default to Loom videos, Notion docs, and well-written Slack updates instead of dragging everyone onto a live call. Second, when they <em>do</em> need a live meeting, they rotate the pain. If the San Francisco team woke up early this week to catch the London team, then next week the London team stays online late. It's the only fair way to run a global company.
-            </p>
-            <p>
-              <strong className="text-ink">Mastering the Asynchronous Handoff.</strong> The secret weapon of high-performing global teams is the "handoff." When the US team logs off at 5:00 PM EST, the Indian team is just a few hours away from waking up. If the US team leaves perfectly documented Jira tickets, clear Figma files, and recorded video explanations, the Indian team can work a full 8-hour shift and deliver the finished product just as the US team is pouring their morning coffee. This effectively gives your company a 24-hour workday. However, if the handoff is sloppy, the Indian team gets blocked, loses a day of work, and frustration builds.
-            </p>
-            <p>
-              <strong className="text-ink">The Psychological Toll of Midnight Meetings.</strong> We need to talk about the human cost of poor time zone management. Asking an employee in Tokyo to attend a 2:00 AM all-hands meeting so that the San Francisco headquarters can meet at a comfortable 10:00 AM is a recipe for high turnover. It disrupts sleep, ruins family time, and signals that international employees are second-class citizens. If a meeting truly requires global participation, you must either rotate the time slot so everyone shares the inconvenience, or host two separate sessions for different hemispheres.
-            </p>
-            <p>
-              <strong className="text-ink">Why UTC is Your Best Friend.</strong> If you are writing a company-wide email about a deadline, never use just one local time zone. Saying "Please submit the report by 5 PM" is a guarantee that half the company will miss the deadline. Get into the habit of using Coordinated Universal Time (UTC) as your baseline, or at least referencing two major hubs: "Deadline is 5 PM EST / 10 PM UTC." While UTC isn't used as a local time by anyone, it is the immovable anchor that all other time zones are calculated against.
-            </p>
-            <p>
-              <strong className="text-ink">Navigating the Pacific Divide.</strong> While US-to-Europe and US-to-India are common routes, the US-to-Australia gap is uniquely confusing because you actually cross the International Date Line. When it is Friday afternoon in Los Angeles, it is already Saturday morning in Sydney. The Australian team has essentially lost a day of overlap with the US. If a US manager assigns a task on Friday morning, the Australian employee won't see it until Monday—which is Sunday night in the US. Managing cross-Pacific teams requires pushing all critical communications to early in the week (Monday-Wednesday US time) to ensure the Australian team has time to execute before their weekend begins.
-            </p>
-            <p>
-              Managing time zones shouldn't require a degree in astrophysics. By combining empathetic scheduling practices with powerful, automated tools like GlobalSync AI, you can eliminate the friction of global collaboration and focus on what actually matters: doing great work together, no matter where your desk happens to be.
-            </p>
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <section className="mb-12">
-          <h2 className="font-heading text-2xl font-bold text-ink mb-6">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            {FAQ.map(f => (
-              <div key={f.q} className="bg-surface  rounded-xl border border-line p-5">
-                <h3 className="font-semibold text-ink mb-2">{f.q}</h3>
-                <p className="text-sm text-quiet leading-relaxed">{f.a}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Ad — before internal links */}
         <AdBanner slot="rectangle" className="mb-8" />
 
-        <section className="mb-12">
-          <h2 className="font-heading text-xl font-bold text-ink mb-4">Popular Time Zone Conversions</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-            {[
-              { to: "/time/new-york-to-london", label: "Convert Time from New York to London", desc: "EST to GMT" },
-              { to: "/time/london-to-tokyo", label: "Convert Time from London to Tokyo", desc: "GMT to JST" },
-              { to: "/time/san-francisco-to-new-york", label: "Convert Time from San Francisco to New York", desc: "PST to EST" },
-              { to: "/time/dubai-to-mumbai", label: "Convert Time from Dubai to Mumbai", desc: "GST to IST" },
-            ].map(link => (
-              <Link key={link.to} to={link.to} className="bg-surface  rounded-xl border border-line p-4 hover:border-line transition-all group">
-                <div className="font-semibold text-ink text-sm mb-1 group-hover:text-pine transition-colors leading-tight">{link.label}</div>
-                <div className="text-xs text-quiet">{link.desc}</div>
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-12">
-          <h2 className="font-heading text-xl font-bold text-ink mb-4">Planning and policy resources</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <Link to="/global-meeting-planner-for-remote-teams" className="bg-surface  rounded-xl border border-line p-4 hover:border-line transition-all group">
-              <div className="font-semibold text-ink text-sm mb-1 group-hover:text-pine transition-colors">Global Meeting Planner for Remote Teams</div>
-              <div className="text-xs text-quiet">Fair scheduling guidance for distributed teams</div>
-            </Link>
-            <Link to="/us-india-meeting-time" className="bg-surface  rounded-xl border border-line p-4 hover:border-line transition-all group">
-              <div className="font-semibold text-ink text-sm mb-1 group-hover:text-pine transition-colors">US and India Meeting Time Guide</div>
-              <div className="text-xs text-quiet">High-intent overlap guide for a major remote-work use case</div>
-            </Link>
-            <Link to="/editorial-policy" className="bg-surface  rounded-xl border border-line p-4 hover:border-line transition-all group">
-              <div className="font-semibold text-ink text-sm mb-1 group-hover:text-pine transition-colors">Editorial Policy</div>
-              <div className="text-xs text-quiet">See how guides and pair pages are maintained</div>
-            </Link>
-          </div>
-        </section>
-
-
-        {/* Internal links */}
-        <section className="bg-wash rounded-2xl border border-line p-6">
-          <h2 className="font-heading text-lg font-bold text-ink mb-4">Explore More GlobalSync AI Tools</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Link to="/currency-converter" className="bg-surface  rounded-xl p-4 border border-line hover:border-line transition-all flex items-center gap-3">
-              <div className="w-9 h-9 bg-gem-gold/20 rounded-lg flex items-center justify-center text-pine font-bold text-sm">$</div>
-              <div>
-                <div className="font-medium text-ink text-sm">Free Currency Converter — 160+ Live Rates</div>
-                <div className="text-xs text-quiet">USD to INR, EUR, GBP, AED, PKR and more</div>
-              </div>
-            </Link>
-            <Link to="/meeting-planner" className="bg-surface  rounded-xl p-4 border border-line hover:border-line transition-all flex items-center gap-3">
-              <Users className="w-9 h-9 text-orange-800 bg-orange-500/20 rounded-lg p-2" />
-              <div>
-                <div className="font-medium text-ink text-sm">Meeting Overlap Planner for Remote Teams</div>
-                <div className="text-xs text-quiet">Find the best meeting time across any cities</div>
-              </div>
-            </Link>
-          </div>
-        </section>
-        {/* ── ALL CITY PAIR GUIDES — static links for SEO crawlability ── */}
-        <section className="mb-8">
-          <h2 className="font-heading text-xl font-bold text-ink mb-2">All City-to-City Time Zone Guides</h2>
-          <p className="text-quiet text-sm mb-5">Browse all {ALL_CITY_PAIR_SLUGS.length} dedicated time zone converter guides — live clocks, meeting overlap windows, and tailored FAQs for each pair.</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-            {ALL_CITY_PAIR_SLUGS.map(slug => {
-              const pair = CITY_PAIRS[slug];
-              const from = CITIES[pair.from];
-              const to   = CITIES[pair.to];
-              if (!from || !to) return null;
-              return (
-                <Link
-                  key={slug}
-                  to={`/time/${slug}`}
-                  className="bg-surface rounded-xl border border-line p-3 hover:border-line transition-all group"
-                >
-                  <div className="font-medium text-quiet text-xs group-hover:text-pine transition-colors leading-tight">
-                    {from.name} → {to.name}
-                  </div>
-                  <div className="text-[10px] text-quiet mt-0.5">{from.abbr} to {to.abbr}</div>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-      </article>
+        <RelatedTools links={[
+          { to: "/meeting-planner", label: "Meeting planner" },
+          { to: "/currency-converter", label: "Currency converter" },
+          { to: "/convert", label: "Time zone abbreviations" },
+          { to: "/meeting-overlap", label: "Meeting overlap guides" },
+          { to: "/guides", label: "Guides" },
+        ]} />
+      </div>
       <DesktopAppCTA placement="time_zone_converter" />
       <SiteFooter />
     </div>

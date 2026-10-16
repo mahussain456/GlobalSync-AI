@@ -7,6 +7,7 @@ import SiteNav from '@/components/SiteNav';
 import SiteFooter from '@/components/SiteFooter';
 import { getStaticPageSEO } from '@/lib/seo';
 import { fireAnalyticsEvent, markToolUsed } from '@/lib/analytics';
+import { ToolHero } from "@/components/tool/ToolPage";
 
 const CURRENCIES = ['USD', 'INR', 'PKR', 'EUR', 'GBP', 'AED', 'NGN', 'PHP', 'ZAR', 'CAD', 'AUD'];
 const inputClass = 'w-full bg-paper border border-line rounded-xl px-4 py-3 text-ink';
@@ -53,10 +54,8 @@ export default function FreelancerRateConverterPage() {
   const unit = type === 'hourly' ? 'per hour' : type === 'monthly' ? 'per month' : 'per project';
   return <div className="min-h-screen flex flex-col bg-paper text-ink">
     <SEOHead {...getStaticPageSEO('freelancer-rate-converter', { faqs })} /><SiteNav />
-    <main id="main-content" className="flex-1 max-w-4xl mx-auto px-6 pt-16 pb-12 w-full">
-      <header className="mb-10"><p className="text-pine text-sm mb-2">Free freelance pricing tool · Updated September 23, 2026</p>
-        <h1 className="font-heading text-3xl md:text-5xl font-bold mb-4">Freelance rate converter & annual revenue calculator</h1>
-        <p className="text-quiet text-lg">Convert an hourly rate, monthly retainer or project fee across 11 currencies. Estimate your gross annual revenue and carry your rate into an invoice.</p></header>
+    <main id="main-content" className="flex-1 w-full">
+      <ToolHero title="Freelance rate converter & annual revenue calculator" intro="Convert an hourly rate, monthly retainer or project fee across 11 currencies at live rates. Estimate your gross annual revenue and carry your rate into an invoice.">
       <section aria-label="Freelance rate calculator" onInputCapture={() => markToolUsed('freelance_rate')} className="bg-surface rounded-xl border border-line p-5 sm:p-8 mb-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <label className="text-sm space-y-2">Rate Amount<input type="number" min="0" step="any" value={amount} onChange={e => update({amount:e.target.value})} className={inputClass} /></label>
@@ -79,6 +78,8 @@ export default function FreelancerRateConverterPage() {
           <p className="text-xs text-quiet">Your valid settings are remembered in this browser. No signup required.</p>
         </div>
       </section>
+      </ToolHero>
+      <div className="tool-shell tool-body">
       <section className="space-y-5 mb-10"><h2 className="font-heading text-2xl">How the estimate works</h2>
         <p className="text-quiet">At $50 per hour, 25 billable hours per week and 46 working weeks, gross annual revenue is $57,500. A $2,000 monthly retainer is $24,000 per year. Eight projects at $3,000 each also produce $24,000 in gross revenue.</p>
         <p className="text-quiet">Currency conversion multiplies your amount by the dated reference rate shown above. The amount you receive depends on your payment provider's rate and fees. Compare the provider's quote before sending an invoice.</p>
@@ -86,6 +87,7 @@ export default function FreelancerRateConverterPage() {
       </section>
       <section className="space-y-5 mb-10"><h2 className="font-heading text-2xl">Common questions</h2>{faqs.map(faq => <div key={faq.q}><h3 className="font-semibold mb-2">{faq.q}</h3><p className="text-quiet">{faq.a}</p></div>)}</section>
       <nav aria-label="Related tools" className="flex flex-wrap gap-5"><Link to="/freelance-rate/usd-to-inr" className="underline">USD to INR freelance rates</Link><Link to="/currency-converter" className="underline">Currency converter</Link><Link to="/meeting-planner" className="underline">Plan a client meeting</Link></nav>
+      </div>
     </main><SiteFooter />
   </div>;
 }
