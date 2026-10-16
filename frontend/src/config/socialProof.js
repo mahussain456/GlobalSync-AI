@@ -6,8 +6,7 @@
 //   - Testimonials: only quotes from real users who gave written permission to be
 //     named. Set `permission: true` once you have that permission on file.
 // Never invent numbers, names, quotes, logos or press mentions. An empty slot
-// renders as a clearly marked PLACEHOLDER in development and is hidden in
-// production, so nothing fake can ever reach the live site.
+// is simply not shown, so nothing fake can ever reach the site.
 
 export const SOCIAL_PROOF = {
   // Usage stats. `value` is a display string such as "12,400".
@@ -33,8 +32,6 @@ export const SOCIAL_PROOF = {
     { value: "0", label: "signups needed to use any tool" },
   ],
 };
-
-export const SHOW_PLACEHOLDERS = process.env.NODE_ENV !== "production";
 
 export const realStats = () => SOCIAL_PROOF.usageStats.filter((s) => s.value);
 export const realTestimonials = () =>

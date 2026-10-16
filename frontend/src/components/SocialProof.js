@@ -1,4 +1,4 @@
-import { SOCIAL_PROOF, SHOW_PLACEHOLDERS, realStats, realTestimonials } from "@/config/socialProof";
+import { SOCIAL_PROOF, realStats, realTestimonials } from "@/config/socialProof";
 
 // Real screenshots of the tools, captured from the live UI (scripts/capture-tool-screens.js).
 const SCREENS = [
@@ -8,18 +8,9 @@ const SCREENS = [
   { src: "/screens/invoice-builder.webp", href: "/invoice", title: "Invoice Builder", alt: "Invoice Builder form with client details, line items and a currency reference line" },
 ];
 
-const Placeholder = ({ children }) => (
-  <div className="sp-placeholder" data-testid="social-proof-placeholder">
-    <span>PLACEHOLDER</span>
-    {children}
-  </div>
-);
-
 export default function SocialProof() {
   const stats = realStats();
   const quotes = realTestimonials();
-  const showStatSlots = stats.length > 0 || SHOW_PLACEHOLDERS;
-  const showQuoteSlots = quotes.length > 0 || SHOW_PLACEHOLDERS;
 
   return (
     <section className="social-proof" aria-labelledby="proof-title" data-testid="social-proof">
@@ -34,27 +25,18 @@ export default function SocialProof() {
         ))}
       </ul>
 
-      {showStatSlots && (
+      {/* Real usage stats and testimonials appear here once added to src/config/socialProof.js. */}
+      {stats.length > 0 && (
         <ul className="proof-stats" aria-label="Usage">
-          {stats.length > 0
-            ? stats.map((s) => <li key={s.label}><strong>{s.value}</strong><span>{s.label}</span></li>)
-            : SOCIAL_PROOF.usageStats.map((s) => (
-                // TODO(owner): real usage numbers go in src/config/socialProof.js
-                <li key={s.label}><Placeholder><strong>—</strong><span>{s.label}</span><small>Add the real number in src/config/socialProof.js</small></Placeholder></li>
-              ))}
+          {stats.map((s) => <li key={s.label}><strong>{s.value}</strong><span>{s.label}</span></li>)}
         </ul>
       )}
 
-      {showQuoteSlots && (
+      {quotes.length > 0 && (
         <div className="proof-quotes">
-          {quotes.length > 0
-            ? quotes.map((t) => (
-                <figure key={t.name}><blockquote>&ldquo;{t.quote}&rdquo;</blockquote><figcaption>{t.name}<span>{t.role}</span></figcaption></figure>
-              ))
-            : [1, 2, 3].map((n) => (
-                // TODO(owner): real testimonials (with permission) go in src/config/socialProof.js
-                <figure key={n}><Placeholder><blockquote>Testimonial {n}: a real user&rsquo;s words go here, with their permission.</blockquote><small>Never invent quotes. This slot is hidden on the live site until filled.</small></Placeholder></figure>
-              ))}
+          {quotes.map((t) => (
+            <figure key={t.name}><blockquote>&ldquo;{t.quote}&rdquo;</blockquote><figcaption>{t.name}<span>{t.role}</span></figcaption></figure>
+          ))}
         </div>
       )}
 

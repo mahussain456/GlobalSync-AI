@@ -5,7 +5,7 @@ import SiteFooter from '@/components/SiteFooter';
 import SEOHead from '@/components/SEOHead';
 import {getHomepageSEO} from '@/lib/seo';
 import {initializeMeridian} from '@/lib/meridianExperience';
-import HomeQuickConverter from '@/components/HomeQuickConverter';
+import ToolStage from '@/components/home/ToolStage';
 import SocialProof from '@/components/SocialProof';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import '@/styles/meridian.css';
@@ -30,11 +30,11 @@ const root=useRef(null);
 useEffect(()=>initializeMeridian(root.current),[]);
 return <div className="meridian-home" ref={root}><SEOHead {...getHomepageSEO({faqs:HOME_FAQS})}/><SiteNav/>
 <main id="main-content">
-<div className="shell"><section className="hero">
-<div className="hero-content"><h1>Free time zone converter, meeting planner <em>&amp; currency tools.</em></h1><p className="hero-copy">Convert a time across cities, find a meeting slot inside everyone’s working hours, check live exchange rates and build an invoice. Free, no signup.</p><a className="primary" href="/meeting-planner">Plan a meeting <ArrowRight aria-hidden="true" /></a><p className="caption">Try the converter right here.<br/>Nothing to install, no account.</p></div>
-<HomeQuickConverter/>
+<div className="shell"><section className="hero hero-staged">
+<div className="hero-intro"><h1>Free time zone converter, meeting planner <em>&amp; currency tools.</em></h1><p className="hero-copy">Every tool, ready to use right here. Slide through them, or open the full version. Free, no signup.</p></div>
+<ToolStage/>
 <div className="hero-bottom"><span>Thoughtfully made for work across borders.</span><a href="#rhythm">Explore together <svg><path d="M10 2v16m-5-5 5 5 5-5"/></svg></a></div>
-</section><nav className="editorial-tools" aria-label="Quick access"><a href="/meeting-planner">Meeting planner <ArrowRight aria-hidden="true" /></a><a href="/currency-converter">Currency converter <ArrowRight aria-hidden="true" /></a><a href="/invoice">Invoice builder <ArrowRight aria-hidden="true" /></a><a href="/world-clock-widget">Desktop world clock <ArrowRight aria-hidden="true" /></a></nav></div>
+</section></div>
 <section className="dark-section" id="rhythm"><div className="shell"><div className="dark-heading"><h2>A city changes.<br/>Your rhythm stays.</h2><p>Morning in one city. Afternoon in another.<br/>Slide through a day to see how three teams line up. <a href="/meeting-planner">Plan with your own cities →</a></p></div>
 <div className="city-tabs" aria-label="Choose a team"><button data-group="atlantic" aria-pressed="true">Across the Atlantic</button><button data-group="asia" aria-pressed="false">Europe to Asia</button><button data-group="pacific" aria-pressed="false">Across the Pacific</button></div><div className="city-readout" data-clock-row></div>
 <div className="day-band"><div className="band-title">Bring your day into focus.<small>Slide through a day, together.</small></div><div><div className="slider-head"><label htmlFor="meridian-day" data-date-label></label><output data-utc></output></div><input className="range" id="meridian-day" type="range" min="0" max="95" defaultValue="52" aria-label="Time of day in 15-minute steps" /><div className="time-ticks"><span>00:00 UTC</span><span>06:00</span><span>12:00</span><span>18:00</span><span>23:45</span></div></div></div></div></section>
