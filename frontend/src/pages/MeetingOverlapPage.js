@@ -8,6 +8,53 @@ import SiteFooter from "@/components/SiteFooter";
 import DesktopAppCTA from "@/components/DesktopAppCTA";
 import AdBanner from "@/components/AdBanner";
 import { getMeetingCorridor, MEETING_CORRIDORS } from "@/data/meetingCorridors";
+
+// Hand-picked crawl paths from each corridor to its matching guide and to
+// indexable tool pages. Only link pairs listed in the sitemap (never the
+// noindexed generated /time or /currency pages).
+const CORRIDOR_LINKS = {
+  "us-india": [
+    { to: "/guides/best-time-meeting-est-ist", label: "EST to IST meeting time guide" },
+    { to: "/us-india-meeting-time", label: "US–India meeting time, live" },
+    { to: "/freelance-rate/usd-to-inr", label: "USD to INR freelance rate" },
+  ],
+  "uk-india": [
+    { to: "/guides/best-meeting-time-uk-india", label: "UK to India meeting time guide" },
+    { to: "/us-india-meeting-time", label: "US–India meeting time, live" },
+    { to: "/freelance-rate/gbp-to-inr", label: "GBP to INR freelance rate" },
+  ],
+  "us-pakistan": [
+    { to: "/guides/invoice-us-client-from-pakistan", label: "How to invoice a US client from Pakistan" },
+    { to: "/us-india-meeting-time", label: "US–India meeting time, live" },
+    { to: "/freelance-rate/usd-to-pkr", label: "USD to PKR freelance rate" },
+  ],
+  "us-philippines": [
+    { to: "/freelance-rate/usd-to-php", label: "USD to PHP freelance rate" },
+    { to: "/currency/usd-to-php", label: "USD to PHP exchange rate" },
+    { to: "/guides/best-timezone-tools-remote-teams-2026", label: "Best time zone tools for remote teams" },
+  ],
+  "us-europe": [
+    { to: "/time/new-york-to-london", label: "New York to London time" },
+    { to: "/time/lisbon-to-new-york", label: "Lisbon to New York time" },
+    { to: "/time/austin-to-berlin", label: "Austin to Berlin time" },
+  ],
+  "us-australia": [
+    { to: "/time/san-francisco-to-sydney", label: "San Francisco to Sydney time" },
+    { to: "/time/san-francisco-to-new-york", label: "San Francisco to New York time" },
+    { to: "/guides/best-timezone-tools-remote-teams-2026", label: "Best time zone tools for remote teams" },
+  ],
+  "us-brazil": [
+    { to: "/freelance-rate/usd-to-brl", label: "USD to BRL freelance rate" },
+    { to: "/currency/usd-to-brl", label: "USD to BRL exchange rate" },
+    { to: "/guides/worldtimebuddy-alternative-remote-teams", label: "World Time Buddy alternatives" },
+  ],
+  "europe-asia": [
+    { to: "/time/london-to-tokyo", label: "London to Tokyo time" },
+    { to: "/time/bali-to-london", label: "Bali to London time" },
+    { to: "/time/london-to-dubai", label: "London to Dubai time" },
+    { to: "/time/dubai-to-mumbai", label: "Dubai to Mumbai time" },
+  ],
+};
 import { generate24hTable, computeBusinessOverlap } from "@/lib/timezoneUtils";
 import { trueNow } from "@/lib/trueTime";
 
@@ -259,6 +306,24 @@ export default function MeetingOverlapPage() {
                 </Link>
               ))}
             </div>
+          </section>
+        )}
+
+        {CORRIDOR_LINKS[corridor] && (
+          <section className="mb-10" aria-labelledby="corridor-links-heading">
+            <h2 id="corridor-links-heading" className="font-heading text-lg font-semibold text-ink mb-4">
+              Related guides and tools
+            </h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {CORRIDOR_LINKS[corridor].map(l => (
+                <li key={l.to}>
+                  <Link to={l.to} className="flex items-center justify-between bg-surface border border-line rounded-xl px-4 py-3.5 text-sm text-ink hover:text-pine transition-all">
+                    <span>{l.label}</span>
+                    <ArrowRight className="w-4 h-4 text-pine flex-shrink-0" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
 

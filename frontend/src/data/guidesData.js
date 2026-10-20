@@ -94,7 +94,7 @@ export const GUIDES = [
 
       { type: "h2", text: "Copy this invite" },
       { type: "pre", text: "Weekly sync · {day}\nLondon ({abbr:Europe/London}): 10:00 AM · India (IST): {t:Europe/London@10:00>Asia/Kolkata}\nDuration: 45 min" },
-      { type: "p", text: "The [Meeting Planner](/meeting-planner) writes this for any cities and downloads a calendar file that adjusts for the UK clock change on its own. For a quick one-off check, use the [London to Mumbai clock](/time/london-to-mumbai) or the [GMT to IST converter](/convert/gmt-to-ist)." },
+      { type: "p", text: "The [Meeting Planner](/meeting-planner) writes this for any cities and downloads a calendar file that adjusts for the UK clock change on its own. For a quick one-off check, use the [UK to India overlap table](/meeting-overlap/uk-india) or the [Time Zone Converter](/time-zone-converter)." },
     ],
     faqs: [
       { q: "What is the best meeting time for UK and India?", a: "Between 9:30 and 11:00 AM London time. That's mid-to-late afternoon in India ({t:Europe/London@09:30>Asia/Kolkata} to {t:Europe/London@11:00>Asia/Kolkata} IST this week) and inside a normal working day for both sides. The [Meeting Planner](/meeting-planner) checks any date for you." },
@@ -164,7 +164,7 @@ export const GUIDES = [
 
       { type: "h2", text: "Copy this invite" },
       { type: "pre", text: "Weekly sync · {day}\nNew York ({abbr:America/New_York}): 8:00 AM · India (IST): {t:America/New_York@08:00>Asia/Kolkata}\nDuration: 30 min" },
-      { type: "p", text: "The [Meeting Planner](/meeting-planner) writes this for any cities and downloads a calendar file, so the event shows the right time in everyone's calendar. For a quick check without planning, the [Time Zone Converter](/time-zone-converter) and the [EST to IST converter](/convert/est-to-ist) do it in one step." },
+      { type: "p", text: "The [Meeting Planner](/meeting-planner) writes this for any cities and downloads a calendar file, so the event shows the right time in everyone's calendar. For a quick check without planning, the [US to India meeting time page](/us-india-meeting-time) and the [Time Zone Converter](/time-zone-converter) do it in one step." },
     ],
     faqs: [
       { q: "What is the best time for a meeting between EST and IST?", a: "8:00 AM New York time is usually best: early for the US side and the end of the working day in India ({t:America/New_York@08:00>Asia/Kolkata} IST this week). There's no time when both sides are inside a 9-to-5 day, so someone always stretches. The [Meeting Planner](/meeting-planner) shows the options for your exact cities." },
@@ -854,6 +854,45 @@ export const CATEGORY_STYLES = {
   emerald: { badge: "bg-wash text-pine border-line", accent: "bg-pine" },
   orange: { badge: "bg-paper text-brass border-line", accent: "bg-gem-gold" },
   violet: { badge: "bg-paper text-quiet border-line", accent: "bg-pine" },
+};
+
+// Landing pages each guide links to under "Related pages", so every guide passes
+// crawl paths to its cluster. Only indexable routes (all are in the sitemap).
+const P = {
+  usIndia: { to: "/us-india-meeting-time", label: "US–India meeting time, live" },
+  overlapUsIndia: { to: "/meeting-overlap/us-india", label: "US to India meeting overlap" },
+  overlapUkIndia: { to: "/meeting-overlap/uk-india", label: "UK to India meeting overlap" },
+  overlapUsPakistan: { to: "/meeting-overlap/us-pakistan", label: "US to Pakistan meeting overlap" },
+  overlapUsEurope: { to: "/meeting-overlap/us-europe", label: "US to Europe meeting overlap" },
+  overlapEuropeAsia: { to: "/meeting-overlap/europe-asia", label: "Europe to Asia meeting overlap" },
+  overlapHub: { to: "/meeting-overlap", label: "All meeting overlap guides" },
+  remotePlanner: { to: "/global-meeting-planner-for-remote-teams", label: "Global meeting planner for remote teams" },
+  rateHub: { to: "/freelance-rate", label: "All freelance rate calculators" },
+  rateUsdInr: { to: "/freelance-rate/usd-to-inr", label: "USD to INR freelance rate" },
+  rateUsdPkr: { to: "/freelance-rate/usd-to-pkr", label: "USD to PKR freelance rate" },
+  rateUsdPhp: { to: "/freelance-rate/usd-to-php", label: "USD to PHP freelance rate" },
+  rateGbpInr: { to: "/freelance-rate/gbp-to-inr", label: "GBP to INR freelance rate" },
+  fxUsdInr: { to: "/currency/usd-to-inr", label: "USD to INR exchange rate" },
+  fxUsdPkr: { to: "/currency/usd-to-pkr", label: "USD to PKR exchange rate" },
+  fxGbpInr: { to: "/currency/gbp-to-inr", label: "GBP to INR exchange rate" },
+  timeNyLondon: { to: "/time/new-york-to-london", label: "New York to London time" },
+  cmpWtb: { to: "/compare/world-time-buddy-alternative", label: "GlobalSync vs World Time Buddy" },
+  cmpTad: { to: "/compare/timeanddate-alternative", label: "GlobalSync vs timeanddate" },
+  cmpEtz: { to: "/compare/every-time-zone-alternative", label: "GlobalSync vs Every Time Zone" },
+  cmpBest: { to: "/compare/best-time-zone-converter-remote-teams", label: "Best time zone converter for remote teams" },
+  embed: { to: "/embed", label: "Embed a free world clock" },
+};
+export const GUIDE_RELATED_PAGES = {
+  "best-meeting-time-uk-india": [P.overlapUkIndia, P.usIndia, P.overlapUsIndia, P.fxGbpInr],
+  "best-time-meeting-est-ist": [P.overlapUsIndia, P.usIndia, P.overlapUkIndia, P.overlapUsPakistan],
+  "invoice-us-client-from-pakistan": [P.rateUsdPkr, P.fxUsdPkr, P.overlapUsPakistan, P.rateHub],
+  "usd-to-inr-freelance-rate-conversion": [P.rateUsdInr, P.fxUsdInr, P.overlapUsIndia, P.rateGbpInr],
+  "schedule-meetings-across-time-zones": [P.remotePlanner, P.overlapHub, P.overlapUsEurope, P.overlapEuropeAsia],
+  "worldtimebuddy-alternative-remote-teams": [P.cmpWtb, P.cmpBest, P.remotePlanner, P.embed],
+  "invoicing-international-clients-currency-guide": [P.rateHub, P.fxUsdInr, P.rateUsdPhp, P.fxUsdPkr],
+  "best-timezone-tools-remote-teams-2026": [P.cmpBest, P.cmpWtb, P.cmpEtz, P.embed],
+  "freelancer-rates-international-clients-currency": [P.rateHub, P.rateUsdInr, P.rateUsdPkr, P.rateUsdPhp],
+  "timeanddate-alternatives-2026": [P.cmpTad, P.cmpEtz, P.timeNyLondon, P.remotePlanner],
 };
 
 export const getGuide = (slug) => (slug ? GUIDES.find((g) => g.slug === slug) : undefined);
