@@ -175,6 +175,7 @@ export default function ZonePairPage() {
         description={seoDesc}
         canonical={`https://www.globalsync-ai.com/convert/${pair}`}
         schema={[breadcrumbSchema, faqSchema, toolSchema]}
+        noIndex={!context?.context}
       />
 
       <SiteNav />

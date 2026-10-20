@@ -11,6 +11,8 @@
  * Use `rawTitle` (not `title`) so SEOHead does NOT auto-append the brand suffix.
  */
 
+import { isPairIndexable } from "@/data/programmaticData";
+
 const BASE_URL  = "https://www.globalsync-ai.com";
 const BRAND     = "GlobalSync AI";
 const LOGO_URL  = `${BASE_URL}/meridian/logo-original-icon.png`;
@@ -396,7 +398,7 @@ export const getCityPairSEO = ({ cityA, cityB, pair, pairData }) => {
     keywords: `${cityA.name} to ${cityB.name} time, ${cityA.abbr} to ${cityB.abbr}, time difference ${cityA.name} ${cityB.name}, ${cityA.name} time now, ${cityB.name} time now, meeting overlap ${cityA.name} ${cityB.name}`,
     ogType: "website",
     ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
-    noIndex: !pairData,
+    noIndex: !isPairIndexable(pair, pairData),
     structuredData: [
       buildWebPageSchema({
         name: title,
@@ -440,7 +442,7 @@ export const getCurrencyPairSEO = ({ fromMeta, toMeta, pair, pairData, rateSnaps
     ogTitle: `${fromMeta.code} to ${toMeta.code}: Live Exchange Rate Converter | ${BRAND}`,
     twitterTitle: `${fromMeta.code} to ${toMeta.code}: Live Rates & Smart Currency Conversion!`,
     ogImage: `${BASE_URL}/globalsync-ai-logo-1600x400.png`,
-    noIndex: !pairData,
+    noIndex: !isPairIndexable(pair, pairData),
     structuredData: [
       {
         ...buildWebPageSchema({

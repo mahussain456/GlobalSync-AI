@@ -64,6 +64,14 @@ const REVISION_DATES = {
   '/data-sources':     '2026-09-23',
 };
 
+// A route whose prerendered HTML carries a noindex robots meta stays out of the
+// sitemap / IndexNow. Reading the built page keeps both in step with SEOHead.
+function isNoindexRoute(route) {
+  const file = route === "/" ? path.join(BUILD_DIR, "index.html") : path.join(BUILD_DIR, route, "index.html");
+  if (!fs.existsSync(file)) return false;
+  return /<meta[^>]*name="robots"[^>]*content="[^"]*noindex/i.test(fs.readFileSync(file, "utf8"));
+}
+
 function lastmodFor(route) {
   if (REVISION_DATES[route]) return REVISION_DATES[route];
   if (route.startsWith('/currency/') || route.startsWith('/freelance-rate/')) {
@@ -76,7 +84,7 @@ let sitemapXML = `<?xml version="1.0" encoding="UTF-8"?>\n`;
 sitemapXML += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
 for (const route of routes) {
-  if (SITEMAP_EXCLUDE.has(route)) continue;
+  if (SITEMAP_EXCLUDE.has(route) || isNoindexRoute(route)) continue;
 
   sitemapXML += `  <url>\n`;
   sitemapXML += `    <loc>https://www.globalsync-ai.com${route}</loc>\n`;

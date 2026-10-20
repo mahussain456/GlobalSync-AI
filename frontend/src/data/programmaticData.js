@@ -315,6 +315,7 @@ Object.keys(CITIES).forEach(cityA => {
           from: cityA,
           to: cityB,
           searchVolume: "low",
+          generated: true,
           context: `Coordinating between ${CITIES[cityA].name} and ${CITIES[cityB].name}? Use our live converter to find the current time difference and easily plan your next cross-border meeting.`,
           meetingTip: `Check the working hours overlap above to schedule a meeting that respects both ${CITIES[cityA].abbr} and ${CITIES[cityB].abbr} standard business hours.`,
           faqs: [
@@ -339,6 +340,7 @@ Object.keys(CURRENCIES_META).forEach(curA => {
         CURRENCY_PAIRS[slug] = {
           from: curA,
           to: curB,
+          generated: true,
           context: `Check the live mid-market exchange rate for ${CURRENCIES_META[curA].code} to ${CURRENCIES_META[curB].code}. Whether you are invoicing a client or sending remittances, tracking this rate ensures you get the best value.`,
           remoteTip: `Always use the real mid-market rate when calculating your earnings from ${CURRENCIES_META[curA].code} to ${CURRENCIES_META[curB].code}.`,
           faqs: [
@@ -354,6 +356,18 @@ Object.keys(CURRENCIES_META).forEach(curA => {
     }
   });
 });
+
+// ─── Index policy for generated pairs ───────────────────────────────────────────
+// Generated pairs share one boilerplate paragraph, so they ship noindex and stay
+// out of the sitemap (GSC, Oct 2026: indexed pages fell 131 → 41 after these went
+// live). Only generated pairs that Google was already showing are kept indexable.
+// To index another pair, hand-write it into CITY_PAIRS / CURRENCY_PAIRS instead.
+export const INDEXABLE_GENERATED_PAIRS = new Set([
+  "san-francisco-to-sydney",
+  "ngn-to-eur",
+]);
+export const isPairIndexable = (slug, pairData) =>
+  Boolean(pairData) && (!pairData.generated || INDEXABLE_GENERATED_PAIRS.has(slug));
 
 // ─── Helper: get city pair from slug ─────────────────────────────────────────
 export const getCityPair = (slug) => CITY_PAIRS[slug] || null;
