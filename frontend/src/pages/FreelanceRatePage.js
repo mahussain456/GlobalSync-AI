@@ -8,6 +8,15 @@ import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import AdBanner from "@/components/AdBanner";
 import { getCorridor, CORRIDOR_APPROX_RATES, PAYMENT_RAILS, CORRIDORS } from "@/data/freelanceCorridors";
+import { getCurrencyPair, isPairIndexable } from "@/data/programmaticData";
+
+// Freelancer guides linked from every rate calculator.
+const FREELANCER_GUIDES = [
+  { to: "/guides/freelancer-rates-international-clients-currency", label: "What to charge international clients" },
+  { to: "/guides/invoice-us-client-from-pakistan", label: "How to invoice a US client from Pakistan" },
+  { to: "/guides/usd-to-inr-freelance-rate-conversion", label: "USD to INR freelance rate conversion" },
+  { to: "/guides/invoicing-international-clients-currency-guide", label: "Invoicing international clients: currencies and FX fees" },
+];
 
 function FAQItem({ question, answer }) {
   const [open, setOpen] = useState(false);
@@ -371,6 +380,22 @@ export default function FreelanceRatePage() {
             </div>
           </section>
         )}
+
+        <section className="mb-10" aria-labelledby="freelancer-guides-heading">
+          <h2 id="freelancer-guides-heading" className="font-heading text-lg font-semibold text-ink mb-4">
+            Freelancer guides
+          </h2>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {[...FREELANCER_GUIDES, ...(isPairIndexable(corridor, getCurrencyPair(corridor)) ? [{ to: `/currency/${corridor}`, label: `${corridorData.from} to ${corridorData.to} exchange rate today` }] : [])].map(l => (
+              <li key={l.to}>
+                <Link to={l.to} className="flex items-center justify-between bg-surface border border-line rounded-xl px-4 py-3.5 text-sm text-ink hover:text-pine transition-all">
+                  <span>{l.label}</span>
+                  <ArrowRight className="w-4 h-4 text-pine" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         {/* Footer Navigation Hub Links */}
         <div className="flex flex-wrap gap-3 text-sm">

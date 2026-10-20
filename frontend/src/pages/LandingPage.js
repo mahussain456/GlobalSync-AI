@@ -7,6 +7,7 @@ import {getHomepageSEO} from '@/lib/seo';
 import {initializeMeridian} from '@/lib/meridianExperience';
 import ToolStage from '@/components/home/ToolStage';
 import SocialProof from '@/components/SocialProof';
+import ExploreLinks from '@/components/home/ExploreLinks';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import '@/styles/meridian.css';
 const HOME_FAQS=[
@@ -36,6 +37,7 @@ return <div className="meridian-home" ref={root}><SEOHead {...getHomepageSEO({fa
 <ToolStage/>
 </section>
 <SocialProof/>
+<ExploreLinks/>
 <section className="faq" id="questions">
 <div className="faq-side"><h2>Questions,<br/>answered.</h2>
 <form className="home-ask" action="/dashboard"><label htmlFor="home-question">Or ask in plain English <small>An AI model reads your question; the tools calculate the answer.</small></label><div className="home-ask-row"><input id="home-question" name="q" placeholder="What time is 3 PM New York in London?" required maxLength={500}/><button type="submit" className="btn btn-primary">Ask <ArrowRight aria-hidden="true"/></button></div></form>

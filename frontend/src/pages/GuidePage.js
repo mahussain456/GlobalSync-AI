@@ -8,7 +8,7 @@ import SiteFooter from "@/components/SiteFooter";
 import DesktopAppCTA from "@/components/DesktopAppCTA";
 import ToolCTA from "@/components/ToolCTA";
 import NewsletterSignup from "@/components/NewsletterSignup";
-import { getGuide, GUIDES, CATEGORY_STYLES, TOOL_LINKS, plainText } from "@/data/guidesData";
+import { getGuide, GUIDES, CATEGORY_STYLES, TOOL_LINKS, GUIDE_RELATED_PAGES, plainText } from "@/data/guidesData";
 import { getGuideSEO, buildFAQSchema } from "@/lib/seo";
 import { useLiveFacts, fillDeep, fillText, hasLiveTokens } from "@/lib/liveFacts";
 
@@ -147,7 +147,13 @@ function GuideBody({ source }) {
 
   const style = CATEGORY_STYLES[guide.categoryColor];
   const seo = getGuideSEO({ guide });
-  const related = GUIDES.filter((g) => g.slug !== guide.slug).slice(0, 2);
+  // Same-category guides first, then the next guides in list order, so every
+  // guide is linked from other guides rather than only the first two.
+  const others = GUIDES.filter((g) => g.slug !== guide.slug);
+  const start = GUIDES.findIndex((g) => g.slug === guide.slug);
+  const rotated = [...others.slice(start), ...others.slice(0, start)];
+  const related = [...rotated.filter((g) => g.category === guide.category), ...rotated.filter((g) => g.category !== guide.category)].slice(0, 3);
+  const relatedPages = GUIDE_RELATED_PAGES[guide.slug] || [];
   // Plain-text answers: JSON-LD must not contain markup.
   const faqSchema = {
     "@context": "https://schema.org",
@@ -248,6 +254,21 @@ function GuideBody({ source }) {
           </ul>
         </section>
 
+        {relatedPages.length > 0 && (
+          <section className="mt-10" aria-labelledby="related-pages-heading">
+            <h2 id="related-pages-heading" className="font-heading text-xl font-bold text-ink mb-4">Related pages</h2>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {relatedPages.map((p) => (
+                <li key={p.to}>
+                  <Link to={p.to} className="flex items-center justify-between gap-3 h-full bg-surface border border-line rounded-xl p-4 text-sm font-semibold text-ink hover:border-pine transition-colors">
+                    <span>{p.label}</span> <ArrowRight className="w-4 h-4 text-pine shrink-0" aria-hidden="true" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         <div className="mt-12 bg-surface rounded-2xl border border-line p-6 flex flex-col sm:flex-row items-start gap-5">
           <div className="w-14 h-14 bg-paper border border-line rounded-full flex items-center justify-center font-bold text-quiet text-xl shrink-0">
             {guide.authorName.charAt(0)}
@@ -271,7 +292,7 @@ function GuideBody({ source }) {
 
         <section className="mt-12 pt-8 border-t border-line">
           <h2 className="font-heading text-xl font-bold text-ink mb-5">More guides</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {related.map((g) => (
               <Link key={g.slug} to={`/guides/${g.slug}`} className="bg-surface rounded-xl border border-line p-4 hover:border-pine transition-colors">
                 <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${CATEGORY_STYLES[g.categoryColor].badge} mb-2 inline-block`}>{g.category}</span>
