@@ -44,11 +44,19 @@ try {
   process.exit(1);
 }
 
+// A route whose prerendered HTML carries a noindex robots meta stays out of the
+// sitemap / IndexNow. Reading the built page keeps both in step with SEOHead.
+function isNoindexRoute(route) {
+  const file = route === "/" ? path.join(BUILD_DIR, "index.html") : path.join(BUILD_DIR, route, "index.html");
+  if (!fs.existsSync(file)) return false;
+  return /<meta[^>]*name="robots"[^>]*content="[^"]*noindex/i.test(fs.readFileSync(file, "utf8"));
+}
+
 // 2. Prepare URLs to submit (exclude private/app routes and 404)
 const EXCLUDE = new Set(['/dashboard', '/404']);
 const host = 'www.globalsync-ai.com';
 const urlList = routes
-  .filter(route => !EXCLUDE.has(route))
+  .filter(route => !EXCLUDE.has(route) && !isNoindexRoute(route))
   .map(route => `https://${host}${route}`);
 
 console.log(`[IndexNow] Submitting ${urlList.length} URLs to IndexNow...`);
