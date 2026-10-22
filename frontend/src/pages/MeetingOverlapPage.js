@@ -29,6 +29,7 @@ const CORRIDOR_LINKS = {
     { to: "/freelance-rate/usd-to-pkr", label: "USD to PKR freelance rate" },
   ],
   "us-philippines": [
+    { to: "/guides/us-philippines-overlap-hours-virtual-assistant", label: "US to Philippines VA overlap guide" },
     { to: "/freelance-rate/usd-to-php", label: "USD to PHP freelance rate" },
     { to: "/currency/usd-to-php", label: "USD to PHP exchange rate" },
     { to: "/guides/best-timezone-tools-remote-teams-2026", label: "Best time zone tools for remote teams" },

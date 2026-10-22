@@ -32,6 +32,86 @@ const NY_730_LONDON = "{t:America/New_York@07:30>Europe/London}";
 const NY_730_MUMBAI = "{t:America/New_York@07:30>Asia/Kolkata}";
 
 export const GUIDES = [
+  // ─── 11 ─────────────────────────────────────────────────────────────────────
+  {
+    slug: "us-philippines-overlap-hours-virtual-assistant",
+    title: "US and Philippines Overlap Hours for a Virtual Assistant (Live Shift Times)",
+    metaTitle: "US Philippines Overlap Hours for a Virtual Assistant (Live) | GlobalSync AI",
+    metaDescription:
+      "A 9-to-5 in New York is the middle of the night in Manila. Here's the US workday in Philippine time, live for this week, and three VA shift patterns that work.",
+    keywords:
+      "US Philippines overlap hours, virtual assistant time zone Philippines, EST to Philippine time, PST to Manila time, VA night shift Philippines, Philippines time difference US",
+    excerpt:
+      "There's no shared 9-to-5 between the US and the Philippines. Here's the US workday in Manila time for this week, and three ways to set a VA's shift so the overlap covers what you actually need.",
+    category: "Scheduling",
+    categoryColor: "blue",
+    publishDate: "October 2026",
+    ...AUTHOR,
+    ctaUrl: "/meeting-overlap/us-philippines",
+    ctaText: "See the full US to Philippines overlap table",
+    links: ["planner", "timeZones", "rates"],
+    content: [
+      { type: "h2", text: "The short answer" },
+      { type: "p", text: "There is no shared 9-to-5. The Philippines is on Philippine Time (PHT, UTC+8) all year and never changes its clocks. When it's 9:00 AM in New York this week, it's {t:America/New_York@09:00>Asia/Manila} in Manila. A VA who covers US hours works at night." },
+      { type: "p", text: "So the real question isn't \"when do we overlap\" but **how many of your hours need a live person**. For most East Coast teams, a shift covering **8:00 AM to 4:00 PM New York time** is plenty. This week that's {t:America/New_York@08:00>Asia/Manila} to {t:America/New_York@16:00>Asia/Manila} in Manila." },
+
+      { type: "h2", text: "The US workday in Manila time" },
+      { type: "p", text: "Worked out live for {day}. New York is on {abbr:America/New_York} and Los Angeles is on {abbr:America/Los_Angeles} this week." },
+      { type: "table",
+        headers: ["US local time", "Manila, from New York", "Manila, from Los Angeles"],
+        rows: [
+          ["7:00 AM", "{t:America/New_York@07:00>Asia/Manila}", "{t:America/Los_Angeles@07:00>Asia/Manila}"],
+          ["9:00 AM", "{t:America/New_York@09:00>Asia/Manila}", "{t:America/Los_Angeles@09:00>Asia/Manila}"],
+          ["12:00 PM", "{t:America/New_York@12:00>Asia/Manila}", "{t:America/Los_Angeles@12:00>Asia/Manila}"],
+          ["3:00 PM", "{t:America/New_York@15:00>Asia/Manila}", "{t:America/Los_Angeles@15:00>Asia/Manila}"],
+          ["5:00 PM", "{t:America/New_York@17:00>Asia/Manila}", "{t:America/Los_Angeles@17:00>Asia/Manila}"],
+        ],
+        note: "Times update automatically. Chicago and Denver sit between the two columns: one and two hours behind New York.",
+      },
+
+      { type: "h2", text: "Why the shift moves twice a year" },
+      { type: "p", text: "The US uses daylight saving time. The Philippines doesn't. So the gap changes on the US dates, and the VA's shift has to move with it:" },
+      { type: "table",
+        headers: ["US clocks", "Manila is ahead of New York by", "Manila is ahead of Los Angeles by", "8:00 AM New York in Manila"],
+        rows: [
+          ["Daylight time (EDT/PDT), mid-March to early November", "12 hours", "15 hours", "8:00 PM"],
+          ["Standard time (EST/PST), early November to mid-March", "13 hours", "16 hours", "9:00 PM"],
+        ],
+      },
+      { type: "p", text: "In 2026 the US clocks go back on **Sunday 1 November**. In 2027 they go forward on **Sunday 14 March**. If your VA's shift is fixed in Manila time, your coverage slides an hour on those dates. If it's fixed in US time, their start time moves instead. Agree which one it is before the switch, not after." },
+
+      { type: "h2", text: "Three shift patterns that work" },
+      { type: "ol", items: [
+        { title: "Full US hours (night shift).", desc: "The VA covers 9:00 AM to 5:00 PM New York, which is {t:America/New_York@09:00>Asia/Manila} to {t:America/New_York@17:00>Asia/Manila} in Manila this week. Right for live support, phones and inbox response targets. It's also the hardest on the VA, so expect to pay for it." },
+        { title: "Cover the US morning.", desc: "The VA works 6:00 PM to 2:00 AM Manila time. That starts at {t:Asia/Manila@18:00>America/New_York} New York time and gives you about five hours of overlap in summer, four in winter. Most US managers do their handoffs and quick questions in the morning anyway." },
+        { title: "Async, with one short handoff.", desc: "The VA works a normal Philippine day and you leave tasks in writing. Keep one 15-minute call at the edge of both days: 8:00 AM Manila is {t:Asia/Manila@08:00>America/New_York} in New York. Good for research, data entry, content, bookkeeping and anything that doesn't need an instant reply." },
+      ]},
+
+      { type: "h3", text: "West Coast teams" },
+      { type: "p", text: "Pacific time is three hours further from Manila, so a full 9-to-5 lands at {t:America/Los_Angeles@09:00>Asia/Manila} to {t:America/Los_Angeles@17:00>Asia/Manila} in Manila. The kindest option is usually to cover the Pacific afternoon, which falls in the Manila early morning, and let the VA finish by midday." },
+
+      { type: "h2", text: "Pay and fairness on night shifts" },
+      { type: "p", text: "Philippine labor law gives employees a night shift differential of at least 10% of their regular wage for work between 10:00 PM and 6:00 AM (Labor Code, Article 86). Freelance and contract VAs aren't automatically covered, but many quote a higher rate for US-hours work, and that's fair. Budget for it up front." },
+      { type: "p", text: "For reference, $1 is ₱{fx:USD:PHP} at today's rate ({fxday}). As an example, $8 an hour for 160 hours a month is about ₱{fxamt:1280:USD:PHP}. The [USD to PHP freelance rate page](/freelance-rate/usd-to-php) and the [Freelance Rate Calculator](/freelancer-rate-converter) work out any rate you're quoted." },
+      { type: "ul", items: [
+        "**Keep the shift the same every day.** Rotating nights is worse for sleep than a steady late schedule.",
+        "**Don't book meetings at the end of their shift.** 4:00 PM New York is the VA's early morning. Put calls in your morning.",
+        "**Write things down.** Clear written tasks let the VA work through quiet US hours without waiting on you.",
+        "**Respect Philippine holidays.** They differ from US holidays. Agree on cover for both calendars in advance.",
+      ]},
+
+      { type: "h2", text: "Copy this shift note" },
+      { type: "pre", text: "VA shift · {day}\nNew York ({abbr:America/New_York}): 8:00 AM to 4:00 PM\nManila (PHT): {t:America/New_York@08:00>Asia/Manila} to {t:America/New_York@16:00>Asia/Manila}\nDaily handoff: 9:00 AM New York · {t:America/New_York@09:00>Asia/Manila} Manila" },
+      { type: "p", text: "The [Meeting Planner](/meeting-planner) checks any US city against Manila for any date, and its calendar file adjusts for the US clock change on its own. For a quick check, use the [US to Philippines overlap table](/meeting-overlap/us-philippines) or the [Time Zone Converter](/time-zone-converter)." },
+    ],
+    faqs: [
+      { q: "What time is 9 AM New York time in the Philippines?", a: "This week it's {t:America/New_York@09:00>Asia/Manila} in Manila. The Philippines is 12 hours ahead of New York while the US is on daylight saving time and 13 hours ahead in winter." },
+      { q: "Does the Philippines use daylight saving time?", a: "No. The Philippines stays on Philippine Time (UTC+8) all year. Only the US side changes, so the gap moves on the US clock-change dates in March and November." },
+      { q: "How many working hours do the US and the Philippines share?", a: "None, if both sides keep a 9-to-5. To overlap, the VA works a late or overnight shift in Manila. A 6:00 PM to 2:00 AM Manila shift covers most of the US Eastern morning." },
+      { q: "Do Filipino VAs get extra pay for night shifts?", a: "Employees are entitled to a night shift differential of at least 10% for hours between 10:00 PM and 6:00 AM under the Philippine Labor Code. Freelancers set their own rates, and many charge more for US-hours shifts." },
+    ],
+  },
+
   // ─── 10 ─────────────────────────────────────────────────────────────────────
   {
     slug: "best-meeting-time-uk-india",
