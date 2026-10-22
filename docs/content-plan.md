@@ -16,7 +16,7 @@ Guides 1 to 3 are written and live in `frontend/src/data/guidesData.js`.
 | 2 | 2 | how to invoice a US client from Pakistan | Get paid in full by a US client, without PayPal | Invoice Builder, /freelance-rate/usd-to-pkr, /currency/usd-to-pkr | **Written** |
 | 3 | 3 | USD to INR freelance rate conversion | Know what a USD hourly rate is worth in rupees after fees | Freelance Rate Calculator, /freelance-rate/usd-to-inr | **Written** |
 | 4 | 4 | best meeting time UK and India | UK + India team call that survives BST/GMT changes | Meeting Planner, /meeting-overlap/uk-india | **Written** |
-| 5 | 5 | US Philippines overlap hours for virtual assistants | Book a VA's shift so it overlaps the US workday | Meeting Planner, /meeting-overlap/us-philippines | Planned |
+| 5 | 5 | US Philippines overlap hours for virtual assistants | Book a VA's shift so it overlaps the US workday | Meeting Planner, /meeting-overlap/us-philippines | Written |
 | 6 | 6 | how to get paid by a UK client from India | Invoice in GBP, receive in INR, keep GST zero-rated | Invoice Builder, /freelance-rate/gbp-to-inr | Planned |
 | 7 | 7 | EST to PST meeting time | Schedule across US coasts without the 3-hour mistake | Time Zone Converter, /convert/est-to-pst | Planned |
 | 8 | 8 | how much to charge US clients from Nigeria | Set a USD rate that covers NGN volatility and fees | Freelance Rate Calculator, /freelance-rate/usd-to-ngn | Planned |
@@ -47,7 +47,7 @@ Guides 1 to 3 are written and live in `frontend/src/data/guidesData.js`.
 - The late-March and late-October weeks when the overlap shifts by an hour.
 - Recurring-call template; link /meeting-overlap/uk-india.
 
-**5. US Philippines overlap for virtual assistants**
+**5. US Philippines overlap for virtual assistants** (written)
 - Manila is UTC+8 all year; show US Eastern and Pacific workdays in Manila time.
 - Night-shift norms and fair shift design; what "overlap" really needs to cover.
 - Link Meeting Planner and /meeting-overlap/us-philippines.

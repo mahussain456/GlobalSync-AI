@@ -24,6 +24,7 @@ rates, not the final transfer rate your payment provider will give you.
 - [About](https://www.globalsync-ai.com/about): Who builds this.
 
 ## Guides
+- [US and Philippines Overlap Hours for a Virtual Assistant](https://www.globalsync-ai.com/guides/us-philippines-overlap-hours-virtual-assistant): The US workday in Manila time, live for this week, three VA shift patterns, and the night shift pay rule.
 - [Best Meeting Time for UK and India Teams](https://www.globalsync-ai.com/guides/best-meeting-time-uk-india): The shared UK to India working window (3.5 hours in summer, 2.5 in winter), live for this week, and the BST switch dates.
 - [Best Time to Schedule a Meeting Between EST and IST](https://www.globalsync-ai.com/guides/best-time-meeting-est-ist): The two realistic New York to India windows, live for this week, and when the gap changes.
 - [How to Invoice a US Client From Pakistan](https://www.globalsync-ai.com/guides/invoice-us-client-from-pakistan): Payment routes that work from Pakistan (PayPal does not), their costs, and the invoice fields that prevent delays.
