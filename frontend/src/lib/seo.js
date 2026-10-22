@@ -33,7 +33,7 @@ const SAME_AS = [
 // 部署日期不是编辑日期，所以不从构建时间推导。
 const PAGE_DATES = {
   "methodology":      { published: "2026-06-04", modified: "2026-09-23" },
-  "editorial-policy": { published: "2026-06-04", modified: "2026-09-23" },
+  "editorial-policy": { published: "2026-06-04", modified: "2026-10-22" },
   "data-sources":     { published: "2026-06-04", modified: "2026-09-23" },
   "blog":             { published: "2026-06-04", modified: "2026-09-23" },
 };
@@ -578,7 +578,7 @@ const STATIC_META = {
   },
   "editorial-policy": {
     rawTitle: `GlobalSync AI: Our Editorial Standards and Accuracy Policy`,
-    description: `Learn how GlobalSync AI creates, reviews and corrects content, and how we disclose our own product in comparisons.`,
+    description: `Where GlobalSync AI gets its time zone rules and exchange rates, who writes the guides, what we never publish, and how to report a correction.`,
     canonical: "/editorial-policy",
     keywords: "GlobalSync AI editorial policy, content standards",
   },

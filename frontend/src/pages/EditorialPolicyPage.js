@@ -1,137 +1,132 @@
 import { Link } from "react-router-dom";
-import { FileText, Edit3, RefreshCw, AlertCircle, Mail, Cpu } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { getStaticPageSEO } from "@/lib/seo";
 
-const Section = ({ icon: Icon, title, children }) => (
-  <section className="mb-10">
-    <div className="flex items-center gap-3 mb-4">
-      <div className="w-9 h-9 rounded-xl bg-gem-gold/20 border border-line flex items-center justify-center shrink-0">
-        <Icon className="w-4.5 h-4.5 text-pine" size={18} />
-      </div>
-      <h2 className="font-heading text-xl font-bold text-ink">{title}</h2>
-    </div>
-    <div className="pl-12 space-y-3 text-quiet text-sm leading-relaxed">
-      {children}
-    </div>
+// Plain, specific and true. Every claim here should match how the tools work today;
+// if a data source or process changes, change this page in the same commit.
+
+const Section = ({ id, title, children }) => (
+  <section className="mb-10" aria-labelledby={id}>
+    <h2 id={id} className="font-heading text-2xl font-bold text-ink mb-4">{title}</h2>
+    <div className="space-y-3 text-quiet text-base leading-relaxed">{children}</div>
   </section>
 );
+
+const A = ({ to, children }) => <Link to={to} className="text-pine underline underline-offset-4">{children}</Link>;
 
 export default function EditorialPolicyPage() {
   const seo = getStaticPageSEO("editorial-policy");
   return (
     <div className="min-h-screen bg-paper text-ink relative">
       <SEOHead {...seo} />
-
-
       <SiteNav />
 
-      <article className="max-w-3xl mx-auto px-6 pt-16 pb-12">
-        {/* Breadcrumb */}
-        <nav className="text-xs text-quiet mb-8 flex items-center gap-1.5">
-          <Link to="/" className="hover:text-quiet">Home</Link>
-          <span>/</span>
-          <span className="text-quiet">Editorial Policy</span>
-        </nav>
+      <main>
+        <article className="max-w-3xl mx-auto px-6 pt-16 pb-12">
+          <nav className="text-xs text-quiet mb-8 flex items-center gap-1.5" aria-label="Breadcrumb">
+            <Link to="/" className="hover:text-ink">Home</Link>
+            <span>/</span>
+            <span>Editorial Policy</span>
+          </nav>
 
-        {/* Header */}
-        <header className="mb-12"><h1 className="font-heading text-3xl md:text-4xl font-bold text-ink mb-4">
-            GlobalSync AI: Our Editorial Standards and Accuracy Policy
-          </h1>
-          <div className="inline-flex items-center gap-2 bg-gem-gold/20 text-pine rounded-full px-3 py-1 text-xs font-medium mb-4 border border-line">
-            <FileText className="w-3.5 h-3.5" /> Editorial Standards
+          <header className="mb-12">
+            <h1 className="font-heading text-3xl md:text-4xl font-bold text-ink mb-4">
+              GlobalSync AI: Our Editorial Standards and Accuracy Policy
+            </h1>
+            <p className="text-quiet text-lg leading-relaxed">
+              GlobalSync AI makes free tools for people who work across time zones and currencies: a time zone converter, a meeting
+              planner, a currency converter, a freelance rate calculator and an invoice builder, plus guides on using them. This page
+              explains where our numbers come from, who writes the guides, what we refuse to publish, and how to get something fixed.
+            </p>
+            <p className="text-xs text-quiet mt-4">Last updated: October 2026</p>
+          </header>
+
+          <Section id="numbers" title="Where the numbers come from">
+            <p>
+              <strong className="text-ink">Time zones.</strong> Every conversion uses the IANA time zone database through your
+              browser's built-in time zone support, the same rules your operating system uses. Daylight saving changes are applied
+              on each region's official dates. Live clocks are synced to our server clock, so a wrong device clock doesn't skew them.
+              Keep your browser and operating system updated and the rules stay current.
+            </p>
+            <p>
+              <strong className="text-ink">Exchange rates.</strong> Rates come from a live market feed (Coinbase's public rate feed),
+              refreshed every minute. Each live rate is checked against the ExchangeRate-API daily reference rate. If the two differ
+              by more than 3%, we show the reference rate instead. Every result shows its source and the time it was taken. If both
+              feeds are down, you get a dated snapshot that is labeled as one.
+            </p>
+            <p>
+              These are mid-market rates: the midpoint between buying and selling prices. Banks and transfer services add a margin
+              and fees, so the amount you receive will be lower. We don't move money and we don't quote transfers.
+            </p>
+            <p>
+              The full list of providers is on the <A to="/data-sources">Data Sources</A> page. How each calculation works, and its
+              limits, is on the <A to="/methodology">Methodology</A> page.
+            </p>
+          </Section>
+
+          <Section id="guides" title="How guides are written and checked">
+            <p>
+              Guides are written by Ahmed Hussain, who builds GlobalSync AI. AI tools help with outlines and copy editing. They don't
+              do the maths: every time and rate in a guide is calculated by the same code that runs the tools.
+            </p>
+            <p>
+              Times and exchange rates inside guides are filled in live when you open the page. When a guide tells you what 9:00 AM in
+              New York is in Manila, that answer is worked out for the current week, so it stays right after a daylight saving change. The rates show
+              the date they were taken. Nothing is typed in by hand and left to go stale.
+            </p>
+            <p>
+              Tax, payment and labor-law points link to the official source where one exists and say when you should check with an
+              accountant or lawyer. Those rules change, and our guides are a starting point, not advice for your situation.
+            </p>
+          </Section>
+
+          <Section id="never" title="What we won't publish">
+            <ul className="list-disc list-outside ml-5 space-y-2">
+              <li>Invented statistics, user counts, testimonials or reviews.</li>
+              <li>Claims about clients or customers we can't back up.</li>
+              <li>Hand-typed rates or meeting times that can go out of date.</li>
+              <li>Sponsored articles or paid placements presented as editorial.</li>
+            </ul>
+          </Section>
+
+          <Section id="comparisons" title="Comparisons and our own product">
+            <p>
+              We don't publish product reviews. Some guides compare our tools with others, such as World Time Buddy and
+              timeanddate.com. Those guides rank our own product, and they say so in a disclosure at the top of the page. We have no
+              paid placements or affiliate deals with any tool we compare. If that changes, the guide will say so.
+            </p>
+            <p>
+              The site shows ads to stay free. Advertisers have no say in what we write, rank or recommend.
+            </p>
+          </Section>
+
+          <Section id="corrections" title="Corrections">
+            <p>
+              Found a wrong time, a bad rate, a broken calculation or an outdated fact? Email{" "}
+              <a href="mailto:editorial@globalsync-ai.com" className="text-pine underline underline-offset-4">editorial@globalsync-ai.com</a>{" "}
+              or use the <A to="/contact">contact page</A>. Include the page address and what you expected to see. Every report is
+              read.
+            </p>
+            <p>
+              When a guide gets a material correction, we update its date and note what changed on the page. Calculation bugs are
+              fixed in the tool itself, so every page that uses it is corrected at once.
+            </p>
+          </Section>
+
+          <div className="mt-12 pt-8 border-t border-line grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Link to="/methodology" className="bg-surface rounded-xl border border-line p-5 hover:border-pine transition-colors group">
+              <div className="font-semibold text-ink group-hover:text-pine transition-colors mb-1">Methodology</div>
+              <div className="text-sm text-quiet">How the time zone and currency calculations work, and their limits</div>
+            </Link>
+            <Link to="/guides" className="bg-surface rounded-xl border border-line p-5 hover:border-pine transition-colors group">
+              <div className="font-semibold text-ink group-hover:text-pine transition-colors mb-1">Guides</div>
+              <div className="text-sm text-quiet">Meeting times, invoicing and rates for cross-border work</div>
+            </Link>
           </div>
-
-          <p className="text-quiet text-lg leading-relaxed">
-            GlobalSync AI is committed to producing accurate, useful, and transparent content about time zones, currency conversion, and remote work. This page explains how we create and maintain that content.
-          </p>
-          <p className="text-xs text-quiet mt-4">Last updated: April 2026</p>
-        </header>
-
-        <Section icon={Edit3} title="Content Review Process & Editorial Philosophy">
-          <p>
-            Every guide, calculator description, and editorial article published on GlobalSync AI undergoes a strict human-in-the-loop content review process. Drafts are written by our founder, Ahmed Hussain, and cross-reviewed for technical consistency, terminology accuracy, and real-world clarity for remote workers.
-          </p>
-          <p>
-            Our review pipeline verifies that all technical steps and calculations (such as timezone conversion offsets, daylight saving transition rules, or salary-to-hourly equivalency calculations) correspond exactly with verified mathematical models and data provider guidelines. We maintain total editorial independence: we do not accept sponsored articles, paid product placements, or native advertising that could bias our reporting or compromise our utility recommendations.
-          </p>
-          <p>
-            Before publication, every article is evaluated against three core principles: clarity, practical utility for distributed teams, and zero fluff. If a guide does not directly help a remote worker or team manager schedule better meetings or understand financial rates, it is revised or discarded.
-          </p>
-        </Section>
-
-        <Section icon={FileText} title="Accuracy & Data Integrity Policy">
-          <p>
-            Accuracy is our primary product standard. For our interactive converters, world clocks, and calculation tools, we enforce strict data constraints by relying exclusively on verified institutional data sources:
-          </p>
-          <ul className="list-disc list-outside ml-5 space-y-2">
-            <li><strong className="text-ink">Time zone database:</strong> We build directly on the official IANA Time Zone Database (TZDB), which regulates all global timezone boundaries, historical transitions, and upcoming Daylight Saving Time (DST) switches.</li>
-            <li><strong className="text-ink">Live exchange rates:</strong> We use live market rates refreshed every minute, each checked against ExchangeRate-API daily reference rates. Every result shows the time it was taken, and any dated build snapshot used when both feeds are down is labeled. </li>
-            <li><strong className="text-ink">Automated logic verification:</strong> All tool logic runs through continuous unit testing scripts to prevent compounding rounding errors and guarantee mathematical consistency across all currency and timezone calculations.</li>
-          </ul>
-          <p className="mt-3">
-            We explicitly distinguish between reference mid-market exchange rates and retail commercial exchange rates. Our tools show the true mid-market rate so users can evaluate bank markups and hidden fee margins transparently.
-          </p>
-        </Section>
-
-        <Section icon={Cpu} title="AI Assistance Disclosure">
-          <p>
-            We utilize artificial intelligence models as supportive tools for brainstorming, copy editing, and structuring initial draft outlines. However, we maintain a strict AI oversight policy to guarantee accuracy:
-          </p>
-          <ul className="list-disc list-outside ml-5 space-y-2">
-            <li>All AI-generated suggestions or draft outlines are fully reviewed, edited, expanded, and fact-checked by a human editor before publication.</li>
-            <li>We do not delegate mathematical operations, timezone offset logic, or currency conversion calculations to generative AI model parameters. All numerical operations are executed by our deterministic backend APIs to prevent AI hallucinations.</li>
-            <li>No article, tool description, or documentation page on GlobalSync AI is published without manual human verification and editorial sign-off.</li>
-          </ul>
-        </Section>
-
-        <Section icon={FileText} title="Comparisons and Our Own Product">
-          <p className="text-quiet leading-relaxed">
-            GlobalSync AI does not publish product reviews. Some guides compare our tools with others (World Time Buddy, timeanddate.com and
-            similar). Those guides are written by the founder of GlobalSync AI, rank our own product, and say so in a disclosure at the top of the
-            page. We have no paid placements or affiliate deals with any tool we compare. If that changes, the affected guide will say so.
-          </p>
-        </Section>
-
-        <Section icon={RefreshCw} title="Correction & Update Policy">
-          <p>
-            The global regulatory landscape for currencies and time zones is dynamic. To keep our database accurate and responsive to real-world shifts, we implement the following update schedule:
-          </p>
-          <ul className="list-disc list-outside ml-5 space-y-2">
-            <li><strong className="text-ink">IANA database updates:</strong> We sync and redeploy our timezone database within 48 hours of any official IANA release.</li>
-            <li><strong className="text-ink">Currency feed audits:</strong> Provider timestamps make the age of a reference snapshot visible. Report a discrepancy through our contact page so it can be investigated.</li>
-            <li><strong className="text-ink">Static guides & hub content:</strong> We review all editorial guides annually or immediately upon notice of significant regulatory shifts (such as sudden DST rule modifications or currency re-denominations).</li>
-          </ul>
-          <p className="mt-3">
-            If we make a material correction to an article or guide, we update the "last updated" timestamp at the top of the page and add an explicit notice detailing the specific change made.
-          </p>
-        </Section>
-
-        <Section icon={AlertCircle} title="Contact Path for Corrections & Feedback">
-          <p>
-            We welcome corrections, bug reports, and feedback from our global community of users. If you identify a typo, a calculation bug, or an outdated fact anywhere on GlobalSync AI, please reach out to us. We commit to:
-          </p>
-          <ul className="list-disc list-outside ml-5 space-y-2">
-            <li>Acknowledging and reviewing all correction submissions within 2 business days.</li>
-            <li>Routing technical bugs directly to our development logs and deploying hotfixes within 24 hours of confirmation.</li>
-            <li>Allowing users to submit corrections by emailing our team directly at <a href="mailto:editorial@globalsync-ai.com" className="text-pine hover:underline">editorial@globalsync-ai.com</a> or submitting a message via our <Link to="/contact" className="text-pine hover:underline">Contact Page</Link>.</li>
-          </ul>
-        </Section>
-
-        {/* Related links */}
-        <div className="mt-12 pt-8 border-t border-line grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Link to="/methodology" className="bg-surface  rounded-xl border border-line p-5 hover:border-line hover:bg-surface transition-all group">
-            <div className="font-semibold text-ink group-hover:text-pine transition-colors mb-1">Our Methodology →</div>
-            <div className="text-sm text-quiet">How our time zone, currency, and AI systems work</div>
-          </Link>
-          <Link to="/about" className="bg-surface  rounded-xl border border-line p-5 hover:border-line hover:bg-surface transition-all group">
-            <div className="font-semibold text-ink group-hover:text-pine transition-colors mb-1">About GlobalSync AI →</div>
-            <div className="text-sm text-quiet">Who we are and what we're building</div>
-          </Link>
-        </div>
-      </article>
+        </article>
+      </main>
 
       <SiteFooter />
     </div>
