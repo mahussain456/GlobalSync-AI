@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import CookieConsent from "@/components/MeridianConsent";
 import "@/styles/meridian-pages.css";
 import "@/styles/system.css";
+import { revealPage } from "@/lib/reveal";
 
 
 // Global error boundary — prevents any render crash from leaving a blank screen
@@ -113,6 +114,8 @@ function SiteConsent() {
 function RoutePosition() {
   const { pathname, hash } = useLocation();
   React.useEffect(() => { if (!hash) window.scrollTo({top:0,left:0,behavior:'instant'}); }, [pathname, hash]);
+  // After the new page paints (lazy routes resolve a tick later), tag its sections for the scroll reveal.
+  React.useEffect(() => { const t = [setTimeout(revealPage, 50), setTimeout(revealPage, 400), setTimeout(revealPage, 1200)]; return () => t.forEach(clearTimeout); }, [pathname]);
   return null;
 }
 function App() {

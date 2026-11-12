@@ -165,6 +165,7 @@ function GuideBody({ source }) {
       <SEOHead {...seo} />
       <SiteNav />
 
+      <main>
       <article className="max-w-3xl mx-auto px-6 pt-16 pb-12" data-testid="guide-article">
         <nav aria-label="Breadcrumb" className="text-xs text-quiet mb-6">
           <Link to="/" className="hover:text-ink">Home</Link> <span aria-hidden="true">/</span>{" "}
@@ -316,6 +317,7 @@ function GuideBody({ source }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }}
         />
       </article>
+      </main>
 
       <DesktopAppCTA placement="guide" />
       <SiteFooter />

@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import HomeQuickConverter from "@/components/HomeQuickConverter";
 import { StageCurrency, StageInvoice, StageRate } from "@/components/home/StageTools";
 import { fireAnalyticsEvent } from "@/lib/analytics";
+import CountUp from "@/components/CountUp";
 
 // The homepage stage: every tool on one sliding row of glass cards over the atlas.
 // It revolves continuously. It pauses only while someone is using a tool (pointer
@@ -12,16 +13,16 @@ import { fireAnalyticsEvent } from "@/lib/analytics";
 const TOOLS = [
   { key: "time", tab: "Time zones", word: "Time", Card: HomeQuickConverter, href: "/time-zone-converter", cta: "Open the time zone converter",
     line: "Type a time in one city and see it everywhere else, on a dial that shows who is in daylight and who is at work.",
-    facts: [["85+", "cities"], ["IANA", "daylight-saving rules"], ["Synced", "to our server clock"], ["0", "signups"]] },
+    facts: [["85+", "cities"], ["60+", "time zones"], ["5", "cities side by side"], ["0", "signups"]] },
   { key: "fx", tab: "Currency", word: "Money", Card: StageCurrency, href: "/currency-converter", cta: "Open the currency converter",
     line: "Live mid-market rates, refreshed every minute and checked against a daily reference before they reach you.",
-    facts: [["160+", "currencies"], ["1 min", "rate refresh"], ["3%", "sanity check on every quote"], ["Timed", "every result"]] },
+    facts: [["160+", "currencies"], ["60s", "between refreshes"], ["3%", "limit on any odd quote"], ["0", "fees or markups"]] },
   { key: "rate", tab: "Freelance rate", word: "Rates", Card: StageRate, href: "/freelancer-rate-converter", cta: "Open the rate calculator",
     line: "Turn an hourly rate into your client's currency, per month and per year, at today's rate.",
-    facts: [["12", "rate corridors"], ["Hour", "to month to year"], ["Live", "conversion"], ["Guides", "on fees and pricing"]] },
+    facts: [["11", "currencies"], ["3", "billing types"], ["12", "rate corridor guides"], ["0", "signups"]] },
   { key: "inv", tab: "Invoice", word: "Invoice", Card: StageInvoice, href: "/invoice", cta: "Open the invoice builder",
     line: "A clean PDF invoice in your currency, with a reference line in your client's currency so nobody has to ask.",
-    facts: [["PDF", "download"], ["Multi", "currency lines"], ["Live", "reference rate"], ["3 free", "a month, no account"]] },
+    facts: [["160+", "currencies on an invoice"], ["1", "PDF, ready to send"], ["3", "free a month"], ["0", "account needed"]] },
 ];
 const AUTOPLAY_MS = 7000;
 
@@ -118,10 +119,9 @@ export default function ToolStage() {
         <p key={tool.key}>{tool.line}</p>
       </div>
       <dl className="stage-facts" key={`f-${tool.key}`}>
-        {tool.facts.map(([v, l]) => <div key={l}><dt>{l}</dt><dd>{v}</dd></div>)}
+        {tool.facts.map(([v, l]) => <div key={l}><dt>{l}</dt><dd><CountUp value={v} /></dd></div>)}
       </dl>
       <div className="stage-foot">
-        <a className="primary" href={tool.href}>{tool.cta} <ArrowRight aria-hidden="true" /></a>
         <div className="stage-controls">
           <button type="button" className="motion-toggle" aria-pressed="false">Pause motion</button>
           <div className="stage-progress" aria-hidden="true">

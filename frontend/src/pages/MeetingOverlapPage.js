@@ -151,6 +151,7 @@ export default function MeetingOverlapPage() {
 
       <SiteNav />
 
+      <main>
       <article className="max-w-4xl mx-auto px-6 pt-12 pb-16">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="text-xs text-zinc-400 mb-6 flex flex-wrap items-center gap-1.5">
@@ -339,6 +340,7 @@ export default function MeetingOverlapPage() {
           <Link to="/guides/schedule-meetings-across-time-zones" className="text-pine hover:underline">Scheduling across time zones guide</Link>
         </div>
       </article>
+      </main>
 
       <DesktopAppCTA placement="meeting_overlap" />
       <SiteFooter />
