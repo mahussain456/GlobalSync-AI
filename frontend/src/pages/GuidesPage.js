@@ -15,7 +15,7 @@ export default function GuidesPage() {
       <SEOHead {...seo} />
       <SiteNav />
 
-      <div className="max-w-5xl mx-auto px-6 pt-16 pb-12">
+      <main className="max-w-5xl mx-auto px-6 pt-16 pb-12">
         <header className="mb-12">
           <div className="inline-flex items-center gap-2 bg-gem-gold/10 text-pine rounded-full px-3 py-1 text-xs font-medium mb-4 border border-line">
             <BookOpen className="w-3.5 h-3.5" /> Guides
@@ -55,7 +55,7 @@ export default function GuidesPage() {
             );
           })}
         </div>
-      </div>
+      </main>
 
       <DesktopAppCTA placement="guides_index" />
       <SiteFooter />

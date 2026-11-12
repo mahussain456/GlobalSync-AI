@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { Github, Twitter, Linkedin, Globe } from "lucide-react";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 export default function SiteFooter() {
   return (
     <footer className="site-footer-meridian bg-[#0E2A1F] text-gem-mist border-t border-white/5 py-12 px-6">
+      <div className="max-w-6xl mx-auto mb-12"><NewsletterSignup placement="footer" className="newsletter-footer" /></div>
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         
         {/* Brand */}

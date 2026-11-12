@@ -66,6 +66,7 @@ function LiveRateWidget({ from, to, fromMeta, toMeta, rate, loading, refreshedSt
           onClick={onRefresh}
           className="p-2 rounded-full border border-line text-zinc-400 hover:text-quiet hover:border-zinc-300 transition-colors"
           title="Refresh rate"
+          aria-label="Refresh rate"
           data-testid="refresh-rate-btn"
         >
           {/* spinning only when loading — CSS class is the same on server+client so no mismatch */}
@@ -352,6 +353,7 @@ export default function CurrencyPairPage() {
 
       <SiteNav />
 
+      <main>
       <article className="max-w-4xl mx-auto px-6 pt-16 pb-8">
         {/* Breadcrumb */}
         <nav className="text-xs text-zinc-400 mb-6 flex items-center gap-1.5">
@@ -546,6 +548,7 @@ export default function CurrencyPairPage() {
           )}
         </section>
       </article>
+      </main>
 
       <SiteFooter />
     </div>

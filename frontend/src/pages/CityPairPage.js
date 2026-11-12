@@ -221,6 +221,7 @@ export default function CityPairPage() {
 
       <SiteNav />
 
+      <main>
       <article className="max-w-4xl mx-auto px-6 pt-16 pb-8">
         {/* Breadcrumb */}
         <nav className="text-xs text-zinc-400 mb-6 flex items-center gap-1.5">
@@ -394,6 +395,7 @@ export default function CityPairPage() {
           )}
         </section>
       </article>
+      </main>
 
       <DesktopAppCTA placement="city_pair" />
       <SiteFooter />

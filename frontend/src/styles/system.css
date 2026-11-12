@@ -123,3 +123,23 @@
 .home-ask label small{display:block;margin-top:4px;font-weight:400}
 .meridian-home .btn-primary{color:var(--gs-ivory)}
 .meridian-home .btn-secondary{color:var(--gs-forest)}
+
+/* ── Scroll reveal (every page). Only once JS is live; never in the prerender. ── */
+html.js-reveal [data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0ms)}
+html.js-reveal [data-reveal].in{opacity:1;transform:none}
+html.js-reveal .tool-glass[data-reveal]{transform:translateY(26px) scale(.985)}
+html.js-reveal .tool-glass[data-reveal].in{transform:none}
+@media (prefers-reduced-motion:reduce){html.js-reveal [data-reveal]{opacity:1;transform:none;transition:none}}
+/* The atlas should read as a globe, not a smudge. */
+.tool-hero-backdrop img{opacity:.78;filter:saturate(1.05) contrast(1.04)}
+/* Guides read like a book: larger, darker body text on a comfortable measure. */
+.meridian-interior .prose-custom :is(p,li){font-size:17px;line-height:1.75;color:#2f4238}
+.meridian-interior .prose-custom p{max-width:68ch}
+.meridian-interior .prose-custom h2{font-size:var(--t-xl)}
+.meridian-interior .prose-custom td{font-size:15px}
+/* Newsletter card inside the dark footer. */
+.site-footer-meridian .newsletter-footer{background:#ffffff0a;border-color:#a7bfae33}
+.site-footer-meridian .newsletter-footer :is(h2,.text-ink){color:#f4efe6}
+.site-footer-meridian .newsletter-footer :is(p,label,.text-quiet){color:#a7bfae}
+.site-footer-meridian .newsletter-footer input[type=email]{background:#0a1f16;border-color:#a7bfae40;color:#f4efe6}
+.site-footer-meridian .newsletter-footer .text-pine{color:#c8a96a}

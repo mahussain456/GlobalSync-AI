@@ -58,6 +58,7 @@ export default function TimeZoneConverterPage() {
       <SEOHead {...seo} />
       <SiteNav />
 
+      <main>
       <ToolHero
         title="Free Time Zone Converter & World Clock"
         intro="Compare live times in 85+ cities, slide to any hour, and see who is inside working hours. Daylight saving handled for every city. Free, no signup."
@@ -99,6 +100,7 @@ export default function TimeZoneConverterPage() {
           { to: "/guides", label: "Guides" },
         ]} />
       </div>
+      </main>
       <DesktopAppCTA placement="time_zone_converter" />
       <SiteFooter />
     </div>

@@ -337,6 +337,7 @@ function CityCard({ city, isBase, makeBase, timeData, onRemove }) {
               onClick={makeBase}
               className="p-1 rounded text-ink hover:text-pine hover:scale-115 transition-all"
               title={isBase ? "Base Reference City" : "Set as Base Reference City"}
+              aria-label={isBase ? `${city.name} is the base city` : `Make ${city.name} the base city`}
               data-testid={`star-btn-${city.name}`}
             >
               <Star className={`w-4 h-4 ${isBase ? "fill-gem-gold text-pine filter drop-" : "text-ink"}`} />

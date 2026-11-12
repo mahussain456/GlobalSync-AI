@@ -46,6 +46,7 @@ export default function CurrencyConverterPage() {
       <SEOHead {...seo} />
       <SiteNav />
 
+      <main>
       <ToolHero
         title="Currency Converter"
         intro="Convert 160+ currencies at live mid-market rates, refreshed every minute and cross-checked before they reach you. Every result shows its source and time."
@@ -79,6 +80,7 @@ export default function CurrencyConverterPage() {
           { to: "/guides/invoicing-international-clients-currency-guide", label: "Invoicing guide" },
         ]} />
       </div>
+      </main>
       <SiteFooter />
     </div>
   );
