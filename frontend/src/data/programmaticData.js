@@ -98,6 +98,32 @@ export const CITY_PAIRS = {
     ],
     related: ["lisbon-to-new-york", "london-to-tokyo", "austin-to-berlin"],
   },
+  "london-to-bali": {
+    from: "london", to: "bali",
+    searchVolume: "medium",
+    context: "Most people checking London to Bali time are either planning a trip, calling someone who has moved out there, or managing a freelancer who works from the island. Bali runs on Central Indonesia Time (WITA, UTC+8) and never changes its clocks, so the gap depends entirely on the UK. Bali is 8 hours ahead of London from late October to late March, and 7 hours ahead while the UK is on British Summer Time. By the time London sits down for lunch, it is already evening in Ubud and Canggu.",
+    meetingTip: "From London, your realistic window is 8 AM to 11 AM UK time, which is 3 PM to 6 PM in Bali in summer or 4 PM to 7 PM in winter. Anything after 1 PM in London lands at 8 PM or later in Bali, so keep afternoon slots for async updates instead of calls.",
+    faqs: [
+      { q: "What is the time difference between the UK and Bali?", a: "Bali is 8 hours ahead of the UK in winter (GMT) and 7 hours ahead in summer (BST). Bali does not observe daylight saving time, so the change happens only when the UK moves its clocks in late March and late October." },
+      { q: "If it's 9 AM in London, what time is it in Bali?", a: "It's 5 PM in Bali during the UK winter and 4 PM during British Summer Time." },
+      { q: "What time should I call family in Bali from the UK?", a: "Early morning UK time works best. A 7 AM call from London reaches Bali at 2 PM or 3 PM, while a call after 3 PM in the UK reaches Bali late in the evening, close to midnight." },
+      { q: "Is Bali time the same as Jakarta time?", a: "No. Bali uses WITA (UTC+8), one hour ahead of Jakarta, which uses WIB (UTC+7). Double-check which one an Indonesian contact means when they quote a time." },
+    ],
+    related: ["bali-to-london", "london-to-tokyo", "london-to-dubai"],
+  },
+  "san-francisco-to-sydney": {
+    from: "san-francisco", to: "sydney",
+    searchVolume: "medium",
+    context: "San Francisco and Sydney are tied together by tech, venture capital and a steady flow of Australian founders building for the US market. Sydney is 17 to 19 hours ahead of San Francisco, and the gap shifts several times a year because the two cities run daylight saving in opposite seasons: about 19 hours from November to early March, 17 hours from April to early October, and 18 hours in the weeks between. The simplest mental model is that Sydney is roughly one day ahead, minus a few hours.",
+    meetingTip: "The only practical overlap is San Francisco late afternoon and Sydney early next morning. 3 PM in San Francisco is 10 AM the next day in Sydney during the US winter and 8 AM during the US summer. Book recurring calls around 2 PM to 4 PM Pacific and recheck them in March, April, October and November, when one side changes clocks.",
+    faqs: [
+      { q: "How many hours ahead is Sydney from San Francisco?", a: "Between 17 and 19 hours, depending on the time of year. It is 19 hours during the northern winter, 17 hours during the northern summer, and 18 hours for a few weeks in spring and autumn when only one city has changed its clocks." },
+      { q: "If it's 9 AM Monday in Sydney, what time is it in San Francisco?", a: "It's Sunday afternoon in San Francisco: 2 PM when the gap is 19 hours, or 4 PM when it is 17 hours." },
+      { q: "Why does the time gap keep changing?", a: "Australia's daylight saving runs from early October to early April, while California's runs from March to November. Because the seasons are reversed, the gap moves in steps over the year instead of staying fixed." },
+      { q: "What's the best way to handle a SF and Sydney team?", a: "Pick one overlap slot in the Pacific afternoon, rotate who takes the less convenient end, and make Friday handoffs explicit, since Sydney is already into Saturday for most of San Francisco's Friday." },
+    ],
+    related: ["san-francisco-to-new-york", "new-york-to-tokyo", "london-to-tokyo"],
+  },
   "austin-to-berlin": {
     from: "austin", to: "berlin",
     searchVolume: "medium",
