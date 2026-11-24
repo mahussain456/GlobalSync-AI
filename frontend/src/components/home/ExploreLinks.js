@@ -2,6 +2,8 @@ import { GUIDES } from "@/data/guidesData";
 import { MEETING_CORRIDORS } from "@/data/meetingCorridors";
 import { CORRIDORS } from "@/data/freelanceCorridors";
 import { CITY_PAIRS, CURRENCY_PAIRS, isPairIndexable } from "@/data/programmaticData";
+import { ZONE_PAIRS } from "@/data/zonePairs";
+import { getPairContext } from "@/data/pairContext";
 
 // Plain <a href> crawl paths from the homepage to every indexable guide and
 // landing page. Only indexable pairs are listed (see isPairIndexable): the
@@ -12,7 +14,19 @@ const shortTitle = (t) => t.split(/[:(]/)[0].trim();
 const TIME_PAIRS = Object.keys(CITY_PAIRS).filter((s) => isPairIndexable(s, CITY_PAIRS[s]));
 const FX_PAIRS = Object.keys(CURRENCY_PAIRS).filter((s) => isPairIndexable(s, CURRENCY_PAIRS[s]));
 
+// /convert pages ship noindex until they have hand-written context, so only
+// link the ones that do. Priority 1-2 keeps the homepage list short; the hub
+// links the rest.
+const ZONE_LINKS = ZONE_PAIRS
+  .filter((p) => p.priority <= 2 && getPairContext(p.slug)?.context)
+  .map((p) => ({ href: `/convert/${p.slug}`, label: `${p.from} to ${p.to}` }));
+
 const GROUPS = [
+  {
+    title: "Time zone converters",
+    hub: { href: "/convert", label: "All time zone converters" },
+    links: ZONE_LINKS,
+  },
   {
     title: "Guides",
     hub: { href: "/guides", label: "All guides" },
